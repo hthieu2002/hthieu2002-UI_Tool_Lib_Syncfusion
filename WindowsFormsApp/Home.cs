@@ -14,7 +14,7 @@ using System.Drawing.Drawing2D;
 
 namespace AccountCreatorForm.Views
 {
-    public partial class Home: Form
+    public partial class Home : Form
     {
         private readonly Color ColorBackground = ColorTranslator.FromHtml("#F5F7FC");
         private readonly Color colorNormalBack = Color.White;
@@ -48,15 +48,16 @@ namespace AccountCreatorForm.Views
                 StyleSidebarButtonWithIcon(pair.Key, pair.Value);
                 pair.Key.Click += SidebarButton_Click;
             }
-           // this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            // this.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
-      
+
         public void Form_Load()
         {
             sidebarFormMap = new Dictionary<SfButton, Func<Form>>
 {
     { btnDieuKhien, () => new ViewChange() },
     { btnStore, () => new ViewCuaHang() },
+    { btnLichTrinh, () => new ScreenView() },
     //{ btnManagerApp, () => new ViewQuanLyUngDung() },
     //{ btnManagerAccount, () => new ViewQuanLyTaiKhoan() },
     { btnThanhToan, () => new ViewThanhToan() },
@@ -96,11 +97,11 @@ namespace AccountCreatorForm.Views
             panelSidebarContent.Dock = DockStyle.Top;
             panelSidebarContent.AutoSize = true;
             panelSidebarContent.BackColor = Color.Transparent;
-            panelSidebarContent.Margin = new Padding(10,0,0,0);
+            panelSidebarContent.Margin = new Padding(10, 0, 0, 0);
             panelSidebarContent.Padding = new Padding(10, 5, 10, 0);
             var sidebarButtons = new List<Control>
 {
-   
+
     btnThanhToan,
     btnManagerAccount,
     btnManagerApp,
@@ -119,7 +120,7 @@ namespace AccountCreatorForm.Views
                 panelSidebarContent.Controls.Add(btn);
             }
 
-            panelSidebarContent.Padding = new Padding(8, 8, 8, 8); 
+            panelSidebarContent.Padding = new Padding(8, 8, 8, 8);
 
             gradientPanelSidebar.BackColor = ColorBackground;
             gradientPanelSidebar.Width = 240;
@@ -151,7 +152,7 @@ namespace AccountCreatorForm.Views
             //
             btnDieuKhien.Text = "Devices";
             btnAuto.Text = "Automation";
-          //  btnUngDung.Text = "View Screen";
+            //  btnUngDung.Text = "View Screen";
             btnLichTrinh.Text = "View Screen";
 
             panelAutoSubMenu.Visible = false;
@@ -338,8 +339,8 @@ namespace AccountCreatorForm.Views
 
         private void StyleSidebarChildButton(SfButton button)
         {
-            StyleSidebarButton(button); 
-            button.Padding = new Padding(30, 0, 0, 0); 
+            StyleSidebarButton(button);
+            button.Padding = new Padding(30, 0, 0, 0);
         }
         private void SetActiveSidebarButton(SfButton btn)
         {
@@ -357,8 +358,8 @@ namespace AccountCreatorForm.Views
             btn.Style.PressedBackColor = ColorActiveBack;
             btn.Style.PressedForeColor = ColorActiveText;
 
-           /* if (buttonIconWhiteMap.TryGetValue(btn, out var whiteIcon))
-                btn.Image = whiteIcon;*/
+            /* if (buttonIconWhiteMap.TryGetValue(btn, out var whiteIcon))
+                 btn.Image = whiteIcon;*/
 
             currentActiveButton = btn;
         }
@@ -418,7 +419,7 @@ namespace AccountCreatorForm.Views
             Button btn = sender as Button;
             if (btn != null)
             {
-             
+
                 btn.Cursor = Cursors.Hand;
             }
         }
@@ -437,12 +438,12 @@ namespace AccountCreatorForm.Views
         private void btnCaiDat_Click(object sender, EventArgs e)
         {
             Setting setting = new Setting();
-            setting.ShowDialog(); 
+            setting.ShowDialog();
         }
 
         private void button_Paint(object sender, PaintEventArgs e)
         {
-          
+
         }
 
 

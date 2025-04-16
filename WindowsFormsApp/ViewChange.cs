@@ -135,13 +135,12 @@ namespace WindowsFormsApp
 
         private void BtnCommon_Paint(object sender, PaintEventArgs e)
         {
-            Button btn = sender as Button; // Lấy thông tin Button đang được vẽ
+            Button btn = sender as Button; 
             if (btn == null) return;
 
             int radius = 5;
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
-            // Lấy rectangle cho nút hiện tại
             Rectangle rect = new Rectangle(
                 btn.ClientRectangle.X + 1,
                 btn.ClientRectangle.Y + 1,
@@ -149,28 +148,21 @@ namespace WindowsFormsApp
                 btn.ClientRectangle.Height - 2
             );
 
-            // Cập nhật vùng cho nút
             btn.Region = new Region(GetRoundedRect(rect, radius));
             rect = new Rectangle(rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2);
 
-            // Xóa chữ cũ trước khi vẽ lại
-            e.Graphics.FillRectangle(new SolidBrush(btn.BackColor), rect); // Xóa chữ và nền bằng màu nền của Button
+            e.Graphics.FillRectangle(new SolidBrush(btn.BackColor), rect);
 
-            // Xác định màu viền dựa trên trạng thái nút
             Pen borderPen = GetButtonBorderPen(btn);
 
-            // Vẽ viền cho nút
             e.Graphics.DrawPath(borderPen, GetRoundedRect(rect, radius));
 
-            // Xác định màu chữ dựa trên trạng thái
             Color textColor = GetButtonTextColor(btn);
 
-            // Vẽ văn bản của nút
             Rectangle textRect = new Rectangle(rect.X + 2, rect.Y + 2, rect.Width - 4, rect.Height - 4); // Điều chỉnh phạm vi để tránh chữ bị đè lên
             TextRenderer.DrawText(e.Graphics, btn.Text, btn.Font, textRect, textColor, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
         }
 
-        // Phương thức xác định màu viền của nút
         private Pen GetButtonBorderPen(Button btn)
         {
             if (!btn.Enabled) // Disabled state
@@ -191,7 +183,6 @@ namespace WindowsFormsApp
             }
         }
 
-        // Phương thức xác định màu chữ của nút
         private Color GetButtonTextColor(Button btn)
         {
             if (btn.ClientRectangle.Contains(PointToClient(Cursor.Position))) // Hover state

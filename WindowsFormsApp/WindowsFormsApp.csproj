@@ -103,6 +103,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalContextMenu.cs" />
     <Compile Include="HeaderViewCommon.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -138,47 +139,17 @@
     <Compile Include="UcPricingCard.Designer.cs">
       <DependentUpon>UcPricingCard.cs</DependentUpon>
     </Compile>
+    <Compile Include="ViewChange.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewChange.Designer.cs">
+      <DependentUpon>ViewChange.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewCuaHang.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ViewCuaHang.Designer.cs">
       <DependentUpon>ViewCuaHang.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ViewDieuKhien.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ViewDieuKhien.Designer.cs">
-      <DependentUpon>ViewDieuKhien.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ViewLichTrinh.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ViewLichTrinh.Designer.cs">
-      <DependentUpon>ViewLichTrinh.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ViewLuotChay.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ViewLuotChay.Designer.cs">
-      <DependentUpon>ViewLuotChay.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ViewNhiemVU.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ViewNhiemVU.Designer.cs">
-      <DependentUpon>ViewNhiemVU.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ViewQuanLyTaiKhoan.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ViewQuanLyTaiKhoan.Designer.cs">
-      <DependentUpon>ViewQuanLyTaiKhoan.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ViewQuanLyUngDung.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ViewQuanLyUngDung.Designer.cs">
-      <DependentUpon>ViewQuanLyUngDung.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewThanhToan.cs">
       <SubType>Form</SubType>
@@ -217,11 +188,11 @@
     <EmbeddedResource Include="UcPricingCard.resx">
       <DependentUpon>UcPricingCard.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ViewChange.resx">
+      <DependentUpon>ViewChange.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ViewCuaHang.resx">
       <DependentUpon>ViewCuaHang.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ViewDieuKhien.resx">
-      <DependentUpon>ViewDieuKhien.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ViewThanhToan.resx">
       <DependentUpon>ViewThanhToan.cs</DependentUpon>
@@ -297,6 +268,15 @@
   <ItemGroup>
     <Folder Include="Animation\" />
     <Folder Include="Event\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dark_mode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\light_mode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrow_down.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -73,6 +73,16 @@ namespace WindowsFormsApp.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap arrow_down {
+            get {
+                object obj = ResourceManager.GetObject("arrow_down", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap automation_0 {
             get {
                 object obj = ResourceManager.GetObject("automation_0", resourceCulture);
@@ -86,6 +96,16 @@ namespace WindowsFormsApp.Properties {
         internal static System.Drawing.Bitmap cuahang_0 {
             get {
                 object obj = ResourceManager.GetObject("cuahang_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dark_mode {
+            get {
+                object obj = ResourceManager.GetObject("dark_mode", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -116,6 +136,16 @@ namespace WindowsFormsApp.Properties {
         internal static System.Drawing.Bitmap lichtrinh_0 {
             get {
                 object obj = ResourceManager.GetObject("lichtrinh_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap light_mode {
+            get {
+                object obj = ResourceManager.GetObject("light_mode", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

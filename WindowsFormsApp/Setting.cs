@@ -15,6 +15,7 @@ namespace WindowsFormsApp
         public Setting()
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
     }
 }

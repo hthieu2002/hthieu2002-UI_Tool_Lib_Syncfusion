@@ -35,7 +35,10 @@ namespace AccountCreatorForm.Views
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
             this.StartPosition = FormStartPosition.CenterScreen;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+
             this.AutoScaleMode = AutoScaleMode.Dpi;
+            this.ContextMenuStrip = GlobalContextMenu.ContextMenu;
             clickEvent();
             init();
             Form_Load();
@@ -52,15 +55,15 @@ namespace AccountCreatorForm.Views
         {
             sidebarFormMap = new Dictionary<SfButton, Func<Form>>
 {
-    { btnDieuKhien, () => new ViewDieuKhien() },
+    { btnDieuKhien, () => new ViewChange() },
     { btnStore, () => new ViewCuaHang() },
-    { btnManagerApp, () => new ViewQuanLyUngDung() },
-    { btnManagerAccount, () => new ViewQuanLyTaiKhoan() },
+    //{ btnManagerApp, () => new ViewQuanLyUngDung() },
+    //{ btnManagerAccount, () => new ViewQuanLyTaiKhoan() },
     { btnThanhToan, () => new ViewThanhToan() },
     { btnUngDung, () => new ViewUngDung() },
-    { btnLuotChay, () => new ViewLuotChay() },
+   /* { btnLuotChay, () => new ViewLuotChay() },
     { btnNhiemVu, () => new ViewNhiemVU() },
-    { btnLichTrinh, () => new ViewLichTrinh() },
+    { btnLichTrinh, () => new ViewLichTrinh() },*/
 };
         }
         public void Form_Load_Icon()
@@ -97,13 +100,14 @@ namespace AccountCreatorForm.Views
             panelSidebarContent.Padding = new Padding(10, 5, 10, 0);
             var sidebarButtons = new List<Control>
 {
-    btnHelp,
-    btnCaiDat,
+   
     btnThanhToan,
-    btnLichTrinh,
     btnManagerAccount,
     btnManagerApp,
+    btnHelp,
+    btnCaiDat,
     btnStore,
+    btnLichTrinh,
     panelAutoSubMenu,
     btnAuto,
     btnDieuKhien,
@@ -144,6 +148,18 @@ namespace AccountCreatorForm.Views
             StyleSidebarButton(btnThanhToan);
             StyleSidebarButton(btnCaiDat);
             StyleSidebarButton(btnHelp);
+            //
+            btnDieuKhien.Text = "Devices";
+            btnAuto.Text = "Automation";
+          //  btnUngDung.Text = "View Screen";
+            btnLichTrinh.Text = "View Screen";
+
+            panelAutoSubMenu.Visible = false;
+            btnManagerApp.Visible = false;
+            btnManagerAccount.Visible = false;
+            btnUngDung.Visible = false;
+            btnLuotChay.Visible = false;
+            btnNhiemVu.Visible = false;
 
             StyleSidebarChildButton(btnUngDung);
             StyleSidebarChildButton(btnLuotChay);
@@ -421,7 +437,7 @@ namespace AccountCreatorForm.Views
         private void btnCaiDat_Click(object sender, EventArgs e)
         {
             Setting setting = new Setting();
-            setting.Show();
+            setting.ShowDialog(); 
         }
 
         private void button_Paint(object sender, PaintEventArgs e)

@@ -123,7 +123,7 @@ namespace AccountCreatorForm.Controls
             };
             btnRuns.FlatAppearance.BorderColor = Color.FromArgb(86, 119, 254);
             btnRuns.FlatAppearance.BorderSize = 1;
-            btnRuns.Margin = new Padding(5, 0, 5, 0);  // Thêm khoảng cách giữa các nút
+            btnRuns.Margin = new Padding(5, 0, 5, 0); 
         }
         private void setInspector()
         {
@@ -139,7 +139,7 @@ namespace AccountCreatorForm.Controls
             };
             btnInspector.FlatAppearance.BorderColor = Color.FromArgb(86, 119, 254);
             btnInspector.FlatAppearance.BorderSize = 1;
-            btnInspector.Margin = new Padding(5, 0, 5, 0);  // Thêm khoảng cách giữa các nút
+            btnInspector.Margin = new Padding(5, 0, 5, 0);  
         }
         private void setDrakMode()
         {
@@ -149,7 +149,7 @@ namespace AccountCreatorForm.Controls
                 Image = Resources.light_mode,
                 Size = new System.Drawing.Size(Resources.light_mode.Width, Resources.light_mode.Height),
             };
-            button.Margin = new Padding(5, 0, 5, 0);  // Thêm khoảng cách giữa các nút
+            button.Margin = new Padding(5, 0, 5, 0); 
             button.Click += Button_Click;
         }
 
@@ -162,7 +162,7 @@ namespace AccountCreatorForm.Controls
         {
             accountPanel = new Panel
             {
-                Size = new Size(250, 40),  // Đặt kích thước cho panel
+                Size = new Size(250, 40),  
                 BackColor = Color.Transparent
             };
 
@@ -173,10 +173,9 @@ namespace AccountCreatorForm.Controls
                 SizeMode = PictureBoxSizeMode.Zoom,
                 Cursor = Cursors.Hand,
                 BackColor = Color.Transparent,
-                Image = Resources.cuahang_0 // Đảm bảo có ảnh trong tài nguyên
+                Image = Resources.cuahang_0 
             };
 
-            // Tạo Label để hiển thị email
             Label lblEmail = new Label
             {
                 Text = "blua@gmail.com",
@@ -185,17 +184,15 @@ namespace AccountCreatorForm.Controls
                 AutoSize = true
             };
 
-            // Đặt vị trí của Label cạnh PictureBox (hình trước chữ)
-            lblEmail.Location = new Point(picAvatar.Right + 10, picAvatar.Top); // Đặt Label cách PictureBox 10px
+            lblEmail.Location = new Point(picAvatar.Right + 10, picAvatar.Top); 
 
-            // Tạo PictureBox cho mũi tên xuống
             picArrow = new PictureBox
             {
-                Size = new Size(10, 10),  // Kích thước của mũi tên
+                Size = new Size(10, 10),  
                 BackColor = Color.Transparent,
                 Cursor = Cursors.Hand,
-                Image = Resources.arrow_down,  // Đảm bảo có ảnh mũi tên xuống trong tài nguyên
-                Location = new Point(lblEmail.Right + 5, picAvatar.Top)  // Đặt mũi tên sau email
+                Image = Resources.arrow_down,
+                Location = new Point(lblEmail.Right + 5, picAvatar.Top)  
             };
 
             // Thêm PictureBox và Label vào Panel
@@ -210,19 +207,17 @@ namespace AccountCreatorForm.Controls
 
         private void UpdateControlPositions()
         {
-            // Đảm bảo các control được căn chỉnh theo chiều dọc trong TableLayoutPanel
            // lblVersion.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             btnRuns.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             btnInspector.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             button.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             accountPanel.Anchor = AnchorStyles.Left | AnchorStyles.Top;
 
-            // Cập nhật Margin và Padding để căn giữa theo chiều dọc và ngang
            // lblVersion.Margin = new Padding(0, 10, 10, 0);  // Khoảng cách giữa avatar và các nút
-            btnRuns.Margin = new Padding(0, 10, 10, 0);  // Khoảng cách giữa các nút
-            btnInspector.Margin = new Padding(0, 10, 10, 0);  // Khoảng cách giữa các nút
-            button.Margin = new Padding(0, 10, 10, 0);  // Khoảng cách giữa các nút
-            accountPanel.Margin = new Padding(0, 10, 10, 0);  // Khoảng cách giữa các nút
+            btnRuns.Margin = new Padding(0, 10, 10, 0); 
+            btnInspector.Margin = new Padding(0, 10, 10, 0); 
+            button.Margin = new Padding(0, 10, 10, 0);  
+            accountPanel.Margin = new Padding(0, 10, 10, 0); 
         }
 
         public void SetTitle(string title)

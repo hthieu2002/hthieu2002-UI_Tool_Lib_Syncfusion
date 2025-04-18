@@ -158,15 +158,15 @@ namespace AccountCreatorForm.Views
             btnAction = new SfButton
             {
                 Height = 36,
-                Width = 100,  // Đặt chiều rộng mặc định ban đầu (có thể bỏ qua nếu bạn sử dụng AutoSize)
+                Width = 100,  
                 Dock = DockStyle.Top,
                 Font = new Font("Segoe UI", 9F, FontStyle.Bold),
                 Text = "Facebook",
                 BackColor = Color.FromArgb(86, 119, 254),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
-                AutoSize = true,  // Cho phép tự động điều chỉnh chiều rộng dựa trên văn bản
-                MaximumSize = new Size(100, 36)  // Đặt chiều rộng tối đa là 60px, chiều cao không thay đổi
+                AutoSize = true,  
+                MaximumSize = new Size(100, 36)  
             };
 
             btnAction.FlatAppearance.BorderSize = 0;
@@ -209,18 +209,15 @@ namespace AccountCreatorForm.Views
         }
         private void PanelMain_MouseEnter(object sender, EventArgs e)
         {
-            // Khi chuột hover vào FlowLayoutPanel, thay đổi con trỏ thành hình bàn tay
             panelMain.Cursor = Cursors.Hand;
         }
 
         private void PanelMain_MouseLeave(object sender, EventArgs e)
         {
-            // Khi chuột rời khỏi FlowLayoutPanel, thay lại con trỏ mặc định
             panelMain.Cursor = Cursors.Default;
         }
         private void PanelMain_Click(object sender, EventArgs e)
         {
-            // Xử lý sự kiện click tại đây
             MessageBox.Show("PanelMain đã được click!");
         }
         private void Label_MouseEnter(object sender, EventArgs e)

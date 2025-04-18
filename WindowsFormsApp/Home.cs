@@ -25,11 +25,10 @@ namespace AccountCreatorForm.Views
         private readonly Color colorHoverText = Color.FromArgb(51, 51, 51);
 
         private SfButton currentActiveButton = null;
-        private Form currentChildForm = null;
+        public Form currentChildForm = null;
         private Dictionary<SfButton, Func<Form>> sidebarFormMap;
         private Dictionary<SfButton, Image> buttonIconMap;
         private Dictionary<SfButton, Image> buttonIconWhiteMap;
-
         public Home()
         {
             InitializeComponent();
@@ -39,6 +38,7 @@ namespace AccountCreatorForm.Views
 
             this.AutoScaleMode = AutoScaleMode.Dpi;
             this.ContextMenuStrip = GlobalContextMenu.ContextMenu;
+            GlobalContextMenu.SetHomeForm(this);
             clickEvent();
             init();
             Form_Load();
@@ -50,7 +50,6 @@ namespace AccountCreatorForm.Views
             }
             // this.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
-
         public void Form_Load()
         {
             sidebarFormMap = new Dictionary<SfButton, Func<Form>>
@@ -65,7 +64,9 @@ namespace AccountCreatorForm.Views
    /* { btnLuotChay, () => new ViewLuotChay() },
     { btnNhiemVu, () => new ViewNhiemVU() },
     { btnLichTrinh, () => new ViewLichTrinh() },*/
+
 };
+
         }
         public void Form_Load_Icon()
         {
@@ -152,7 +153,6 @@ namespace AccountCreatorForm.Views
             //
             btnDieuKhien.Text = "Devices";
             btnAuto.Text = "Automation";
-            //  btnUngDung.Text = "View Screen";
             btnLichTrinh.Text = "View Screen";
 
             panelAutoSubMenu.Visible = false;
@@ -272,12 +272,12 @@ namespace AccountCreatorForm.Views
             btnThanhToan.Click += SidebarButton_Click;
             btnCaiDat.Click += SidebarButton_Click;
             btnHelp.Click += SidebarButton_Click;
+
             SetButtonHover();
         }
 
         private void SetButtonHover()
         {
-            // Tạo mảng các nút
             Button[] buttons = new Button[]
             {
         btnDieuKhien, btnAuto, btnUngDung, btnLuotChay, btnNhiemVu,
@@ -285,7 +285,6 @@ namespace AccountCreatorForm.Views
         btnThanhToan, btnCaiDat, btnHelp
             };
 
-            // Gán sự kiện MouseEnter và MouseLeave cho tất cả các nút
             foreach (var button in buttons)
             {
                 button.MouseEnter += Button_MouseEnter;
@@ -358,9 +357,6 @@ namespace AccountCreatorForm.Views
             btn.Style.PressedBackColor = ColorActiveBack;
             btn.Style.PressedForeColor = ColorActiveText;
 
-            /* if (buttonIconWhiteMap.TryGetValue(btn, out var whiteIcon))
-                 btn.Image = whiteIcon;*/
-
             currentActiveButton = btn;
         }
         private void ResetSidebarButton(SfButton btn)
@@ -376,17 +372,21 @@ namespace AccountCreatorForm.Views
         private void OpenChildForm(Form childForm)
         {
             if (currentChildForm != null)
-                currentChildForm.Close();
+            {
+                currentChildForm.Hide();  
+            }
 
             currentChildForm = childForm;
-            childForm.TopLevel = false;
-            childForm.FormBorderStyle = FormBorderStyle.None;
-            childForm.Dock = DockStyle.Fill;
+            currentChildForm.TopLevel = false;
+            currentChildForm.FormBorderStyle = FormBorderStyle.None;
+            currentChildForm.Dock = DockStyle.Fill;
 
             panelMainView.Controls.Clear();
             panelMainView.Controls.Add(childForm);
             childForm.Show();
+            GlobalContextMenu.SetHomeForm(this);
         }
+
         private void SidebarButton_Click(object sender, EventArgs e)
         {
             if (sender is SfButton btn)
@@ -395,10 +395,18 @@ namespace AccountCreatorForm.Views
 
                 if (sidebarFormMap.TryGetValue(btn, out var formFactory))
                 {
-                    OpenChildForm(formFactory());
+                    var childForm = formFactory();
+                    if (currentChildForm != null && currentChildForm.GetType() == childForm.GetType())
+                    {
+                        currentChildForm.BringToFront(); 
+                        return;
+                    }
+
+                    OpenChildForm(childForm);
                 }
             }
         }
+
         private void btnAuto_Click(object sender, EventArgs e)
         {
             panelAutoSubMenu.Visible = !panelAutoSubMenu.Visible;
@@ -410,7 +418,6 @@ namespace AccountCreatorForm.Views
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // Dừng toàn bộ ứng dụng khi form đóng
             Application.Exit();
         }
 
@@ -423,8 +430,6 @@ namespace AccountCreatorForm.Views
                 btn.Cursor = Cursors.Hand;
             }
         }
-
-        // Sự kiện khi chuột rời khỏi nút
         private void Button_MouseLeave(object sender, EventArgs e)
         {
             Button btn = sender as Button;
@@ -445,7 +450,5 @@ namespace AccountCreatorForm.Views
         {
 
         }
-
-
     }
 }

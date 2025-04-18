@@ -118,6 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="adb" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\adb.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="AdbWinApi" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AdbWinApi.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="AdbWinUsbApi" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AdbWinUsbApi.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="app_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\app_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -126,6 +135,15 @@
   </data>
   <data name="automation_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\automation_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="avcodec_61" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\avcodec-61.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="avformat_61" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\avformat-61.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="avutil_59" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\avutil-59.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="cuahang_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cuahang_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -139,6 +157,12 @@
   <data name="help_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\help_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="libusb_1_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\libusb-1.0.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="lichtrinh_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\lichtrinh_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -151,6 +175,9 @@
   <data name="nhiemvu_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\nhiemvu_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="open_a_terminal_here" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\open_a_terminal_here.bat;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
   <data name="quanlynguoidung_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\quanlynguoidung_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -160,8 +187,26 @@
   <data name="router_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\router_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="scrcpy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\scrcpy.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="scrcpy_console" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\scrcpy-console.bat;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="scrcpy_noconsole" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\scrcpy-noconsole.vbs;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="scrcpy_server" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\scrcpy-server;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SDL2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SDL2.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="setting_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\setting_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="swresample_5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\swresample-5.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="thanhtoan_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\thanhtoan_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

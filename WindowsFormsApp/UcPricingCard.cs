@@ -132,13 +132,11 @@ namespace AccountCreatorForm.Views
         {
             Panel panel = sender as Panel;
 
-            using (Pen borderPen = new Pen(Color.LightBlue, 2)) // Light blue border when hover
+            using (Pen borderPen = new Pen(Color.LightBlue, 2)) 
             using (SolidBrush brush = new SolidBrush(Color.White))
             {
-                // Create a GraphicsPath for rounded corners
                 GraphicsPath path = GetRoundedRect(panel.ClientRectangle, 20);
 
-                // Draw the background and rounded border
                 e.Graphics.FillPath(brush, path);
                 e.Graphics.DrawPath(borderPen, path);
             }
@@ -147,13 +145,13 @@ namespace AccountCreatorForm.Views
         private GraphicsPath GetRoundedRect(Rectangle rect, int radius)
         {
             GraphicsPath graphicsPath = new GraphicsPath();
-            graphicsPath.AddArc(rect.X, rect.Y, radius * 2, radius * 2, 180, 90); // Top left corner
+            graphicsPath.AddArc(rect.X, rect.Y, radius * 2, radius * 2, 180, 90);
             graphicsPath.AddLine(rect.X + radius, rect.Y, rect.Right - radius, rect.Y);
-            graphicsPath.AddArc(rect.Right - radius * 2, rect.Y, radius * 2, radius * 2, 270, 90); // Top right corner
+            graphicsPath.AddArc(rect.Right - radius * 2, rect.Y, radius * 2, radius * 2, 270, 90); 
             graphicsPath.AddLine(rect.Right, rect.Y + radius, rect.Right, rect.Bottom - radius);
-            graphicsPath.AddArc(rect.Right - radius * 2, rect.Bottom - radius * 2, radius * 2, radius * 2, 0, 90); // Bottom right corner
+            graphicsPath.AddArc(rect.Right - radius * 2, rect.Bottom - radius * 2, radius * 2, radius * 2, 0, 90); 
             graphicsPath.AddLine(rect.Right - radius, rect.Bottom, rect.X + radius, rect.Bottom);
-            graphicsPath.AddArc(rect.X, rect.Bottom - radius * 2, radius * 2, radius * 2, 90, 90); // Bottom left corner
+            graphicsPath.AddArc(rect.X, rect.Bottom - radius * 2, radius * 2, radius * 2, 90, 90);
             graphicsPath.AddLine(rect.X, rect.Bottom - radius, rect.X, rect.Y + radius);
             graphicsPath.CloseFigure();
 

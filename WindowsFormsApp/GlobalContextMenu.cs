@@ -1,56 +1,73 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AccountCreatorForm.Views;
 using System.Windows.Forms;
+using WindowsFormsApp;
 
-namespace WindowsFormsApp
+public static class GlobalContextMenu
 {
-    public static class GlobalContextMenu
+    public static ContextMenuStrip ContextMenu = new ContextMenuStrip();
+    private static Home homeForm;
+
+    public static void SetHomeForm(Home form)
     {
-        // Tạo một ContextMenuStrip chung
-        public static ContextMenuStrip ContextMenu = new ContextMenuStrip();
+        homeForm = form;
+        UpdateContextMenu();
+    }
 
-        static GlobalContextMenu()
+    static GlobalContextMenu()
+    {
+        UpdateContextMenu();
+    }
+
+    private static void UpdateContextMenu()
+    {
+        ToolStripMenuItem reloadItem;
+        ToolStripMenuItem restartItem;
+        ToolStripMenuItem apkItem;
+        ToolStripMenuItem screenshotItem;
+        ToolStripMenuItem adbItem;
+        ToolStripMenuItem deleteItem;
+
+        ContextMenu.Items.Clear();
+
+        if (homeForm?.currentChildForm is ScreenView)
         {
-            // Thêm các mục vào ContextMenu
-            ToolStripMenuItem reloadItem = new ToolStripMenuItem("Reload");
-            ToolStripMenuItem autoItem = new ToolStripMenuItem("Tự động hóa cho 0 thiết bị");
-            ToolStripMenuItem copyItem = new ToolStripMenuItem("Copy ID 0 devices");
-            ToolStripMenuItem restartItem = new ToolStripMenuItem("Khởi động lại 0 thiết bị");
-            ToolStripMenuItem apkItem = new ToolStripMenuItem("Cài đặt APK");
-            ToolStripMenuItem screenshotItem = new ToolStripMenuItem("Chụp màn hình");
-            ToolStripMenuItem proxyItem = new ToolStripMenuItem("Thay đổi proxy");
-            ToolStripMenuItem adbItem = new ToolStripMenuItem("Lệnh Adb");
-            ToolStripMenuItem textShortcutItem = new ToolStripMenuItem("Gõ nhanh văn bản");
-            ToolStripMenuItem deleteItem = new ToolStripMenuItem("Xóa 0 thiết bị");
-            ToolStripMenuItem changeImageItem = new ToolStripMenuItem("Thay đổi hình nền theo số thứ tự");
-            ToolStripMenuItem changeOrderItem = new ToolStripMenuItem("Thay đổi số thứ tự thiết bị");
-            ToolStripMenuItem addToGroupItem = new ToolStripMenuItem("Thêm vào nhóm");
+            reloadItem = new ToolStripMenuItem("Reload");
+            restartItem = new ToolStripMenuItem("Khởi động lại 0 thiết bị");
+            apkItem = new ToolStripMenuItem("Cài đặt APK");
+            screenshotItem = new ToolStripMenuItem("Chụp màn hình");
+            adbItem = new ToolStripMenuItem("Lệnh Adb");
+            deleteItem = new ToolStripMenuItem("Xóa 0 thiết bị");
 
-            // Gán sự kiện cho các mục menu
-            reloadItem.Click += (sender, e) => { MessageBox.Show("Reload clicked"); };
-            autoItem.Click += (sender, e) => { MessageBox.Show("Auto clicked"); };
-            copyItem.Click += (sender, e) => { MessageBox.Show("Copy clicked"); };
-            restartItem.Click += (sender, e) => { MessageBox.Show("Restart clicked"); };
-            apkItem.Click += (sender, e) => { MessageBox.Show("APK clicked"); };
-            screenshotItem.Click += (sender, e) => { MessageBox.Show("Screenshot clicked"); };
-            proxyItem.Click += (sender, e) => { MessageBox.Show("Proxy clicked"); };
-            adbItem.Click += (sender, e) => { MessageBox.Show("ADB clicked"); };
-            textShortcutItem.Click += (sender, e) => { MessageBox.Show("Text shortcut clicked"); };
-            deleteItem.Click += (sender, e) => { MessageBox.Show("Delete clicked"); };
-            changeImageItem.Click += (sender, e) => { MessageBox.Show("Change image clicked"); };
-            changeOrderItem.Click += (sender, e) => { MessageBox.Show("Change order clicked"); };
-            addToGroupItem.Click += (sender, e) => { MessageBox.Show("Add to group clicked"); };
+            reloadItem.Click += (sender, e) => { MessageBox.Show("Reload clicked in ScreenView"); };
+            restartItem.Click += (sender, e) => { MessageBox.Show("Restart clicked in ScreenView"); };
+            apkItem.Click += (sender, e) => { MessageBox.Show("APK clicked in ScreenView"); };
+            screenshotItem.Click += (sender, e) => { MessageBox.Show("Screenshot clicked in ScreenView"); };
+            adbItem.Click += (sender, e) => { MessageBox.Show("ADB clicked in ScreenView"); };
+            deleteItem.Click += (sender, e) => { MessageBox.Show("Delete clicked in ScreenView"); };
 
-            // Thêm các mục vào ContextMenu
-            ContextMenu.Items.AddRange(new ToolStripItem[]
-            {
-            reloadItem, autoItem, copyItem, restartItem, apkItem, screenshotItem,
-            proxyItem, adbItem, textShortcutItem, deleteItem, changeImageItem,
-            changeOrderItem, addToGroupItem
-            });
+            ContextMenu.Items.AddRange(new ToolStripItem[] { reloadItem, restartItem, apkItem, screenshotItem, adbItem, deleteItem });
+        }
+        else if (homeForm?.currentChildForm is ViewChange)
+        {
+            reloadItem = new ToolStripMenuItem("Reset data");
+            var autoItem = new ToolStripMenuItem("Tự động hóa cho 0 thiết bị");
+            var copyItem = new ToolStripMenuItem("Copy ID 0 devices");
+            restartItem = new ToolStripMenuItem("Khởi động lại 0 thiết bị");
+            apkItem = new ToolStripMenuItem("Cài đặt APK");
+            screenshotItem = new ToolStripMenuItem("Chụp màn hình");
+            var proxyItem = new ToolStripMenuItem("Thay đổi proxy");
+            adbItem = new ToolStripMenuItem("Lệnh Adb");
+            var textShortcutItem = new ToolStripMenuItem("Gõ nhanh văn bản");
+            deleteItem = new ToolStripMenuItem("Xóa 0 thiết bị");
+            var changeImageItem = new ToolStripMenuItem("Thay đổi hình nền theo số thứ tự");
+            var changeOrderItem = new ToolStripMenuItem("Thay đổi số thứ tự thiết bị");
+            var addToGroupItem = new ToolStripMenuItem("Thêm vào nhóm");
+
+            reloadItem.Click += (sender, e) => { MessageBox.Show("Reset data clicked in ViewChange"); };
+            autoItem.Click += (sender, e) => { MessageBox.Show("Auto clicked in ViewChange"); };
+            copyItem.Click += (sender, e) => { MessageBox.Show("Copy clicked in ViewChange"); };
+
+            ContextMenu.Items.AddRange(new ToolStripItem[] { reloadItem, autoItem, copyItem, restartItem, apkItem, screenshotItem, proxyItem, adbItem, textShortcutItem, deleteItem, changeImageItem, changeOrderItem, addToGroupItem });
         }
     }
 }

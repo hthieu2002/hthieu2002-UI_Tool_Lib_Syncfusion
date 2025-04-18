@@ -28,22 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.flowLayoutPanelMain = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
-            // 
-            // flowLayoutPanelMain
-            // 
-            this.flowLayoutPanelMain.Location = new System.Drawing.Point(1, 2);
-            this.flowLayoutPanelMain.Name = "flowLayoutPanelMain";
-            this.flowLayoutPanelMain.Size = new System.Drawing.Size(798, 446);
-            this.flowLayoutPanelMain.TabIndex = 0;
             // 
             // ScreenView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.flowLayoutPanelMain);
             this.Name = "ScreenView";
             this.Text = "ScreenView";
             this.ResumeLayout(false);
@@ -51,7 +42,5 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelMain;
     }
 }

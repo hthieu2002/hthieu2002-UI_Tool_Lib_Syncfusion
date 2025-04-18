@@ -61,6 +61,36 @@ namespace WindowsFormsApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] adb {
+            get {
+                object obj = ResourceManager.GetObject("adb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] AdbWinApi {
+            get {
+                object obj = ResourceManager.GetObject("AdbWinApi", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] AdbWinUsbApi {
+            get {
+                object obj = ResourceManager.GetObject("AdbWinUsbApi", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap app_0 {
@@ -87,6 +117,36 @@ namespace WindowsFormsApp.Properties {
             get {
                 object obj = ResourceManager.GetObject("automation_0", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] avcodec_61 {
+            get {
+                object obj = ResourceManager.GetObject("avcodec_61", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] avformat_61 {
+            get {
+                object obj = ResourceManager.GetObject("avformat_61", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] avutil_59 {
+            get {
+                object obj = ResourceManager.GetObject("avutil_59", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
@@ -133,6 +193,26 @@ namespace WindowsFormsApp.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icon {
+            get {
+                object obj = ResourceManager.GetObject("icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] libusb_1_0 {
+            get {
+                object obj = ResourceManager.GetObject("libusb_1_0", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap lichtrinh_0 {
             get {
                 object obj = ResourceManager.GetObject("lichtrinh_0", resourceCulture);
@@ -171,6 +251,16 @@ namespace WindowsFormsApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to @cmd
+        ///.
+        /// </summary>
+        internal static string open_a_terminal_here {
+            get {
+                return ResourceManager.GetString("open_a_terminal_here", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap quanlynguoidung_0 {
@@ -201,12 +291,79 @@ namespace WindowsFormsApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] scrcpy {
+            get {
+                object obj = ResourceManager.GetObject("scrcpy", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to @echo off
+        ///scrcpy.exe --pause-on-exit=if-error %*
+        ///.
+        /// </summary>
+        internal static string scrcpy_console {
+            get {
+                return ResourceManager.GetString("scrcpy_console", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to strCommand = &quot;cmd /c scrcpy.exe&quot;
+        ///
+        ///For Each Arg In WScript.Arguments
+        ///    strCommand = strCommand &amp; &quot; &quot;&quot;&quot; &amp; replace(Arg, &quot;&quot;&quot;&quot;, &quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;) &amp; &quot;&quot;&quot;&quot;
+        ///Next
+        ///
+        ///CreateObject(&quot;Wscript.Shell&quot;).Run strCommand, 0, false
+        ///.
+        /// </summary>
+        internal static string scrcpy_noconsole {
+            get {
+                return ResourceManager.GetString("scrcpy_noconsole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] scrcpy_server {
+            get {
+                object obj = ResourceManager.GetObject("scrcpy_server", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] SDL2 {
+            get {
+                object obj = ResourceManager.GetObject("SDL2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap setting_0 {
             get {
                 object obj = ResourceManager.GetObject("setting_0", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] swresample_5 {
+            get {
+                object obj = ResourceManager.GetObject("swresample_5", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

@@ -77,7 +77,6 @@ namespace WindowsFormsApp
         }
         private void BtnLogin_Paint(object sender, PaintEventArgs e)
         {
-            //Rounded rectangle corder radius. The radius must be less than 10.
             int radius = 5;
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             Rectangle rect = new Rectangle(
@@ -91,29 +90,23 @@ namespace WindowsFormsApp
 
             Pen borderPen;
 
-            if (!btnLogin.Enabled) // Disabled state
+            if (!btnLogin.Enabled) 
             {
                 borderPen = new Pen(btnLogin.Style.DisabledBorder.Color);
             }
-            /*else if (isPressed) // Pressed state (based on MouseDown)
-            {
-                borderPen = new Pen(btnLogin.Style.PressedBorder.Color);
-            }*/
-            else if (isHovered) // Hover state (based on MouseHover)
+            else if (isHovered) 
             {
                 borderPen = new Pen(btnLogin.Style.HoverBorder.Color);
             }
-            else // Focused state
+            else 
             {
                 borderPen = new Pen(btnLogin.Style.FocusedBorder.Color);
             }
 
-            // Draw the path with the determined border color
             e.Graphics.DrawPath(borderPen, GetRoundedRect(rect, radius));
 
-            Color textColor = isHovered ? Color.Blue : btnLogin.ForeColor; // Set color to blue on hover, otherwise default color
+            Color textColor = isHovered ? Color.Blue : btnLogin.ForeColor; 
 
-            // Draw text with the appropriate color
             TextRenderer.DrawText(e.Graphics, btnLogin.Text, btnLogin.Font, rect, textColor, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
         }
 
@@ -121,31 +114,15 @@ namespace WindowsFormsApp
         {
             GraphicsPath graphicsPath = new GraphicsPath();
 
-            // Top-left corner
             graphicsPath.AddArc(rect.X, rect.Y, radius * 2, radius * 2, 180, 90);
-
-            // Top edge
             graphicsPath.AddLine(rect.X + radius, rect.Y, rect.Right - radius, rect.Y);
-
-            // Top-right corner
             graphicsPath.AddArc(rect.Right - radius * 2, rect.Y, radius * 2, radius * 2, 270, 90);
-
-            // Right edge
             graphicsPath.AddLine(rect.Right, rect.Y + radius, rect.Right, rect.Bottom - radius);
-
-            // Bottom-right corner
             graphicsPath.AddArc(rect.Right - radius * 2, rect.Bottom - radius * 2, radius * 2, radius * 2, 0, 90);
-
-            // Bottom edge
             graphicsPath.AddLine(rect.Right - radius, rect.Bottom, rect.X + radius, rect.Bottom);
-
-            // Bottom-left corner
             graphicsPath.AddArc(rect.X, rect.Bottom - radius * 2, radius * 2, radius * 2, 90, 90);
-
-            // Left edge
             graphicsPath.AddLine(rect.X, rect.Bottom - radius, rect.X, rect.Y + radius);
 
-            // Close the figure to complete the path
             graphicsPath.CloseFigure();
 
             return graphicsPath;
@@ -154,34 +131,24 @@ namespace WindowsFormsApp
         {
             SfButton btn = sender as SfButton;
 
-            // Tạo bút vẽ cho viền và màu nền
-            using (Pen pen = new Pen(Color.LightBlue, 2)) // Màu viền
-            using (SolidBrush brush = new SolidBrush(btn.BackColor)) // Màu nền của button
+            using (Pen pen = new Pen(Color.LightBlue, 2)) 
+            using (SolidBrush brush = new SolidBrush(btn.BackColor)) 
             {
-                // Bán kính góc bo tròn
                 int cornerRadius = 20;
-
-                // Tạo GraphicsPath để vẽ hình chữ nhật bo tròn
                 using (GraphicsPath path = new GraphicsPath())
                 {
-                    // Thêm các đoạn đường cong vào GraphicsPath
-                    path.AddArc(0, 0, cornerRadius, cornerRadius, 180, 90);  // Góc trên bên trái
-                    path.AddArc(btn.Width - cornerRadius - 1, 0, cornerRadius, cornerRadius, 270, 90);  // Góc trên bên phải
-                    path.AddArc(btn.Width - cornerRadius - 1, btn.Height - cornerRadius - 1, cornerRadius, cornerRadius, 0, 90);  // Góc dưới bên phải
-                    path.AddArc(0, btn.Height - cornerRadius - 1, cornerRadius, cornerRadius, 90, 90);  // Góc dưới bên trái
+                    path.AddArc(0, 0, cornerRadius, cornerRadius, 180, 90);  
+                    path.AddArc(btn.Width - cornerRadius - 1, 0, cornerRadius, cornerRadius, 270, 90); 
+                    path.AddArc(btn.Width - cornerRadius - 1, btn.Height - cornerRadius - 1, cornerRadius, cornerRadius, 0, 90); 
+                    path.AddArc(0, btn.Height - cornerRadius - 1, cornerRadius, cornerRadius, 90, 90);  
+                    path.CloseAllFigures(); 
 
-                    path.CloseAllFigures();  // Đóng lại đường vẽ
-
-                    // Vẽ nền bo tròn
                     e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                     e.Graphics.FillPath(brush, path);
 
-                    // Vẽ viền bo tròn
                     e.Graphics.DrawPath(pen, path);
                 }
             }
-
-            // Vẽ lại text của nút
             TextRenderer.DrawText(e.Graphics, btn.Text, btn.Font, new Point((btn.Width - TextRenderer.MeasureText(btn.Text, btn.Font).Width) / 2, (btn.Height - TextRenderer.MeasureText(btn.Text, btn.Font).Height) / 2), btn.ForeColor);
         }
 

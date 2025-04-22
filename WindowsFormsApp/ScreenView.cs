@@ -15,7 +15,7 @@ namespace WindowsFormsApp
 {
     public partial class ScreenView : Form
     {
-        private class DeviceDisplay
+        public class DeviceDisplay
         {
             public string Serial { get; set; }
             public Process ScrcpyProcess { get; set; }
@@ -27,7 +27,7 @@ namespace WindowsFormsApp
         private const int panelWidth = 200;
         private const float aspectRatio = 0.4615f;
         private const int panelHeight = (int)(panelWidth / aspectRatio);
-        private List<DeviceDisplay> deviceDisplays = new List<DeviceDisplay>();
+        public List<DeviceDisplay> deviceDisplays = new List<DeviceDisplay>();
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
@@ -70,7 +70,7 @@ namespace WindowsFormsApp
         private void load()
         {
             init();
-            StartDeviceCheck(); 
+            StartDeviceCheck();
         }
 
         private void init()
@@ -87,21 +87,28 @@ namespace WindowsFormsApp
 
         private async void StartDeviceCheck()
         {
-            while (true) 
+            while (true)
             {
                 var devices = GetConnectedDevices();
 
                 var newDevices = devices.Except(deviceDisplays.Select(d => d.Serial)).ToList();
+                int countDevice = newDevices.Count();
+
+                GlobalContextMenu.setCountDevice(countDevice);
+                GlobalContextMenu.UpdateContextMenu();
                 foreach (var device in newDevices)
                 {
-                    await Task.Run(() =>
+                    if (device != "accd8f87")
                     {
-                        if (this.IsHandleCreated)
+                        await Task.Run(() =>
                         {
-                            Invoke((MethodInvoker)(() => AddDeviceView(device)));  
-                        }
-                    });
-                    await Task.Delay(3000);
+                            if (this.IsHandleCreated)
+                            {
+                                Invoke((MethodInvoker)(() => AddDeviceView(device)));
+                            }
+                        });
+                        await Task.Delay(3000);
+                    }
                 }
 
                 var connectedDevices = devices.ToHashSet();
@@ -111,10 +118,11 @@ namespace WindowsFormsApp
                     if (this.IsHandleCreated)
                     {
                         Invoke((MethodInvoker)(() => RemoveDeviceView(disconnectedDevice)));
+
                     }
                 }
 
-                await Task.Delay(2000); 
+                await Task.Delay(2000);
             }
         }
 
@@ -124,6 +132,14 @@ namespace WindowsFormsApp
             var existingDevicePanel = flowLayoutPanel.Controls.Cast<Control>()
                 .FirstOrDefault(c => c is Panel panel && panel.Controls.OfType<Label>().FirstOrDefault()?.Text == deviceId);
 
+            if (existingDevicePanel != null)
+            {
+                // Nếu đã tồn tại, xóa panel cũ và giải phóng tài nguyên
+                flowLayoutPanel.Controls.Remove(existingDevicePanel);
+                existingDevicePanel.Dispose();  // Giải phóng tài nguyên panel cũ
+            }
+
+
             if (existingDevicePanel == null)
             {
                 Panel devicePanel = new Panel();
@@ -131,13 +147,16 @@ namespace WindowsFormsApp
                 devicePanel.Margin = new Padding(10);
                 devicePanel.BackColor = System.Drawing.Color.LightGray;
 
-                devicePanel.MouseClick += (s, e) =>
-                {
-                    MessageBox.Show($"Đã click vào thiết bị: {deviceId}");
-                };
+
 
                 flowLayoutPanel.Controls.Add(devicePanel);
-                StartScrcpyForDeviceAsync(deviceId, devicePanel); 
+
+                devicePanel.MouseClick += (s, e) =>
+                {
+                    flowLayoutPanel.Controls.Remove(devicePanel);
+                    devicePanel.Dispose();  // Giải phóng tài nguyên panel cũ
+                };
+                StartScrcpyForDeviceAsync(deviceId, devicePanel);
             }
         }
 
@@ -179,19 +198,25 @@ namespace WindowsFormsApp
             int attempts = 0;
 
             Label deviceLabel = new Label();
-            deviceLabel.Text = $"Device: {deviceId}";  
+            deviceLabel.Text = $"Device: {deviceId}";
             deviceLabel.TextAlign = ContentAlignment.MiddleCenter;
-            deviceLabel.BackColor = Color.Transparent;  
+            deviceLabel.BackColor = ColorTranslator.FromHtml("#5677FE");
             deviceLabel.Dock = DockStyle.Bottom;
+            deviceLabel.ForeColor = Color.White;
             devicePanel.Controls.Add(deviceLabel);
             deviceLabel.BringToFront();
+
 
             deviceLabel.Cursor = Cursors.Hand;
 
             deviceLabel.Click += async (sender, e) =>
             {
+
                 Form deviceForm = new Form();
                 deviceForm.Text = $"Device {deviceId}";
+                // Đảm bảo form có thể thay đổi kích thước
+                deviceForm.FormBorderStyle = FormBorderStyle.FixedDialog;
+                deviceForm.MaximizeBox = false;
 
                 int width = (int)(devicePanel.Width * 1.5) + 250;
                 int height = (int)(devicePanel.Height * 1.5) + 100;
@@ -199,18 +224,18 @@ namespace WindowsFormsApp
                 width = Math.Min(width, Screen.PrimaryScreen.WorkingArea.Width);
                 height = Math.Min(height, Screen.PrimaryScreen.WorkingArea.Height);
 
-                deviceForm.Size = new Size(width, height); 
+                deviceForm.Size = new Size(width, height);
                 deviceForm.StartPosition = FormStartPosition.CenterScreen;
 
-                deviceForm.TopMost = true;
+                deviceForm.TopMost = false;
 
                 Panel scrcpyPanel = new Panel();
-                scrcpyPanel.Dock = DockStyle.Fill;  
-                scrcpyPanel.BackColor = Color.Black;  
+                scrcpyPanel.Dock = DockStyle.Fill;
+                scrcpyPanel.BackColor = Color.Blue;
 
                 Panel controlPanel = new Panel();
                 controlPanel.Dock = DockStyle.Right;
-                controlPanel.Width = (int)(width * 0.2); 
+                controlPanel.Width = (int)(width * 0.2);
                 controlPanel.BackColor = Color.LightGray;
 
                 Button btnHome = new Button { Text = "Home", Dock = DockStyle.Top, Height = 40, TextAlign = ContentAlignment.MiddleCenter };
@@ -229,7 +254,13 @@ namespace WindowsFormsApp
 
                 void BtnHome_Click(object senderHome, EventArgs e1) => ExecuteAdbCommand("input keyevent 3", deviceId); // Home
                 void BtnBack_Click(object senderBack, EventArgs e2) => ExecuteAdbCommand("input keyevent 4", deviceId); // Back
-                void BtnReboot_Click(object senderReboot, EventArgs e3) => ExecuteAdbCommand("reboot", deviceId); // Reboot
+                void BtnReboot_Click(object senderReboot, EventArgs e3)
+                {
+                    deviceForm.Close();
+                    // Gọi lệnh ADB để reboot Android
+                    ExecuteAdbCommand("reboot", deviceId);
+                }
+
                 void BtnPowerOff_Click(object senderPowerOff, EventArgs e4) => ExecuteAdbCommand("poweroff", deviceId); // Power Off
                 void BtnIncreaseVolume_Click(object senderIncreaseVolume, EventArgs e5) => ExecuteAdbCommand("input keyevent 24", deviceId); // Increase Volume
                 void BtnDecreaseVolume_Click(object senderDecreaseVolume, EventArgs e6) => ExecuteAdbCommand("input keyevent 25", deviceId); // Decrease Volume
@@ -238,8 +269,8 @@ namespace WindowsFormsApp
                 {
                     ProcessStartInfo startInfoFormScreen = new ProcessStartInfo()
                     {
-                        FileName = "./Resources/adb.exe",  
-                        Arguments = $"-s {device} shell {command}",  
+                        FileName = "./Resources/adb.exe",
+                        Arguments = $"-s {device} shell {command}",
                         UseShellExecute = false,
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
@@ -247,7 +278,7 @@ namespace WindowsFormsApp
                     };
 
                     Process adbProcess = Process.Start(startInfoFormScreen);
-                    adbProcess.WaitForExit();  
+                    adbProcess.WaitForExit();
                 }
 
                 controlPanel.Controls.Add(btnHome);
@@ -257,8 +288,8 @@ namespace WindowsFormsApp
                 controlPanel.Controls.Add(btnIncreaseVolume);
                 controlPanel.Controls.Add(btnDecreaseVolume);
 
-                deviceForm.Controls.Add(scrcpyPanel);  
-                deviceForm.Controls.Add(controlPanel);  
+                deviceForm.Controls.Add(scrcpyPanel);
+                deviceForm.Controls.Add(controlPanel);
 
                 Process scrcpyProcessZoom = null;
                 IntPtr scrcpyWindowZoom = IntPtr.Zero;
@@ -267,7 +298,7 @@ namespace WindowsFormsApp
                 {
                     FileName = scrcpyExePath,
                     Arguments = $"-s {deviceId} --max-size {Math.Min(1080, 2220)} --max-fps 15 " +
-                                $"--window-borderless --window-x 0 --window-y 0 --fullscreen",  
+                                $"--window-borderless --window-x 3000 --window-y 3000  --fullscreen",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
@@ -296,7 +327,7 @@ namespace WindowsFormsApp
                             }
                         }
 
-                        await Task.Delay(500); 
+                        await Task.Delay(500);
                     }
 
                     if (scrcpyWindowZoom != IntPtr.Zero)
@@ -305,29 +336,69 @@ namespace WindowsFormsApp
                         SetParent(scrcpyWindowZoom, scrcpyPanel.Handle);
                         ShowWindow(scrcpyWindowZoom, SW_SHOWNORMAL);
                         MoveWindow(scrcpyWindowZoom, 0, 0, scrcpyPanel.Width, scrcpyPanel.Height, true);
+                        scrcpyStarted = true;
                     }
                 }
 
-                var connectionCheckTimer = new System.Threading.Timer(async _ =>
-                {
-                    bool isDeviceConnected = await IsDeviceConnected(deviceId);
-                    if (!isDeviceConnected)
-                    {
-                        deviceForm.Invoke((Action)(() =>
-                        {
-                            deviceForm.Close();  
-                        }));
-                    }
-                }, null, TimeSpan.Zero, TimeSpan.FromSeconds(2));
+                //var connectionCheckTimer = new System.Threading.Timer(async _ =>
+                //{
+                //    bool isDeviceConnected = await IsDeviceConnected(deviceId);
+                //    if (!isDeviceConnected)
+                //    {
+                //        deviceForm.Invoke((Action)(() =>
+                //        {
+                //            deviceForm.Close();
+                //        }));
+                //    }
+                //}, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
 
-                deviceForm.FormClosing += (senderForm, closingArgs) =>
-                {
-                    scrcpyProcessZoom?.Kill();  
-                    connectionCheckTimer.Dispose();  
-                };
+
+                //deviceForm.FormClosing += (senderForm, closingArgs) =>
+                //{
+                //    // Kiểm tra xem tiến trình scrcpyProcessZoom có đang chạy không trước khi gọi Kill()
+                //    if (scrcpyProcessZoom != null && !scrcpyProcessZoom.HasExited)
+                //    {
+                //        scrcpyProcessZoom.Kill();  // Giết tiến trình nếu nó vẫn đang chạy
+                //    }
+
+                //    // Giải phóng timer kết nối
+                //  //  connectionCheckTimer.Dispose();
+                //};
+                MonitorDeviceConnection(deviceId, deviceForm);
 
                 deviceForm.Show();
             };
+            async void MonitorDeviceConnection(string device, Form deviceForm)
+            {
+                while (true)
+                {
+                    bool isDeviceConnected = await IsDeviceConnected(deviceId);
+
+                    if (!isDeviceConnected)
+                    {
+                        if (deviceForm.IsHandleCreated)
+                        {
+                            deviceForm.Invoke((Action)(() =>
+                            {
+                                deviceForm.Close();
+                            }));
+                        }
+                        else
+                        {
+                            deviceForm.HandleCreated += (sender, args) =>
+                            {
+                                deviceForm.Close();
+                            };
+                        }
+
+                        // Thoát vòng lặp sau khi đóng form
+                        break;
+                    }
+
+                    await Task.Delay(1000);  // Đợi 1 giây trước khi kiểm tra lại
+                }
+            }
+
 
             async Task<bool> IsDeviceConnected(string device)
             {
@@ -361,23 +432,23 @@ namespace WindowsFormsApp
                 };
 
                 scrcpyProcess = Process.Start(startInfo);
-                await Task.Delay(3000); 
+                await Task.Delay(3000);
                 return scrcpyProcess != null && !scrcpyProcess.HasExited;
             }
 
-            while (scrcpyWindow == IntPtr.Zero && attempts < 5) 
+            while (scrcpyWindow == IntPtr.Zero && attempts < 5)
             {
                 bool started = await TryStartScrcpyProcess();
                 if (!started)
                 {
                     if (devicePanel?.Parent != null)
                     {
-                        devicePanel.Parent.Controls.Remove(devicePanel);  
-                        devicePanel.Dispose(); 
+                        devicePanel.Parent.Controls.Remove(devicePanel);
+                        devicePanel.Dispose();
                     }
-                    
+
                     attempts++;
-                    await Task.Delay(2000);  
+                    await Task.Delay(2000);
 
                 }
                 else
@@ -419,7 +490,7 @@ namespace WindowsFormsApp
             {
                 ShowWindow(scrcpyWindow, SW_HIDE);
                 int exStyle = GetWindowLong(scrcpyWindow, GWL_EXSTYLE);
-                exStyle &= ~WS_EX_APPWINDOW;  
+                exStyle &= ~WS_EX_APPWINDOW;
                 exStyle |= WS_EX_TOOLWINDOW;
                 SetWindowLong(scrcpyWindow, GWL_EXSTYLE, exStyle);
                 if (devicePanel != null && !devicePanel.IsDisposed)
@@ -446,8 +517,122 @@ namespace WindowsFormsApp
                         ScrcpyWindow = scrcpyWindow,
                         DevicePanel = devicePanel
                     });
+
+
                 }
             }
         }
+        public void RestartAllDevices_Click(ScreenView screenView)
+        {
+            foreach (var device in screenView.deviceDisplays)
+            {
+                ExecuteAdbCommand("reboot", device.Serial); // Thực thi lệnh reboot cho thiết bị
+            }
+            MessageBox.Show("Tất cả các thiết bị đã được khởi động lại.");
+        }
+
+        public void InstallAPK_Click(ScreenView screenView)
+        {
+            OpenFileDialog fileDialog = new OpenFileDialog
+            {
+                Filter = "APK Files|*.apk",
+                Title = "Chọn file APK"
+            };
+
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string apkFilePath = fileDialog.FileName;
+                foreach (var device in screenView.deviceDisplays)
+                {
+                    string command = $"install {apkFilePath}";
+                    ExecuteAdbCommand(command, device.Serial);
+                }
+                MessageBox.Show("APK đã được cài đặt cho tất cả các thiết bị.");
+            }
+        }
+
+        public void CaptureScreenshot_Click(ScreenView screenView)
+        {
+            foreach (var device in screenView.deviceDisplays)
+            {
+                string command = $"shell screencap -p /sdcard/screenshot{device.Serial}.png";
+                ExecuteAdbCommand(command, device.Serial);
+                ExecuteAdbCommand($"pull /sdcard/screenshot{device.Serial}.png", device.Serial);  // Tải ảnh về máy tính
+            }
+            MessageBox.Show("Chụp màn hình đã được thực hiện cho tất cả các thiết bị.");
+        }
+
+        public void ExecuteAdbCommand_Click(ScreenView screenView)
+        {
+            string adbCommand = PromptForAdbCommand();  // Hàm này có thể yêu cầu người dùng nhập lệnh ADB
+
+            if (!string.IsNullOrEmpty(adbCommand))
+            {
+                foreach (var device in screenView.deviceDisplays)
+                {
+                    ExecuteAdbCommand(adbCommand, device.Serial);
+                }
+                MessageBox.Show("Lệnh ADB đã được thực hiện cho tất cả các thiết bị.");
+            }
+        }
+
+        public void DeleteAllDevices_Click(ScreenView screenView)
+        {
+            foreach (var device in screenView.deviceDisplays)
+            {
+                ExecuteAdbCommand("disconnect", device.Serial);  // Ngắt kết nối
+                flowLayoutPanel.Controls.Remove(device.DevicePanel);
+                device.DevicePanel.Dispose();
+            }
+            screenView.deviceDisplays.Clear();  // Xóa tất cả các thiết bị khỏi danh sách
+            MessageBox.Show("Đã reload views.");
+        }
+
+        public static void ExecuteAdbCommand(string command, string deviceId)
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo()
+            {
+                FileName = "./Resources/adb.exe",
+                Arguments = $"-s {deviceId} {command}",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            };
+
+            Process adbProcess = Process.Start(startInfo);
+            adbProcess.WaitForExit();
+        }
+        public static string PromptForAdbCommand()
+        {
+            using (var inputBox = new Form())
+            {
+                inputBox.Text = "Nhập lệnh ADB";
+
+                // Tạo TextBox và đặt chiều cao cho TextBox nếu cần
+                var textBox = new TextBox { Dock = DockStyle.Fill, Multiline = true, Height = 100 };
+
+                // Tạo Button và đặt kích thước cho nó
+                var button = new Button { Text = "OK", Dock = DockStyle.Bottom, Height = 40 };
+
+                // Thêm TextBox và Button vào form
+                inputBox.Controls.Add(textBox);
+                inputBox.Controls.Add(button);
+
+                // Xử lý sự kiện click cho button OK
+                button.Click += (sender, e) =>
+                {
+                    inputBox.Close();
+                };
+
+                // Căn chỉnh form với các điều khiển đã thêm
+                inputBox.AutoSize = true;
+                inputBox.StartPosition = FormStartPosition.CenterScreen;
+                inputBox.ShowDialog();
+
+                return textBox.Text;
+            }
+        }
+
     }
 }

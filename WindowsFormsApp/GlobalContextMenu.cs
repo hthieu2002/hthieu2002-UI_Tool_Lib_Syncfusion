@@ -1,12 +1,14 @@
 ﻿using AccountCreatorForm.Views;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using WindowsFormsApp;
+using WindowsFormsApp.Properties;
 
 public static class GlobalContextMenu
 {
     public static ContextMenuStrip ContextMenu = new ContextMenuStrip();
     private static Home homeForm;
-
+    private static int countDevice;
     public static void SetHomeForm(Home form)
     {
         homeForm = form;
@@ -18,7 +20,11 @@ public static class GlobalContextMenu
         UpdateContextMenu();
     }
 
-    private static void UpdateContextMenu()
+    public static void setCountDevice(int count)
+    {
+        countDevice = count;
+    }
+    public static void UpdateContextMenu()
     {
         ToolStripMenuItem reloadItem;
         ToolStripMenuItem restartItem;
@@ -29,23 +35,33 @@ public static class GlobalContextMenu
 
         ContextMenu.Items.Clear();
 
-        if (homeForm?.currentChildForm is ScreenView)
+        if (homeForm?.currentChildForm is ScreenView screenView)
         {
+            int deviceCount = screenView.deviceDisplays.Count;
+
             reloadItem = new ToolStripMenuItem("Reload");
-            restartItem = new ToolStripMenuItem("Khởi động lại 0 thiết bị");
-            apkItem = new ToolStripMenuItem("Cài đặt APK");
-            screenshotItem = new ToolStripMenuItem("Chụp màn hình");
-            adbItem = new ToolStripMenuItem("Lệnh Adb");
-            deleteItem = new ToolStripMenuItem("Xóa 0 thiết bị");
+            restartItem = new ToolStripMenuItem($"Khởi động lại {deviceCount} thiết bị");
+            apkItem = new ToolStripMenuItem($"Cài đặt APK cho {deviceCount} thiết bị");
+            screenshotItem = new ToolStripMenuItem($"Chụp màn hình cho {deviceCount} thiết bị");
+            adbItem = new ToolStripMenuItem($"Thực hiện lệnh ADB cho {deviceCount} thiết bị");
+            deleteItem = new ToolStripMenuItem($"Reload {deviceCount} thiết bị");
 
             reloadItem.Click += (sender, e) => { MessageBox.Show("Reload clicked in ScreenView"); };
-            restartItem.Click += (sender, e) => { MessageBox.Show("Restart clicked in ScreenView"); };
-            apkItem.Click += (sender, e) => { MessageBox.Show("APK clicked in ScreenView"); };
-            screenshotItem.Click += (sender, e) => { MessageBox.Show("Screenshot clicked in ScreenView"); };
-            adbItem.Click += (sender, e) => { MessageBox.Show("ADB clicked in ScreenView"); };
-            deleteItem.Click += (sender, e) => { MessageBox.Show("Delete clicked in ScreenView"); };
+            restartItem.Click += (sender, e) => screenView.RestartAllDevices_Click(screenView);
+            apkItem.Click += (sender, e) => screenView.InstallAPK_Click(screenView);
+            screenshotItem.Click += (sender, e) => screenView.CaptureScreenshot_Click(screenView);
+            adbItem.Click += (sender, e) => screenView.ExecuteAdbCommand_Click(screenView);
+            deleteItem.Click += (sender, e) => screenView.DeleteAllDevices_Click(screenView);
 
-            ContextMenu.Items.AddRange(new ToolStripItem[] { reloadItem, restartItem, apkItem, screenshotItem, adbItem, deleteItem });
+            reloadItem.Image = Resources.reload;
+            restartItem.Image = Resources.resartPhone;
+            apkItem.Image = Resources.apk;
+            screenshotItem.Image = Resources.chupmanhinh;
+            adbItem.Image = Resources.adb1;
+            deleteItem.Image = Resources.reload;
+
+            ContextMenu.Items.AddRange(new ToolStripItem[] { restartItem, apkItem, screenshotItem, adbItem, deleteItem });
+
         }
         else if (homeForm?.currentChildForm is ViewChange)
         {
@@ -69,5 +85,8 @@ public static class GlobalContextMenu
 
             ContextMenu.Items.AddRange(new ToolStripItem[] { reloadItem, autoItem, copyItem, restartItem, apkItem, screenshotItem, proxyItem, adbItem, textShortcutItem, deleteItem, changeImageItem, changeOrderItem, addToGroupItem });
         }
+
+        
     }
+
 }

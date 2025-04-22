@@ -71,6 +71,16 @@ namespace WindowsFormsApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap adb1 {
+            get {
+                object obj = ResourceManager.GetObject("adb1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] AdbWinApi {
@@ -87,6 +97,16 @@ namespace WindowsFormsApp.Properties {
             get {
                 object obj = ResourceManager.GetObject("AdbWinUsbApi", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap apk {
+            get {
+                object obj = ResourceManager.GetObject("apk", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -153,6 +173,16 @@ namespace WindowsFormsApp.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap chupmanhinh {
+            get {
+                object obj = ResourceManager.GetObject("chupmanhinh", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap cuahang_0 {
             get {
                 object obj = ResourceManager.GetObject("cuahang_0", resourceCulture);
@@ -166,6 +196,16 @@ namespace WindowsFormsApp.Properties {
         internal static System.Drawing.Bitmap dark_mode {
             get {
                 object obj = ResourceManager.GetObject("dark_mode", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap delete {
+            get {
+                object obj = ResourceManager.GetObject("delete", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -276,6 +316,26 @@ namespace WindowsFormsApp.Properties {
         internal static System.Drawing.Bitmap quanlyungdung_0 {
             get {
                 object obj = ResourceManager.GetObject("quanlyungdung_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap reload {
+            get {
+                object obj = ResourceManager.GetObject("reload", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap resartPhone {
+            get {
+                object obj = ResourceManager.GetObject("resartPhone", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

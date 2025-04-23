@@ -118,11 +118,10 @@ namespace WindowsFormsApp
                     if (this.IsHandleCreated)
                     {
                         Invoke((MethodInvoker)(() => RemoveDeviceView(disconnectedDevice)));
-
                     }
                 }
 
-                await Task.Delay(2000);
+                await Task.Delay(1000);
             }
         }
 
@@ -134,9 +133,8 @@ namespace WindowsFormsApp
 
             if (existingDevicePanel != null)
             {
-                // Nếu đã tồn tại, xóa panel cũ và giải phóng tài nguyên
                 flowLayoutPanel.Controls.Remove(existingDevicePanel);
-                existingDevicePanel.Dispose();  // Giải phóng tài nguyên panel cũ
+                existingDevicePanel.Dispose();  
             }
 
 
@@ -154,7 +152,7 @@ namespace WindowsFormsApp
                 devicePanel.MouseClick += (s, e) =>
                 {
                     flowLayoutPanel.Controls.Remove(devicePanel);
-                    devicePanel.Dispose();  // Giải phóng tài nguyên panel cũ
+                    devicePanel.Dispose();  
                 };
                 StartScrcpyForDeviceAsync(deviceId, devicePanel);
             }
@@ -214,7 +212,6 @@ namespace WindowsFormsApp
 
                 Form deviceForm = new Form();
                 deviceForm.Text = $"Device {deviceId}";
-                // Đảm bảo form có thể thay đổi kích thước
                 deviceForm.FormBorderStyle = FormBorderStyle.FixedDialog;
                 deviceForm.MaximizeBox = false;
 

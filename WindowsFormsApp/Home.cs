@@ -11,6 +11,7 @@ using WindowsFormsApp.Properties;
 using System.Windows.Forms;
 using WindowsFormsApp;
 using System.Drawing.Drawing2D;
+using WindowsFormsApp.Model;
 
 namespace AccountCreatorForm.Views
 {
@@ -32,6 +33,7 @@ namespace AccountCreatorForm.Views
         public Home()
         {
             InitializeComponent();
+            ToggleDarkLightMode();
             this.WindowState = FormWindowState.Maximized;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -50,6 +52,12 @@ namespace AccountCreatorForm.Views
             }
             // this.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
+        private void ToggleDarkLightMode()
+        {
+            ThemeManager.ToggleDarkMode();
+            ThemeManager.ApplyTheme();
+        }
+
         public void Form_Load()
         {
             sidebarFormMap = new Dictionary<SfButton, Func<Form>>
@@ -303,6 +311,59 @@ namespace AccountCreatorForm.Views
             btn.ImageMargin = new Padding(8, 0, 5, 0);
             btn.AutoSize = false;
         }
+        //private void StyleSidebarButton(Syncfusion.WinForms.Controls.SfButton button)
+        //{
+        //    button.Width = 150;
+        //    button.Height = 44;
+        //    button.Dock = DockStyle.Top;
+        //    button.FlatStyle = FlatStyle.Flat;
+        //    button.FlatAppearance.BorderSize = 0;
+
+        //    // Màu sắc cho chế độ Dark Mode và Light Mode
+        //    Color backgroundColor = ThemeManager.IsDarkMode ? Color.FromArgb(45, 45, 48) : Color.White;  // Màu nền
+        //    Color textColor = ThemeManager.IsDarkMode ? Color.White : Color.Black;  // Màu chữ
+        //    Color hoverBackColor = ThemeManager.IsDarkMode ? Color.FromArgb(67, 67, 70) : Color.FromArgb(240, 240, 240);  // Màu khi hover
+
+        //    // Màu nền và chữ mặc định (sử dụng cho chế độ sáng)
+        //    Color colorNormalBack = Color.White;
+        //    Color colorNormalText = Color.Black;
+
+        //    // Thiết lập màu sắc gốc cho button
+        //    button.Style.BackColor = colorNormalBack;
+        //    button.Style.ForeColor = colorNormalText;
+        //    button.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+        //    button.TextAlign = ContentAlignment.MiddleLeft;
+        //    button.Padding = new Padding(12, 0, 0, 0);
+        //    button.Margin = new Padding(0, 4, 0, 0);
+
+        //    // Thiết lập màu sắc cho hover và khi nhấn
+        //    button.Style.HoverBackColor = hoverBackColor;
+        //    button.Style.HoverForeColor = textColor;
+        //    button.Style.PressedBackColor = hoverBackColor;
+        //    button.Style.PressedForeColor = textColor;
+
+        //    // Thêm hiệu ứng hover khi di chuột qua button
+        //    button.MouseEnter += (s, e) =>
+        //    {
+        //        if (button != currentActiveButton)
+        //        {
+        //            button.Style.BackColor = hoverBackColor;
+        //            button.Style.ForeColor = textColor;
+        //        }
+        //    };
+
+        //    // Hiệu ứng khi di chuột ra khỏi button
+        //    button.MouseLeave += (s, e) =>
+        //    {
+        //        if (button != currentActiveButton)
+        //        {
+        //            button.Style.BackColor = colorNormalBack;  // Quay lại màu nền mặc định
+        //            button.Style.ForeColor = colorNormalText;  // Quay lại màu chữ mặc định
+        //        }
+        //    };
+        //}
+
+
 
         private void StyleSidebarButton(Syncfusion.WinForms.Controls.SfButton button)
         {
@@ -311,6 +372,11 @@ namespace AccountCreatorForm.Views
             button.Dock = DockStyle.Top;
             button.FlatStyle = FlatStyle.Flat;
             button.FlatAppearance.BorderSize = 0;
+
+            Color backgroundColor = ThemeManager.IsDarkMode ? Color.FromArgb(45, 45, 48) : Color.White;
+            Color textColor = ThemeManager.IsDarkMode ? Color.White : Color.Black;
+            Color hoverBackColor = ThemeManager.IsDarkMode ? Color.FromArgb(67, 67, 70) : Color.FromArgb(240, 240, 240);
+
             button.Style.BackColor = colorNormalBack;
             button.Style.ForeColor = colorNormalText;
             button.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
@@ -323,10 +389,13 @@ namespace AccountCreatorForm.Views
             button.Style.HoverForeColor = colorHoverText;
             button.Style.PressedBackColor = colorHoverBack;
             button.Style.PressedForeColor = colorHoverText;
+
+
             button.MouseEnter += (s, e) =>
             {
                 if (button != currentActiveButton)
-                    button.Style.BackColor = colorHoverBack;
+                    button.Style.BackColor = hoverBackColor;
+                // button.Style.ForeColor = textColor;
             };
 
             button.MouseLeave += (s, e) =>

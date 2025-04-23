@@ -4,12 +4,19 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
+using System.IO;
+using Newtonsoft.Json;
+using WindowsFormsApp.Model;
+
+
 
 namespace WindowsFormsApp
 {
@@ -17,24 +24,30 @@ namespace WindowsFormsApp
     {
         private HeaderViewCommon headerView;
         private SfDataGrid sfDataGrid;
+        private List<DeviceDisplay> deviceDisplays = new List<DeviceDisplay>();  // Danh sách các thiết bị hiện tại
+
         public ViewChange()
         {
             InitializeComponent();
             setInit();
             setMenu();
             setGridView();
+            LoadDevicesFromFile();
+            StartDeviceCheck();
         }
+
         public void setInit()
         {
             mainMenu.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             tableLayoutPanel.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 60)); // panelTop
             tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 40)); // panelBottom
-            
+
             panelContextTop.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             panelContextBottom.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
             change.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
             info.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+
             btnRandomdevice.TextAlign = ContentAlignment.MiddleLeft;
             btnAutoBackup.TextAlign = ContentAlignment.MiddleLeft;
             btnAutochangeFull.TextAlign = ContentAlignment.MiddleLeft;
@@ -46,7 +59,6 @@ namespace WindowsFormsApp
             btnOpenUrl.TextAlign = ContentAlignment.MiddleLeft;
             btnRandomSim.TextAlign = ContentAlignment.MiddleLeft;
             btnScreenshot.TextAlign = ContentAlignment.MiddleLeft;
-            //
 
             btnAutoBackup.Paint += BtnCommon_Paint;
             btnAutochangeFull.Paint += BtnCommon_Paint;
@@ -60,82 +72,373 @@ namespace WindowsFormsApp
             btnRandomSim.Paint += BtnCommon_Paint;
             btnScreenshot.Paint += BtnCommon_Paint;
             sfButton12.Paint += BtnCommon_Paint;
-
         }
+
         public void setMenu()
         {
             headerView = new HeaderViewCommon
             {
                 Dock = DockStyle.Fill,
-                // BackColor = Color.Red,
                 Margin = new Padding(0, 0, 0, 20)
             };
             headerView.SetTitle("Devices");
             mainMenu.Controls.Add(headerView);
         }
 
-        private void setGridView()
+        public void setGridView()
         {
-            // Create and configure the SfDataGrid
             sfDataGrid = new SfDataGrid
             {
-                Dock = DockStyle.Fill,  // Ensure the DataGrid takes up the full space of the form
-                AutoSizeColumnsMode = Syncfusion.WinForms.DataGrid.Enums.AutoSizeColumnsMode.Fill,  // Auto-size columns to fill available space
-                AllowEditing = false,  // Disable editing in the grid
-                AllowDeleting = false,  // Disable row deletion
-                AllowSorting = true,  // Enable sorting
-                ShowGroupDropArea = false,  // Hide the grouping area
+                Dock = DockStyle.Fill,
+                AutoSizeColumnsMode = Syncfusion.WinForms.DataGrid.Enums.AutoSizeColumnsMode.Fill,
+                AllowEditing = false,
+                AllowDeleting = false,
+                AllowSorting = true,
+                ShowGroupDropArea = false
             };
 
-            // Add columns to the grid
-            sfDataGrid.Columns.Add(new GridColumn { MappingName = "STT", HeaderText = "#", Width = 50 });
-            sfDataGrid.Columns.Add(new GridCheckBoxColumn { MappingName = "Checkbox", HeaderText = "Checkbox", Width = 70, AllowEditing = true });
-            sfDataGrid.Columns.Add(new GridColumn { MappingName = "DeviceID", HeaderText = "Device ID", Width = 150 });
-            sfDataGrid.Columns.Add(new GridProgressBarColumn { MappingName = "Progress", HeaderText = "Progress", Width = 200 });
+            sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "STT", HeaderText = "#", Width = 30 });
+            sfDataGrid.Columns.Add(new GridCheckBoxColumn { MappingName = "Checkbox", HeaderText = "Box", AllowEditing = true, Width = 60 });
+            sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "DeviceID", HeaderText = "Device ID", Width = 200 });
+            sfDataGrid.Columns.Add(new GridProgressBarColumn { MappingName = "Progress", HeaderText = "Progress" });
+            sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "Status", HeaderText = "Status", Width = 100 });
+            GridButtonColumn activityColumn = new GridButtonColumn { MappingName = "Activity", HeaderText = "Activity", Width = 80 };
+            sfDataGrid.Columns.Add(activityColumn);
 
-            // Add "Activity" column as a GridButtonColumn and ensure it's the last column
-            GridButtonColumn activityColumn = new GridButtonColumn { MappingName = "Activity", HeaderText = "Activity", Width = 100 };
-            sfDataGrid.Columns.Add(activityColumn); // "Activity" column will automatically be the last one
-
-            // Create DataTable to hold the dynamic data
             DataTable dataTable = new DataTable();
-            dataTable.Columns.Add("STT", typeof(string));
+            dataTable.Columns.Add("STT", typeof(int));
             dataTable.Columns.Add("Checkbox", typeof(bool));
             dataTable.Columns.Add("DeviceID", typeof(string));
             dataTable.Columns.Add("Progress", typeof(int));
+            dataTable.Columns.Add("Status", typeof(string));
             dataTable.Columns.Add("Activity", typeof(string));
 
-            // Add rows to the DataTable with values for Activity
-            dataTable.Rows.Add(1, true, "520003edb295a44b", 50, "YES");
-            dataTable.Rows.Add(2, false, "520015abe3f5411", 30, "NO");
-            dataTable.Rows.Add(3, false, "520015abe3f5411", 100, "YES");
-            dataTable.Rows.Add(3, false, "520015abe3f5411", 100, "YES");
-            dataTable.Rows.Add(3, false, "520015abe3f5411", 100, "YES");
-            dataTable.Rows.Add(3, false, "520015abe3f5411", 100, "YES");
-            dataTable.Rows.Add(3, false, "520015abe3f5411", 100, "YES");
-            dataTable.Rows.Add(3, false, "520015abe3f5411", 100, "YES");
-            dataTable.Rows.Add(3, false, "520015abe3f5411", 100, "YES");
-            dataTable.Rows.Add(3, false, "520015abe3f5411", 100, "YES");
-            dataTable.Rows.Add(3, false, "520015abe3f5411", 100, "YES");
-            dataTable.Rows.Add(3, false, "520015abe3f5411", 100, "YES");
-
-            // Assign the DataTable to the DataSource of SfDataGrid
             sfDataGrid.DataSource = dataTable;
             panelContextTop.Controls.Add(sfDataGrid);
-            sfDataGrid.QueryCellStyle += (sender, e) =>
-            {
-                // Add any customization to the cell styles if necessary
-            };
+
+            this.sfDataGrid.RecordContextMenu = new ContextMenuStrip();
+            var detailsItem = new ToolStripMenuItem("Details");
+            var editItem = new ToolStripMenuItem("Edit");
+            var deleteItem = new ToolStripMenuItem("Delete");
+
+            // Attach the event handlers to the menu items
+            detailsItem.Click += DetailsItem_Click;
+            editItem.Click += EditItem_Click;
+            deleteItem.Click += DeleteItem_Click;
+
+            // Add items to the context menu
+            this.sfDataGrid.RecordContextMenu.Items.Add(detailsItem);
+            this.sfDataGrid.RecordContextMenu.Items.Add(editItem);
+            this.sfDataGrid.RecordContextMenu.Items.Add(deleteItem);
         }
 
-        private void autoLabel9_Click(object sender, EventArgs e)
+        private string[] GetConnectedDevices()
         {
+            ProcessStartInfo startInfo = new ProcessStartInfo()
+            {
+                FileName = @"./Resources/adb.exe",
+                Arguments = "devices",
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
 
+            Process process = Process.Start(startInfo);
+            process.WaitForExit();
+
+            string output = process.StandardOutput.ReadToEnd();
+            var devices = output.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries)
+                                 .Where(line => !line.StartsWith("List") && !line.StartsWith("---------"))
+                                 .Select(line => line.Split('\t')[0])
+                                 .ToArray();
+
+            return devices;
+        }
+
+        private bool IsDeviceOnline(string deviceId)
+        {
+            var process = new Process();
+            process.StartInfo.FileName = "adb";
+            process.StartInfo.Arguments = $"-s {deviceId} shell getprop sys.boot_completed";
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
+            process.Start();
+
+            string output = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+
+            return !string.IsNullOrEmpty(output) && output.Contains("1");
+        }
+        public (List<DeviceDisplay> onlineDevices, List<DeviceDisplay> offlineDevices) LoadDevicesFromJson()
+        {
+            string path = Path.Combine(Application.StartupPath, "devices.json");
+
+            if (File.Exists(path))
+            {
+                string jsonContent = File.ReadAllText(path);
+
+                var devices = JsonConvert.DeserializeObject<List<DeviceDisplay>>(jsonContent);
+
+                var onlineDevices = devices?.Where(d => d.Status == "Online").ToList() ?? new List<DeviceDisplay>();
+                var offlineDevices = devices?.Where(d => d.Status == "Offline").ToList() ?? new List<DeviceDisplay>();
+
+                return (onlineDevices, offlineDevices);  
+            }
+            else
+            {
+                return (new List<DeviceDisplay>(), new List<DeviceDisplay>());
+            }
+        }
+
+        private async void StartDeviceCheck()
+        {
+            var (onlineDevices, offlineDevices) = LoadDevicesFromJson();
+
+            var previousOnlineDevices = onlineDevices.Select(d => d.Serial).ToHashSet();
+            var previousOfflineDevices = offlineDevices.Select(d => d.Serial).ToHashSet();
+
+            await LoadUI(onlineDevices, offlineDevices);
+            while (true)
+            {
+                var connectedDevices = GetConnectedDevices().ToHashSet();
+                var newDevices = connectedDevices.Except(previousOnlineDevices).ToList();
+                var disconnectedDevices = previousOnlineDevices.Except(connectedDevices).ToList();
+
+                int countDevice = newDevices.Count();
+                GlobalContextMenu.setCountDevice(countDevice);
+                GlobalContextMenu.UpdateContextMenu();
+
+                if (newDevices.Any() || disconnectedDevices.Any())
+                {
+                    foreach (var device in newDevices)
+                    {
+                        var existingDevice = deviceDisplays.FirstOrDefault(d => d.Serial == device);
+
+                        if (existingDevice != null)
+                        {
+                            string currentStatus = IsDeviceOnline(device) ? "Online" : "Offline";
+
+                            if (existingDevice.Status != currentStatus)
+                            {
+                                UpdateDeviceStatus(device, currentStatus);
+                            }
+                        }
+                        else
+                        {
+                            if (this.IsHandleCreated)
+                            {
+                                Invoke((MethodInvoker)(() =>
+                                {
+                                    AddDeviceView(device);  
+                                    UpdateDeviceStatus(device, IsDeviceOnline(device) ? "Online" : "Offline");
+                                }));
+                            }
+                        }
+                    }
+                    foreach (var disconnectedDevice in disconnectedDevices)
+                    {
+                        if (this.IsHandleCreated)
+                        {
+                            Invoke((MethodInvoker)(() =>
+                            {
+                                UpdateDeviceStatus(disconnectedDevice, "Offline");
+                            }));
+                        }
+                    }
+
+                    // Cập nhật lại danh sách thiết bị đã kết nối và mất kết nối
+                    previousOnlineDevices = connectedDevices;
+                    previousOfflineDevices = previousOfflineDevices.Concat(disconnectedDevices).ToHashSet(); // Cập nhật offline devices
+                }
+
+                await Task.Delay(1000);  // Kiểm tra lại mỗi giây
+            }
+        }
+        public async Task LoadUI(List<DeviceDisplay> onlineDevices, List<DeviceDisplay> offlineDevices)
+        {
+            foreach (var device in onlineDevices)
+            {
+                var existingDevice = deviceDisplays.FirstOrDefault(d => d.Serial == device.Serial);
+
+                if (existingDevice == null)  
+                {
+                    await Task.Run(() =>
+                    {
+                        if (this.IsHandleCreated)
+                        {
+                            Invoke((MethodInvoker)(() =>
+                            {
+                                AddDeviceView(device.Serial);  
+                                UpdateDeviceStatus(device.Serial, "Online");  
+                            }));
+                        }
+                    });
+                }
+                else
+                {
+                    UpdateDeviceStatus(device.Serial, "Online");
+                }
+            }
+
+            foreach (var device in offlineDevices)
+            {
+                var existingDevice = deviceDisplays.FirstOrDefault(d => d.Serial == device.Serial);
+
+                if (existingDevice == null) 
+                {
+                    await Task.Run(() =>
+                    {
+                        if (this.IsHandleCreated)
+                        {
+                            Invoke((MethodInvoker)(() =>
+                            {
+                                AddDeviceView(device.Serial);  
+                                UpdateDeviceStatus(device.Serial, "Offline");  
+                            }));
+                        }
+                    });
+                }
+                else
+                {
+                    UpdateDeviceStatus(device.Serial, "Offline");
+                }
+            }
+        }
+
+        private void AddDeviceView(string deviceId)
+        {
+            DataTable dataTable = sfDataGrid.DataSource as DataTable;
+            int stt = dataTable.Rows.Count + 1;
+
+            dataTable.Rows.Add(stt, false, deviceId, 0, "Offline");
+
+            deviceDisplays.Add(new DeviceDisplay { Serial = deviceId, Status = "Offline", Activity = "YES", Checkbox = false });
+            SaveDevicesToFile();
+            sfDataGrid.Refresh();
+        }
+
+
+        private void RemoveDeviceView(DeviceDisplay device)
+        {
+            DataTable dataTable = sfDataGrid.DataSource as DataTable;
+            var rows = dataTable.Select($"DeviceID = '{device.Serial}'");
+            if (rows.Length > 0)
+            {
+                dataTable.Rows.Remove(rows[0]);
+                deviceDisplays.Remove(device);
+                DeleteDeviceById(device.Serial);
+            }
+            sfDataGrid.Refresh();
+        }
+
+        private void DeleteDeviceById(string deviceId)
+        {
+            var deviceToRemove = deviceDisplays.FirstOrDefault(d => d.Serial == deviceId);
+
+            if (deviceToRemove != null)
+            {
+                deviceDisplays.Remove(deviceToRemove);
+                SaveDevicesToFile();
+                sfDataGrid.Refresh();
+            }
+        }
+
+
+        public void SetResertDataInputForm()
+        {
+            sfCbBrand.SelectedValue = "";
+            sfCbOs.SelectedValue = "";
+            sfCbCountry.SelectedValue = "";
+            sfCbModel.SelectedValue = "";
+            sfCbSim.SelectedValue = "";
+            sfCbName.SelectedValue = "";
+
+            txtCode.Text = "";
+            txtICCID.Text = "";
+            txtImei.Text = "";
+            txtIMSI.Text = "";
+            txtMac.Text = "";
+            txtName.Text = "";
+            txtPhone.Text = "";
+            txtSerial.Text = "";
+        }
+        private void UpdateDeviceStatus(string deviceId, string status)
+        {
+            var device = deviceDisplays.FirstOrDefault(d => d.Serial == deviceId);
+
+            if (device != null)
+            {
+                device.Status = status;
+                DataTable dataTable = sfDataGrid.DataSource as DataTable;
+                var row = dataTable.Select($"DeviceID = '{deviceId}'").FirstOrDefault();
+                if (row != null)
+                {
+                    row["Status"] = status;
+                    if (status == "Online")
+                    {
+                        row["Progress"] = 0;
+                        row["Checkbox"] = true;
+                        row["Activity"] = "YES";
+                        device.Activity = "YES";
+                    }
+                    else
+                    {
+                        row["Progress"] = 0;
+                        row["Checkbox"] = false;
+                        row["Activity"] = "YES";
+                        device.Activity = "YES";
+                    }
+                }
+                SaveDevicesToFile();
+                sfDataGrid.Refresh();
+            }
+        }
+        private void SaveDevicesToFile()
+        {
+            var uniqueDevices = deviceDisplays
+                .GroupBy(d => d.Serial)
+                .Select(g => g.First())
+                .ToList();
+
+            string path = Path.Combine(Application.StartupPath, "devices.json");
+            File.WriteAllText(path, JsonConvert.SerializeObject(uniqueDevices, Newtonsoft.Json.Formatting.Indented));
+        }
+
+        private void LoadDevicesFromFile()
+        {
+            string path = Path.Combine(Application.StartupPath, "devices.json");
+            if (!File.Exists(path))
+            {
+                SaveDevicesToFile();
+            }
+            string json = File.ReadAllText(path);
+            deviceDisplays = JsonConvert.DeserializeObject<List<DeviceDisplay>>(json) ?? new List<DeviceDisplay>();
+
+            foreach (var device in deviceDisplays.ToList())
+            {
+                AddDeviceView(device.Serial);
+                UpdateDeviceStatus(device.Serial, device.Status);
+            }
+        }
+
+        public void CountSelectedDevices()
+        {
+            int selectedCount = 0;
+            foreach (System.Data.DataRow row in (sfDataGrid.DataSource as DataTable).Rows)
+            {
+                bool isChecked = Convert.ToBoolean(row["Checkbox"]);
+                if (isChecked)
+                {
+                    selectedCount++;
+                }
+            }
+            GlobalContextMenu.UpdateContextMenu(selectedCount);
         }
 
         private void BtnCommon_Paint(object sender, PaintEventArgs e)
         {
-            Button btn = sender as Button; 
+            Button btn = sender as Button;
             if (btn == null) return;
 
             int radius = 5;
@@ -165,39 +468,36 @@ namespace WindowsFormsApp
 
         private Pen GetButtonBorderPen(Button btn)
         {
-            if (!btn.Enabled) // Disabled state
+            if (!btn.Enabled)
             {
-                return new Pen(Color.Gray); // Màu viền cho Disabled
+                return new Pen(Color.Gray);
             }
-            else if (btn.ClientRectangle.Contains(PointToClient(Cursor.Position))) // Hover state
+            else if (btn.ClientRectangle.Contains(PointToClient(Cursor.Position)))
             {
-                return new Pen(Color.Blue); // Màu viền cho Hover
+                return new Pen(Color.Blue);
             }
-            else if (btn.Focused) // Focused state
+            else if (btn.Focused)
             {
-                return new Pen(Color.Green); // Màu viền cho Focused
+                return new Pen(Color.Green);
             }
-            else // Default state
+            else
             {
-                return new Pen(Color.Gray); // Màu viền mặc định
+                return new Pen(Color.Gray);
             }
         }
 
         private Color GetButtonTextColor(Button btn)
         {
-            if (btn.ClientRectangle.Contains(PointToClient(Cursor.Position))) // Hover state
+            if (btn.ClientRectangle.Contains(PointToClient(Cursor.Position)))
             {
-                return Color.Blue; // Màu chữ cho Hover
+                return Color.Blue;
             }
-            return btn.ForeColor; // Màu chữ mặc định
+            return btn.ForeColor;
         }
 
-        // Phương thức vẽ góc bo tròn cho nút
         private GraphicsPath GetRoundedRect(Rectangle rect, int radius)
         {
             GraphicsPath graphicsPath = new GraphicsPath();
-
-            // Vẽ các góc bo tròn
             graphicsPath.AddArc(rect.X, rect.Y, radius * 2, radius * 2, 180, 90); // Top-left corner
             graphicsPath.AddLine(rect.X + radius, rect.Y, rect.Right - radius, rect.Y); // Top edge
             graphicsPath.AddArc(rect.Right - radius * 2, rect.Y, radius * 2, radius * 2, 270, 90); // Top-right corner
@@ -207,19 +507,38 @@ namespace WindowsFormsApp
             graphicsPath.AddArc(rect.X, rect.Bottom - radius * 2, radius * 2, radius * 2, 90, 90); // Bottom-left corner
             graphicsPath.AddLine(rect.X, rect.Bottom - radius, rect.X, rect.Y + radius); // Left edge
             graphicsPath.CloseFigure();
-
             return graphicsPath;
         }
 
-        private void btnScreenshot_Click(object sender, EventArgs e)
+        private void DetailsItem_Click(object sender, EventArgs e)
         {
-            
+            MessageBox.Show("Details option clicked.");
         }
 
-        private void autoLabel11_Click(object sender, EventArgs e)
+        private void EditItem_Click(object sender, EventArgs e)
         {
-
+            MessageBox.Show("Edit option clicked.");
         }
+
+        private void DeleteItem_Click(object sender, EventArgs e)
+        {
+            var selectedRow = sfDataGrid.SelectedItems.Cast<DataRowView>().FirstOrDefault();
+            if (selectedRow != null)
+            {
+                string deviceId = selectedRow["DeviceID"].ToString();
+
+                var deviceToRemove = deviceDisplays.FirstOrDefault(d => d.Serial == deviceId);
+
+                if (deviceToRemove != null)
+                {
+                    RemoveDeviceView(deviceToRemove);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select a device to delete.");
+            }
+        }
+
     }
 }
-

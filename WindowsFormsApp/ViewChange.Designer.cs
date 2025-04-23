@@ -31,8 +31,10 @@
             this.mainMenu = new System.Windows.Forms.Panel();
             this.panelContextTop = new System.Windows.Forms.Panel();
             this.panelContextBottom = new System.Windows.Forms.Panel();
+            this.autoLabel11 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
             this.change = new System.Windows.Forms.Panel();
-            this.textBoxExt8 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.autoLabel12 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
+            this.txtName = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.sfButton12 = new Syncfusion.WinForms.Controls.SfButton();
             this.btnScreenshot = new Syncfusion.WinForms.Controls.SfButton();
             this.btnAutoBackup = new Syncfusion.WinForms.Controls.SfButton();
@@ -46,52 +48,50 @@
             this.btnChangeDevice = new Syncfusion.WinForms.Controls.SfButton();
             this.btnRandomdevice = new Syncfusion.WinForms.Controls.SfButton();
             this.info = new System.Windows.Forms.Panel();
-            this.textBoxExt6 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.txtICCID = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.autoLabel9 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.textBoxExt7 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.txtPhone = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.autoLabel10 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.textBoxExt4 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.txtIMSI = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.autoLabel7 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.textBoxExt5 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.txtCode = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.autoLabel8 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.sfComboBox5 = new Syncfusion.WinForms.ListView.SfComboBox();
-            this.sfComboBox6 = new Syncfusion.WinForms.ListView.SfComboBox();
+            this.sfCbModel = new Syncfusion.WinForms.ListView.SfComboBox();
+            this.sfCbSim = new Syncfusion.WinForms.ListView.SfComboBox();
             this.autoLabel5 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
             this.autoLabel6 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.sfComboBox3 = new Syncfusion.WinForms.ListView.SfComboBox();
-            this.sfComboBox4 = new Syncfusion.WinForms.ListView.SfComboBox();
+            this.sfCbName = new Syncfusion.WinForms.ListView.SfComboBox();
+            this.sfCbCountry = new Syncfusion.WinForms.ListView.SfComboBox();
             this.autoLabel3 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
             this.autoLabel4 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.textBoxExt3 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
-            this.textBoxExt2 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.txtMac = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.txtImei = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.autoLabel2 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
             this.autoLabel1 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.textBoxExt1 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.txtSerial = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.lblSerial = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.sfComboBox2 = new Syncfusion.WinForms.ListView.SfComboBox();
-            this.sfComboBox1 = new Syncfusion.WinForms.ListView.SfComboBox();
+            this.sfCbBrand = new Syncfusion.WinForms.ListView.SfComboBox();
+            this.sfCbOs = new Syncfusion.WinForms.ListView.SfComboBox();
             this.lblOS = new Syncfusion.Windows.Forms.Tools.AutoLabel();
             this.lblBrand = new Syncfusion.Windows.Forms.Tools.AutoLabel();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.autoLabel11 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.autoLabel12 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
             this.panelContextBottom.SuspendLayout();
             this.change.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtName)).BeginInit();
             this.info.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfComboBox5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfComboBox6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfComboBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfComboBox4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfComboBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfComboBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtICCID)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPhone)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtIMSI)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCode)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sfCbModel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sfCbSim)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sfCbName)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sfCbCountry)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtMac)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtImei)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSerial)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sfCbBrand)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sfCbOs)).BeginInit();
             this.tableLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -125,6 +125,15 @@
             this.panelContextBottom.Size = new System.Drawing.Size(1319, 291);
             this.panelContextBottom.TabIndex = 0;
             // 
+            // autoLabel11
+            // 
+            this.autoLabel11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.autoLabel11.Location = new System.Drawing.Point(22, 44);
+            this.autoLabel11.Name = "autoLabel11";
+            this.autoLabel11.Size = new System.Drawing.Size(36, 18);
+            this.autoLabel11.TabIndex = 27;
+            this.autoLabel11.Text = "Info";
+            // 
             // change
             // 
             this.change.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -132,7 +141,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.change.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.change.Controls.Add(this.autoLabel12);
-            this.change.Controls.Add(this.textBoxExt8);
+            this.change.Controls.Add(this.txtName);
             this.change.Controls.Add(this.sfButton12);
             this.change.Controls.Add(this.btnScreenshot);
             this.change.Controls.Add(this.btnAutoBackup);
@@ -151,13 +160,23 @@
             this.change.Size = new System.Drawing.Size(497, 235);
             this.change.TabIndex = 1;
             // 
-            // textBoxExt8
+            // autoLabel12
             // 
-            this.textBoxExt8.BeforeTouchSize = new System.Drawing.Size(150, 27);
-            this.textBoxExt8.Location = new System.Drawing.Point(26, 190);
-            this.textBoxExt8.Name = "textBoxExt8";
-            this.textBoxExt8.Size = new System.Drawing.Size(246, 22);
-            this.textBoxExt8.TabIndex = 12;
+            this.autoLabel12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.autoLabel12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.autoLabel12.Location = new System.Drawing.Point(26, -36);
+            this.autoLabel12.Name = "autoLabel12";
+            this.autoLabel12.Size = new System.Drawing.Size(65, 18);
+            this.autoLabel12.TabIndex = 13;
+            this.autoLabel12.Text = "Change";
+            // 
+            // txtName
+            // 
+            this.txtName.BeforeTouchSize = new System.Drawing.Size(150, 27);
+            this.txtName.Location = new System.Drawing.Point(26, 190);
+            this.txtName.Name = "txtName";
+            this.txtName.Size = new System.Drawing.Size(246, 22);
+            this.txtName.TabIndex = 12;
             // 
             // sfButton12
             // 
@@ -176,7 +195,6 @@
             this.btnScreenshot.Size = new System.Drawing.Size(129, 28);
             this.btnScreenshot.TabIndex = 10;
             this.btnScreenshot.Text = "Screenshot";
-            this.btnScreenshot.Click += new System.EventHandler(this.btnScreenshot_Click);
             // 
             // btnAutoBackup
             // 
@@ -271,30 +289,30 @@
             // info
             // 
             this.info.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.info.Controls.Add(this.textBoxExt6);
+            this.info.Controls.Add(this.txtICCID);
             this.info.Controls.Add(this.autoLabel9);
-            this.info.Controls.Add(this.textBoxExt7);
+            this.info.Controls.Add(this.txtPhone);
             this.info.Controls.Add(this.autoLabel10);
-            this.info.Controls.Add(this.textBoxExt4);
+            this.info.Controls.Add(this.txtIMSI);
             this.info.Controls.Add(this.autoLabel7);
-            this.info.Controls.Add(this.textBoxExt5);
+            this.info.Controls.Add(this.txtCode);
             this.info.Controls.Add(this.autoLabel8);
-            this.info.Controls.Add(this.sfComboBox5);
-            this.info.Controls.Add(this.sfComboBox6);
+            this.info.Controls.Add(this.sfCbModel);
+            this.info.Controls.Add(this.sfCbSim);
             this.info.Controls.Add(this.autoLabel5);
             this.info.Controls.Add(this.autoLabel6);
-            this.info.Controls.Add(this.sfComboBox3);
-            this.info.Controls.Add(this.sfComboBox4);
+            this.info.Controls.Add(this.sfCbName);
+            this.info.Controls.Add(this.sfCbCountry);
             this.info.Controls.Add(this.autoLabel3);
             this.info.Controls.Add(this.autoLabel4);
-            this.info.Controls.Add(this.textBoxExt3);
-            this.info.Controls.Add(this.textBoxExt2);
+            this.info.Controls.Add(this.txtMac);
+            this.info.Controls.Add(this.txtImei);
             this.info.Controls.Add(this.autoLabel2);
             this.info.Controls.Add(this.autoLabel1);
-            this.info.Controls.Add(this.textBoxExt1);
+            this.info.Controls.Add(this.txtSerial);
             this.info.Controls.Add(this.lblSerial);
-            this.info.Controls.Add(this.sfComboBox2);
-            this.info.Controls.Add(this.sfComboBox1);
+            this.info.Controls.Add(this.sfCbBrand);
+            this.info.Controls.Add(this.sfCbOs);
             this.info.Controls.Add(this.lblOS);
             this.info.Controls.Add(this.lblBrand);
             this.info.Location = new System.Drawing.Point(3, 53);
@@ -303,15 +321,15 @@
             this.info.TabIndex = 0;
             this.info.Tag = "Info";
             // 
-            // textBoxExt6
+            // txtICCID
             // 
-            this.textBoxExt6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxExt6.BeforeTouchSize = new System.Drawing.Size(150, 27);
-            this.textBoxExt6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxExt6.Location = new System.Drawing.Point(622, 178);
-            this.textBoxExt6.Name = "textBoxExt6";
-            this.textBoxExt6.Size = new System.Drawing.Size(150, 27);
-            this.textBoxExt6.TabIndex = 26;
+            this.txtICCID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtICCID.BeforeTouchSize = new System.Drawing.Size(150, 27);
+            this.txtICCID.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtICCID.Location = new System.Drawing.Point(622, 178);
+            this.txtICCID.Name = "txtICCID";
+            this.txtICCID.Size = new System.Drawing.Size(150, 27);
+            this.txtICCID.TabIndex = 26;
             // 
             // autoLabel9
             // 
@@ -321,17 +339,16 @@
             this.autoLabel9.Size = new System.Drawing.Size(41, 16);
             this.autoLabel9.TabIndex = 25;
             this.autoLabel9.Text = "ICCID";
-            this.autoLabel9.Click += new System.EventHandler(this.autoLabel9_Click);
             // 
-            // textBoxExt7
+            // txtPhone
             // 
-            this.textBoxExt7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxExt7.BeforeTouchSize = new System.Drawing.Size(150, 27);
-            this.textBoxExt7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxExt7.Location = new System.Drawing.Point(622, 130);
-            this.textBoxExt7.Name = "textBoxExt7";
-            this.textBoxExt7.Size = new System.Drawing.Size(150, 27);
-            this.textBoxExt7.TabIndex = 24;
+            this.txtPhone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPhone.BeforeTouchSize = new System.Drawing.Size(150, 27);
+            this.txtPhone.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPhone.Location = new System.Drawing.Point(622, 130);
+            this.txtPhone.Name = "txtPhone";
+            this.txtPhone.Size = new System.Drawing.Size(150, 27);
+            this.txtPhone.TabIndex = 24;
             // 
             // autoLabel10
             // 
@@ -342,17 +359,17 @@
             this.autoLabel10.TabIndex = 23;
             this.autoLabel10.Text = "Phone";
             // 
-            // textBoxExt4
+            // txtIMSI
             // 
-            this.textBoxExt4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.txtIMSI.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxExt4.BeforeTouchSize = new System.Drawing.Size(150, 27);
-            this.textBoxExt4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxExt4.Location = new System.Drawing.Point(334, 178);
-            this.textBoxExt4.Name = "textBoxExt4";
-            this.textBoxExt4.Size = new System.Drawing.Size(150, 27);
-            this.textBoxExt4.TabIndex = 22;
+            this.txtIMSI.BeforeTouchSize = new System.Drawing.Size(150, 27);
+            this.txtIMSI.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtIMSI.Location = new System.Drawing.Point(334, 178);
+            this.txtIMSI.Name = "txtIMSI";
+            this.txtIMSI.Size = new System.Drawing.Size(150, 27);
+            this.txtIMSI.TabIndex = 22;
             // 
             // autoLabel7
             // 
@@ -365,17 +382,17 @@
             this.autoLabel7.TabIndex = 21;
             this.autoLabel7.Text = "IMSI";
             // 
-            // textBoxExt5
+            // txtCode
             // 
-            this.textBoxExt5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.txtCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxExt5.BeforeTouchSize = new System.Drawing.Size(150, 27);
-            this.textBoxExt5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxExt5.Location = new System.Drawing.Point(334, 134);
-            this.textBoxExt5.Name = "textBoxExt5";
-            this.textBoxExt5.Size = new System.Drawing.Size(150, 27);
-            this.textBoxExt5.TabIndex = 20;
+            this.txtCode.BeforeTouchSize = new System.Drawing.Size(150, 27);
+            this.txtCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCode.Location = new System.Drawing.Point(334, 134);
+            this.txtCode.Name = "txtCode";
+            this.txtCode.Size = new System.Drawing.Size(150, 27);
+            this.txtCode.TabIndex = 20;
             // 
             // autoLabel8
             // 
@@ -388,27 +405,27 @@
             this.autoLabel8.TabIndex = 19;
             this.autoLabel8.Text = "Code";
             // 
-            // sfComboBox5
+            // sfCbModel
             // 
-            this.sfComboBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.sfComboBox5.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
-            this.sfComboBox5.Location = new System.Drawing.Point(622, 48);
-            this.sfComboBox5.Name = "sfComboBox5";
-            this.sfComboBox5.Size = new System.Drawing.Size(150, 30);
-            this.sfComboBox5.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.sfComboBox5.TabIndex = 18;
-            this.sfComboBox5.TabStop = false;
+            this.sfCbModel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.sfCbModel.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
+            this.sfCbModel.Location = new System.Drawing.Point(622, 48);
+            this.sfCbModel.Name = "sfCbModel";
+            this.sfCbModel.Size = new System.Drawing.Size(150, 30);
+            this.sfCbModel.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.sfCbModel.TabIndex = 18;
+            this.sfCbModel.TabStop = false;
             // 
-            // sfComboBox6
+            // sfCbSim
             // 
-            this.sfComboBox6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.sfComboBox6.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
-            this.sfComboBox6.Location = new System.Drawing.Point(622, 90);
-            this.sfComboBox6.Name = "sfComboBox6";
-            this.sfComboBox6.Size = new System.Drawing.Size(150, 30);
-            this.sfComboBox6.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.sfComboBox6.TabIndex = 17;
-            this.sfComboBox6.TabStop = false;
+            this.sfCbSim.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.sfCbSim.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
+            this.sfCbSim.Location = new System.Drawing.Point(622, 90);
+            this.sfCbSim.Name = "sfCbSim";
+            this.sfCbSim.Size = new System.Drawing.Size(150, 30);
+            this.sfCbSim.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.sfCbSim.TabIndex = 17;
+            this.sfCbSim.TabStop = false;
             // 
             // autoLabel5
             // 
@@ -428,31 +445,31 @@
             this.autoLabel6.TabIndex = 15;
             this.autoLabel6.Text = "Model";
             // 
-            // sfComboBox3
+            // sfCbName
             // 
-            this.sfComboBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.sfCbName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.sfComboBox3.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
-            this.sfComboBox3.Location = new System.Drawing.Point(334, 48);
-            this.sfComboBox3.Name = "sfComboBox3";
-            this.sfComboBox3.Size = new System.Drawing.Size(150, 30);
-            this.sfComboBox3.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.sfComboBox3.TabIndex = 14;
-            this.sfComboBox3.TabStop = false;
+            this.sfCbName.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
+            this.sfCbName.Location = new System.Drawing.Point(334, 48);
+            this.sfCbName.Name = "sfCbName";
+            this.sfCbName.Size = new System.Drawing.Size(150, 30);
+            this.sfCbName.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.sfCbName.TabIndex = 14;
+            this.sfCbName.TabStop = false;
             // 
-            // sfComboBox4
+            // sfCbCountry
             // 
-            this.sfComboBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.sfCbCountry.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.sfComboBox4.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
-            this.sfComboBox4.Location = new System.Drawing.Point(334, 90);
-            this.sfComboBox4.Name = "sfComboBox4";
-            this.sfComboBox4.Size = new System.Drawing.Size(150, 30);
-            this.sfComboBox4.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.sfComboBox4.TabIndex = 13;
-            this.sfComboBox4.TabStop = false;
+            this.sfCbCountry.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
+            this.sfCbCountry.Location = new System.Drawing.Point(334, 90);
+            this.sfCbCountry.Name = "sfCbCountry";
+            this.sfCbCountry.Size = new System.Drawing.Size(150, 30);
+            this.sfCbCountry.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.sfCbCountry.TabIndex = 13;
+            this.sfCbCountry.TabStop = false;
             // 
             // autoLabel3
             // 
@@ -476,23 +493,23 @@
             this.autoLabel4.TabIndex = 11;
             this.autoLabel4.Text = "Name";
             // 
-            // textBoxExt3
+            // txtMac
             // 
-            this.textBoxExt3.BeforeTouchSize = new System.Drawing.Size(150, 27);
-            this.textBoxExt3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxExt3.Location = new System.Drawing.Point(70, 197);
-            this.textBoxExt3.Name = "textBoxExt3";
-            this.textBoxExt3.Size = new System.Drawing.Size(150, 27);
-            this.textBoxExt3.TabIndex = 10;
+            this.txtMac.BeforeTouchSize = new System.Drawing.Size(150, 27);
+            this.txtMac.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMac.Location = new System.Drawing.Point(70, 197);
+            this.txtMac.Name = "txtMac";
+            this.txtMac.Size = new System.Drawing.Size(150, 27);
+            this.txtMac.TabIndex = 10;
             // 
-            // textBoxExt2
+            // txtImei
             // 
-            this.textBoxExt2.BeforeTouchSize = new System.Drawing.Size(150, 27);
-            this.textBoxExt2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxExt2.Location = new System.Drawing.Point(69, 159);
-            this.textBoxExt2.Name = "textBoxExt2";
-            this.textBoxExt2.Size = new System.Drawing.Size(150, 27);
-            this.textBoxExt2.TabIndex = 9;
+            this.txtImei.BeforeTouchSize = new System.Drawing.Size(150, 27);
+            this.txtImei.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtImei.Location = new System.Drawing.Point(69, 159);
+            this.txtImei.Name = "txtImei";
+            this.txtImei.Size = new System.Drawing.Size(150, 27);
+            this.txtImei.TabIndex = 9;
             // 
             // autoLabel2
             // 
@@ -510,14 +527,14 @@
             this.autoLabel1.TabIndex = 7;
             this.autoLabel1.Text = "Imei";
             // 
-            // textBoxExt1
+            // txtSerial
             // 
-            this.textBoxExt1.BeforeTouchSize = new System.Drawing.Size(150, 27);
-            this.textBoxExt1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxExt1.Location = new System.Drawing.Point(69, 123);
-            this.textBoxExt1.Name = "textBoxExt1";
-            this.textBoxExt1.Size = new System.Drawing.Size(150, 27);
-            this.textBoxExt1.TabIndex = 6;
+            this.txtSerial.BeforeTouchSize = new System.Drawing.Size(150, 27);
+            this.txtSerial.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSerial.Location = new System.Drawing.Point(69, 123);
+            this.txtSerial.Name = "txtSerial";
+            this.txtSerial.Size = new System.Drawing.Size(150, 27);
+            this.txtSerial.TabIndex = 6;
             // 
             // lblSerial
             // 
@@ -527,25 +544,25 @@
             this.lblSerial.TabIndex = 5;
             this.lblSerial.Text = "Serial";
             // 
-            // sfComboBox2
+            // sfCbBrand
             // 
-            this.sfComboBox2.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
-            this.sfComboBox2.Location = new System.Drawing.Point(70, 36);
-            this.sfComboBox2.Name = "sfComboBox2";
-            this.sfComboBox2.Size = new System.Drawing.Size(150, 30);
-            this.sfComboBox2.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.sfComboBox2.TabIndex = 4;
-            this.sfComboBox2.TabStop = false;
+            this.sfCbBrand.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
+            this.sfCbBrand.Location = new System.Drawing.Point(70, 36);
+            this.sfCbBrand.Name = "sfCbBrand";
+            this.sfCbBrand.Size = new System.Drawing.Size(150, 30);
+            this.sfCbBrand.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.sfCbBrand.TabIndex = 4;
+            this.sfCbBrand.TabStop = false;
             // 
-            // sfComboBox1
+            // sfCbOs
             // 
-            this.sfComboBox1.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
-            this.sfComboBox1.Location = new System.Drawing.Point(70, 80);
-            this.sfComboBox1.Name = "sfComboBox1";
-            this.sfComboBox1.Size = new System.Drawing.Size(150, 30);
-            this.sfComboBox1.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.sfComboBox1.TabIndex = 3;
-            this.sfComboBox1.TabStop = false;
+            this.sfCbOs.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
+            this.sfCbOs.Location = new System.Drawing.Point(70, 80);
+            this.sfCbOs.Name = "sfCbOs";
+            this.sfCbOs.Size = new System.Drawing.Size(150, 30);
+            this.sfCbOs.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.sfCbOs.TabIndex = 3;
+            this.sfCbOs.TabStop = false;
             // 
             // lblOS
             // 
@@ -581,26 +598,6 @@
             this.tableLayoutPanel.Size = new System.Drawing.Size(1325, 865);
             this.tableLayoutPanel.TabIndex = 2;
             // 
-            // autoLabel11
-            // 
-            this.autoLabel11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.autoLabel11.Location = new System.Drawing.Point(22, 44);
-            this.autoLabel11.Name = "autoLabel11";
-            this.autoLabel11.Size = new System.Drawing.Size(36, 18);
-            this.autoLabel11.TabIndex = 27;
-            this.autoLabel11.Text = "Info";
-            this.autoLabel11.Click += new System.EventHandler(this.autoLabel11_Click);
-            // 
-            // autoLabel12
-            // 
-            this.autoLabel12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.autoLabel12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.autoLabel12.Location = new System.Drawing.Point(26, -36);
-            this.autoLabel12.Name = "autoLabel12";
-            this.autoLabel12.Size = new System.Drawing.Size(65, 18);
-            this.autoLabel12.TabIndex = 13;
-            this.autoLabel12.Text = "Change";
-            // 
             // ViewChange
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -614,22 +611,22 @@
             this.panelContextBottom.PerformLayout();
             this.change.ResumeLayout(false);
             this.change.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtName)).EndInit();
             this.info.ResumeLayout(false);
             this.info.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfComboBox5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfComboBox6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfComboBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfComboBox4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfComboBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfComboBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtICCID)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPhone)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtIMSI)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCode)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sfCbModel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sfCbSim)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sfCbName)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sfCbCountry)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtMac)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtImei)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSerial)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sfCbBrand)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sfCbOs)).EndInit();
             this.tableLayoutPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -641,33 +638,33 @@
         private System.Windows.Forms.Panel panelContextBottom;
         private System.Windows.Forms.Panel change;
         private System.Windows.Forms.Panel info;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt6;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtICCID;
         private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel9;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt7;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtPhone;
         private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel10;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt4;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtIMSI;
         private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel7;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt5;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtCode;
         private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel8;
-        private Syncfusion.WinForms.ListView.SfComboBox sfComboBox5;
-        private Syncfusion.WinForms.ListView.SfComboBox sfComboBox6;
+        private Syncfusion.WinForms.ListView.SfComboBox sfCbModel;
+        private Syncfusion.WinForms.ListView.SfComboBox sfCbSim;
         private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel5;
         private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel6;
-        private Syncfusion.WinForms.ListView.SfComboBox sfComboBox3;
-        private Syncfusion.WinForms.ListView.SfComboBox sfComboBox4;
+        private Syncfusion.WinForms.ListView.SfComboBox sfCbName;
+        private Syncfusion.WinForms.ListView.SfComboBox sfCbCountry;
         private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel3;
         private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel4;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt3;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt2;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtMac;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtImei;
         private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel2;
         private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel1;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt1;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtSerial;
         private Syncfusion.Windows.Forms.Tools.AutoLabel lblSerial;
-        private Syncfusion.WinForms.ListView.SfComboBox sfComboBox2;
-        private Syncfusion.WinForms.ListView.SfComboBox sfComboBox1;
+        private Syncfusion.WinForms.ListView.SfComboBox sfCbBrand;
+        private Syncfusion.WinForms.ListView.SfComboBox sfCbOs;
         private Syncfusion.Windows.Forms.Tools.AutoLabel lblOS;
         private Syncfusion.Windows.Forms.Tools.AutoLabel lblBrand;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt8;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtName;
         private Syncfusion.WinForms.Controls.SfButton sfButton12;
         private Syncfusion.WinForms.Controls.SfButton btnScreenshot;
         private Syncfusion.WinForms.Controls.SfButton btnAutoBackup;

@@ -24,7 +24,7 @@ public static class GlobalContextMenu
     {
         countDevice = count;
     }
-    public static void UpdateContextMenu()
+    public static void UpdateContextMenu(int count = 0)
     {
         ToolStripMenuItem reloadItem;
         ToolStripMenuItem restartItem;
@@ -63,27 +63,25 @@ public static class GlobalContextMenu
             ContextMenu.Items.AddRange(new ToolStripItem[] { restartItem, apkItem, screenshotItem, adbItem, deleteItem });
 
         }
-        else if (homeForm?.currentChildForm is ViewChange)
+        else if (homeForm?.currentChildForm is ViewChange viewChange)
         {
             reloadItem = new ToolStripMenuItem("Reset data");
-            var autoItem = new ToolStripMenuItem("Tự động hóa cho 0 thiết bị");
-            var copyItem = new ToolStripMenuItem("Copy ID 0 devices");
-            restartItem = new ToolStripMenuItem("Khởi động lại 0 thiết bị");
-            apkItem = new ToolStripMenuItem("Cài đặt APK");
-            screenshotItem = new ToolStripMenuItem("Chụp màn hình");
-            var proxyItem = new ToolStripMenuItem("Thay đổi proxy");
+            reloadItem.Click += (sender, e) => viewChange.SetResertDataInputForm();
+            var loadPage = new ToolStripMenuItem("Load");
+            //var (onlineDevices, offlineDevices) = viewChange.LoadDevicesFromJson();
+            //loadPage.Click += (sender, e) => viewChange.LoadUI(onlineDevices, offlineDevices);
+            var autoItem = new ToolStripMenuItem($"Tự động hóa cho {count} thiết bị");
+            var copyItem = new ToolStripMenuItem($"Copy ID {count} devices");
+            restartItem = new ToolStripMenuItem($"Khởi động lại {count} thiết bị");
+            var proxyItem = new ToolStripMenuItem($"Thay đổi proxy cho {count} thiết bị");
             adbItem = new ToolStripMenuItem("Lệnh Adb");
             var textShortcutItem = new ToolStripMenuItem("Gõ nhanh văn bản");
-            deleteItem = new ToolStripMenuItem("Xóa 0 thiết bị");
+            deleteItem = new ToolStripMenuItem($"Xóa {count} thiết bị");
             var changeImageItem = new ToolStripMenuItem("Thay đổi hình nền theo số thứ tự");
             var changeOrderItem = new ToolStripMenuItem("Thay đổi số thứ tự thiết bị");
             var addToGroupItem = new ToolStripMenuItem("Thêm vào nhóm");
 
-            reloadItem.Click += (sender, e) => { MessageBox.Show("Reset data clicked in ViewChange"); };
-            autoItem.Click += (sender, e) => { MessageBox.Show("Auto clicked in ViewChange"); };
-            copyItem.Click += (sender, e) => { MessageBox.Show("Copy clicked in ViewChange"); };
-
-            ContextMenu.Items.AddRange(new ToolStripItem[] { reloadItem, autoItem, copyItem, restartItem, apkItem, screenshotItem, proxyItem, adbItem, textShortcutItem, deleteItem, changeImageItem, changeOrderItem, addToGroupItem });
+            ContextMenu.Items.AddRange(new ToolStripItem[] { reloadItem, loadPage, autoItem, copyItem, restartItem, proxyItem, adbItem, textShortcutItem, deleteItem, changeImageItem, changeOrderItem, addToGroupItem });
         }
 
         

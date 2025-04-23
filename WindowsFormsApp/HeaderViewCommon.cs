@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Security.Principal;
 using Syncfusion.Windows.Forms.Tools;
 using Syncfusion.WinForms.Controls;
+using WindowsFormsApp.Model;
 
 namespace AccountCreatorForm.Controls
 {
@@ -155,7 +156,7 @@ namespace AccountCreatorForm.Controls
 
         private void Button_Click(object sender, EventArgs e)
         {
-            ToggleDarkLightMode();
+            ThemeManager.ToggleDarkMode();
         }
 
         private void setAccount()
@@ -229,10 +230,13 @@ namespace AccountCreatorForm.Controls
         {
             isDarkMode = !isDarkMode;
 
-            this.BackColor = isDarkMode ? Color.Black : Color.White;
+            // Thay đổi màu nền của HeaderViewCommon
+            this.BackColor = isDarkMode ? Color.FromArgb(33, 33, 33) : Color.White;
 
+            // Thay đổi màu nền của TableLayoutPanel
             layoutMain.BackColor = isDarkMode ? Color.FromArgb(45, 45, 48) : Color.White;
 
+            // Thay đổi màu sắc của các nút (button)
             foreach (Control control in this.Controls)
             {
                 if (control is Button)
@@ -244,7 +248,7 @@ namespace AccountCreatorForm.Controls
                 {
                     control.ForeColor = isDarkMode ? Color.White : Color.Black;
                 }
-                else if (control is TextBox)
+                else if (control is TextBox || control is RichTextBox)
                 {
                     control.BackColor = isDarkMode ? Color.FromArgb(30, 30, 30) : Color.White;
                     control.ForeColor = isDarkMode ? Color.White : Color.Black;
@@ -253,15 +257,15 @@ namespace AccountCreatorForm.Controls
                 {
                     control.BackColor = isDarkMode ? Color.FromArgb(45, 45, 48) : Color.White;
                 }
-                else if (control is RichTextBox)
-                {
-                    control.BackColor = isDarkMode ? Color.FromArgb(30, 30, 30) : Color.White;
-                    control.ForeColor = isDarkMode ? Color.White : Color.Black;
-                }
             }
+
+            // Cập nhật hình ảnh của các nút chế độ sáng/tối
             button.Image = isDarkMode ? Resources.dark_mode : Resources.light_mode;
-          //  lblVersion.BackColor = isDarkMode ? Color.FromArgb(30, 30, 30) : Color.White;
-            //lblVersion.SelectionColor = isDarkMode ? Color.White : Color.Black;
+
+            // Cập nhật avatar và các biểu tượng trong accountPanel
+            picAvatar.BackColor = isDarkMode ? Color.FromArgb(45, 45, 48) : Color.White;
+            picArrow.BackColor = isDarkMode ? Color.FromArgb(45, 45, 48) : Color.White;
+            accountPanel.BackColor = isDarkMode ? Color.FromArgb(45, 45, 48) : Color.White;
         }
     }
 }

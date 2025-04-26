@@ -1,0 +1,137 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace WindowsFormsApp
+{
+    public partial class TextToolbox: UserControl
+    {
+        public TextToolbox()
+        {
+            InitializeComponent();
+            BuildUI();
+        }
+
+        private void BuildUI()
+        {
+            this.BackColor = Color.WhiteSmoke;
+
+            var roolPanel = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.LeftToRight
+            };
+
+            var panel = new FlowLayoutPanel();
+           
+
+            panel.Controls.Add(CreateGroup("Progress text", new string[] { "Send text", "Swipe up", "Random Click", "Swipe down", "Wait" }, 250));
+            roolPanel.Controls.Add(panel);
+            this.Controls.Add(roolPanel);
+        }
+
+        private void BuildUI1()
+        {
+            this.BackColor = Color.WhiteSmoke;
+
+            var rootPanel = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 2,
+                RowCount = 1
+            };
+            rootPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70));
+            rootPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30));
+
+            // LEFT SIDE
+            var leftPanel = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.LeftToRight,
+
+                AutoScroll = true
+            };
+
+            // RIGHT SIDE
+            var rightPanel = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.LeftToRight,
+                AutoScroll = true
+            };
+
+            // LEFT
+            leftPanel.Controls.Add(CreateGroup("Click tọa độ", new string[] { "ClickXY", "Swipe up", "Random Click", "Swipe down", "Wait" }, 370));
+            leftPanel.Controls.Add(CreateGroup("Search text click", new string[] {
+            "Tìm đúng && click", "Tìm gần đúng && click",
+            "Tìm đúng && wait", "Tìm gần đúng && wait",
+            "Tìm đúng && tiếp tục", "Tìm gần đúng && tiếp tục"
+        }, 370));
+            leftPanel.Controls.Add(CreateGroup("Search text image", new string[] {
+            "Tìm đúng && click", "Tìm đúng && wait", "Tìm đúng && tiếp tục"
+        }, 370));
+
+            // RIGHT
+        //    rightPanel.Controls.Add(CreateGroupRight("Xử lý logic", new string[] {
+        //    "FOR LOOP", "IF", "GOTO", "BREAK", "Continue",
+        //    "Stop Script", "Return()", "Comment", "Show status"
+        //}, 140));
+
+            rootPanel.Controls.Add(leftPanel, 0, 0);
+            rootPanel.Controls.Add(rightPanel, 1, 0);
+
+            this.Controls.Add(rootPanel);
+        }
+
+        private GroupBox CreateGroup(string title, string[] buttons, int maxWidth)
+        {
+            var group = new GroupBox
+            {
+                Text = title,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                Padding = new Padding(5),
+                Margin = new Padding(10, 5, 0, 5),
+                Font = new Font("Segoe UI", 8.5f, FontStyle.Bold)
+            };
+
+            var flow = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                WrapContents = true,
+                FlowDirection = FlowDirection.TopDown,
+                MaximumSize = new Size(maxWidth, 0),
+                MinimumSize = new Size(maxWidth, 0),
+                Padding = new Padding(3),
+            };
+
+            foreach (var text in buttons)
+            {
+                var btn = new Button
+                {
+                    Text = text,
+                    AutoSize = true,
+                    Height = 35,
+                    Margin = new Padding(3),
+                    BackColor = Color.MediumSlateBlue,
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat,
+                    Font = new Font("Segoe UI", 8f)
+                };
+                btn.FlatAppearance.BorderSize = 0;
+                btn.Click += (s, e) => MessageBox.Show($"Clicked: {text}");
+                flow.Controls.Add(btn);
+            }
+
+            group.Controls.Add(flow);
+            return group;
+        }
+    }
+}

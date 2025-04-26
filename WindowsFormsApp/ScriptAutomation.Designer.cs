@@ -77,8 +77,9 @@
             // textToolStripMenuItem
             // 
             this.textToolStripMenuItem.Name = "textToolStripMenuItem";
-            this.textToolStripMenuItem.Size = new System.Drawing.Size(50, 26);
+            this.textToolStripMenuItem.Size = new System.Drawing.Size(50, 24);
             this.textToolStripMenuItem.Text = "Text";
+            this.textToolStripMenuItem.Click += new System.EventHandler(this.textToolStripMenuItem_Click);
             // 
             // keyButtonToolStripMenuItem
             // 

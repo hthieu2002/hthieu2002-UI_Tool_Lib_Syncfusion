@@ -42,5 +42,10 @@ namespace WindowsFormsApp
         {
             LoadContent(new ClickToolbox());
         }
+
+        private void textToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadContent(new TextToolbox());
+        }
     }
 }

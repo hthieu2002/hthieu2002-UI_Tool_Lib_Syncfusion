@@ -828,7 +828,7 @@ namespace WindowsFormsApp
                 ProcessStartInfo startInfo = new ProcessStartInfo()
                 {
                     FileName = scrcpyExePath,
-                    Arguments = $"-s {deviceId} --max-size {maxSize} --max-fps 15 " +
+                    Arguments = $"-s {deviceId} --max-size {maxSize} --max-fps 15 " + $"{(isTurnScreenOff ? "--turn-screen-off " : "")}" +
                                 $"--window-borderless --window-x 3000 --window-y 3000  --fullscreen",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,

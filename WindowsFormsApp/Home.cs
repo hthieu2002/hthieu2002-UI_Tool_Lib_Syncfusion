@@ -35,9 +35,10 @@ namespace AccountCreatorForm.Views
             InitializeComponent();
             ToggleDarkLightMode();
             this.WindowState = FormWindowState.Maximized;
+            //  this.Size = new Size(1600, 750);
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-
+            //this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MinimumSize = new Size(1600, 750);
             this.AutoScaleMode = AutoScaleMode.Dpi;
             this.ContextMenuStrip = GlobalContextMenu.ContextMenu;
             GlobalContextMenu.SetHomeForm(this);
@@ -45,12 +46,35 @@ namespace AccountCreatorForm.Views
             init();
             Form_Load();
             Form_Load_Icon();
+            this.Resize += MyForm_OnSizeChange;
+            this.SizeChanged += MyForm_OnSizeChange;
+            UpdateWindowMode();
             foreach (var pair in buttonIconMap)
             {
                 StyleSidebarButtonWithIcon(pair.Key, pair.Value);
                 pair.Key.Click += SidebarButton_Click;
+
             }
             // this.FormBorderStyle = FormBorderStyle.FixedDialog;
+        }
+        private void MyForm_OnSizeChange(object sender, EventArgs e)
+        {
+            UpdateWindowMode();
+        }
+
+        // hoặc thay bằng override OnResize
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            UpdateWindowMode();
+        }
+        private void UpdateWindowMode()
+        {
+            var newMode = this.GetWindowMode();
+            if (newMode != AppState.CurrentWindowMode)
+            {
+                AppState.CurrentWindowMode = newMode;
+            }
         }
         private void ToggleDarkLightMode()
         {
@@ -69,6 +93,7 @@ namespace AccountCreatorForm.Views
     //{ btnManagerAccount, () => new ViewQuanLyTaiKhoan() },
     { btnThanhToan, () => new ViewThanhToan() },
     { btnUngDung, () => new ViewUngDung() },
+    { btnAuto, () => new ViewAutomation() },
    /* { btnLuotChay, () => new ViewLuotChay() },
     { btnNhiemVu, () => new ViewNhiemVU() },
     { btnLichTrinh, () => new ViewLichTrinh() },*/
@@ -169,14 +194,15 @@ namespace AccountCreatorForm.Views
             btnUngDung.Visible = false;
             btnLuotChay.Visible = false;
             btnNhiemVu.Visible = false;
+            btnStore.Visible = false;
+            btnCaiDat.Visible = false;
+            btnHelp.Visible = false;
 
             StyleSidebarChildButton(btnUngDung);
             StyleSidebarChildButton(btnLuotChay);
             StyleSidebarChildButton(btnNhiemVu);
 
-
             AddPlanInfoToSidebar();
-
         }
         private void AddPlanInfoToSidebar()
         {
@@ -195,7 +221,6 @@ namespace AccountCreatorForm.Views
                 SizeMode = PictureBoxSizeMode.Zoom,
                 Location = new Point(10, 10)
             };
-
             var lblPlanTitle = new Label
             {
                 Text = "Default Plan",
@@ -204,7 +229,6 @@ namespace AccountCreatorForm.Views
                 AutoSize = true,
                 Location = new Point(picPlan.Right + 8, picPlan.Top + 4)
             };
-
             var lblExpire = new Label
             {
                 Text = "Expired at",
@@ -213,7 +237,6 @@ namespace AccountCreatorForm.Views
                 AutoSize = true,
                 Location = new Point(10, 45)
             };
-
             var lblUnlimited = new Label
             {
                 Text = "Unlimited",
@@ -221,7 +244,6 @@ namespace AccountCreatorForm.Views
                 Font = new Font("Segoe UI", 8F),
                 AutoSize = true
             };
-
             var btnUpgrade = new SfButton
             {
                 Text = "↑  Upgrade",
@@ -311,60 +333,6 @@ namespace AccountCreatorForm.Views
             btn.ImageMargin = new Padding(8, 0, 5, 0);
             btn.AutoSize = false;
         }
-        //private void StyleSidebarButton(Syncfusion.WinForms.Controls.SfButton button)
-        //{
-        //    button.Width = 150;
-        //    button.Height = 44;
-        //    button.Dock = DockStyle.Top;
-        //    button.FlatStyle = FlatStyle.Flat;
-        //    button.FlatAppearance.BorderSize = 0;
-
-        //    // Màu sắc cho chế độ Dark Mode và Light Mode
-        //    Color backgroundColor = ThemeManager.IsDarkMode ? Color.FromArgb(45, 45, 48) : Color.White;  // Màu nền
-        //    Color textColor = ThemeManager.IsDarkMode ? Color.White : Color.Black;  // Màu chữ
-        //    Color hoverBackColor = ThemeManager.IsDarkMode ? Color.FromArgb(67, 67, 70) : Color.FromArgb(240, 240, 240);  // Màu khi hover
-
-        //    // Màu nền và chữ mặc định (sử dụng cho chế độ sáng)
-        //    Color colorNormalBack = Color.White;
-        //    Color colorNormalText = Color.Black;
-
-        //    // Thiết lập màu sắc gốc cho button
-        //    button.Style.BackColor = colorNormalBack;
-        //    button.Style.ForeColor = colorNormalText;
-        //    button.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-        //    button.TextAlign = ContentAlignment.MiddleLeft;
-        //    button.Padding = new Padding(12, 0, 0, 0);
-        //    button.Margin = new Padding(0, 4, 0, 0);
-
-        //    // Thiết lập màu sắc cho hover và khi nhấn
-        //    button.Style.HoverBackColor = hoverBackColor;
-        //    button.Style.HoverForeColor = textColor;
-        //    button.Style.PressedBackColor = hoverBackColor;
-        //    button.Style.PressedForeColor = textColor;
-
-        //    // Thêm hiệu ứng hover khi di chuột qua button
-        //    button.MouseEnter += (s, e) =>
-        //    {
-        //        if (button != currentActiveButton)
-        //        {
-        //            button.Style.BackColor = hoverBackColor;
-        //            button.Style.ForeColor = textColor;
-        //        }
-        //    };
-
-        //    // Hiệu ứng khi di chuột ra khỏi button
-        //    button.MouseLeave += (s, e) =>
-        //    {
-        //        if (button != currentActiveButton)
-        //        {
-        //            button.Style.BackColor = colorNormalBack;  // Quay lại màu nền mặc định
-        //            button.Style.ForeColor = colorNormalText;  // Quay lại màu chữ mặc định
-        //        }
-        //    };
-        //}
-
-
-
         private void StyleSidebarButton(Syncfusion.WinForms.Controls.SfButton button)
         {
             button.Width = 150;
@@ -373,37 +341,87 @@ namespace AccountCreatorForm.Views
             button.FlatStyle = FlatStyle.Flat;
             button.FlatAppearance.BorderSize = 0;
 
-            Color backgroundColor = ThemeManager.IsDarkMode ? Color.FromArgb(45, 45, 48) : Color.White;
-            Color textColor = ThemeManager.IsDarkMode ? Color.White : Color.Black;
-            Color hoverBackColor = ThemeManager.IsDarkMode ? Color.FromArgb(67, 67, 70) : Color.FromArgb(240, 240, 240);
+            // Màu sắc cho chế độ Dark Mode và Light Mode
+            Color backgroundColor = ThemeManager.IsDarkMode ? Color.FromArgb(45, 45, 48) : Color.White;  // Màu nền
+            Color textColor = ThemeManager.IsDarkMode ? Color.White : Color.Black;  // Màu chữ
+            Color hoverBackColor = ThemeManager.IsDarkMode ? Color.FromArgb(67, 67, 70) : Color.FromArgb(240, 240, 240);  // Màu khi hover
 
+            // Thiết lập màu sắc gốc cho button
             button.Style.BackColor = colorNormalBack;
             button.Style.ForeColor = colorNormalText;
             button.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             button.TextAlign = ContentAlignment.MiddleLeft;
             button.Padding = new Padding(12, 0, 0, 0);
             button.Margin = new Padding(0, 4, 0, 0);
-            button.Style.BackColor = colorNormalBack;
-            button.Style.ForeColor = colorNormalText;
-            button.Style.HoverBackColor = colorHoverBack;
-            button.Style.HoverForeColor = colorHoverText;
-            button.Style.PressedBackColor = colorHoverBack;
-            button.Style.PressedForeColor = colorHoverText;
 
+            // Thiết lập màu sắc cho hover và khi nhấn
+            button.Style.HoverBackColor = hoverBackColor;
+            button.Style.HoverForeColor = textColor;
+            button.Style.PressedBackColor = hoverBackColor;
+            button.Style.PressedForeColor = textColor;
 
+            // Thêm hiệu ứng hover khi di chuột qua button
             button.MouseEnter += (s, e) =>
             {
                 if (button != currentActiveButton)
+                {
                     button.Style.BackColor = hoverBackColor;
-                // button.Style.ForeColor = textColor;
+                    button.Style.ForeColor = textColor;
+                }
             };
 
+            // Hiệu ứng khi di chuột ra khỏi button
             button.MouseLeave += (s, e) =>
             {
                 if (button != currentActiveButton)
-                    button.Style.BackColor = colorNormalBack;
+                {
+                    button.Style.BackColor = colorNormalBack;  // Quay lại màu nền mặc định
+                    button.Style.ForeColor = colorNormalText;  // Quay lại màu chữ mặc định
+                }
             };
         }
+
+
+
+        //private void StyleSidebarButton(Syncfusion.WinForms.Controls.SfButton button)
+        //{
+        //    button.Width = 150;
+        //    button.Height = 44;
+        //    button.Dock = DockStyle.Top;
+        //    button.FlatStyle = FlatStyle.Flat;
+        //    button.FlatAppearance.BorderSize = 0;
+
+        //    Color backgroundColor = ThemeManager.IsDarkMode ? Color.FromArgb(45, 45, 48) : Color.White;
+        //    Color textColor = ThemeManager.IsDarkMode ? Color.White : Color.Black;
+        //    Color hoverBackColor = ThemeManager.IsDarkMode ? Color.FromArgb(67, 67, 70) : Color.FromArgb(240, 240, 240);
+
+        //    button.Style.BackColor = colorNormalBack;
+        //    button.Style.ForeColor = colorNormalText;
+        //    button.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+        //    button.TextAlign = ContentAlignment.MiddleLeft;
+        //    button.Padding = new Padding(12, 0, 0, 0);
+        //    button.Margin = new Padding(0, 4, 0, 0);
+        //    button.Style.BackColor = colorNormalBack;
+        //    button.Style.ForeColor = colorNormalText;
+        //    button.Style.HoverBackColor = colorHoverBack;
+        //    button.Style.HoverForeColor = colorHoverText;
+        //    button.Style.PressedBackColor = colorHoverBack;
+        //    button.Style.PressedForeColor = colorHoverText;
+
+
+        //    button.MouseEnter += (s, e) =>
+        //    {
+        //        if (button != currentActiveButton)
+        //            button.Style.BackColor = hoverBackColor;
+        //        // button.Style.ForeColor = textColor;
+        //    };
+
+        //    button.MouseLeave += (s, e) =>
+        //    {
+        //        if (button != currentActiveButton)
+        //            button.Style.BackColor = colorNormalBack;
+        //    };
+        //}
 
         private void StyleSidebarChildButton(SfButton button)
         {
@@ -442,7 +460,7 @@ namespace AccountCreatorForm.Views
         {
             if (currentChildForm != null)
             {
-                currentChildForm.Hide();  
+                currentChildForm.Hide();
             }
 
             currentChildForm = childForm;
@@ -467,7 +485,7 @@ namespace AccountCreatorForm.Views
                     var childForm = formFactory();
                     if (currentChildForm != null && currentChildForm.GetType() == childForm.GetType())
                     {
-                        currentChildForm.BringToFront(); 
+                        currentChildForm.BringToFront();
                         return;
                     }
 

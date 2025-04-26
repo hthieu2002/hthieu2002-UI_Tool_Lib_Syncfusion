@@ -1,0 +1,50 @@
+[
+  {
+    "brand":    "Samsung",
+    "os":       "Android",
+    "os_version": "11",
+    "name":     "Galaxy S21",
+    "country":  "Vietnam",
+    "model":    "SM-G991B",
+    "sim":      "Single SIM",
+    "serial":   "RZ8R30A1ABC",
+    "code":     "XYZ123",
+    "phone":    "0123456789",
+    "imei":     "356789012345678",
+    "imsi":     "452081234567890",
+    "iccid":    "8988301234567890123",
+    "mac":      "00:1A:2B:3C:4D:5E"
+  },
+  {
+    "brand":    "Apple",
+    "os":       "iOS",
+    "os_version": "14.4",
+    "name":     "iPhone 12",
+    "country":  "USA",
+    "model":    "A2403",
+    "sim":      "Dual SIM",
+    "serial":   "FFMKQ0XYZ123",
+    "code":     "ABC789",
+    "phone":    "0987654321",
+    "imei":     "359876543210123",
+    "imsi":     "310260123456789",
+    "iccid":    "89014103211118510720",
+    "mac":      "00:1B:2C:3D:4E:5F"
+  },
+  {
+    "brand":    "Xiaomi",
+    "os":       "Android",
+    "os_version": "10",
+    "name":     "Mi 11",
+    "country":  "China",
+    "model":    "M2011K2G",
+    "sim":      "Dual SIM",
+    "serial":   "XMW123ABC456",
+    "code":     "MI123",
+    "phone":    "0912345678",
+    "imei":     "867530912345678",
+    "imsi":     "460011234567890",
+    "iccid":    "89860012345678901234",
+    "mac":      "00:1C:2D:3E:4F:5G"
+  }
+]

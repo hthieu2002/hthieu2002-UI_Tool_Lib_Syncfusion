@@ -29,605 +29,112 @@
         private void InitializeComponent()
         {
             this.mainMenu = new System.Windows.Forms.Panel();
-            this.panelContextTop = new System.Windows.Forms.Panel();
-            this.panelContextBottom = new System.Windows.Forms.Panel();
-            this.autoLabel11 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.change = new System.Windows.Forms.Panel();
-            this.autoLabel12 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.txtName = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
-            this.sfButton12 = new Syncfusion.WinForms.Controls.SfButton();
-            this.btnScreenshot = new Syncfusion.WinForms.Controls.SfButton();
-            this.btnAutoBackup = new Syncfusion.WinForms.Controls.SfButton();
-            this.btnOpenUrl = new Syncfusion.WinForms.Controls.SfButton();
-            this.btnBackup2 = new Syncfusion.WinForms.Controls.SfButton();
-            this.btnBackup = new Syncfusion.WinForms.Controls.SfButton();
-            this.btnAutoChangeSim = new Syncfusion.WinForms.Controls.SfButton();
-            this.btnChangeSim = new Syncfusion.WinForms.Controls.SfButton();
-            this.btnRandomSim = new Syncfusion.WinForms.Controls.SfButton();
-            this.btnAutochangeFull = new Syncfusion.WinForms.Controls.SfButton();
-            this.btnChangeDevice = new Syncfusion.WinForms.Controls.SfButton();
-            this.btnRandomdevice = new Syncfusion.WinForms.Controls.SfButton();
-            this.info = new System.Windows.Forms.Panel();
-            this.txtICCID = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
-            this.autoLabel9 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.txtPhone = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
-            this.autoLabel10 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.txtIMSI = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
-            this.autoLabel7 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.txtCode = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
-            this.autoLabel8 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.sfCbModel = new Syncfusion.WinForms.ListView.SfComboBox();
-            this.sfCbSim = new Syncfusion.WinForms.ListView.SfComboBox();
-            this.autoLabel5 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.autoLabel6 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.sfCbName = new Syncfusion.WinForms.ListView.SfComboBox();
-            this.sfCbCountry = new Syncfusion.WinForms.ListView.SfComboBox();
-            this.autoLabel3 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.autoLabel4 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.txtMac = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
-            this.txtImei = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
-            this.autoLabel2 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.autoLabel1 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.txtSerial = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
-            this.lblSerial = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.sfCbBrand = new Syncfusion.WinForms.ListView.SfComboBox();
-            this.sfCbOs = new Syncfusion.WinForms.ListView.SfComboBox();
-            this.lblOS = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            this.lblBrand = new Syncfusion.Windows.Forms.Tools.AutoLabel();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.panelContextBottom.SuspendLayout();
-            this.change.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtName)).BeginInit();
-            this.info.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtICCID)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPhone)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtIMSI)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtCode)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfCbModel)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfCbSim)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfCbName)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfCbCountry)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtMac)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtImei)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtSerial)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfCbBrand)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfCbOs)).BeginInit();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.PanelInput = new System.Windows.Forms.FlowLayoutPanel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.PanelButton = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainMenu
             // 
-            this.mainMenu.Location = new System.Drawing.Point(1, 1);
+            this.mainMenu.Dock = System.Windows.Forms.DockStyle.Top;
+            this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-            this.mainMenu.Size = new System.Drawing.Size(1325, 80);
+            this.mainMenu.Size = new System.Drawing.Size(966, 80);
             this.mainMenu.TabIndex = 0;
-            // 
-            // panelContextTop
-            // 
-            this.panelContextTop.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelContextTop.Location = new System.Drawing.Point(3, 3);
-            this.panelContextTop.Name = "panelContextTop";
-            this.panelContextTop.Size = new System.Drawing.Size(1319, 562);
-            this.panelContextTop.TabIndex = 1;
-            // 
-            // panelContextBottom
-            // 
-            this.panelContextBottom.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelContextBottom.Controls.Add(this.autoLabel11);
-            this.panelContextBottom.Controls.Add(this.change);
-            this.panelContextBottom.Controls.Add(this.info);
-            this.panelContextBottom.Location = new System.Drawing.Point(3, 571);
-            this.panelContextBottom.Name = "panelContextBottom";
-            this.panelContextBottom.Size = new System.Drawing.Size(1319, 291);
-            this.panelContextBottom.TabIndex = 0;
-            // 
-            // autoLabel11
-            // 
-            this.autoLabel11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.autoLabel11.Location = new System.Drawing.Point(22, 44);
-            this.autoLabel11.Name = "autoLabel11";
-            this.autoLabel11.Size = new System.Drawing.Size(36, 18);
-            this.autoLabel11.TabIndex = 27;
-            this.autoLabel11.Text = "Info";
-            // 
-            // change
-            // 
-            this.change.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.change.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.change.Controls.Add(this.autoLabel12);
-            this.change.Controls.Add(this.txtName);
-            this.change.Controls.Add(this.sfButton12);
-            this.change.Controls.Add(this.btnScreenshot);
-            this.change.Controls.Add(this.btnAutoBackup);
-            this.change.Controls.Add(this.btnOpenUrl);
-            this.change.Controls.Add(this.btnBackup2);
-            this.change.Controls.Add(this.btnBackup);
-            this.change.Controls.Add(this.btnAutoChangeSim);
-            this.change.Controls.Add(this.btnChangeSim);
-            this.change.Controls.Add(this.btnRandomSim);
-            this.change.Controls.Add(this.btnAutochangeFull);
-            this.change.Controls.Add(this.btnChangeDevice);
-            this.change.Controls.Add(this.btnRandomdevice);
-            this.change.Location = new System.Drawing.Point(822, 53);
-            this.change.Margin = new System.Windows.Forms.Padding(3, 3, 10, 3);
-            this.change.Name = "change";
-            this.change.Size = new System.Drawing.Size(497, 235);
-            this.change.TabIndex = 1;
-            // 
-            // autoLabel12
-            // 
-            this.autoLabel12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.autoLabel12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.autoLabel12.Location = new System.Drawing.Point(26, -36);
-            this.autoLabel12.Name = "autoLabel12";
-            this.autoLabel12.Size = new System.Drawing.Size(65, 18);
-            this.autoLabel12.TabIndex = 13;
-            this.autoLabel12.Text = "Change";
-            // 
-            // txtName
-            // 
-            this.txtName.BeforeTouchSize = new System.Drawing.Size(150, 27);
-            this.txtName.Location = new System.Drawing.Point(26, 190);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(246, 22);
-            this.txtName.TabIndex = 12;
-            // 
-            // sfButton12
-            // 
-            this.sfButton12.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
-            this.sfButton12.Location = new System.Drawing.Point(292, 187);
-            this.sfButton12.Name = "sfButton12";
-            this.sfButton12.Size = new System.Drawing.Size(129, 28);
-            this.sfButton12.TabIndex = 11;
-            this.sfButton12.Text = "Restore";
-            // 
-            // btnScreenshot
-            // 
-            this.btnScreenshot.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
-            this.btnScreenshot.Location = new System.Drawing.Point(344, 153);
-            this.btnScreenshot.Name = "btnScreenshot";
-            this.btnScreenshot.Size = new System.Drawing.Size(129, 28);
-            this.btnScreenshot.TabIndex = 10;
-            this.btnScreenshot.Text = "Screenshot";
-            // 
-            // btnAutoBackup
-            // 
-            this.btnAutoBackup.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
-            this.btnAutoBackup.Location = new System.Drawing.Point(192, 156);
-            this.btnAutoBackup.Name = "btnAutoBackup";
-            this.btnAutoBackup.Size = new System.Drawing.Size(126, 28);
-            this.btnAutoBackup.TabIndex = 9;
-            this.btnAutoBackup.Text = "Auto backup";
-            // 
-            // btnOpenUrl
-            // 
-            this.btnOpenUrl.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
-            this.btnOpenUrl.Location = new System.Drawing.Point(26, 156);
-            this.btnOpenUrl.Name = "btnOpenUrl";
-            this.btnOpenUrl.Size = new System.Drawing.Size(127, 28);
-            this.btnOpenUrl.TabIndex = 8;
-            this.btnOpenUrl.Text = "Open url";
-            // 
-            // btnBackup2
-            // 
-            this.btnBackup2.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
-            this.btnBackup2.Location = new System.Drawing.Point(192, 112);
-            this.btnBackup2.Name = "btnBackup2";
-            this.btnBackup2.Size = new System.Drawing.Size(126, 28);
-            this.btnBackup2.TabIndex = 7;
-            this.btnBackup2.Text = "Backup >";
-            // 
-            // btnBackup
-            // 
-            this.btnBackup.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
-            this.btnBackup.Location = new System.Drawing.Point(26, 112);
-            this.btnBackup.Name = "btnBackup";
-            this.btnBackup.Size = new System.Drawing.Size(127, 28);
-            this.btnBackup.TabIndex = 6;
-            this.btnBackup.Text = "Backup";
-            // 
-            // btnAutoChangeSim
-            // 
-            this.btnAutoChangeSim.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
-            this.btnAutoChangeSim.Location = new System.Drawing.Point(344, 68);
-            this.btnAutoChangeSim.Name = "btnAutoChangeSim";
-            this.btnAutoChangeSim.Size = new System.Drawing.Size(129, 28);
-            this.btnAutoChangeSim.TabIndex = 5;
-            this.btnAutoChangeSim.Text = "Auto change sim";
-            // 
-            // btnChangeSim
-            // 
-            this.btnChangeSim.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
-            this.btnChangeSim.Location = new System.Drawing.Point(192, 68);
-            this.btnChangeSim.Name = "btnChangeSim";
-            this.btnChangeSim.Size = new System.Drawing.Size(126, 28);
-            this.btnChangeSim.TabIndex = 4;
-            this.btnChangeSim.Text = "Change sim";
-            // 
-            // btnRandomSim
-            // 
-            this.btnRandomSim.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
-            this.btnRandomSim.Location = new System.Drawing.Point(26, 68);
-            this.btnRandomSim.Name = "btnRandomSim";
-            this.btnRandomSim.Size = new System.Drawing.Size(127, 28);
-            this.btnRandomSim.TabIndex = 3;
-            this.btnRandomSim.Text = "Random sim";
-            // 
-            // btnAutochangeFull
-            // 
-            this.btnAutochangeFull.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
-            this.btnAutochangeFull.Location = new System.Drawing.Point(344, 24);
-            this.btnAutochangeFull.Name = "btnAutochangeFull";
-            this.btnAutochangeFull.Size = new System.Drawing.Size(129, 28);
-            this.btnAutochangeFull.TabIndex = 2;
-            this.btnAutochangeFull.Text = "Auto change full";
-            // 
-            // btnChangeDevice
-            // 
-            this.btnChangeDevice.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
-            this.btnChangeDevice.Location = new System.Drawing.Point(192, 24);
-            this.btnChangeDevice.Name = "btnChangeDevice";
-            this.btnChangeDevice.Size = new System.Drawing.Size(126, 28);
-            this.btnChangeDevice.TabIndex = 1;
-            this.btnChangeDevice.Text = "Change device";
-            // 
-            // btnRandomdevice
-            // 
-            this.btnRandomdevice.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
-            this.btnRandomdevice.Location = new System.Drawing.Point(26, 24);
-            this.btnRandomdevice.Name = "btnRandomdevice";
-            this.btnRandomdevice.Size = new System.Drawing.Size(127, 28);
-            this.btnRandomdevice.TabIndex = 0;
-            this.btnRandomdevice.Text = "Random device";
-            // 
-            // info
-            // 
-            this.info.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.info.Controls.Add(this.txtICCID);
-            this.info.Controls.Add(this.autoLabel9);
-            this.info.Controls.Add(this.txtPhone);
-            this.info.Controls.Add(this.autoLabel10);
-            this.info.Controls.Add(this.txtIMSI);
-            this.info.Controls.Add(this.autoLabel7);
-            this.info.Controls.Add(this.txtCode);
-            this.info.Controls.Add(this.autoLabel8);
-            this.info.Controls.Add(this.sfCbModel);
-            this.info.Controls.Add(this.sfCbSim);
-            this.info.Controls.Add(this.autoLabel5);
-            this.info.Controls.Add(this.autoLabel6);
-            this.info.Controls.Add(this.sfCbName);
-            this.info.Controls.Add(this.sfCbCountry);
-            this.info.Controls.Add(this.autoLabel3);
-            this.info.Controls.Add(this.autoLabel4);
-            this.info.Controls.Add(this.txtMac);
-            this.info.Controls.Add(this.txtImei);
-            this.info.Controls.Add(this.autoLabel2);
-            this.info.Controls.Add(this.autoLabel1);
-            this.info.Controls.Add(this.txtSerial);
-            this.info.Controls.Add(this.lblSerial);
-            this.info.Controls.Add(this.sfCbBrand);
-            this.info.Controls.Add(this.sfCbOs);
-            this.info.Controls.Add(this.lblOS);
-            this.info.Controls.Add(this.lblBrand);
-            this.info.Location = new System.Drawing.Point(3, 53);
-            this.info.Name = "info";
-            this.info.Size = new System.Drawing.Size(810, 235);
-            this.info.TabIndex = 0;
-            this.info.Tag = "Info";
-            // 
-            // txtICCID
-            // 
-            this.txtICCID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtICCID.BeforeTouchSize = new System.Drawing.Size(150, 27);
-            this.txtICCID.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtICCID.Location = new System.Drawing.Point(622, 178);
-            this.txtICCID.Name = "txtICCID";
-            this.txtICCID.Size = new System.Drawing.Size(150, 27);
-            this.txtICCID.TabIndex = 26;
-            // 
-            // autoLabel9
-            // 
-            this.autoLabel9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.autoLabel9.Location = new System.Drawing.Point(555, 187);
-            this.autoLabel9.Name = "autoLabel9";
-            this.autoLabel9.Size = new System.Drawing.Size(41, 16);
-            this.autoLabel9.TabIndex = 25;
-            this.autoLabel9.Text = "ICCID";
-            // 
-            // txtPhone
-            // 
-            this.txtPhone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPhone.BeforeTouchSize = new System.Drawing.Size(150, 27);
-            this.txtPhone.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPhone.Location = new System.Drawing.Point(622, 130);
-            this.txtPhone.Name = "txtPhone";
-            this.txtPhone.Size = new System.Drawing.Size(150, 27);
-            this.txtPhone.TabIndex = 24;
-            // 
-            // autoLabel10
-            // 
-            this.autoLabel10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.autoLabel10.Location = new System.Drawing.Point(555, 134);
-            this.autoLabel10.Name = "autoLabel10";
-            this.autoLabel10.Size = new System.Drawing.Size(46, 16);
-            this.autoLabel10.TabIndex = 23;
-            this.autoLabel10.Text = "Phone";
-            // 
-            // txtIMSI
-            // 
-            this.txtIMSI.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtIMSI.BeforeTouchSize = new System.Drawing.Size(150, 27);
-            this.txtIMSI.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtIMSI.Location = new System.Drawing.Point(334, 178);
-            this.txtIMSI.Name = "txtIMSI";
-            this.txtIMSI.Size = new System.Drawing.Size(150, 27);
-            this.txtIMSI.TabIndex = 22;
-            // 
-            // autoLabel7
-            // 
-            this.autoLabel7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.autoLabel7.Location = new System.Drawing.Point(276, 187);
-            this.autoLabel7.Name = "autoLabel7";
-            this.autoLabel7.Size = new System.Drawing.Size(33, 16);
-            this.autoLabel7.TabIndex = 21;
-            this.autoLabel7.Text = "IMSI";
-            // 
-            // txtCode
-            // 
-            this.txtCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtCode.BeforeTouchSize = new System.Drawing.Size(150, 27);
-            this.txtCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCode.Location = new System.Drawing.Point(334, 134);
-            this.txtCode.Name = "txtCode";
-            this.txtCode.Size = new System.Drawing.Size(150, 27);
-            this.txtCode.TabIndex = 20;
-            // 
-            // autoLabel8
-            // 
-            this.autoLabel8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.autoLabel8.Location = new System.Drawing.Point(276, 141);
-            this.autoLabel8.Name = "autoLabel8";
-            this.autoLabel8.Size = new System.Drawing.Size(40, 16);
-            this.autoLabel8.TabIndex = 19;
-            this.autoLabel8.Text = "Code";
-            // 
-            // sfCbModel
-            // 
-            this.sfCbModel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.sfCbModel.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
-            this.sfCbModel.Location = new System.Drawing.Point(622, 48);
-            this.sfCbModel.Name = "sfCbModel";
-            this.sfCbModel.Size = new System.Drawing.Size(150, 30);
-            this.sfCbModel.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.sfCbModel.TabIndex = 18;
-            this.sfCbModel.TabStop = false;
-            // 
-            // sfCbSim
-            // 
-            this.sfCbSim.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.sfCbSim.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
-            this.sfCbSim.Location = new System.Drawing.Point(622, 90);
-            this.sfCbSim.Name = "sfCbSim";
-            this.sfCbSim.Size = new System.Drawing.Size(150, 30);
-            this.sfCbSim.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.sfCbSim.TabIndex = 17;
-            this.sfCbSim.TabStop = false;
-            // 
-            // autoLabel5
-            // 
-            this.autoLabel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.autoLabel5.Location = new System.Drawing.Point(555, 90);
-            this.autoLabel5.Name = "autoLabel5";
-            this.autoLabel5.Size = new System.Drawing.Size(30, 16);
-            this.autoLabel5.TabIndex = 16;
-            this.autoLabel5.Text = "SIM";
-            // 
-            // autoLabel6
-            // 
-            this.autoLabel6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.autoLabel6.Location = new System.Drawing.Point(555, 51);
-            this.autoLabel6.Name = "autoLabel6";
-            this.autoLabel6.Size = new System.Drawing.Size(45, 16);
-            this.autoLabel6.TabIndex = 15;
-            this.autoLabel6.Text = "Model";
-            // 
-            // sfCbName
-            // 
-            this.sfCbName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.sfCbName.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
-            this.sfCbName.Location = new System.Drawing.Point(334, 48);
-            this.sfCbName.Name = "sfCbName";
-            this.sfCbName.Size = new System.Drawing.Size(150, 30);
-            this.sfCbName.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.sfCbName.TabIndex = 14;
-            this.sfCbName.TabStop = false;
-            // 
-            // sfCbCountry
-            // 
-            this.sfCbCountry.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.sfCbCountry.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
-            this.sfCbCountry.Location = new System.Drawing.Point(334, 90);
-            this.sfCbCountry.Name = "sfCbCountry";
-            this.sfCbCountry.Size = new System.Drawing.Size(150, 30);
-            this.sfCbCountry.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.sfCbCountry.TabIndex = 13;
-            this.sfCbCountry.TabStop = false;
-            // 
-            // autoLabel3
-            // 
-            this.autoLabel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.autoLabel3.Location = new System.Drawing.Point(276, 94);
-            this.autoLabel3.Name = "autoLabel3";
-            this.autoLabel3.Size = new System.Drawing.Size(52, 16);
-            this.autoLabel3.TabIndex = 12;
-            this.autoLabel3.Text = "Country";
-            // 
-            // autoLabel4
-            // 
-            this.autoLabel4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.autoLabel4.Location = new System.Drawing.Point(276, 51);
-            this.autoLabel4.Name = "autoLabel4";
-            this.autoLabel4.Size = new System.Drawing.Size(44, 16);
-            this.autoLabel4.TabIndex = 11;
-            this.autoLabel4.Text = "Name";
-            // 
-            // txtMac
-            // 
-            this.txtMac.BeforeTouchSize = new System.Drawing.Size(150, 27);
-            this.txtMac.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMac.Location = new System.Drawing.Point(70, 197);
-            this.txtMac.Name = "txtMac";
-            this.txtMac.Size = new System.Drawing.Size(150, 27);
-            this.txtMac.TabIndex = 10;
-            // 
-            // txtImei
-            // 
-            this.txtImei.BeforeTouchSize = new System.Drawing.Size(150, 27);
-            this.txtImei.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtImei.Location = new System.Drawing.Point(69, 159);
-            this.txtImei.Name = "txtImei";
-            this.txtImei.Size = new System.Drawing.Size(150, 27);
-            this.txtImei.TabIndex = 9;
-            // 
-            // autoLabel2
-            // 
-            this.autoLabel2.Location = new System.Drawing.Point(21, 201);
-            this.autoLabel2.Name = "autoLabel2";
-            this.autoLabel2.Size = new System.Drawing.Size(33, 16);
-            this.autoLabel2.TabIndex = 8;
-            this.autoLabel2.Text = "Mac";
-            // 
-            // autoLabel1
-            // 
-            this.autoLabel1.Location = new System.Drawing.Point(28, 161);
-            this.autoLabel1.Name = "autoLabel1";
-            this.autoLabel1.Size = new System.Drawing.Size(32, 16);
-            this.autoLabel1.TabIndex = 7;
-            this.autoLabel1.Text = "Imei";
-            // 
-            // txtSerial
-            // 
-            this.txtSerial.BeforeTouchSize = new System.Drawing.Size(150, 27);
-            this.txtSerial.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSerial.Location = new System.Drawing.Point(69, 123);
-            this.txtSerial.Name = "txtSerial";
-            this.txtSerial.Size = new System.Drawing.Size(150, 27);
-            this.txtSerial.TabIndex = 6;
-            // 
-            // lblSerial
-            // 
-            this.lblSerial.Location = new System.Drawing.Point(21, 126);
-            this.lblSerial.Name = "lblSerial";
-            this.lblSerial.Size = new System.Drawing.Size(42, 16);
-            this.lblSerial.TabIndex = 5;
-            this.lblSerial.Text = "Serial";
-            // 
-            // sfCbBrand
-            // 
-            this.sfCbBrand.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
-            this.sfCbBrand.Location = new System.Drawing.Point(70, 36);
-            this.sfCbBrand.Name = "sfCbBrand";
-            this.sfCbBrand.Size = new System.Drawing.Size(150, 30);
-            this.sfCbBrand.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.sfCbBrand.TabIndex = 4;
-            this.sfCbBrand.TabStop = false;
-            // 
-            // sfCbOs
-            // 
-            this.sfCbOs.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
-            this.sfCbOs.Location = new System.Drawing.Point(70, 80);
-            this.sfCbOs.Name = "sfCbOs";
-            this.sfCbOs.Size = new System.Drawing.Size(150, 30);
-            this.sfCbOs.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.sfCbOs.TabIndex = 3;
-            this.sfCbOs.TabStop = false;
-            // 
-            // lblOS
-            // 
-            this.lblOS.Location = new System.Drawing.Point(28, 80);
-            this.lblOS.Name = "lblOS";
-            this.lblOS.Size = new System.Drawing.Size(26, 16);
-            this.lblOS.TabIndex = 2;
-            this.lblOS.Text = "OS";
-            // 
-            // lblBrand
-            // 
-            this.lblBrand.Location = new System.Drawing.Point(21, 36);
-            this.lblBrand.Name = "lblBrand";
-            this.lblBrand.Size = new System.Drawing.Size(43, 16);
-            this.lblBrand.TabIndex = 0;
-            this.lblBrand.Text = "Brand";
             // 
             // tableLayoutPanel
             // 
-            this.tableLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel.AutoScroll = true;
             this.tableLayoutPanel.ColumnCount = 1;
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel.Controls.Add(this.panelContextBottom, 0, 1);
-            this.tableLayoutPanel.Controls.Add(this.panelContextTop, 0, 0);
-            this.tableLayoutPanel.Location = new System.Drawing.Point(4, 87);
+            this.tableLayoutPanel.Controls.Add(this.tableLayoutPanel1, 0, 1);
+            this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel.Location = new System.Drawing.Point(0, 80);
+            this.tableLayoutPanel.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
             this.tableLayoutPanel.RowCount = 2;
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 65.71774F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 34.28226F));
-            this.tableLayoutPanel.Size = new System.Drawing.Size(1325, 865);
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 55F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45F));
+            this.tableLayoutPanel.Size = new System.Drawing.Size(966, 484);
             this.tableLayoutPanel.TabIndex = 2;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 269);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(960, 212);
+            this.tableLayoutPanel1.TabIndex = 1;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.PanelInput);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 13);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(570, 196);
+            this.panel1.TabIndex = 0;
+            // 
+            // PanelInput
+            // 
+            this.PanelInput.AccessibleName = "Info";
+            this.PanelInput.AutoSize = true;
+            this.PanelInput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PanelInput.Location = new System.Drawing.Point(0, 0);
+            this.PanelInput.Name = "PanelInput";
+            this.PanelInput.Padding = new System.Windows.Forms.Padding(10);
+            this.PanelInput.Size = new System.Drawing.Size(570, 196);
+            this.PanelInput.TabIndex = 1;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.PanelButton);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(579, 13);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(378, 196);
+            this.panel2.TabIndex = 1;
+            // 
+            // PanelButton
+            // 
+            this.PanelButton.AutoSize = true;
+            this.PanelButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.PanelButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PanelButton.Location = new System.Drawing.Point(0, 0);
+            this.PanelButton.Name = "PanelButton";
+            this.PanelButton.Size = new System.Drawing.Size(378, 196);
+            this.PanelButton.TabIndex = 1;
             // 
             // ViewChange
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1329, 964);
+            this.ClientSize = new System.Drawing.Size(966, 564);
             this.Controls.Add(this.tableLayoutPanel);
             this.Controls.Add(this.mainMenu);
             this.Name = "ViewChange";
             this.Text = "ViewChange";
-            this.panelContextBottom.ResumeLayout(false);
-            this.panelContextBottom.PerformLayout();
-            this.change.ResumeLayout(false);
-            this.change.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtName)).EndInit();
-            this.info.ResumeLayout(false);
-            this.info.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtICCID)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPhone)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtIMSI)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtCode)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfCbModel)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfCbSim)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfCbName)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfCbCountry)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtMac)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtImei)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtSerial)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfCbBrand)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfCbOs)).EndInit();
             this.tableLayoutPanel.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -635,51 +142,11 @@
         #endregion
 
         private System.Windows.Forms.Panel mainMenu;
-        private System.Windows.Forms.Panel panelContextBottom;
-        private System.Windows.Forms.Panel change;
-        private System.Windows.Forms.Panel info;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtICCID;
-        private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel9;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtPhone;
-        private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel10;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtIMSI;
-        private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel7;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtCode;
-        private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel8;
-        private Syncfusion.WinForms.ListView.SfComboBox sfCbModel;
-        private Syncfusion.WinForms.ListView.SfComboBox sfCbSim;
-        private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel5;
-        private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel6;
-        private Syncfusion.WinForms.ListView.SfComboBox sfCbName;
-        private Syncfusion.WinForms.ListView.SfComboBox sfCbCountry;
-        private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel3;
-        private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel4;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtMac;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtImei;
-        private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel2;
-        private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel1;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtSerial;
-        private Syncfusion.Windows.Forms.Tools.AutoLabel lblSerial;
-        private Syncfusion.WinForms.ListView.SfComboBox sfCbBrand;
-        private Syncfusion.WinForms.ListView.SfComboBox sfCbOs;
-        private Syncfusion.Windows.Forms.Tools.AutoLabel lblOS;
-        private Syncfusion.Windows.Forms.Tools.AutoLabel lblBrand;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtName;
-        private Syncfusion.WinForms.Controls.SfButton sfButton12;
-        private Syncfusion.WinForms.Controls.SfButton btnScreenshot;
-        private Syncfusion.WinForms.Controls.SfButton btnAutoBackup;
-        private Syncfusion.WinForms.Controls.SfButton btnOpenUrl;
-        private Syncfusion.WinForms.Controls.SfButton btnBackup2;
-        private Syncfusion.WinForms.Controls.SfButton btnBackup;
-        private Syncfusion.WinForms.Controls.SfButton btnAutoChangeSim;
-        private Syncfusion.WinForms.Controls.SfButton btnChangeSim;
-        private Syncfusion.WinForms.Controls.SfButton btnRandomSim;
-        private Syncfusion.WinForms.Controls.SfButton btnAutochangeFull;
-        private Syncfusion.WinForms.Controls.SfButton btnChangeDevice;
-        private Syncfusion.WinForms.Controls.SfButton btnRandomdevice;
-        private System.Windows.Forms.Panel panelContextTop;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
-        private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel11;
-        private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel12;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.FlowLayoutPanel PanelInput;
+        private System.Windows.Forms.FlowLayoutPanel PanelButton;
     }
 }

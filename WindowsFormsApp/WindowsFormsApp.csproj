@@ -106,6 +106,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormHelper.cs" />
     <Compile Include="GlobalContextMenu.cs" />
     <Compile Include="HeaderViewCommon.cs">
       <SubType>UserControl</SubType>
@@ -122,6 +123,7 @@
     <Compile Include="Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\DeviceConfig.cs" />
     <Compile Include="Model\DeviceModels.cs" />
     <Compile Include="Model\ThemeManager.cs" />
     <Compile Include="Program.cs" />
@@ -150,11 +152,23 @@
     <Compile Include="UcPricingCard.Designer.cs">
       <DependentUpon>UcPricingCard.cs</DependentUpon>
     </Compile>
+    <Compile Include="ViewAutomation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewAutomation.Designer.cs">
+      <DependentUpon>ViewAutomation.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewChange.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ViewChange.Designer.cs">
       <DependentUpon>ViewChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewChangeResponsive.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewChangeResponsive.Designer.cs">
+      <DependentUpon>ViewChangeResponsive.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewCuaHang.cs">
       <SubType>Form</SubType>
@@ -202,6 +216,9 @@
     <EmbeddedResource Include="UcPricingCard.resx">
       <DependentUpon>UcPricingCard.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ViewAutomation.resx">
+      <DependentUpon>ViewAutomation.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ViewChange.resx">
       <DependentUpon>ViewChange.cs</DependentUpon>
     </EmbeddedResource>
@@ -210,6 +227,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ViewThanhToan.resx">
       <DependentUpon>ViewThanhToan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewUngDung.resx">
+      <DependentUpon>ViewUngDung.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -247,6 +267,9 @@
     <None Include="Resources\cuahang_0.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\data.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\dieukhien_0.png" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -27,6 +27,7 @@ namespace WindowsFormsApp
         private const int panelHeight = (int)(panelWidth / aspectRatio);
         private int scale = 150;
         private int maxSize = 1280;
+        private bool isTurnScreenOff = true;
         public List<DeviceDisplay> deviceDisplays = new List<DeviceDisplay>();
         List<string> activeDevices = new List<string>();
         List<Form> openedForms = new List<Form>();
@@ -70,7 +71,6 @@ namespace WindowsFormsApp
         public ScreenView()
         {
             InitializeComponent();
-
             load();
             this.FormClosing += (s, e) =>
             {
@@ -143,9 +143,9 @@ namespace WindowsFormsApp
             cbTurnOffScreen = new CheckBox();
             cbTurnOffScreen.Text = "Tắt màn hình khi xem";
             cbTurnOffScreen.AutoSize = true;
-            cbTurnOffScreen.Margin = new Padding(10);
+            cbTurnOffScreen.Checked = true;
+            cbTurnOffScreen.Margin = new Padding(20, 10, 10, 10);
             cbTurnOffScreen.CheckedChanged += CbTurnOffScreen_CheckedChanged;
-
             // Thêm checkbox vào parent panel
             rightPanel.Controls.Add(cbTurnOffScreen);
 
@@ -165,7 +165,7 @@ namespace WindowsFormsApp
         private void CbTurnOffScreen_CheckedChanged(object sender, EventArgs e)
         {
             bool isChecked = cbTurnOffScreen.Checked;
-
+            isTurnScreenOff = isChecked;
         }
         private void UpdateSelectedDevicesLabel()
         {
@@ -185,12 +185,18 @@ namespace WindowsFormsApp
             btnView.Margin = new Padding(5);
             btnView.Click += (s, e) =>
             {
+                int startX = 100;
+                int startY = 100;
+                int offsetX = 50;
+                int index = 0;
+
                 foreach (string deviceId in activeDevices)
                 {
                     Form deviceForm = new Form();
                     deviceForm.Text = $"Device {deviceId}";
                     deviceForm.FormBorderStyle = FormBorderStyle.FixedDialog;
                     deviceForm.MaximizeBox = false;
+
                     float scaleScreen = scale / 100f;
                     int width = (int)(200 * scaleScreen) + 180;
                     int height = (int)(453 * scaleScreen) + 130;
@@ -270,8 +276,9 @@ namespace WindowsFormsApp
                     ProcessStartInfo startInfo = new ProcessStartInfo()
                     {
                         FileName = "./Resources/scrcpy.exe",
-                        Arguments = $"-s {deviceId} --max-size {maxSize} --max-fps 15 " +
-                                    $"--window-borderless --window-x 3000 --window-y 3000  --fullscreen",
+                        Arguments = $"-s {deviceId} --max-size {maxSize} --max-fps 15 --video-bit-rate 2M " +
+                                    $"{(isTurnScreenOff ? "--turn-screen-off " : "")}" +
+                                    $"--window-borderless --window-x 3000 --window-y 3000 --fullscreen",
                         UseShellExecute = false,
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
@@ -281,6 +288,7 @@ namespace WindowsFormsApp
                     bool scrcpyStarted = false;
                     while (!scrcpyStarted)
                     {
+
                         scrcpyProcessZoom = Process.Start(startInfo);
 
                         while (scrcpyWindowZoom == IntPtr.Zero)
@@ -299,7 +307,6 @@ namespace WindowsFormsApp
                                     }
                                 }
                             }
-
                             Task.Delay(500);
                         }
 
@@ -318,6 +325,7 @@ namespace WindowsFormsApp
                             SetParent(scrcpyWindowZoom, scrcpyPanel.Handle);
                             ShowWindow(scrcpyWindowZoom, SW_SHOWNORMAL);
                             MoveWindow(scrcpyWindowZoom, 0, 0, scrcpyPanel.Width, scrcpyPanel.Height, true);
+
                             scrcpyStarted = true;
                         }
                     }
@@ -375,7 +383,10 @@ namespace WindowsFormsApp
 
                         return output.Contains(device);
                     }
-
+                    deviceForm.StartPosition = FormStartPosition.Manual;
+                    deviceForm.Location = new Point(startX + (width + offsetX) * index, startY);
+                    index++;
+                    Thread.Sleep(1000);
                 }
                 AddDeviceButtons(rightPanel, deviceIds);
                 activeDevices.Clear();
@@ -389,7 +400,7 @@ namespace WindowsFormsApp
             btnCloseAll.Margin = new Padding(5);
             btnCloseAll.Click += (s, e) =>
             {
-                foreach (var form in openedForms.ToList()) 
+                foreach (var form in openedForms.ToList())
                 {
                     if (!form.IsDisposed)
                     {
@@ -400,7 +411,7 @@ namespace WindowsFormsApp
                     }
                 }
 
-                openedForms.Clear(); 
+                openedForms.Clear();
             };
 
             StyleButton(btnCloseAll);
@@ -539,7 +550,7 @@ namespace WindowsFormsApp
                 buttonPanel.Padding = new Padding(10);
                 buttonPanel.Margin = new Padding(0, 10, 0, 0);
                 buttonPanel.FlowDirection = FlowDirection.LeftToRight;
-                buttonPanel.BackColor = Color.LightGray; 
+                buttonPanel.BackColor = Color.LightGray;
 
                 parent.Controls.Add(buttonPanel);
             }

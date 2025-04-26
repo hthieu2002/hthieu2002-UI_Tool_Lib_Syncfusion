@@ -15,17 +15,32 @@ namespace WindowsFormsApp
         public ScriptAutomation()
         {
             InitializeComponent();
-            var screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
-            var screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
+            //var screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
+            //var screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
 
-            this.Width = (int)(screenWidth * 0.9);
-            this.Height = (int)(screenHeight * 0.9);
+            //this.Width = (int)(screenWidth * 0.9);
+            //this.Height = (int)(screenHeight * 0.9);
 
-            this.StartPosition = FormStartPosition.CenterScreen;
+            //this.StartPosition = FormStartPosition.CenterScreen;
 
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
+            //this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            //this.MaximizeBox = false;
+            //this.MinimizeBox = false;
+        }
+        private void LoadContent(UserControl control)
+        {
+            panelContent.Controls.Clear();
+            control.Dock = DockStyle.Fill;
+            panelContent.Controls.Add(control);
+        }
+        private void dataChangeInfoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void clickToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadContent(new ClickToolbox());
         }
     }
 }

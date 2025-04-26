@@ -106,6 +106,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClickToolbox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ClickToolbox.Designer.cs">
+      <DependentUpon>ClickToolbox.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormHelper.cs" />
     <Compile Include="GlobalContextMenu.cs" />
     <Compile Include="HeaderViewCommon.cs">
@@ -151,6 +157,12 @@
     </Compile>
     <Compile Include="StoreItem.Designer.cs">
       <DependentUpon>StoreItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TextToolbox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TextToolbox.Designer.cs">
+      <DependentUpon>TextToolbox.cs</DependentUpon>
     </Compile>
     <Compile Include="UcPricingCard.cs">
       <SubType>UserControl</SubType>
@@ -212,6 +224,9 @@
     </Compile>
     <EmbeddedResource Include="ScreenView.resx">
       <DependentUpon>ScreenView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScriptAutomation.resx">
+      <DependentUpon>ScriptAutomation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Setting.resx">
       <DependentUpon>Setting.cs</DependentUpon>

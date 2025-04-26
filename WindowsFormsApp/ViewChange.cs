@@ -66,6 +66,7 @@ namespace WindowsFormsApp
         private SfButton btnScreenshot;
         //
         private SfButton btnRestore;
+        private SfButton btnFakeLocation;
         private TextBoxExt txtRestore;
 
         //
@@ -277,7 +278,21 @@ namespace WindowsFormsApp
                 Height = 40,
                 Width = 160
                 },
+            btnFakeLocation = new SfButton
+            {
+                Text = "Fake Location",
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Color.LightBlue,
+                ForeColor = Color.Black,
+                Font = new Font("Segoe UI", 10F, FontStyle.Regular),
+                TextAlign = ContentAlignment.MiddleLeft,
+                Padding = new Padding(10),
+                Margin = new Padding(5),
+                Height = 40,
+                Width = 160
+                },
             };
+
             foreach (var btn in buttons)
             {
                 SetupButtonStyle(btn);
@@ -308,8 +323,9 @@ namespace WindowsFormsApp
         btnScreenshot
 
         );
-            PanelButton.Controls.Add(txtRestore);
             PanelButton.Controls.Add(btnRestore);
+            PanelButton.Controls.Add(txtRestore);
+            PanelButton.Controls.Add(btnFakeLocation);
         }
         private void ConfigureButtons(params SfButton[] buttons)
         {
@@ -389,6 +405,7 @@ namespace WindowsFormsApp
             btnRandomSim.Paint += BtnCommon_Paint;
             btnScreenshot.Paint += BtnCommon_Paint;
             btnRestore.Paint += BtnCommon_Paint;
+            btnFakeLocation.Paint += BtnCommon_Paint;
         }
 
         public void setMenu()

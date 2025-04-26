@@ -31,6 +31,7 @@ namespace WindowsFormsApp
         public List<DeviceDisplay> deviceDisplays = new List<DeviceDisplay>();
         List<string> activeDevices = new List<string>();
         List<Form> openedForms = new List<Form>();
+        HashSet<string> viewedDevices = new HashSet<string>();
         string[] deviceIds = { };
         private Label selectedDevicesLabel;
         private CheckBox cbTurnOffScreen;
@@ -192,6 +193,9 @@ namespace WindowsFormsApp
 
                 foreach (string deviceId in activeDevices)
                 {
+                    if (viewedDevices.Contains(deviceId))
+                        continue;
+
                     Form deviceForm = new Form();
                     deviceForm.Text = $"Device {deviceId}";
                     deviceForm.FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -383,10 +387,15 @@ namespace WindowsFormsApp
 
                         return output.Contains(device);
                     }
+                    viewedDevices.Add(deviceId);
                     deviceForm.StartPosition = FormStartPosition.Manual;
                     deviceForm.Location = new Point(startX + (width + offsetX) * index, startY);
                     index++;
                     Thread.Sleep(1000);
+                    deviceForm.FormClosed += (object sender, FormClosedEventArgs _) =>
+                    {
+                        viewedDevices.Remove(deviceId);
+                    };
                 }
                 AddDeviceButtons(rightPanel, deviceIds);
                 activeDevices.Clear();

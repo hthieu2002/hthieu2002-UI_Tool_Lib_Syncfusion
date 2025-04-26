@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp
 {
-    public partial class TextToolbox: UserControl
+    public partial class TextToolbox : UserControl
     {
         public TextToolbox()
         {
@@ -29,10 +29,10 @@ namespace WindowsFormsApp
             };
 
             var panel = new FlowLayoutPanel();
-           
 
-            panel.Controls.Add(CreateGroup("Progress text", new string[] { "Send text", "Swipe up", "Random Click", "Swipe down", "Wait" }, 250));
-            roolPanel.Controls.Add(panel);
+
+            roolPanel.Controls.Add(CreateGroup("Progress text", new string[] { "Send text", "Send text from file(delete)", "Send text from", "Random text && send ", "Xóa text 1 ký tự", "Xóa text (xóa all)" }, 250));
+            //  roolPanel.Controls.Add(panel);
             this.Controls.Add(roolPanel);
         }
 
@@ -78,10 +78,10 @@ namespace WindowsFormsApp
         }, 370));
 
             // RIGHT
-        //    rightPanel.Controls.Add(CreateGroupRight("Xử lý logic", new string[] {
-        //    "FOR LOOP", "IF", "GOTO", "BREAK", "Continue",
-        //    "Stop Script", "Return()", "Comment", "Show status"
-        //}, 140));
+            //    rightPanel.Controls.Add(CreateGroupRight("Xử lý logic", new string[] {
+            //    "FOR LOOP", "IF", "GOTO", "BREAK", "Continue",
+            //    "Stop Script", "Return()", "Comment", "Show status"
+            //}, 140));
 
             rootPanel.Controls.Add(leftPanel, 0, 0);
             rootPanel.Controls.Add(rightPanel, 1, 0);
@@ -117,7 +117,8 @@ namespace WindowsFormsApp
                 var btn = new Button
                 {
                     Text = text,
-                    AutoSize = true,
+                    // AutoSize = true,
+                    Width = 200,
                     Height = 35,
                     Margin = new Padding(3),
                     BackColor = Color.MediumSlateBlue,

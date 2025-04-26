@@ -18,14 +18,11 @@ namespace WindowsFormsApp
             var screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
             var screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
 
-            // Set kích thước form = 90% màn hình
             this.Width = (int)(screenWidth * 0.9);
             this.Height = (int)(screenHeight * 0.9);
 
-            // Căn giữa màn hình
             this.StartPosition = FormStartPosition.CenterScreen;
 
-            // Option: Không cho resize
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

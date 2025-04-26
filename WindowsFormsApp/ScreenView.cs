@@ -515,7 +515,7 @@ namespace WindowsFormsApp
                 buttonPanel.Padding = new Padding(10);
                 buttonPanel.Margin = new Padding(0, 10, 0, 0);
                 buttonPanel.FlowDirection = FlowDirection.LeftToRight;
-                buttonPanel.BackColor = Color.LightGray; // Khung màu để phân biệt
+                buttonPanel.BackColor = Color.LightGray; 
 
                 parent.Controls.Add(buttonPanel);
             }

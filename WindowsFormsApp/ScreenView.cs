@@ -509,7 +509,7 @@ namespace WindowsFormsApp
                 buttonPanel = new FlowLayoutPanel();
                 buttonPanel.Dock = DockStyle.Top;
                 buttonPanel.Height = 500;
-                //buttonPanel.Width = 500;
+                buttonPanel.Width = 350;
                 buttonPanel.AutoScroll = true;
                 buttonPanel.WrapContents = true;
                 buttonPanel.Padding = new Padding(10);

@@ -134,6 +134,12 @@
     <Compile Include="ScreenView.Designer.cs">
       <DependentUpon>ScreenView.cs</DependentUpon>
     </Compile>
+    <Compile Include="ScriptAutomation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScriptAutomation.Designer.cs">
+      <DependentUpon>ScriptAutomation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Setting.cs">
       <SubType>Form</SubType>
     </Compile>

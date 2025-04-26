@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -69,7 +70,19 @@ namespace WindowsFormsApp
         public ScreenView()
         {
             InitializeComponent();
+
             load();
+            this.FormClosing += (s, e) =>
+            {
+                foreach (var process in Process.GetProcessesByName("scrcpy"))
+                {
+                    try
+                    {
+                        process.Kill();
+                    }
+                    catch { /* Có thể bị lỗi nếu process đã chết, bỏ qua */ }
+                }
+            };
         }
 
         private void load()
@@ -292,6 +305,15 @@ namespace WindowsFormsApp
 
                         if (scrcpyWindowZoom != IntPtr.Zero)
                         {
+                            Thread.Sleep(1000);
+                            scrcpyPanel.Resize += (sender, args) =>
+                            {
+                                if (scrcpyWindowZoom != IntPtr.Zero)
+                                {
+                                    MoveWindow(scrcpyWindowZoom, 0, 0, scrcpyPanel.Width, scrcpyPanel.Height, true);
+                                }
+                            };
+
                             ShowWindow(scrcpyWindowZoom, SW_HIDE);
                             SetParent(scrcpyWindowZoom, scrcpyPanel.Handle);
                             ShowWindow(scrcpyWindowZoom, SW_SHOWNORMAL);
@@ -355,7 +377,9 @@ namespace WindowsFormsApp
                     }
 
                 }
-
+                AddDeviceButtons(rightPanel, deviceIds);
+                activeDevices.Clear();
+                UpdateSelectedDevicesLabel();
             };
             StyleButton(btnView);
 

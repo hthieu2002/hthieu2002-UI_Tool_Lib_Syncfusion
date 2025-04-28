@@ -54,14 +54,14 @@ namespace AccountCreatorForm.Controls
             //setVersion();
             setRun();
             setInspector();
-            setDrakMode();
+          //  setDrakMode();
             setAccount();
 
             layoutMain.Controls.Add(lblTitle, 0, 0);
            // layoutMain.Controls.Add(lblVersion, 1, 0);
             layoutMain.Controls.Add(btnRuns, 2, 0);
             layoutMain.Controls.Add(btnInspector, 3, 0);
-            layoutMain.Controls.Add(button, 4, 0);
+          //  layoutMain.Controls.Add(button, 4, 0);
             layoutMain.Controls.Add(accountPanel, 5, 0);
 
             this.Controls.Add(layoutMain);
@@ -211,13 +211,13 @@ namespace AccountCreatorForm.Controls
            // lblVersion.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             btnRuns.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             btnInspector.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-            button.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+          //  button.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             accountPanel.Anchor = AnchorStyles.Left | AnchorStyles.Top;
 
            // lblVersion.Margin = new Padding(0, 10, 10, 0);  // Khoảng cách giữa avatar và các nút
             btnRuns.Margin = new Padding(0, 10, 10, 0); 
             btnInspector.Margin = new Padding(0, 10, 10, 0); 
-            button.Margin = new Padding(0, 10, 10, 0);  
+         //   button.Margin = new Padding(0, 10, 10, 0);  
             accountPanel.Margin = new Padding(0, 10, 10, 0); 
         }
 

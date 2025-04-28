@@ -18,7 +18,7 @@ namespace WindowsFormsApp
             InitializeComponent();
             init();
             BuildDataTableUI();
-            editText();
+          //  editText();
             this.Load += Form1_Load;
             //var screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
             //var screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
@@ -294,16 +294,16 @@ namespace WindowsFormsApp
             };
             dataGridView.CellMouseEnter += (s, e) =>
             {
-                if (e.RowIndex >= 0) // Đảm bảo không phải hàng tiêu đề
+                if (e.RowIndex >= 0)
                 {
-                    dataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGray; // Màu khi hover
+                    dataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGray; 
                 }
             };
             dataGridView.CellMouseLeave += (s, e) =>
             {
-                if (e.RowIndex >= 0) // Đảm bảo không phải hàng tiêu đề
+                if (e.RowIndex >= 0) 
                 {
-                    dataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.WhiteSmoke; // Màu mặc định
+                    dataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.WhiteSmoke; 
                 }
             };
             // Đặt tên cột

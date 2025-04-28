@@ -105,9 +105,13 @@ namespace WindowsFormsApp
                 BackColor = Color.MediumSlateBlue,
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 8f)
+                Font = new Font("Segoe UI", 8f),
+                Cursor = Cursors.Hand
             };
             btn.FlatAppearance.BorderSize = 0;
+            btn.MouseEnter += (s, e) => btn.BackColor = Color.SlateBlue;
+            // Hover ra: trả về màu gốc
+            btn.MouseLeave += (s, e) => btn.BackColor = Color.MediumSlateBlue;
             btn.Paint += RoundedButtonPainter.PaintButton;
             // Gán sự kiện Click riêng từng nút
             btn.Click += (s, e) => HandleButtonClick(text);

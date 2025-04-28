@@ -48,12 +48,21 @@
             this.sfbtnTest = new Syncfusion.WinForms.Controls.SfButton();
             this.textBoxExt2 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.panelTest = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.sfComboBox3 = new Syncfusion.WinForms.ListView.SfComboBox();
+            this.btnLoadFile = new Syncfusion.WinForms.Controls.SfButton();
+            this.btnCreate = new Syncfusion.WinForms.Controls.SfButton();
+            this.btnDelete = new Syncfusion.WinForms.Controls.SfButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sfComboBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sfComboBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sftxtSend)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.textBoxExt2)).BeginInit();
+            this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sfComboBox3)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -254,11 +263,74 @@
             this.panelTest.Size = new System.Drawing.Size(416, 869);
             this.panelTest.TabIndex = 6;
             // 
+            // panel2
+            // 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.panel3);
+            this.panel2.Location = new System.Drawing.Point(3, 5);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(587, 975);
+            this.panel2.TabIndex = 7;
+            // 
+            // panel3
+            // 
+            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Controls.Add(this.btnDelete);
+            this.panel3.Controls.Add(this.btnCreate);
+            this.panel3.Controls.Add(this.btnLoadFile);
+            this.panel3.Controls.Add(this.sfComboBox3);
+            this.panel3.Location = new System.Drawing.Point(17, 907);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(449, 39);
+            this.panel3.TabIndex = 0;
+            // 
+            // sfComboBox3
+            // 
+            this.sfComboBox3.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
+            this.sfComboBox3.Location = new System.Drawing.Point(3, 3);
+            this.sfComboBox3.Name = "sfComboBox3";
+            this.sfComboBox3.Size = new System.Drawing.Size(129, 31);
+            this.sfComboBox3.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.sfComboBox3.TabIndex = 0;
+            this.sfComboBox3.TabStop = false;
+            // 
+            // btnLoadFile
+            // 
+            this.btnLoadFile.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            this.btnLoadFile.Location = new System.Drawing.Point(138, 6);
+            this.btnLoadFile.Name = "btnLoadFile";
+            this.btnLoadFile.Size = new System.Drawing.Size(96, 28);
+            this.btnLoadFile.TabIndex = 1;
+            this.btnLoadFile.Text = "Load file";
+            // 
+            // btnCreate
+            // 
+            this.btnCreate.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            this.btnCreate.Location = new System.Drawing.Point(240, 6);
+            this.btnCreate.Name = "btnCreate";
+            this.btnCreate.Size = new System.Drawing.Size(96, 28);
+            this.btnCreate.TabIndex = 2;
+            this.btnCreate.Text = "Create";
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            this.btnDelete.Location = new System.Drawing.Point(342, 6);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(96, 28);
+            this.btnDelete.TabIndex = 3;
+            this.btnDelete.Text = "Delete";
+            // 
             // ScriptAutomation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1599, 983);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.panelTest);
             this.Controls.Add(this.textBoxExt2);
             this.Controls.Add(this.sfbtnTest);
@@ -277,6 +349,9 @@
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sftxtSend)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.textBoxExt2)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.sfComboBox3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -304,5 +379,11 @@
         private Syncfusion.WinForms.Controls.SfButton sfbtnTest;
         private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt2;
         private System.Windows.Forms.Panel panelTest;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel3;
+        private Syncfusion.WinForms.Controls.SfButton btnDelete;
+        private Syncfusion.WinForms.Controls.SfButton btnCreate;
+        private Syncfusion.WinForms.Controls.SfButton btnLoadFile;
+        private Syncfusion.WinForms.ListView.SfComboBox sfComboBox3;
     }
 }

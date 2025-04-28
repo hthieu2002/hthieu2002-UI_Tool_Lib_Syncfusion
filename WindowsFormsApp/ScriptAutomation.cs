@@ -41,6 +41,10 @@ namespace WindowsFormsApp
             sfbtnSend.Paint += BtnCommon_Paint;
             sfbtnTest.Paint += BtnCommon_Paint;
             sfbtnCapture.Paint += BtnCommon_Paint;
+
+            btnLoadFile.Paint += BtnCommon_Paint;
+            btnDelete.Paint += BtnCommon_Paint;
+            btnCreate.Paint += BtnCommon_Paint;
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -112,7 +116,7 @@ namespace WindowsFormsApp
 
             Color textColor = GetButtonTextColor(btn);
 
-            int iconSize = 16;                      // Kích thước icon (vuông)
+            int iconSize = 24;                      // Kích thước icon (vuông)
             int iconPadding = 5;                    // Khoảng cách icon với viền và text
             int textOffsetX = 0;
 
@@ -286,7 +290,20 @@ namespace WindowsFormsApp
                     SelectionForeColor = Color.Black
                 }
             };
-
+            dataGridView.CellMouseEnter += (s, e) =>
+            {
+                if (e.RowIndex >= 0) // Đảm bảo không phải hàng tiêu đề
+                {
+                    dataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGray; // Màu khi hover
+                }
+            };
+            dataGridView.CellMouseLeave += (s, e) =>
+            {
+                if (e.RowIndex >= 0) // Đảm bảo không phải hàng tiêu đề
+                {
+                    dataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.WhiteSmoke; // Màu mặc định
+                }
+            };
             // Đặt tên cột
             dataGridView.Columns[0].Name = "Key";
             dataGridView.Columns[1].Name = "Value";

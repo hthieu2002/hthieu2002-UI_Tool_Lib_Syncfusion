@@ -108,6 +108,7 @@ namespace WindowsFormsApp
                     Font = new Font("Segoe UI", 8f)
                 };
                 btn.FlatAppearance.BorderSize = 0;
+                btn.Paint += RoundedButtonPainter.PaintButton;
                 btn.Click += (s, e) => MessageBox.Show($"Clicked: {text}");
                 flow.Controls.Add(btn);
             }
@@ -151,6 +152,7 @@ namespace WindowsFormsApp
                     Font = new Font("Segoe UI", 8f)
                 };
                 btn.FlatAppearance.BorderSize = 0;
+                btn.Paint += RoundedButtonPainter.PaintButton;
                 btn.Click += (s, e) => MessageBox.Show($"Clicked: {text}");
                 flow.Controls.Add(btn);
             }

@@ -128,6 +128,7 @@ namespace WindowsFormsApp
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
             };
+            btnAutoRun.Paint += BtnCommon_Paint;
             btnBackup = new SfButton
             {
                 Text = "Backup",
@@ -137,6 +138,7 @@ namespace WindowsFormsApp
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
             };
+            btnBackup.Paint += BtnCommon_Paint;
             btnScreen = new SfButton
             {
                 Text = "Screenshoot",
@@ -146,6 +148,7 @@ namespace WindowsFormsApp
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
             };
+            btnScreen.Paint += BtnCommon_Paint;
             FlowLayoutPanel panel = new FlowLayoutPanel
             {
                 AutoSize = true
@@ -169,6 +172,7 @@ namespace WindowsFormsApp
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
             };
+            btnRestore.Paint += BtnCommon_Paint;
             panel.Controls.Add(txtRestore);
             panel.Controls.Add(btnRestore);
             flowLayoutPanel1.Controls.Add(cbNomal);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,9 @@ namespace WindowsFormsApp
         public ScriptAutomation()
         {
             InitializeComponent();
+            init();
+            BuildDataTableUI();
+            this.Load += Form1_Load;
             //var screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
             //var screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
 
@@ -27,6 +31,179 @@ namespace WindowsFormsApp
             //this.MaximizeBox = false;
             //this.MinimizeBox = false;
         }
+        private void init()
+        {
+            sfbtnEditScript.Image = Properties.Resources.fileEdit;
+            sfbtnCapture.Image = Properties.Resources.capture;
+
+            sfbtnEditScript.Paint += BtnCommon_Paint;
+            sfbtnLoadDevice.Paint += BtnCommon_Paint;
+            sfbtnSend.Paint += BtnCommon_Paint;
+            sfbtnTest.Paint += BtnCommon_Paint;
+            sfbtnCapture.Paint += BtnCommon_Paint;
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+           
+            // Giả sử bạn đang dùng các sự kiện Click như sau:
+            clickToolStripMenuItem_Click(clickToolStripMenuItem, EventArgs.Empty);
+        }
+
+        //private void BtnCommon_Paint(object sender, PaintEventArgs e)
+        //{
+        //    Button btn = sender as Button;
+        //    if (btn == null) return;
+
+        //    int radius = 5;
+        //    e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+        //    Rectangle rect = new Rectangle(
+        //        btn.ClientRectangle.X + 1,
+        //        btn.ClientRectangle.Y + 1,
+        //        btn.ClientRectangle.Width - 2,
+        //        btn.ClientRectangle.Height - 2
+        //    );
+
+        //    btn.Region = new Region(GetRoundedRect(rect, radius));
+        //    rect = new Rectangle(rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2);
+
+        //    e.Graphics.FillRectangle(new SolidBrush(btn.BackColor), rect);
+
+        //    Pen borderPen = GetButtonBorderPen(btn);
+
+        //    e.Graphics.DrawPath(borderPen, GetRoundedRect(rect, radius));
+
+        //    Color textColor = GetButtonTextColor(btn);
+
+        //    Rectangle textRect = new Rectangle(rect.X + 2, rect.Y + 2, rect.Width - 4, rect.Height - 4); // Điều chỉnh phạm vi để tránh chữ bị đè lên
+        //    TextRenderer.DrawText(e.Graphics, btn.Text, btn.Font, textRect, textColor, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+
+        //}
+        private void BtnCommon_Paint(object sender, PaintEventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn == null) return;
+
+            int radius = 5;
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+            Rectangle rect = new Rectangle(
+                btn.ClientRectangle.X + 1,
+                btn.ClientRectangle.Y + 1,
+                btn.ClientRectangle.Width - 2,
+                btn.ClientRectangle.Height - 2
+            );
+            if (btn.Image == null)
+            {
+                MessageBox.Show("Ảnh Resource chưa được load đúng!");
+            }
+            else
+            {
+                MessageBox.Show("Ảnh Resource đã load OK!");
+            }
+
+            btn.Region = new Region(GetRoundedRect(rect, radius));
+            rect = new Rectangle(rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2);
+
+            e.Graphics.FillRectangle(new SolidBrush(btn.BackColor), rect);
+
+            Pen borderPen = GetButtonBorderPen(btn);
+            e.Graphics.DrawPath(borderPen, GetRoundedRect(rect, radius));
+
+            Color textColor = GetButtonTextColor(btn);
+
+            int iconSize = 16;                      // Kích thước icon (vuông)
+            int iconPadding = 5;                    // Khoảng cách icon với viền và text
+            int textOffsetX = 0;
+
+            // === BỔ SUNG: Vẽ icon nếu có ===
+            if (btn.Image != null)
+            {
+                // Giữ nguyên aspect ratio (nếu cần)
+                int drawWidth = iconSize;
+                int drawHeight = iconSize;
+
+                // Nếu icon không phải hình vuông thì scale theo chiều nhỏ nhất
+                if (btn.Image.Width != btn.Image.Height)
+                {
+                    float scale = Math.Min((float)iconSize / btn.Image.Width, (float)iconSize / btn.Image.Height);
+                    drawWidth = (int)(btn.Image.Width * scale);
+                    drawHeight = (int)(btn.Image.Height * scale);
+                }
+
+                Rectangle iconRect = new Rectangle(
+                    rect.X + iconPadding,
+                    rect.Y + (rect.Height - drawHeight) / 2,
+                    drawWidth,
+                    drawHeight
+                );
+
+                e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                e.Graphics.DrawImage(btn.Image, iconRect);
+                textOffsetX = drawWidth + iconPadding * 2;
+            }
+
+            // === Phần vẽ text vẫn GIỮ NGUYÊN như bạn viết, chỉ cộng thêm offset icon ===
+            Rectangle textRect = new Rectangle(
+                rect.X + textOffsetX,
+                rect.Y + 2,
+                rect.Width - textOffsetX - 4,
+                rect.Height - 4
+            );
+
+            TextRenderer.DrawText(
+                e.Graphics,
+                btn.Text,
+                btn.Font,
+                textRect,
+                textColor,
+                TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter
+            );
+        }
+
+        private Pen GetButtonBorderPen(Button btn)
+        {
+            if (!btn.Enabled)
+            {
+                return new Pen(Color.Gray);
+            }
+            else if (btn.ClientRectangle.Contains(PointToClient(Cursor.Position)))
+            {
+                return new Pen(Color.Blue);
+            }
+            else if (btn.Focused)
+            {
+                return new Pen(Color.Green);
+            }
+            else
+            {
+                return new Pen(Color.Gray);
+            }
+        }
+
+        private Color GetButtonTextColor(Button btn)
+        {
+            if (btn.ClientRectangle.Contains(PointToClient(Cursor.Position)))
+            {
+                return Color.Blue;
+            }
+            return btn.ForeColor;
+        }
+
+        private GraphicsPath GetRoundedRect(Rectangle rect, int radius)
+        {
+            GraphicsPath graphicsPath = new GraphicsPath();
+            graphicsPath.AddArc(rect.X, rect.Y, radius * 2, radius * 2, 180, 90); // Top-left corner
+            graphicsPath.AddLine(rect.X + radius, rect.Y, rect.Right - radius, rect.Y); // Top edge
+            graphicsPath.AddArc(rect.Right - radius * 2, rect.Y, radius * 2, radius * 2, 270, 90); // Top-right corner
+            graphicsPath.AddLine(rect.Right, rect.Y + radius, rect.Right, rect.Bottom - radius); // Right edge
+            graphicsPath.AddArc(rect.Right - radius * 2, rect.Bottom - radius * 2, radius * 2, radius * 2, 0, 90); // Bottom-right corner
+            graphicsPath.AddLine(rect.Right - radius, rect.Bottom, rect.X + radius, rect.Bottom); // Bottom edge
+            graphicsPath.AddArc(rect.X, rect.Bottom - radius * 2, radius * 2, radius * 2, 90, 90); // Bottom-left corner
+            graphicsPath.AddLine(rect.X, rect.Bottom - radius, rect.X, rect.Y + radius); // Left edge
+            graphicsPath.CloseFigure();
+            return graphicsPath;
+        }
         private void LoadContent(UserControl control)
         {
             panelContent.Controls.Clear();
@@ -35,17 +212,107 @@ namespace WindowsFormsApp
         }
         private void dataChangeInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            SetActiveMenu((ToolStripMenuItem)sender);
+            LoadContent(new DataChangeInfoToolbox());
         }
 
         private void clickToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            SetActiveMenu((ToolStripMenuItem)sender);
             LoadContent(new ClickToolbox());
         }
 
         private void textToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            SetActiveMenu((ToolStripMenuItem)sender);
             LoadContent(new TextToolbox());
         }
+
+        private void keyButtonToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetActiveMenu((ToolStripMenuItem)sender);
+            LoadContent(new KeyButtonToolbox());
+        }
+
+        private void generalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetActiveMenu((ToolStripMenuItem)sender);
+            LoadContent(new GeneralToolbox());
+        }
+        private void SetActiveMenu(ToolStripMenuItem selectedItem)
+        {
+            // Duyệt toàn bộ các item cấp 1 trong MenuStrip
+            foreach (ToolStripMenuItem item in menuStrip1.Items)
+            {
+                // Reset về trạng thái bình thường
+                item.BackColor = Color.WhiteSmoke;
+                item.ForeColor = Color.Black;
+                item.Font = new Font("Segoe UI", 9f, FontStyle.Regular);
+            }
+
+            // Set trạng thái cho item đang được chọn
+            selectedItem.BackColor = Color.WhiteSmoke;// Nền tím
+            selectedItem.ForeColor = Color.Black;              // Chữ trắng
+            selectedItem.Font = new Font("Segoe UI", 9f, FontStyle.Bold); // In đậm
+        }
+
+        private void BuildDataTableUI()
+        {
+            var dataGridView = new DataGridView
+            {
+                Width = 565,
+                Height = 364,
+                ColumnCount = 2,
+                ReadOnly = true,
+                AllowUserToAddRows = false,
+                AllowUserToDeleteRows = false,
+                RowHeadersVisible = false,
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                MultiSelect = false,
+                ScrollBars = ScrollBars.Vertical,
+                Font = new Font("Segoe UI", 9f),
+                ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
+                {
+                    BackColor = Color.MediumSlateBlue,
+                    ForeColor = Color.White,
+                    Font = new Font("Segoe UI", 9f, FontStyle.Bold),
+                    Alignment = DataGridViewContentAlignment.MiddleCenter
+                },
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    BackColor = Color.WhiteSmoke,
+                    ForeColor = Color.Black,
+                    SelectionBackColor = Color.LightSteelBlue,
+                    SelectionForeColor = Color.Black
+                }
+            };
+
+            // Đặt tên cột
+            dataGridView.Columns[0].Name = "Key";
+            dataGridView.Columns[1].Name = "Value";
+
+            // Cho cột tự dãn ra đều nhau:
+            dataGridView.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            // (Tuỳ chỉnh nếu muốn Key nhỏ hơn)
+            dataGridView.Columns[0].FillWeight = 40;
+            dataGridView.Columns[1].FillWeight = 60;
+
+            // Nội dung các dòng theo như bạn gửi:
+            string[] keys = {
+        "index", "text", "resource-id", "class", "package", "content-desc", "checkable",
+        "checked", "clickable", "enabled", "focusable", "focused",
+        "scrollable", "long-clickable", "password", "selected", "bounds"
+    };
+
+            foreach (var key in keys)
+            {
+                dataGridView.Rows.Add(key, "");
+            }
+
+            datagrid.Controls.Add(dataGridView); // datagrid là panel hoặc groupbox bạn đặt sẵn trong Designer
+        }
+       
     }
 }

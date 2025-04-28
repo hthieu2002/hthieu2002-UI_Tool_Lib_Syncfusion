@@ -54,6 +54,9 @@
             this.btnLoadFile = new Syncfusion.WinForms.Controls.SfButton();
             this.btnCreate = new Syncfusion.WinForms.Controls.SfButton();
             this.btnDelete = new Syncfusion.WinForms.Controls.SfButton();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.panel5 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sfComboBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sfComboBox1)).BeginInit();
@@ -63,6 +66,7 @@
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sfComboBox3)).BeginInit();
+            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -269,6 +273,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.panel4);
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Location = new System.Drawing.Point(3, 5);
             this.panel2.Name = "panel2";
@@ -325,6 +330,35 @@
             this.btnDelete.TabIndex = 3;
             this.btnDelete.Text = "Delete";
             // 
+            // panel4
+            // 
+            this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel4.Controls.Add(this.panel5);
+            this.panel4.Controls.Add(this.richTextBox1);
+            this.panel4.Location = new System.Drawing.Point(3, 6);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(579, 872);
+            this.panel4.TabIndex = 1;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBox1.Location = new System.Drawing.Point(0, 0);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(579, 872);
+            this.richTextBox1.TabIndex = 0;
+            this.richTextBox1.Text = "";
+            // 
+            // panel5
+            // 
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel5.Location = new System.Drawing.Point(0, 0);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(40, 872);
+            this.panel5.TabIndex = 1;
+            // 
             // ScriptAutomation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -352,6 +386,7 @@
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.sfComboBox3)).EndInit();
+            this.panel4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -385,5 +420,8 @@
         private Syncfusion.WinForms.Controls.SfButton btnCreate;
         private Syncfusion.WinForms.Controls.SfButton btnLoadFile;
         private Syncfusion.WinForms.ListView.SfComboBox sfComboBox3;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }

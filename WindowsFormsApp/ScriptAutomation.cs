@@ -11,13 +11,14 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp
 {
-    public partial class ScriptAutomation: Form
+    public partial class ScriptAutomation : Form
     {
         public ScriptAutomation()
         {
             InitializeComponent();
             init();
             BuildDataTableUI();
+            editText();
             this.Load += Form1_Load;
             //var screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
             //var screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
@@ -48,7 +49,7 @@ namespace WindowsFormsApp
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-           
+
             // Giả sử bạn đang dùng các sự kiện Click như sau:
             clickToolStripMenuItem_Click(clickToolStripMenuItem, EventArgs.Empty);
         }
@@ -275,6 +276,7 @@ namespace WindowsFormsApp
                 MultiSelect = false,
                 ScrollBars = ScrollBars.Vertical,
                 Font = new Font("Segoe UI", 9f),
+                AllowUserToResizeRows = false,
                 ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
                 {
                     BackColor = Color.MediumSlateBlue,
@@ -330,6 +332,71 @@ namespace WindowsFormsApp
 
             datagrid.Controls.Add(dataGridView); // datagrid là panel hoặc groupbox bạn đặt sẵn trong Designer
         }
-       
+
+
+        private void editText()
+        {
+            richTextBox1.Font = new Font("Consolas", 12);
+            richTextBox1.BackColor = Color.FromArgb(40, 40, 40);
+            richTextBox1.ForeColor = Color.White;
+            richTextBox1.BorderStyle = BorderStyle.None;
+            richTextBox1.WordWrap = false; // Rất quan trọng để scroll đúng
+            richTextBox1.Multiline = true;
+            richTextBox1.SelectAll();
+            richTextBox1.SelectionIndent = 40;
+            richTextBox1.DeselectAll();
+
+            panel5.Paint += Panel1_Paint; 
+            richTextBox1.VScroll += (s, e) => panel5.Invalidate();
+            richTextBox1.TextChanged += (s, e) => panel5.Invalidate();
+            richTextBox1.Resize += (s, e) => panel5.Invalidate();
+            richTextBox1.KeyUp += (s, e) =>
+            {
+                if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete)
+                {
+                    panel5.Invalidate();
+                }
+            };
+
+        }
+
+        private void Panel1_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(panel1.BackColor);
+
+            int firstIndex = richTextBox1.GetCharIndexFromPosition(new Point(0, 0));
+            int firstLine = richTextBox1.GetLineFromCharIndex(firstIndex);
+
+            int lineHeight;
+            try
+            {
+                lineHeight = richTextBox1.GetPositionFromCharIndex(firstIndex + 1).Y
+                             - richTextBox1.GetPositionFromCharIndex(firstIndex).Y;
+            }
+            catch
+            {
+                lineHeight = (int)richTextBox1.Font.GetHeight() + 4;
+            }
+
+            if (lineHeight <= 0) lineHeight = (int)richTextBox1.Font.GetHeight() + 4;
+
+            int visibleLines = (richTextBox1.Height / lineHeight) + 1;
+
+            using (Brush brush = new SolidBrush(Color.Black))
+            {
+                for (int i = 0; i <= visibleLines; i++)
+                {
+                    int lineNumber = firstLine + i + 1;
+
+                    int charIndex = richTextBox1.GetFirstCharIndexFromLine(lineNumber - 1);
+                    if (charIndex == -1) break; // Không có dòng tiếp theo
+
+                    int y = richTextBox1.GetPositionFromCharIndex(charIndex).Y;
+
+                    e.Graphics.DrawString(lineNumber.ToString(),
+                        richTextBox1.Font, brush, new PointF(5, y));
+                }
+            }
+        }
     }
 }

@@ -93,14 +93,14 @@ namespace WindowsFormsApp
                 btn.ClientRectangle.Width - 2,
                 btn.ClientRectangle.Height - 2
             );
-            if (btn.Image == null)
-            {
-                MessageBox.Show("Ảnh Resource chưa được load đúng!");
-            }
-            else
-            {
-                MessageBox.Show("Ảnh Resource đã load OK!");
-            }
+            //if (btn.Image == null)
+            //{
+            //    MessageBox.Show("Ảnh Resource chưa được load đúng!");
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Ảnh Resource đã load OK!");
+            //}
 
             btn.Region = new Region(GetRoundedRect(rect, radius));
             rect = new Rectangle(rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2);

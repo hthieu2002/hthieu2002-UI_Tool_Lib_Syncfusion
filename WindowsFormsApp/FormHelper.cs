@@ -28,8 +28,8 @@ namespace WindowsFormsApp
             if (form.WindowState == FormWindowState.Minimized)
                 return WindowMode.Minimized;
 
-            if (form.FormBorderStyle == FormBorderStyle.None
-                && form.WindowState == FormWindowState.Maximized)
+            // Nếu đang ở chế độ fullscreen (tối đa và không có border)
+            if (form.WindowState == FormWindowState.Maximized && form.FormBorderStyle == FormBorderStyle.None)
                 return WindowMode.FullScreen;
 
             if (form.WindowState == FormWindowState.Maximized)

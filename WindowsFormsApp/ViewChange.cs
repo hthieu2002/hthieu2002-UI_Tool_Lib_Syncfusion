@@ -76,24 +76,38 @@ namespace WindowsFormsApp
         FlowLayoutPanel osPanel;
         public ViewChange()
         {
+            this.SuspendLayout();
             InitializeComponent();
-            SetButtonAddLayoutButton();
+           
+            ConfigureForm(); // Cấu hình cơ bản
+            Instance = this; // ← Phải set ở Constructor luôn để mọi nơi khác dùng được Instance
+
+            // Delay load UI logic sang sự kiện Load
+            this.Load += async (s, e) => await LoadAsync();
+            this.ResumeLayout(false);
+        }
+
+        private void ConfigureForm()
+        {
+            this.FormBorderStyle = FormBorderStyle.Sizable;
+            this.MaximizeBox = true;
+            this.Resize += MyForm_OnSizeChange;
+            this.SizeChanged += MyForm_OnSizeChange;
+        }
+
+        private async Task LoadAsync()
+        {
             SetInputAddLayoutInput();
+            SetButtonAddLayoutButton();
             setInit();
             setMenu();
             setGridView();
-            Instance = this;
             LoadDevicesFromFile();
-            _ = InitializeDeviceStatus();
+
+            await InitializeDeviceStatus();
             StartDeviceCheck();
-            this.Resize += MyForm_OnSizeChange;
-            this.SizeChanged += MyForm_OnSizeChange;
-            this.FormBorderStyle = FormBorderStyle.Sizable;
-            this.MaximizeBox = true;
 
-            //
             LoadConfigs();
-
         }
 
         private void LoadConfigs()
@@ -203,7 +217,7 @@ namespace WindowsFormsApp
             {
                 return (new List<WindowsFormsApp.Model.DeviceDisplay>(), new List<WindowsFormsApp.Model.DeviceDisplay>());
             }
-        }
+        } 
         private bool IsDeviceActive(string deviceId)
         {
             try
@@ -577,6 +591,5 @@ namespace WindowsFormsApp
             _progressTextMap[deviceId] = displayText ?? $"{percent}%";
             sfDataGrid.Refresh();
         }
-
     }
 }

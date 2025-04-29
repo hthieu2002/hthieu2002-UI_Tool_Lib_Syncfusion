@@ -382,7 +382,6 @@ namespace WindowsFormsApp
             richTextBox1.SelectionColor = Color.White;
         }
 
-
         private void Panel1_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.Clear(panel1.BackColor);

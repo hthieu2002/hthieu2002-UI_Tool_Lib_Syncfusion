@@ -41,6 +41,8 @@ namespace AccountCreatorForm.Views
             this.ContextMenuStrip = GlobalContextMenu.ContextMenu;
             this.Resize += MyForm_OnSizeChange;
             this.SizeChanged += MyForm_OnSizeChange;
+            this.LocationChanged += MyForm_OnSizeChange;
+            this.ClientSizeChanged += MyForm_OnSizeChange;
             GlobalContextMenu.SetHomeForm(this);
             ///
             ///
@@ -91,6 +93,18 @@ namespace AccountCreatorForm.Views
             base.OnResize(e);
             UpdateWindowMode();
         }
+        protected override void OnClientSizeChanged(EventArgs e)
+        {
+            base.OnClientSizeChanged(e);
+            UpdateWindowMode();
+        }
+
+        protected override void OnLocationChanged(EventArgs e)
+        {
+            base.OnLocationChanged(e);
+            UpdateWindowMode();
+        }
+
         public void Form_Load()
         {
             sidebarFormMap = new Dictionary<SfButton, Func<Form>>

@@ -46,7 +46,6 @@ namespace WindowsFormsApp
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
-          
             // 
             // mainMenu
             // 
@@ -143,7 +142,7 @@ namespace WindowsFormsApp
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);
-           
+
         }
 
         #endregion
@@ -155,7 +154,5 @@ namespace WindowsFormsApp
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.FlowLayoutPanel PanelInput;
         private System.Windows.Forms.FlowLayoutPanel PanelButton;
-
-       
     }
 }

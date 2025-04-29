@@ -45,6 +45,8 @@
             this.panelSidebarContent = new System.Windows.Forms.Panel();
             this.gradientPanelSidebar = new Syncfusion.Windows.Forms.Tools.GradientPanel();
             this.btnLogo = new Syncfusion.WinForms.Controls.SfButton();
+            this.loadingPanel = new System.Windows.Forms.Panel();
+            this.panelMainView.SuspendLayout();
             this.panelAutoSubMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanelSidebar)).BeginInit();
             this.gradientPanelSidebar.SuspendLayout();
@@ -52,6 +54,7 @@
             // 
             // panelMainView
             // 
+            this.panelMainView.Controls.Add(this.loadingPanel);
             this.panelMainView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMainView.Location = new System.Drawing.Point(214, 0);
             this.panelMainView.Name = "panelMainView";
@@ -220,6 +223,13 @@
             this.btnLogo.TabIndex = 0;
             this.btnLogo.Text = "Logo";
             // 
+            // loadingPanel
+            // 
+            this.loadingPanel.Location = new System.Drawing.Point(455, 292);
+            this.loadingPanel.Name = "loadingPanel";
+            this.loadingPanel.Size = new System.Drawing.Size(118, 100);
+            this.loadingPanel.TabIndex = 0;
+            // 
             // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -230,6 +240,7 @@
             this.Name = "Home";
             this.Text = "Home";
             this.Load += new System.EventHandler(this.Home_Load);
+            this.panelMainView.ResumeLayout(false);
             this.panelAutoSubMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanelSidebar)).EndInit();
             this.gradientPanelSidebar.ResumeLayout(false);
@@ -256,5 +267,6 @@
         private System.Windows.Forms.Panel panelSidebarContent;
         private Syncfusion.Windows.Forms.Tools.GradientPanel gradientPanelSidebar;
         private Syncfusion.WinForms.Controls.SfButton btnLogo;
+        private System.Windows.Forms.Panel loadingPanel;
     }
 }

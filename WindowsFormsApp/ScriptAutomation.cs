@@ -6,19 +6,22 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WindowsFormsApp
 {
-    public partial class ScriptAutomation : Form
+    public partial class ScriptAutomation : Form, ITextAppender
     {
+        private bool isEditing = false;
+
         public ScriptAutomation()
         {
             InitializeComponent();
             init();
             BuildDataTableUI();
-          //  editText();
+            editText();
             this.Load += Form1_Load;
             //var screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
             //var screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
@@ -224,7 +227,7 @@ namespace WindowsFormsApp
         private void clickToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SetActiveMenu((ToolStripMenuItem)sender);
-            LoadContent(new ClickToolbox());
+            LoadContent(new ClickToolbox(this));
         }
 
         private void textToolStripMenuItem_Click(object sender, EventArgs e)
@@ -357,8 +360,80 @@ namespace WindowsFormsApp
                     panel5.Invalidate();
                 }
             };
+            richTextBox1.TextChanged += (s, e) =>
+            {
+                HighlightSyntax();
+            };
 
         }
+        public void AppendText(string textToAdd)
+        {
+            if (!string.IsNullOrEmpty(richTextBox1.Text))
+            {
+                richTextBox1.Text += " ";
+            }
+            richTextBox1.Text += textToAdd;
+        }
+        private void HighlightSyntax()
+        {
+            int selectionStart = richTextBox1.SelectionStart;
+            int selectionLength = richTextBox1.SelectionLength;
+
+            // Reset toàn bộ về mặc định
+            richTextBox1.SelectAll();
+            richTextBox1.SelectionColor = Color.White;
+
+            // Regex: tìm hàm dạng TênHàm( ... )
+            var regex = new Regex(@"\w+\(.*?\)");
+            var matches = regex.Matches(richTextBox1.Text);
+
+            foreach (Match match in matches)
+            {
+                // Tô màu vàng cho toàn bộ hàm + ()
+                richTextBox1.Select(match.Index, match.Length);
+                richTextBox1.SelectionColor = Color.Gold;
+
+                // Xử lý bên trong ()
+                int openParen = richTextBox1.Text.IndexOf('(', match.Index);
+                int closeParen = richTextBox1.Text.IndexOf(')', openParen);
+                if (openParen >= 0 && closeParen > openParen)
+                {
+                    int paramStart = openParen + 1;
+                    int paramLength = closeParen - paramStart;
+                    string paramText = richTextBox1.Text.Substring(paramStart, paramLength);
+
+                    // Quét từng token bên trong ()
+                    var paramRegex = new Regex(@"\d+|\"".*?\""|\w+");
+                    var paramMatches = paramRegex.Matches(paramText);
+
+                    foreach (Match paramMatch in paramMatches)
+                    {
+                        int tokenIndex = paramStart + paramMatch.Index;
+                        int tokenLength = paramMatch.Length;
+
+                        richTextBox1.Select(tokenIndex, tokenLength);
+
+                        if (Regex.IsMatch(paramMatch.Value, @"^\d+$")) // số
+                        {
+                            richTextBox1.SelectionColor = Color.DeepSkyBlue;
+                        }
+                        else if (Regex.IsMatch(paramMatch.Value, "^\".*\"$")) // chuỗi trong dấu "
+                        {
+                            richTextBox1.SelectionColor = Color.LightPink;
+                        }
+                        else // từ bình thường
+                        {
+                            richTextBox1.SelectionColor = Color.Pink;
+                        }
+                    }
+                }
+            }
+
+            // Khôi phục lại selection đang gõ
+            richTextBox1.Select(selectionStart, selectionLength);
+            richTextBox1.SelectionColor = Color.White;
+        }
+
 
         private void Panel1_Paint(object sender, PaintEventArgs e)
         {
@@ -396,6 +471,27 @@ namespace WindowsFormsApp
                     e.Graphics.DrawString(lineNumber.ToString(),
                         richTextBox1.Font, brush, new PointF(5, y));
                 }
+            }
+        }
+
+        private void sfbtnEditScript_Click(object sender, EventArgs e)
+        {
+            if (!isEditing)
+            {
+                // Đang ở trạng thái "Edit", chuyển sang "Save"
+                sfbtnEditScript.Text = "Save script";
+               // btnEditSave.Image = Properties.Resources.icon_save; // Đổi icon nếu có
+                isEditing = true;
+                richTextBox1.ReadOnly = false;
+            }
+            else
+            {
+                // Đang ở trạng thái "Save", chuyển về "Edit"
+                sfbtnEditScript.Text = "Edit script";
+              //  btnEditSave.Image = Properties.Resources.icon_edit; // Đổi lại icon
+                isEditing = false;
+                richTextBox1.ReadOnly = true;
+              //  SaveScriptToFile(); // Nếu bạn muốn lưu luôn
             }
         }
     }

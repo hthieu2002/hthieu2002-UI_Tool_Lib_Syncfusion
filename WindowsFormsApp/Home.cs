@@ -55,6 +55,7 @@ namespace AccountCreatorForm.Views
                 pair.Key.Click += SidebarButton_Click;
 
             }
+            loadingPanel.Visible = false;
             // this.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
         private void MyForm_OnSizeChange(object sender, EventArgs e)
@@ -80,6 +81,55 @@ namespace AccountCreatorForm.Views
         {
             ThemeManager.ToggleDarkMode();
             ThemeManager.ApplyTheme();
+        }
+        //private void SetupSidebarButtons()
+        //{
+        //    foreach (var pair in sidebarFormMap)
+        //    {
+        //        pair.Key.Click += SidebarButtonLoading_Click;
+        //    }
+        //}
+        //private async void SidebarButtonLoading_Click(object sender, EventArgs e)
+        //{
+        //    var btn = sender as SfButton;
+        //    if (btn != null && sidebarFormMap.ContainsKey(btn))
+        //    {
+        //        var viewFactory = sidebarFormMap[btn];
+
+        //        await LoadViewWithLoading(viewFactory);  // ⚡⚡ GỌI Ở ĐÂY!
+        //    }
+        //}
+        //private async Task LoadViewWithLoading(Func<Form> viewFactory)
+        //{
+        //    ShowLoadingIndicator(true);                  // Bật loading
+        //    await Task.Delay(100);                       // Cho loading hiển thị kịp
+
+        //    Form view = null;
+
+        //    // Khởi tạo View (không bị block UI)
+        //    await Task.Run(() =>
+        //    {
+        //        view = viewFactory();
+        //    });
+
+        //    ShowLoadingIndicator(false);                 
+
+        //    LoadView(view);                              
+        //}
+        private void LoadView(Form view)
+        {
+            panelMainView.Controls.Clear();
+            view.TopLevel = false;
+            view.FormBorderStyle = FormBorderStyle.None;
+            view.Dock = DockStyle.Fill;
+            panelMainView.Controls.Add(view);
+            view.Show();
+        }
+        private void ShowLoadingIndicator(bool show)
+        {
+            loadingPanel.Visible = show;                
+            loadingPanel.BringToFront();
+            loadingPanel.Refresh();                    
         }
 
         public void Form_Load()

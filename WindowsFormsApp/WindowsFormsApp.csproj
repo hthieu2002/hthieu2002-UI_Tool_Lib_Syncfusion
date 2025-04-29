@@ -106,9 +106,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClickToolbox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="ClickToolbox.cs" />
     <Compile Include="ClickToolbox.Designer.cs">
       <DependentUpon>ClickToolbox.cs</DependentUpon>
     </Compile>
@@ -135,6 +133,7 @@
     <Compile Include="Home.Designer.cs">
       <DependentUpon>Home.cs</DependentUpon>
     </Compile>
+    <Compile Include="ITextAppender.cs" />
     <Compile Include="KeyButtonToolbox.cs">
       <SubType>UserControl</SubType>
     </Compile>

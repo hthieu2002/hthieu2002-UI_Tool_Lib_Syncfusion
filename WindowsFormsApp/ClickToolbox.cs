@@ -10,11 +10,20 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp
 {
+    public class ButtonContext
+    {
+        public string GroupName { get; set; }
+        public string ButtonText { get; set; }
+    }
+
     public partial class ClickToolbox: UserControl
     {
-        public ClickToolbox()
+
+        private ITextAppender textAppender;
+        public ClickToolbox(ITextAppender appender)
         {
             InitializeComponent();
+            textAppender = appender;
             BuildUI();
         }
         private void BuildUI()
@@ -114,10 +123,25 @@ namespace WindowsFormsApp
                 btn.MouseEnter += (s, e) => btn.BackColor = Color.SlateBlue;
                 // Hover ra: trả về màu gốc
                 btn.MouseLeave += (s, e) => btn.BackColor = Color.MediumSlateBlue;
-                btn.Click += (s, e) => MessageBox.Show($"Clicked: {text}");
+                btn.Tag = new ButtonContext
+                {
+                    GroupName = title,
+                    ButtonText = text
+                };
+
+
+                btn.Click += (s, e) =>
+                {
+                    var clickedButton = s as Button;
+                    if (clickedButton?.Tag is ButtonContext ctx)
+                    {
+                        string sendText = GetMappedText(ctx.GroupName, ctx.ButtonText);
+                        textAppender?.AppendText(sendText);
+                    }
+                };
+
                 flow.Controls.Add(btn);
             }
-
             group.Controls.Add(flow);
             return group;
         }
@@ -162,12 +186,82 @@ namespace WindowsFormsApp
                 btn.MouseEnter += (s, e) => btn.BackColor = Color.SlateBlue;
                 // Hover ra: trả về màu gốc
                 btn.MouseLeave += (s, e) => btn.BackColor = Color.MediumSlateBlue;
-                btn.Click += (s, e) => MessageBox.Show($"Clicked: {text}");
+
+                btn.Tag = new ButtonContext
+                {
+                    GroupName = "Search text click",
+                    ButtonText = text
+                };
+
+
+                btn.Click += (s, e) =>
+                {
+                    var clickedButton = s as Button;
+                    if (clickedButton?.Tag is ButtonContext ctx)
+                    {
+                        string sendText = GetMappedText(ctx.GroupName, ctx.ButtonText);
+                        textAppender?.AppendText(sendText);
+                    }
+                };
+
+
                 flow.Controls.Add(btn);
             }
 
             group.Controls.Add(flow);
             return group;
         }
+
+        private string GetMappedText(string groupName, string buttonText)
+        {
+            if (groupName == "Search text click")
+            {
+                switch (buttonText)
+                {
+                    case "Tìm đúng && click":
+                        return "SearchAndClick(\"\")";
+                    case "Tìm gần đúng && click":
+                        return "SearchOfAndClick(\"\")";
+                    case "Tìm đúng && wait":
+                        return "SearchWaitClick(\"\", 1000)";
+                    case "Tìm gần đúng && wait":
+                        return "SearchOfWaitClick(\"\", 1000)";
+                    case "Tìm đúng && tiếp tục":
+                        return "SearchAndContinue(\"\")";
+                    case "Tìm gần đúng && tiếp tục":
+                        return "SearchOfAndContinue(\"\")";
+                }
+            }
+            else if (groupName == "Search text image")
+            {
+                switch (buttonText)
+                {
+                    case "Tìm đúng && click":
+                        return "FindAndClick(\"\")";
+                    case "Tìm đúng && wait":
+                        return "FindWaitClick(\"\", 1000)";
+                    case "Tìm đúng && tiếp tục":
+                        return "FindAndContinue(\"\")";
+                }
+            }
+            else if (groupName == "Click tọa độ")
+            {
+                switch (buttonText)
+                {
+                    case "ClickXY":
+                        return "ClickXY()";
+                    case "Swipe up":
+                        return "Swipeup(500 500 5 10)";
+                    case "Random Click":
+                        return "RandomClick(100 100, 900 1900)";
+                    case "Swipe down":
+                        return "Swipedown(500 500 5 10)";
+                    case "Wait":
+                        return "Wait(1000)";
+                }
+            }
+            return buttonText; 
+        }
+
     }
 }

@@ -23,17 +23,6 @@ namespace WindowsFormsApp
             BuildDataTableUI();
             editText();
             this.Load += Form1_Load;
-            //var screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
-            //var screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
-
-            //this.Width = (int)(screenWidth * 0.9);
-            //this.Height = (int)(screenHeight * 0.9);
-
-            //this.StartPosition = FormStartPosition.CenterScreen;
-
-            //this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            //this.MaximizeBox = false;
-            //this.MinimizeBox = false;
         }
         private void init()
         {
@@ -52,41 +41,8 @@ namespace WindowsFormsApp
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-
-            // Giả sử bạn đang dùng các sự kiện Click như sau:
             clickToolStripMenuItem_Click(clickToolStripMenuItem, EventArgs.Empty);
         }
-
-        //private void BtnCommon_Paint(object sender, PaintEventArgs e)
-        //{
-        //    Button btn = sender as Button;
-        //    if (btn == null) return;
-
-        //    int radius = 5;
-        //    e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
-        //    Rectangle rect = new Rectangle(
-        //        btn.ClientRectangle.X + 1,
-        //        btn.ClientRectangle.Y + 1,
-        //        btn.ClientRectangle.Width - 2,
-        //        btn.ClientRectangle.Height - 2
-        //    );
-
-        //    btn.Region = new Region(GetRoundedRect(rect, radius));
-        //    rect = new Rectangle(rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2);
-
-        //    e.Graphics.FillRectangle(new SolidBrush(btn.BackColor), rect);
-
-        //    Pen borderPen = GetButtonBorderPen(btn);
-
-        //    e.Graphics.DrawPath(borderPen, GetRoundedRect(rect, radius));
-
-        //    Color textColor = GetButtonTextColor(btn);
-
-        //    Rectangle textRect = new Rectangle(rect.X + 2, rect.Y + 2, rect.Width - 4, rect.Height - 4); // Điều chỉnh phạm vi để tránh chữ bị đè lên
-        //    TextRenderer.DrawText(e.Graphics, btn.Text, btn.Font, textRect, textColor, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-
-        //}
         private void BtnCommon_Paint(object sender, PaintEventArgs e)
         {
             Button btn = sender as Button;
@@ -101,15 +57,7 @@ namespace WindowsFormsApp
                 btn.ClientRectangle.Width - 2,
                 btn.ClientRectangle.Height - 2
             );
-            //if (btn.Image == null)
-            //{
-            //    MessageBox.Show("Ảnh Resource chưa được load đúng!");
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Ảnh Resource đã load OK!");
-            //}
-
+         
             btn.Region = new Region(GetRoundedRect(rect, radius));
             rect = new Rectangle(rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2);
 
@@ -233,7 +181,7 @@ namespace WindowsFormsApp
         private void textToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SetActiveMenu((ToolStripMenuItem)sender);
-            LoadContent(new TextToolbox());
+            LoadContent(new TextToolbox(this));
         }
 
         private void keyButtonToolStripMenuItem_Click(object sender, EventArgs e)
@@ -486,9 +434,7 @@ namespace WindowsFormsApp
             }
             else
             {
-                // Đang ở trạng thái "Save", chuyển về "Edit"
                 sfbtnEditScript.Text = "Edit script";
-              //  btnEditSave.Image = Properties.Resources.icon_edit; // Đổi lại icon
                 isEditing = false;
                 richTextBox1.ReadOnly = true;
               //  SaveScriptToFile(); // Nếu bạn muốn lưu luôn

@@ -1,4 +1,10 @@
-﻿namespace WindowsFormsApp
+﻿using Syncfusion.Windows.Forms.Tools;
+using Syncfusion.WinForms.Controls;
+using Syncfusion.WinForms.ListView.Enums;
+using System.Drawing.Text;
+using System.Windows.Forms;
+
+namespace WindowsFormsApp
 {
     partial class ViewChange
     {
@@ -40,6 +46,7 @@
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
+          
             // 
             // mainMenu
             // 
@@ -136,7 +143,7 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);
-
+           
         }
 
         #endregion
@@ -148,5 +155,7 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.FlowLayoutPanel PanelInput;
         private System.Windows.Forms.FlowLayoutPanel PanelButton;
+
+       
     }
 }

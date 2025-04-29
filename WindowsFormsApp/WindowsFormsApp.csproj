@@ -106,25 +106,36 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClickToolbox.cs" />
-    <Compile Include="ClickToolbox.Designer.cs">
+    <Compile Include="Amination\ViewChange.Automation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Control\ClickToolbox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\ClickToolbox.Designer.cs">
       <DependentUpon>ClickToolbox.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataChangeInfoToolbox.cs">
+    <Compile Include="Control\DataChangeInfoToolbox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="DataChangeInfoToolbox.Designer.cs">
+    <Compile Include="Control\DataChangeInfoToolbox.Designer.cs">
       <DependentUpon>DataChangeInfoToolbox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Amination\Home.AnimationUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Amination\ScreenView.AnimationUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormHelper.cs" />
-    <Compile Include="GeneralToolbox.cs">
+    <Compile Include="Control\GeneralToolbox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GeneralToolbox.Designer.cs">
+    <Compile Include="Control\GeneralToolbox.Designer.cs">
       <DependentUpon>GeneralToolbox.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalContextMenu.cs" />
-    <Compile Include="HeaderViewCommon.cs">
+    <Compile Include="Control\HeaderViewCommon.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Home.cs">
@@ -134,10 +145,10 @@
       <DependentUpon>Home.cs</DependentUpon>
     </Compile>
     <Compile Include="ITextAppender.cs" />
-    <Compile Include="KeyButtonToolbox.cs">
+    <Compile Include="Control\KeyButtonToolbox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="KeyButtonToolbox.Designer.cs">
+    <Compile Include="Control\KeyButtonToolbox.Designer.cs">
       <DependentUpon>KeyButtonToolbox.cs</DependentUpon>
     </Compile>
     <Compile Include="Login.cs">
@@ -146,7 +157,10 @@
     <Compile Include="Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\ButtonContext.cs" />
+    <Compile Include="Model\DeviceButtonState.cs" />
     <Compile Include="Model\DeviceConfig.cs" />
+    <Compile Include="Model\DeviceDisplay.cs" />
     <Compile Include="Model\DeviceModels.cs" />
     <Compile Include="Model\ThemeManager.cs" />
     <Compile Include="Program.cs" />
@@ -164,28 +178,22 @@
     <Compile Include="ScriptAutomation.Designer.cs">
       <DependentUpon>ScriptAutomation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Setting.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Setting.Designer.cs">
-      <DependentUpon>Setting.cs</DependentUpon>
-    </Compile>
-    <Compile Include="StoreItem.cs">
+    <Compile Include="Control\StoreItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="StoreItem.Designer.cs">
+    <Compile Include="Control\StoreItem.Designer.cs">
       <DependentUpon>StoreItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="TextToolbox.cs">
+    <Compile Include="Control\TextToolbox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="TextToolbox.Designer.cs">
+    <Compile Include="Control\TextToolbox.Designer.cs">
       <DependentUpon>TextToolbox.cs</DependentUpon>
     </Compile>
-    <Compile Include="UcPricingCard.cs">
+    <Compile Include="Control\UcPricingCard.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UcPricingCard.Designer.cs">
+    <Compile Include="Control\UcPricingCard.Designer.cs">
       <DependentUpon>UcPricingCard.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewAutomation.cs">
@@ -200,29 +208,11 @@
     <Compile Include="ViewChange.Designer.cs">
       <DependentUpon>ViewChange.cs</DependentUpon>
     </Compile>
-    <Compile Include="ViewChangeResponsive.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ViewChangeResponsive.Designer.cs">
-      <DependentUpon>ViewChangeResponsive.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ViewCuaHang.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ViewCuaHang.Designer.cs">
-      <DependentUpon>ViewCuaHang.cs</DependentUpon>
-    </Compile>
     <Compile Include="ViewThanhToan.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ViewThanhToan.Designer.cs">
       <DependentUpon>ViewThanhToan.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ViewUngDung.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ViewUngDung.Designer.cs">
-      <DependentUpon>ViewUngDung.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Home.resx">
       <DependentUpon>Home.cs</DependentUpon>
@@ -246,13 +236,10 @@
     <EmbeddedResource Include="ScriptAutomation.resx">
       <DependentUpon>ScriptAutomation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Setting.resx">
-      <DependentUpon>Setting.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StoreItem.resx">
+    <EmbeddedResource Include="Control\StoreItem.resx">
       <DependentUpon>StoreItem.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UcPricingCard.resx">
+    <EmbeddedResource Include="Control\UcPricingCard.resx">
       <DependentUpon>UcPricingCard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ViewAutomation.resx">
@@ -261,14 +248,8 @@
     <EmbeddedResource Include="ViewChange.resx">
       <DependentUpon>ViewChange.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ViewCuaHang.resx">
-      <DependentUpon>ViewCuaHang.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ViewThanhToan.resx">
       <DependentUpon>ViewThanhToan.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ViewUngDung.resx">
-      <DependentUpon>ViewUngDung.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

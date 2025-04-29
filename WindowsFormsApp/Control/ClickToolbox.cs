@@ -7,18 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp.Model;
 
 namespace WindowsFormsApp
 {
-    public class ButtonContext
-    {
-        public string GroupName { get; set; }
-        public string ButtonText { get; set; }
-    }
-
     public partial class ClickToolbox: UserControl
     {
-
         private ITextAppender textAppender;
         public ClickToolbox(ITextAppender appender)
         {

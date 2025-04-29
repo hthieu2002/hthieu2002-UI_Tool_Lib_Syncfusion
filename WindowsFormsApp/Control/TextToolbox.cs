@@ -8,14 +8,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using WindowsFormsApp.Model;
 
 namespace WindowsFormsApp
 {
     public partial class TextToolbox : UserControl
     {
-        public TextToolbox()
+        private ITextAppender textAppender;
+        public TextToolbox(ITextAppender textAppender)
         {
             InitializeComponent();
+            this.textAppender = textAppender;
             BuildUI();
         }
 
@@ -99,7 +102,24 @@ namespace WindowsFormsApp
                 btn.MouseEnter += (s, e) => btn.BackColor = Color.SlateBlue;
                 // Hover ra: trả về màu gốc
                 btn.MouseLeave += (s, e) => btn.BackColor = Color.MediumSlateBlue;
-                btn.Click += (s, e) => MessageBox.Show($"Clicked: {text}");
+
+                btn.Tag = new ButtonContext
+                {
+                    GroupName = title,
+                    ButtonText = text
+                };
+
+
+                btn.Click += (s, e) =>
+                {
+                    var clickedButton = s as Button;
+                    if (clickedButton?.Tag is ButtonContext ctx)
+                    {
+                        string sendText = GetMappedText(ctx.GroupName, ctx.ButtonText);
+                        textAppender?.AppendText(sendText);
+                    }
+                };
+
                 flow.Controls.Add(btn);
             }
 
@@ -135,26 +155,48 @@ namespace WindowsFormsApp
 
             // Button: Get data email from DB
             var btnGetData = CreateButton("Get data email from DB");
-
-            // ComboBox + Send Button (Send Data Mail)
+            btnGetData.Click += BtnGetDataEmailFromDb_Click;
+            // Panel 1: ComboBox 1 + Send1
             var panel1 = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight };
             var combo1 = new ComboBox { Width = 120 };
-            combo1.Items.AddRange(new string[] { "Option 1", "Option 2", "Option 3" });
+            combo1.Items.AddRange(new string[] {
+        "Email", "Password", "Email recovery",
+        "Code backup", "Code authen",
+        "Status3(0)", "DeleteStatus3(0)"
+    });
+            combo1.SelectedIndex = 0;
+
             var btnSend1 = CreateButton("Send", 70);
+            btnSend1.Tag = combo1; // Gán combo1 vào Send1
+            btnSend1.Click += BtnSendCombo1_Click; // Event riêng cho Send1
+
             panel1.Controls.Add(combo1);
             panel1.Controls.Add(btnSend1);
 
-            // ComboBox + Send Button (Check Code)
+            // Panel 2: ComboBox 2 + Send2
             var panel2 = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight };
             var combo2 = new ComboBox { Width = 120 };
-            combo2.Items.AddRange(new string[] { "Code A", "Code B", "Code C" });
+            combo2.Items.AddRange(new string[] {
+        "Backup code ok",
+        "Backup code failed",
+        "Code authen ok",
+        "Code authen failed"
+    });
+            combo2.SelectedIndex = 0;
+
             var btnSend2 = CreateButton("Send", 70);
+            btnSend2.Tag = combo2; // Gán combo2 vào Send2
+            btnSend2.Click += BtnSendCombo2_Click; // Event riêng cho Send2
+
             panel2.Controls.Add(combo2);
             panel2.Controls.Add(btnSend2);
 
             // Update mail status buttons
             var btnUpdate1 = CreateButton("Update mail status");
             var btnUpdate2 = CreateButton("Update mail status2");
+
+            btnUpdate1.Click += BtnUpdateMailStatus_Click;
+            btnUpdate2.Click += BtnUpdateMailStatus2_Click;
 
             // Add all controls into main flow
             flow.Controls.Add(btnGetData);
@@ -163,13 +205,98 @@ namespace WindowsFormsApp
             flow.Controls.Add(btnUpdate1);
             flow.Controls.Add(btnUpdate2);
 
-            // Căn giữa toàn bộ flow
+            // Căn giữa flow
             flow.PerformLayout();
             int centerX = (fixedWidth - flow.PreferredSize.Width) / 2;
             flow.Location = new Point(centerX, 30);
 
             group.Controls.Add(flow);
             return group;
+        }
+        private void BtnSendCombo1_Click(object sender, EventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is ComboBox combo)
+            {
+                string selectedText = combo.SelectedItem?.ToString();
+                if (!string.IsNullOrEmpty(selectedText))
+                {
+                    string command = ConvertCombo1TextToCommand(selectedText);
+                    textAppender?.AppendText(command);
+                }
+                else
+                {
+                    MessageBox.Show("Please select an option for ComboBox 1!");
+                }
+            }
+        }
+        private void BtnSendCombo2_Click(object sender, EventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is ComboBox combo)
+            {
+                string selectedText = combo.SelectedItem?.ToString();
+                if (!string.IsNullOrEmpty(selectedText))
+                {
+                    string command = ConvertCombo2TextToCommand(selectedText);
+                    textAppender?.AppendText(command);
+                }
+                else
+                {
+                    MessageBox.Show("Please select an option for ComboBox 2!");
+                }
+            }
+        }
+        private void BtnGetDataEmailFromDb_Click(object sender, EventArgs e)
+        {
+            textAppender?.AppendText("GetDataEmailFromDb()");
+        }
+
+        private void BtnUpdateMailStatus_Click(object sender, EventArgs e)
+        {
+            textAppender?.AppendText("UpdateMailStatus()");
+        }
+
+        private void BtnUpdateMailStatus2_Click(object sender, EventArgs e)
+        {
+            textAppender?.AppendText("UpdateMailStatus2()");
+        }
+
+        private string ConvertCombo1TextToCommand(string comboText)
+        {
+            switch (comboText)
+            {
+                case "Email":
+                    return "SendUserName()";
+                case "Password":
+                    return "SendPassword()";
+                case "Email recovery":
+                    return "SendEmailRecovery()";
+                case "Code backup":
+                    return "SendCodeBackup()";
+                case "Code authen":
+                    return "SendCodeAuthen()";
+                case "Status3(0)":
+                    return "SendStatus3(0)";
+                case "DeleteStatus3(0)":
+                    return "DeleteStatus3(0)";
+                default:
+                    return comboText;
+            }
+        }
+        private string ConvertCombo2TextToCommand(string comboText)
+        {
+            switch (comboText)
+            {
+                case "Backup code ok":
+                    return "SendBackupCodeOK()";
+                case "Backup code failed":
+                    return "SendBackupCodeFailed()";
+                case "Code authen ok":
+                    return "SendAuthenCodeOK()";
+                case "Code authen failed":
+                    return "SendAuthenCodeFailed()";
+                default:
+                    return comboText;
+            }
         }
 
         private Button CreateButton(string text, int width = 200)
@@ -191,7 +318,24 @@ namespace WindowsFormsApp
             btn.MouseEnter += (s, e) => btn.BackColor = Color.SlateBlue;
             // Hover ra: trả về màu gốc
             btn.MouseLeave += (s, e) => btn.BackColor = Color.MediumSlateBlue;
-            btn.Click += (s, e) => MessageBox.Show($"Clicked: {text}");
+
+            //btn.Tag = new ButtonContext
+            //{
+            //    GroupName = title,
+            //    ButtonText = text
+            //};
+
+
+            //btn.Click += (s, e) =>
+            //{
+            //    var clickedButton = s as Button;
+            //    if (clickedButton?.Tag is ButtonContext ctx)
+            //    {
+            //        string sendText = GetMappedText(ctx.GroupName, ctx.ButtonText);
+            //        textAppender?.AppendText(sendText);
+            //    }
+            //};
+
             return btn;
         }
 
@@ -219,8 +363,8 @@ namespace WindowsFormsApp
             };
 
             // Chia nút ra 2 nhóm
-            string[] leftButtons = buttons.Take(2).ToArray();    // 2 nút đầu
-            string[] rightButtons = buttons.Skip(2).ToArray();   // 2 nút sau
+            string[] leftButtons = buttons.Take(2).ToArray();   
+            string[] rightButtons = buttons.Skip(2).ToArray();  
 
             // Panel trái (xếp từ trên xuống)
             var leftPanel = new FlowLayoutPanel
@@ -280,8 +424,56 @@ namespace WindowsFormsApp
             btn.MouseEnter += (s, e) => btn.BackColor = Color.SlateBlue;
             // Hover ra: trả về màu gốc
             btn.MouseLeave += (s, e) => btn.BackColor = Color.MediumSlateBlue;
-            btn.Click += (s, e) => MessageBox.Show($"Clicked: {text}");
+            btn.Tag = text; // Gán text vào Tag để click xử lý
+            btn.Click += BtnProcessTextData_Click;
             return btn;
+        }
+        private void BtnProcessTextData_Click(object sender, EventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is string text)
+            {
+                string command = ConvertTextDataButtonText(text);
+                textAppender?.AppendText(command);
+            }
+        }
+        private string ConvertTextDataButtonText(string buttonText)
+        {
+            switch (buttonText)
+            {
+                case "Get data from file":
+                    return "GetDataFromFile(\"*.txt\")";
+                case "Del data from file":
+                    return "DelDataFromFile(\"*.txt\")";
+                case "Send data (Value)":
+                    return "SendDataValue(\"value\")";
+                case "Save data to file":
+                    return "SaveDataToFile(\"*.txt\")";
+                default:
+                    return buttonText;
+            }
+        }
+
+        private string GetMappedText(string groupName, string buttonText)
+        {
+            if (groupName == "Process Text")
+            {
+                switch (buttonText)
+                {
+                    case "Send text":
+                        return "SendText(\"abc\")";
+                    case "Send text from file(delete)":
+                        return "SendTextFromFileDel(\"*.txt\")";
+                    case "Send text from":
+                        return "SendTextRandomFromFile(\"*.txt\")";
+                    case "Random text & send":
+                        return "RandomTextAndSend(15)";
+                    case "Xoá text(1 ký tự)":
+                        return "DelTextChar(1)";
+                    case "Xoá text(xoá all)":
+                        return "DelAllText()";
+                }
+            }
+            return buttonText;
         }
     }
 }

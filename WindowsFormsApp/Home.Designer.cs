@@ -1,4 +1,10 @@
-﻿namespace AccountCreatorForm.Views
+﻿using System.Drawing;
+using System.Drawing.Text;
+using System.Windows.Forms;
+using WindowsFormsApp.Properties;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
+
+namespace AccountCreatorForm.Views
 {
     partial class Home
     {
@@ -45,16 +51,28 @@
             this.panelSidebarContent = new System.Windows.Forms.Panel();
             this.gradientPanelSidebar = new Syncfusion.Windows.Forms.Tools.GradientPanel();
             this.btnLogo = new Syncfusion.WinForms.Controls.SfButton();
-            this.loadingPanel = new System.Windows.Forms.Panel();
-            this.panelMainView.SuspendLayout();
             this.panelAutoSubMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanelSidebar)).BeginInit();
             this.gradientPanelSidebar.SuspendLayout();
             this.SuspendLayout();
+            this.panelAutoSubMenu.Visible = false;
+            this.btnManagerApp.Visible = false;
+            this.btnManagerAccount.Visible = false;
+            this.btnUngDung.Visible = false;
+            this.btnLuotChay.Visible = false;
+            this.btnNhiemVu.Visible = false;
+            this.btnStore.Visible = false;
+            this.btnCaiDat.Visible = false;
+            this.btnHelp.Visible = false;
+            this.panelPlanInfo = new Panel();
+            this.picPlan = new PictureBox();
+            this.lblPlanTitle = new Label();
+            this.lblExpire = new Label();
+            this.lblUnlimited = new Label();
+            this.btnUpgrade = new Syncfusion.WinForms.Controls.SfButton();
             // 
             // panelMainView
             // 
-            this.panelMainView.Controls.Add(this.loadingPanel);
             this.panelMainView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMainView.Location = new System.Drawing.Point(214, 0);
             this.panelMainView.Name = "panelMainView";
@@ -89,6 +107,12 @@
             this.panelAutoSubMenu.Name = "panelAutoSubMenu";
             this.panelAutoSubMenu.Size = new System.Drawing.Size(210, 86);
             this.panelAutoSubMenu.TabIndex = 3;
+            this.panelAutoSubMenu.AutoSize = true;
+            this.panelAutoSubMenu.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.panelAutoSubMenu.Visible = false;
+            this.panelAutoSubMenu.Margin = new Padding(10, 0, 0, 0);
+            this.panelAutoSubMenu.BackColor = Color.Transparent;
+            this.panelAutoSubMenu.Dock = DockStyle.Top;
             // 
             // btnNhiemVu
             // 
@@ -170,7 +194,6 @@
             this.btnCaiDat.Size = new System.Drawing.Size(210, 28);
             this.btnCaiDat.TabIndex = 10;
             this.btnCaiDat.Text = "Cài đặt";
-            this.btnCaiDat.Click += new System.EventHandler(this.btnCaiDat_Click);
             // 
             // btnHelp
             // 
@@ -190,6 +213,11 @@
             this.panelSidebarContent.Name = "panelSidebarContent";
             this.panelSidebarContent.Size = new System.Drawing.Size(210, 0);
             this.panelSidebarContent.TabIndex = 0;
+            this.panelSidebarContent.Dock = DockStyle.Top;
+            this.panelSidebarContent.AutoSize = true;
+            this.panelSidebarContent.BackColor = Color.Transparent;
+            this.panelSidebarContent.Margin = new Padding(10, 0, 0, 0);
+            this.panelSidebarContent.Padding = new Padding(8, 8, 8, 8);
             // 
             // gradientPanelSidebar
             // 
@@ -212,26 +240,77 @@
             this.gradientPanelSidebar.Name = "gradientPanelSidebar";
             this.gradientPanelSidebar.Size = new System.Drawing.Size(214, 673);
             this.gradientPanelSidebar.TabIndex = 0;
+            this.gradientPanelSidebar.BackColor = ColorTranslator.FromHtml("#F5F7FC");
+            this.gradientPanelSidebar.Width = 240;
             // 
             // btnLogo
             // 
             this.btnLogo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnLogo.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+           
             this.btnLogo.Location = new System.Drawing.Point(0, 0);
             this.btnLogo.Name = "btnLogo";
             this.btnLogo.Size = new System.Drawing.Size(210, 71);
             this.btnLogo.TabIndex = 0;
             this.btnLogo.Text = "Logo";
-            // 
-            // loadingPanel
-            // 
-            this.loadingPanel.Location = new System.Drawing.Point(455, 292);
-            this.loadingPanel.Name = "loadingPanel";
-            this.loadingPanel.Size = new System.Drawing.Size(118, 100);
-            this.loadingPanel.TabIndex = 0;
+            this.btnLogo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            this.btnLogo.Height = 50;
+            this.btnLogo.Style.BackColor = ColorTranslator.FromHtml("#F5F7FC");
+            this.btnLogo.Style.ForeColor = Color.FromArgb(51, 51, 51);
+            this.btnLogo.FlatStyle = FlatStyle.Flat;
+            this.btnLogo.FlatAppearance.BorderSize = 0;
             // 
             // Home
             // 
+
+            //
+            //panelPlanInfo
+            //
+            this.panelPlanInfo.Height = 140;
+            this.panelPlanInfo.Dock = DockStyle.Bottom;
+            this.panelPlanInfo.BackColor = ColorTranslator.FromHtml("#5677FE");
+            this.panelPlanInfo.Padding = new Padding(10);
+            this.panelPlanInfo.Margin = new Padding(10);
+            //
+            //picPlan
+            //
+            this.picPlan.Image = Resources.updated;
+            this.picPlan.Size = new Size(24, 24);
+            this.picPlan.SizeMode = PictureBoxSizeMode.Zoom;
+            this.picPlan.Location = new Point(10, 10);
+            //
+            //lblPlanTitle
+            //
+            lblPlanTitle.Text = "Default Plan";
+            lblPlanTitle.ForeColor = Color.White;
+            lblPlanTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblPlanTitle.AutoSize = true;
+            lblPlanTitle.Location = new Point(picPlan.Right + 8, picPlan.Top + 4);
+            //
+            //lblExpire
+            //
+            lblExpire.Text = "Expired at";
+            lblExpire.ForeColor = Color.White;
+            lblExpire.Font = new Font("Segoe UI", 8F);
+            lblExpire.AutoSize = true;
+            lblExpire.Location = new Point(10, 45);
+            //
+            //lblUnlimited
+            //
+            lblUnlimited.Text = "Unlimited";
+            lblUnlimited.ForeColor = Color.White;
+            lblUnlimited.Font = new Font("Segoe UI", 8F);
+            lblUnlimited.AutoSize = true;
+            //
+            //btnUpgrade
+            //
+            btnUpgrade.Text = "↑  Upgrade";
+            btnUpgrade.Height = 32;
+            btnUpgrade.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+            btnUpgrade.FlatStyle = FlatStyle.Flat;
+            btnUpgrade.Style.BackColor = Color.White;
+            btnUpgrade.Style.ForeColor = ColorTranslator.FromHtml("#5677FE");
+            btnUpgrade.FlatAppearance.BorderSize = 0;
+
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1262, 673);
@@ -240,12 +319,12 @@
             this.Name = "Home";
             this.Text = "Home";
             this.Load += new System.EventHandler(this.Home_Load);
-            this.panelMainView.ResumeLayout(false);
             this.panelAutoSubMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanelSidebar)).EndInit();
             this.gradientPanelSidebar.ResumeLayout(false);
             this.gradientPanelSidebar.PerformLayout();
             this.ResumeLayout(false);
+
 
         }
 
@@ -267,6 +346,11 @@
         private System.Windows.Forms.Panel panelSidebarContent;
         private Syncfusion.Windows.Forms.Tools.GradientPanel gradientPanelSidebar;
         private Syncfusion.WinForms.Controls.SfButton btnLogo;
-        private System.Windows.Forms.Panel loadingPanel;
+        private Panel panelPlanInfo;
+        private PictureBox picPlan;
+        private Label lblPlanTitle;
+        private Label lblExpire;
+        private Label lblUnlimited;
+        private Syncfusion.WinForms.Controls.SfButton btnUpgrade;
     }
 }

@@ -260,6 +260,12 @@
     <EmbeddedResource Include="ViewThanhToan.resx">
       <DependentUpon>ViewThanhToan.cs</DependentUpon>
     </EmbeddedResource>
+    <Compile Include="Amination\ScriptAutomaiton.Animation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Amination\ViewAutomation.Animation.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

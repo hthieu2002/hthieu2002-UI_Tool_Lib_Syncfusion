@@ -31,9 +31,6 @@ namespace AccountCreatorForm.Views
         private Dictionary<SfButton, Image> buttonIconMap;
         private Dictionary<SfButton, Image> buttonIconWhiteMap;
 
-        private Dictionary<Type, Form> formInstances = new Dictionary<Type, Form>();
-        private ViewChange viewChangeInstance;
-
         public Home()
         {
             InitializeComponent();
@@ -108,70 +105,7 @@ namespace AccountCreatorForm.Views
             base.OnLocationChanged(e);
             UpdateWindowMode();
         }
-
-        public void Form_Load()
-        {
-            sidebarFormMap = new Dictionary<SfButton, Func<Form>>
-            {
-                { btnDieuKhien, () => new ViewChange() },
-                { btnLichTrinh, () => new ScreenView() },
-                { btnThanhToan, () => new ViewThanhToan() },
-                { btnAuto, () => new ViewAutomation() },
-            };
-        }
-        public void Form_Load_Icon()
-        {
-            buttonIconMap = new Dictionary<SfButton, Image>
-            {
-                { btnDieuKhien, Resources.dieukhien_0 },
-                { btnAuto, Resources.automation_0 },
-                { btnUngDung, Resources.app_0 },
-                { btnLuotChay, Resources.luotchay_0 },
-                { btnNhiemVu, Resources.nhiemvu_0 },
-                { btnStore, Resources.cuahang_0 },
-                { btnManagerApp, Resources.quanlyungdung_0 },
-                { btnManagerAccount, Resources.quanlynguoidung_0 },
-                { btnLichTrinh, Resources.lichtrinh_0 },
-                { btnThanhToan, Resources.thanhtoan_0 },
-                { btnCaiDat, Resources.setting_0 },
-                { btnHelp, Resources.help_0 }
-            };
-        }
-        public void init()
-        {
-            var sidebarButtons = new List<Control>
-            {
-                btnThanhToan,
-                btnManagerAccount,
-                btnManagerApp,
-                btnHelp,
-                btnCaiDat,
-                btnStore,
-                btnLichTrinh,
-                panelAutoSubMenu,
-                btnAuto,
-                btnDieuKhien,
-                btnLogo
-            };
-
-            foreach (var btn in sidebarButtons)
-            {
-                panelSidebarContent.Controls.Add(btn);
-            }
-           
-            //
-            btnDieuKhien.Text = "Devices";
-            btnAuto.Text = "Automation";
-            btnLichTrinh.Text = "View Screen";
-
-            
-
-            StyleSidebarChildButton(btnUngDung);
-            StyleSidebarChildButton(btnLuotChay);
-            StyleSidebarChildButton(btnNhiemVu);
-
-            AddPlanInfoToSidebar();
-        }
+        
         private void btnAuto_Click(object sender, EventArgs e)
         {
             panelAutoSubMenu.Visible = !panelAutoSubMenu.Visible;

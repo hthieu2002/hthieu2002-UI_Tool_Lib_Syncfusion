@@ -176,23 +176,19 @@ namespace AccountCreatorForm.Views
                 Features = featuresPro
             });
 
-            // 👉 Thêm vào flow layout trước
             foreach (var card in cards)
             {
                 flowLayoutPanelCards.Controls.Add(card);
             }
 
-            // 👉 Bắt buộc phải gọi layout sau khi add
             flowLayoutPanelCards.PerformLayout();
             foreach (var card in cards)
             {
                 card.PerformLayout();
             }
 
-            // 👉 Tính chiều cao lớn nhất
             int maxHeight = cards.Max(c => c.Height);
 
-            // 👉 Set lại chiều cao đều nhau
             foreach (var card in cards)
             {
                 card.Height = maxHeight;

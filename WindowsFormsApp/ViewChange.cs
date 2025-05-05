@@ -81,7 +81,7 @@ namespace WindowsFormsApp
 
             ConfigureForm(); // Cấu hình cơ bản
             Instance = this; // ← Phải set ở Constructor luôn để mọi nơi khác dùng được Instance
-
+            setGridView();
             // Delay load UI logic sang sự kiện Load
             this.Load += async (s, e) => await LoadAsync();
             this.ResumeLayout(false);
@@ -97,11 +97,12 @@ namespace WindowsFormsApp
 
         private async Task LoadAsync()
         {
+        
             SetInputAddLayoutInput();
             SetButtonAddLayoutButton();
             setInit();
             setMenu();
-            setGridView();
+            
             LoadDevicesFromFile();
 
             await InitializeDeviceStatus();
@@ -577,13 +578,20 @@ namespace WindowsFormsApp
         // UpdateProgress
         public void UpdateProgress(string deviceId, int percent, string displayText = null)
         {
+            if (sfDataGrid == null)
+            {
+                return;
+            }
+
             if (sfDataGrid.InvokeRequired)
             {
                 sfDataGrid.Invoke(new Action(() => UpdateProgress(deviceId, percent, displayText)));
                 return;
             }
+
             var dt = sfDataGrid.DataSource as System.Data.DataTable;
             if (dt == null) return;
+
             var row = dt.Select($"DeviceID = '{deviceId.Replace("'", "''")}'").FirstOrDefault();
             if (row == null) return;
 
@@ -591,5 +599,6 @@ namespace WindowsFormsApp
             _progressTextMap[deviceId] = displayText ?? $"{percent}%";
             sfDataGrid.Refresh();
         }
+
     }
 }

@@ -41,7 +41,7 @@ namespace WindowsFormsApp
             this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.rightPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.cbTurnOffScreen = new System.Windows.Forms.CheckBox();
-            //this.selectedDevicesLabel = new System.Windows.Forms.Label();
+         //   this.selectedDevicesLabel = new System.Windows.Forms.Label();
             this.leftBorder = new Panel();
             this.bottomPanel = new Panel();
             this.btnCloseAll = new Button();
@@ -51,9 +51,13 @@ namespace WindowsFormsApp
             this.buttonGroup = new FlowLayoutPanel();
             this.btnView = new Button();
             this.label = new Label();
+            this.label2 = new Label();
             this.trackBarPanel = new Panel();
+            this.trackBarPanel2 = new Panel();
             this.trackBar = new TrackBar();
+            this.trackBar2 = new TrackBar();
             this.valueLabel = new Label();
+            this.valueLabel2 = new Label();
             this.buttonPanel = new FlowLayoutPanel();
             this.deviceLabel = new Label();
             this.toolTip = new ToolTip();
@@ -85,13 +89,13 @@ namespace WindowsFormsApp
             this.cbTurnOffScreen.Checked = true;
             this.cbTurnOffScreen.Margin = new Padding(20, 10, 10, 10);
             this.cbTurnOffScreen.CheckedChanged += CbTurnOffScreen_CheckedChanged;
-            this.rightPanel.Controls.Add(cbTurnOffScreen);
+           
             //
             //selectedDevicesLabel
             //
             this.selectedDevicesLabel = new Label();
             this.selectedDevicesLabel.AutoSize = true;
-            this.selectedDevicesLabel.Margin = new Padding(10);
+            this.selectedDevicesLabel.Margin = new Padding(20,10,10,10);
             this.selectedDevicesLabel.Text = "Thiết bị 0";
             //
             //leftBorder
@@ -156,6 +160,12 @@ namespace WindowsFormsApp
             this.label.AutoSize = true;
             this.label.Margin = new Padding(20, 10, 0, 0);
             //
+            //label2
+            //
+            this.label2.Text = "";
+            this.label2.AutoSize = true;
+            this.label2.Margin = new Padding(20, 10, 0, 0);
+            //
             //trackBarPanel
             //
             this.trackBarPanel.Height = 40;
@@ -163,13 +173,27 @@ namespace WindowsFormsApp
             this.trackBarPanel.Padding = new Padding(0, 0, 0, 10);
             this.trackBarPanel.Width = 250;
             //
+            //trackBarPanel2
+            //
+            this.trackBarPanel2.Height = 40;
+            this.trackBarPanel2.Dock = DockStyle.Top;
+            this.trackBarPanel2.Padding = new Padding(0, 0, 0, 10);
+            this.trackBarPanel2.Width = 250;
+            //
             //trackBar
             //
             this.trackBar.TickStyle = TickStyle.None;
             this.trackBar.Width = 180;
             this.trackBar.Left = 20;
             this.trackBar.Top = 5;
-            this.trackBarPanel.Controls.Add(trackBar);
+            //
+            //trackBar2
+            //
+            this.trackBar2.TickStyle = TickStyle.None;
+            this.trackBar2.Width = 180;
+            this.trackBar2.Left = 20;
+            this.trackBar2.Top = 5;
+
             //
             //valueLabel
             //
@@ -177,6 +201,13 @@ namespace WindowsFormsApp
             this.valueLabel.Left = trackBar.Right + 10;
             this.valueLabel.Top = 10;
             this.valueLabel.AutoSize = true;
+            //
+            //valueLabel2
+            //
+            this.valueLabel2.Text = "";
+            this.valueLabel2.Left = trackBar2.Right + 10;
+            this.valueLabel2.Top = 10;
+            this.valueLabel2.AutoSize = true;
             //
             //deviceLabel
             //
@@ -193,7 +224,19 @@ namespace WindowsFormsApp
             this.splitContainer.Panel2.Controls.Add(leftBorder);
             this.splitContainer.Panel2.Controls.Add(rightPanel);
 
+            this.rightPanel.Controls.Add(label);
+            this.trackBarPanel.Controls.Add(valueLabel);
+            this.trackBarPanel.Controls.Add(trackBar);
+            this.rightPanel.Controls.Add(trackBarPanel);
+
+            this.rightPanel.Controls.Add(label2);
+            this.trackBarPanel2.Controls.Add(valueLabel2);
+            this.trackBarPanel2.Controls.Add(trackBar2);
+            this.rightPanel.Controls.Add(trackBarPanel2);
+
+            this.rightPanel.Controls.Add(cbTurnOffScreen);
             this.rightPanel.Controls.Add(selectedDevicesLabel);
+
             this.Controls.Add(splitContainer);
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -201,7 +244,6 @@ namespace WindowsFormsApp
             this.Name = "ScreenView";
             this.Text = "ScreenView";
             this.ResumeLayout(false);
-
         }
 
         #endregion
@@ -219,9 +261,13 @@ namespace WindowsFormsApp
         private FlowLayoutPanel buttonGroup;
         private System.Windows.Forms.Button btnView;
         private Label label;
+        private Label label2;
         private Panel trackBarPanel;
+        private Panel trackBarPanel2;
         private TrackBar trackBar;
+        private TrackBar trackBar2;
         private Label valueLabel;
+        private Label valueLabel2;
         private FlowLayoutPanel buttonPanel;
         private Label deviceLabel;
         private ToolTip toolTip;

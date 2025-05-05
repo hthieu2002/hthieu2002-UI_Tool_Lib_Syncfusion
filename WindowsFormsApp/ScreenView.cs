@@ -82,20 +82,19 @@ namespace WindowsFormsApp
         }
         private void CreateActionButtons()
         {
-            AddTrackBar(rightPanel, "Tỉ lệ khung hình(%): ", 100, 200, 150, (s, e) =>
-            {
-                scale = ((TrackBar)s).Value;
-            });
-
             AddTrackBar(rightPanel, "Độ phân giải (Sắc nét)", 240, 2200, 1280, (s, e) =>
             {
                 maxSize = ((TrackBar)s).Value;
             });
 
+            AddTrackBar2(rightPanel, "Tỉ lệ khung hình(%): ", 100, 200, 150, (s, e) =>
+            {
+                scale = ((TrackBar)s).Value;
+            });
+
             AddActionPanel(rightPanel);
             selectedDevicesLabel.Text = $"Số thiết bị được chọn: {activeDevices.Count}";
-
-
+           
             deviceIds = GetConnectedDevices();
             AddDeviceButtons(rightPanel, deviceIds);
         }

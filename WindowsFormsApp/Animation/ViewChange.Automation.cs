@@ -291,7 +291,6 @@ namespace WindowsFormsApp
         }
         public void setGridView()
         {
-            // 1. Khởi SfDataGrid và các cột STT, Checkbox, DeviceID
             sfDataGrid = new SfDataGrid
             {
                 Dock = DockStyle.Fill,
@@ -305,7 +304,6 @@ namespace WindowsFormsApp
             sfDataGrid.Columns.Add(new GridCheckBoxColumn { MappingName = "Checkbox", HeaderText = "Box", Width = 60, AllowEditing = true });
             sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "DeviceID", HeaderText = "Device ID", Width = 200 });
 
-            // 2. Thêm 1 lần duy nhất cột Progress với Percentage & style chữ trắng
             var progressCol = new GridProgressBarColumn
             {
                 MappingName = "Progress",
@@ -318,23 +316,20 @@ namespace WindowsFormsApp
             progressCol.CellStyle.HorizontalAlignment = HorizontalAlignment.Center;
             sfDataGrid.Columns.Add(progressCol);
 
-            // 3. Thêm các cột còn lại
             sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "Status", HeaderText = "Status", Width = 100 });
             sfDataGrid.Columns.Add(new GridButtonColumn { MappingName = "Activity", HeaderText = "Active", Width = 80 });
 
-            // 4. Khởi và bind DataTable gốc (_deviceTable) với đúng 6 cột
             _deviceTable = new DataTable();
             _deviceTable.Columns.Add("STT", typeof(int));
             _deviceTable.Columns.Add("Checkbox", typeof(bool));
             _deviceTable.Columns.Add("DeviceID", typeof(string));
-            _deviceTable.Columns.Add("Progress", typeof(int));    // phải đúng tên và kiểu int
+            _deviceTable.Columns.Add("Progress", typeof(int));    
             _deviceTable.Columns.Add("Status", typeof(string));
             _deviceTable.Columns.Add("Activity", typeof(string));
 
             sfDataGrid.DataSource = _deviceTable;
             tableLayoutPanel.Controls.Add(sfDataGrid, 0, 0);
 
-            // 5. Thiết lập context menu nếu cần
             this.sfDataGrid.RecordContextMenu = new ContextMenuStrip();
             var copyDeviceID = new ToolStripMenuItem("Copy Device ID");
             var detailsItem = new ToolStripMenuItem("Details");

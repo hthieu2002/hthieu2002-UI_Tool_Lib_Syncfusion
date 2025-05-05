@@ -304,15 +304,31 @@ namespace WindowsFormsApp
         {
             label.Text = labelText;
             label.Width = parent.ClientSize.Width;
-            parent.Controls.Add(label);
-            parent.Controls.Add(trackBarPanel);
+          //  parent.Controls.Add(label);
+          //  parent.Controls.Add(trackBarPanel);
             trackBar.Minimum = min;
             trackBar.Maximum = max;
             trackBar.Value = value;
             trackBar.Scroll += onChange;
             valueLabel.Text = value.ToString();
-            trackBarPanel.Controls.Add(valueLabel);
+            //trackBarPanel.Controls.Add(valueLabel);
             trackBar.Scroll += (s, e) => valueLabel.Text = trackBar.Value.ToString();
+
+        }
+        private void AddTrackBar2(Panel parent, string labelText, int min, int max, int value, EventHandler onChange)
+        {
+            label2.Text = labelText;
+            label2.Width = parent.ClientSize.Width;
+            //  parent.Controls.Add(label);
+            //  parent.Controls.Add(trackBarPanel);
+            trackBar2.Minimum = min;
+            trackBar2.Maximum = max;
+            trackBar2.Value = value;
+            trackBar2.Scroll += onChange;
+            valueLabel2.Text = value.ToString();
+            //trackBarPanel.Controls.Add(valueLabel);
+            trackBar2.Scroll += (s, e) => valueLabel2.Text = trackBar2.Value.ToString();
+
         }
         private void AddDeviceButtons(FlowLayoutPanel parent, string[] deviceIds)
         {

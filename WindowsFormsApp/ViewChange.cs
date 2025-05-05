@@ -97,12 +97,12 @@ namespace WindowsFormsApp
 
         private async Task LoadAsync()
         {
-        
+
             SetInputAddLayoutInput();
             SetButtonAddLayoutButton();
             setInit();
             setMenu();
-            
+
             LoadDevicesFromFile();
 
             await InitializeDeviceStatus();
@@ -139,6 +139,7 @@ namespace WindowsFormsApp
             txtSim.DataSource = sims;
 
         }
+      
         private void MyForm_OnSizeChange(object sender, EventArgs e)
         {
             ApplyPanelInputMargin();
@@ -589,16 +590,25 @@ namespace WindowsFormsApp
                 return;
             }
 
-            var dt = sfDataGrid.DataSource as System.Data.DataTable;
-            if (dt == null) return;
+            var dt = sfDataGrid.DataSource as DataTable;
+            if (dt == null)
+            {
+                return;
+            }
 
-            var row = dt.Select($"DeviceID = '{deviceId.Replace("'", "''")}'").FirstOrDefault();
-            if (row == null) return;
+            // var row = dt.Select($"DeviceID = '{deviceId.Replace("'", "''")}'").FirstOrDefault();
+            var rows = dt.Select($"DeviceID = '{deviceId.Replace("'", "''")}'");
+            if (rows.Length == 0) return;
+
+            var row = rows.FirstOrDefault();
+            if (row == null)
+            {
+                return;
+            }
 
             row["Progress"] = Math.Max(0, Math.Min(100, percent));
             _progressTextMap[deviceId] = displayText ?? $"{percent}%";
             sfDataGrid.Refresh();
         }
-
     }
 }

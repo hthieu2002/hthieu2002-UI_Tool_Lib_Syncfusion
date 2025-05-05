@@ -65,6 +65,8 @@ namespace AccountCreatorForm.Views
                 }
             }
         }
+
+
         private void SetButtonHover()
         {
             Button[] buttons = new Button[]
@@ -153,6 +155,7 @@ namespace AccountCreatorForm.Views
             btn.Style.PressedBackColor = colorHoverBack;
             btn.Style.PressedForeColor = colorNormalText;
         }
+
         private void OpenChildForm(Form childForm)
         {
             if (currentChildForm != null)
@@ -167,6 +170,17 @@ namespace AccountCreatorForm.Views
 
             panelMainView.Controls.Clear();
             panelMainView.Controls.Add(childForm);
+
+            var loading = new Loading();
+            loading.Dock = DockStyle.Fill;
+            panelMainView.Controls.Add(loading);
+            loading.BringToFront();
+         
+            childForm.Shown += (sender, e) => {
+
+                panelMainView.Controls.Remove(loading); 
+            };
+
             childForm.Show();
             GlobalContextMenu.SetHomeForm(this);
         }
@@ -188,10 +202,11 @@ namespace AccountCreatorForm.Views
                 AppState.CurrentWindowMode = newMode;
             }
         }
-          private void ToggleDarkLightMode()
+        private void ToggleDarkLightMode()
         {
             ThemeManager.ToggleDarkMode();
             ThemeManager.ApplyTheme();
         }
+       
     }
 }

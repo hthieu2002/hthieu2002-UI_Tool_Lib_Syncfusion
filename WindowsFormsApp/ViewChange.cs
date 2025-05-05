@@ -78,7 +78,7 @@ namespace WindowsFormsApp
         {
             this.SuspendLayout();
             InitializeComponent();
-           
+
             ConfigureForm(); // Cấu hình cơ bản
             Instance = this; // ← Phải set ở Constructor luôn để mọi nơi khác dùng được Instance
 
@@ -217,7 +217,7 @@ namespace WindowsFormsApp
             {
                 return (new List<WindowsFormsApp.Model.DeviceDisplay>(), new List<WindowsFormsApp.Model.DeviceDisplay>());
             }
-        } 
+        }
         private bool IsDeviceActive(string deviceId)
         {
             try

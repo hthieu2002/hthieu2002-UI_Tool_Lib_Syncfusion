@@ -151,6 +151,12 @@
     <Compile Include="Control\KeyButtonToolbox.Designer.cs">
       <DependentUpon>KeyButtonToolbox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Control\Loading.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\Loading.Designer.cs">
+      <DependentUpon>Loading.cs</DependentUpon>
+    </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -216,6 +222,9 @@
     </Compile>
     <EmbeddedResource Include="Home.resx">
       <DependentUpon>Home.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\Loading.resx">
+      <DependentUpon>Loading.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>

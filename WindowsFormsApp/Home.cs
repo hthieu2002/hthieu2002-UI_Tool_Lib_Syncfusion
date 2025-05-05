@@ -30,6 +30,10 @@ namespace AccountCreatorForm.Views
         private Dictionary<SfButton, Func<Form>> sidebarFormMap;
         private Dictionary<SfButton, Image> buttonIconMap;
         private Dictionary<SfButton, Image> buttonIconWhiteMap;
+
+        private Dictionary<Type, Form> formInstances = new Dictionary<Type, Form>();
+        private ViewChange viewChangeInstance;
+
         public Home()
         {
             InitializeComponent();
@@ -114,7 +118,6 @@ namespace AccountCreatorForm.Views
                 { btnThanhToan, () => new ViewThanhToan() },
                 { btnAuto, () => new ViewAutomation() },
             };
-
         }
         public void Form_Load_Icon()
         {

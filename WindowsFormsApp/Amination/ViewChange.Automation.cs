@@ -18,13 +18,13 @@ namespace WindowsFormsApp
     {
         private void ApplyPanelInputMargin()
         {
-            if (AppState.CurrentWindowMode == WindowMode.Maximized)
+            if (Model.AppState.CurrentWindowMode == Model.WindowMode.Maximized)
             {
                 tableLayoutPanel1.ColumnStyles.Clear();
                 tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65F));  // mặc định 60/40
                 tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35F));
             }
-            else if ((AppState.CurrentWindowMode == WindowMode.Normal))
+            else if ((Model.AppState.CurrentWindowMode == Model.WindowMode.Normal))
             {
                 tableLayoutPanel1.ColumnStyles.Clear();
                 tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));  // mặc định 60/40

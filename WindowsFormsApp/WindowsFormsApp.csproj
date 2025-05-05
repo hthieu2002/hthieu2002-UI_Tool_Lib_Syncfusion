@@ -127,14 +127,13 @@
     <Compile Include="Amination\ScreenView.AnimationUI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormHelper.cs" />
     <Compile Include="Control\GeneralToolbox.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Control\GeneralToolbox.Designer.cs">
       <DependentUpon>GeneralToolbox.cs</DependentUpon>
     </Compile>
-    <Compile Include="GlobalContextMenu.cs" />
+    <Compile Include="Model\GlobalContextMenu.cs" />
     <Compile Include="Control\HeaderViewCommon.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -144,7 +143,7 @@
     <Compile Include="Home.Designer.cs">
       <DependentUpon>Home.cs</DependentUpon>
     </Compile>
-    <Compile Include="ITextAppender.cs" />
+    <Compile Include="Model\ITextAppender.cs" />
     <Compile Include="Control\KeyButtonToolbox.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -168,10 +167,11 @@
     <Compile Include="Model\DeviceConfig.cs" />
     <Compile Include="Model\DeviceDisplay.cs" />
     <Compile Include="Model\DeviceModels.cs" />
+    <Compile Include="Model\FormHelper.cs" />
     <Compile Include="Model\ThemeManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoundedButtonPainter.cs" />
+    <Compile Include="Model\RoundedButtonPainter.cs" />
     <Compile Include="ScreenView.cs">
       <SubType>Form</SubType>
     </Compile>

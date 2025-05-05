@@ -106,7 +106,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Amination\ViewChange.Automation.cs">
+    <Compile Include="Animation\ViewChange.Automation.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Control\ClickToolbox.cs">
@@ -121,10 +121,10 @@
     <Compile Include="Control\DataChangeInfoToolbox.Designer.cs">
       <DependentUpon>DataChangeInfoToolbox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Amination\Home.AnimationUI.cs">
+    <Compile Include="Animation\Home.AnimationUI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Amination\ScreenView.AnimationUI.cs">
+    <Compile Include="Animation\ScreenView.AnimationUI.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Control\GeneralToolbox.cs">
@@ -260,10 +260,10 @@
     <EmbeddedResource Include="ViewThanhToan.resx">
       <DependentUpon>ViewThanhToan.cs</DependentUpon>
     </EmbeddedResource>
-    <Compile Include="Amination\ScriptAutomaiton.Animation.cs">
+    <Compile Include="Animation\ScriptAutomaiton.Animation.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Amination\ViewAutomation.Animation.cs">
+    <Compile Include="Animation\ViewAutomation.Animation.cs">
       <SubType>Form</SubType>
     </Compile>
     <None Include="packages.config" />

@@ -85,6 +85,7 @@
       <HintPath>..\packages\Syncfusion.Shared.Base.29.1.37\lib\net462\Syncfusion.Shared.Base.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -109,6 +110,9 @@
     <Compile Include="Animation\ViewChange.Automation.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="AppConfigService.cs" />
+    <Compile Include="contants\Constants.cs" />
+    <Compile Include="contants\PathRuntime.cs" />
     <Compile Include="Control\ClickToolbox.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -349,6 +353,18 @@
     <None Include="Resources\updated.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AuthenticationService\AuthenticationService.csproj">
+      <Project>{bd3e3351-e902-4154-a821-f098cde9c3e6}</Project>
+      <Name>AuthenticationService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MiHttpClient\MiHttpClient.csproj">
+      <Project>{d147c7d9-d203-4f38-bd5e-febae475fe0d}</Project>
+      <Name>MiHttpClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\POCO\POCO.csproj">
+      <Project>{ff563f4b-af28-45e7-bfb7-c4b5c31d01f7}</Project>
+      <Name>POCO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Services\Services.csproj">
       <Project>{1c7375a1-3db2-4f92-bf8a-f920ca2882f2}</Project>
       <Name>Services</Name>

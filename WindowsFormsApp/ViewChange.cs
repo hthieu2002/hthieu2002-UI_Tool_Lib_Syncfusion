@@ -1,5 +1,11 @@
-﻿using AccountCreatorForm.Controls;
+﻿using AccountCreatorForm;
+using AccountCreatorForm.Constants;
+using AccountCreatorForm.Controls;
+using AuthenticationService;
+using MiHttpClient;
 using Newtonsoft.Json;
+using POCO.Models;
+using Services;
 using Syncfusion.Windows.Forms.Tools;
 using Syncfusion.WinForms.Controls;
 using Syncfusion.WinForms.DataGrid;
@@ -17,7 +23,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp.Model;
 using Xamarin.Forms;
-
 
 
 namespace WindowsFormsApp
@@ -76,6 +81,8 @@ namespace WindowsFormsApp
         AutoLabel label;
         FlowLayoutPanel osPanel;
         //
+        private MiChangerGraphQLClient miChangerGraphQLClient;
+        private DeviceModel tempDevice;
         public ViewChange()
         {
             this.SuspendLayout();
@@ -447,101 +454,115 @@ namespace WindowsFormsApp
         }
         private async void btnRandom_Click(object sender, EventArgs e)
         {
-            int idx;
-            if (_randomCount < 3)
+            //int idx;
+            //if (_randomCount < 3)
+            //{
+            //    var available = Enumerable.Range(0, _configs.Count)
+            //                              .Where(i => !_usedIndices.Contains(i))
+            //                              .ToArray();
+            //    if (available.Length == 0)
+            //    {
+            //        _usedIndices.Clear();
+            //        available = Enumerable.Range(0, _configs.Count).ToArray();
+            //    }
+            //    idx = available[_rnd.Next(available.Length)];
+            //    _usedIndices.Add(idx);
+            //}
+            //else
+            //{
+            //    idx = _rnd.Next(_configs.Count);
+            //}
+            //_randomCount++;
+
+            //FillControls(_configs[idx]);
+
+            if (miChangerGraphQLClient == null)
             {
-                var available = Enumerable.Range(0, _configs.Count)
-                                          .Where(i => !_usedIndices.Contains(i))
-                                          .ToArray();
-                if (available.Length == 0)
+                  CreateService();
+            }
+            //_device = ADBService.getDeviceBySerial(cbbSerials.Text);
+            //if (_device.CodeName == DeviceCodeName.STARLTE) _device.Status = DeviceStatus.ReadyToChange;
+            //if (_device.CodeName == DeviceCodeName.SARGO) _device.Status = DeviceStatus.ReadyToChange;
+            //if (_device.CodeName == DeviceCodeName.CROSSHATCH) _device.Status = DeviceStatus.ReadyToChange;
+            //if (_device.Status == DeviceStatus.Offline || _device.Status == DeviceStatus.Undefined)
+            //{
+            //    MessageBox.Show("Current Device is Offline or Undefined", "Notice");
+            //    buttonChanger.Enabled = false;
+            //    return;
+            //}
+            var currentSelectedCarrier = "MobiFone-01";//comboBoxCarrier.SelectedValue as ComboBoxItem;
+            var currentSelectedCountry = "Viet Nam";//txtCountry.SelectedValue as SimCarrier;
+            var mcc = "452";//currentSelectedCountry.Attribute.Mcc;
+            var mnc = "01";//currentSelectedCarrier.Value;
+
+            Console.WriteLine("Country Code = {0}. MCC = {1} while carrier name = {2} MNC = {3}"
+                , "84"
+                , mcc
+                , "MobiFone-01"//currentSelectedCarrier.Name
+                , mnc);
+            // buttonRandom.Enabled = false;
+            try
+            {
+                //var probabilitySamsung = RandomService.randomInRange(1, 11) % 2 == 0;
+                //if (probabilitySamsung)
+                //{
+                //    tempDevice = await miChangerGraphQLClient.GetRandomDevice(
+                //                        _device.GoogleEmail,
+                //                        _device.Imei,
+                //                        _device.SerialNo,
+                //                        _device.Packages,
+                //                        countryIso: currentSelectedCountry.CountryIso,
+                //                        carrierName: currentSelectedCarrier.Name,
+                //                        Enum.GetName(typeof(DeviceCodeName), DeviceCodeName.TISSOT));
+                //}
+                //else
+                //{
+                //    tempDevice = await miChangerGraphQLClient.GetRandomDeviceNew();
+                //}
+                tempDevice = await miChangerGraphQLClient.GetRandomDeviceV3(sdkMin: 30);
+                if (tempDevice.Model == null)
                 {
-                    _usedIndices.Clear();
-                    available = Enumerable.Range(0, _configs.Count).ToArray();
+                    MessageBox.Show("Devices not existed, please try again");
+                    throw new Exception("Devices not existed, please try again");
                 }
-                idx = available[_rnd.Next(available.Length)];
-                _usedIndices.Add(idx);
+
+                txtImsi.Text = tempDevice.IMSI = RandomService.generateIMSI(mcc, mnc);
+                txtIccId.Text = tempDevice.ICCID = RandomService.generateICCID("84", mnc);
+                txtImei.Text = tempDevice.Imei;
+                tempDevice.SerialNo = RandomService.getRandomStringHex16Digit().Substring(0, RandomService.randomInRange(8, 13));
+                txtPhone.Text = tempDevice.SimPhoneNumber = string.Format("+{0}{1}", "84", RandomService.generatePhoneNumber());
+                txtModel.Text = tempDevice.Model;
+                // tempDevice.SimOperatorNumeric = textBoxSimOperatorCode.Text = string.Concat(mcc, mnc);
+                tempDevice.SimOperatorCountry = "01";
+                //   tempDevice.SimOperatorName = currentSelectedCarrier.Name.Substring(0, currentSelectedCarrier.Name.LastIndexOf("-")).Replace("&", "^&");
+                tempDevice.AndroidId = RandomService.getRandomStringHex16Digit();
+                tempDevice.WifiMacAddress = RandomService.generateWifiMacAddress();
+                tempDevice.BlueToothMacAddress = RandomService.generateMacAddress();
+                //  buttonChanger.Enabled = true;
+                //buttonSaveDeviceSU.Enabled = true;
             }
-            else
+            catch (Exception ex)
             {
-                idx = _rnd.Next(_configs.Count);
+                //ignored
             }
-            _randomCount++;
-
-            FillControls(_configs[idx]);
-
-            // if (miChangerGraphQLClient == null)
-            // {
-            //   //  CreateService();
-            // }
-            // //_device = ADBService.getDeviceBySerial(cbbSerials.Text);
-            // //if (_device.CodeName == DeviceCodeName.STARLTE) _device.Status = DeviceStatus.ReadyToChange;
-            // //if (_device.CodeName == DeviceCodeName.SARGO) _device.Status = DeviceStatus.ReadyToChange;
-            // //if (_device.CodeName == DeviceCodeName.CROSSHATCH) _device.Status = DeviceStatus.ReadyToChange;
-            // //if (_device.Status == DeviceStatus.Offline || _device.Status == DeviceStatus.Undefined)
-            // //{
-            // //    MessageBox.Show("Current Device is Offline or Undefined", "Notice");
-            // //    buttonChanger.Enabled = false;
-            // //    return;
-            // //}
-            // var currentSelectedCarrier = "Viettel-04";//comboBoxCarrier.SelectedValue as ComboBoxItem;
-            // var currentSelectedCountry = txtCountry.SelectedValue as SimCarrier;
-            // var mcc = currentSelectedCountry.Attribute.Mcc;
-            // var mnc = "Viettel-04";//currentSelectedCarrier.Value;
-
-            // Console.WriteLine("Country Code = {0}. MCC = {1} while carrier name = {2} MNC = {3}"
-            //     , currentSelectedCountry.CountryCode
-            //     , mcc
-            //     , "Viettel-04"//currentSelectedCarrier.Name
-            //     , mnc);
-            //// buttonRandom.Enabled = false;
-            // try
-            // {
-            //     //var probabilitySamsung = RandomService.randomInRange(1, 11) % 2 == 0;
-            //     //if (probabilitySamsung)
-            //     //{
-            //     //    tempDevice = await miChangerGraphQLClient.GetRandomDevice(
-            //     //                        _device.GoogleEmail,
-            //     //                        _device.Imei,
-            //     //                        _device.SerialNo,
-            //     //                        _device.Packages,
-            //     //                        countryIso: currentSelectedCountry.CountryIso,
-            //     //                        carrierName: currentSelectedCarrier.Name,
-            //     //                        Enum.GetName(typeof(DeviceCodeName), DeviceCodeName.TISSOT));
-            //     //}
-            //     //else
-            //     //{
-            //     //    tempDevice = await miChangerGraphQLClient.GetRandomDeviceNew();
-            //     //}
-            //     tempDevice = await miChangerGraphQLClient.GetRandomDeviceV3(sdkMin: 30);
-            //     if (tempDevice.Model == null)
-            //     {
-            //         MessageBox.Show("Devices not existed, please try again");
-            //         throw new Exception("Devices not existed, please try again");
-            //     }
-
-            //     txtImsi.Text = tempDevice.IMSI = RandomService.generateIMSI(mcc, mnc);
-            //     txtIccId.Text = tempDevice.ICCID = RandomService.generateICCID(currentSelectedCountry.CountryCode, mnc);
-            //     txtImei.Text = tempDevice.Imei;
-            //     tempDevice.SerialNo = RandomService.getRandomStringHex16Digit().Substring(0, RandomService.randomInRange(8, 13));
-            //     txtPhone.Text = tempDevice.SimPhoneNumber = string.Format("+{0}{1}", currentSelectedCountry.CountryCode, RandomService.generatePhoneNumber());
-            //     txtModel.Text = tempDevice.Model;
-            //    // tempDevice.SimOperatorNumeric = textBoxSimOperatorCode.Text = string.Concat(mcc, mnc);
-            //     tempDevice.SimOperatorCountry = currentSelectedCountry.CountryIso;
-            //  //   tempDevice.SimOperatorName = currentSelectedCarrier.Name.Substring(0, currentSelectedCarrier.Name.LastIndexOf("-")).Replace("&", "^&");
-            //     tempDevice.AndroidId = RandomService.getRandomStringHex16Digit();
-            //     tempDevice.WifiMacAddress = RandomService.generateWifiMacAddress();
-            //     tempDevice.BlueToothMacAddress = RandomService.generateMacAddress();
-            //   //  buttonChanger.Enabled = true;
-            //     //buttonSaveDeviceSU.Enabled = true;
-            // }
-            // catch (Exception ex)
-            // {
-            //     //ignored
-            // }
-            // finally
-            // {
-            //    // buttonRandom.Enabled = true;
-            // }
+            finally
+            {
+                // buttonRandom.Enabled = true;
+            }
+        }
+        private void CreateService()
+        {
+            var poolId = AppConfigService.ReadSetting("poolId");
+            var clientId = AppConfigService.ReadSetting("clientId");
+            var cognito = new CognitoService("ap-southeast-1_Cha6gy7Ui", "4h21ba0at8flinn9iq351if381");
+            var username = AppConfigService.ReadSetting("email");
+            var password = AppConfigService.ReadSetting("password");
+            var endpoint = AppConfigService.ReadSetting("endpoint");
+            var refreshToken = cognito.getIdToken("mistplay@yopmail.com", "12345678");
+            if (!string.IsNullOrEmpty(refreshToken))
+            {
+                miChangerGraphQLClient = new MiChangerGraphQLClient(endpoint, ApiAuthenticationType.TOKEN, refreshToken);
+            }
         }
         private void FillControls(DeviceConfig c)
         {

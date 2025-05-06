@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApp", "WindowsFormsApp\WindowsFormsApp.csproj", "{1B7BFC56-C208-4C28-9731-0430781F3798}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiHttpClient", "MiHttpClient\MiHttpClient.csproj", "{D147C7D9-D203-4F38-BD5E-FEBAE475FE0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POCO", "POCO\POCO.csproj", "{FF563F4B-AF28-45E7-BFB7-C4B5C31D01F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{1B7BFC56-C208-4C28-9731-0430781F3798}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B7BFC56-C208-4C28-9731-0430781F3798}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B7BFC56-C208-4C28-9731-0430781F3798}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D147C7D9-D203-4F38-BD5E-FEBAE475FE0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D147C7D9-D203-4F38-BD5E-FEBAE475FE0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D147C7D9-D203-4F38-BD5E-FEBAE475FE0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D147C7D9-D203-4F38-BD5E-FEBAE475FE0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF563F4B-AF28-45E7-BFB7-C4B5C31D01F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF563F4B-AF28-45E7-BFB7-C4B5C31D01F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF563F4B-AF28-45E7-BFB7-C4B5C31D01F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF563F4B-AF28-45E7-BFB7-C4B5C31D01F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

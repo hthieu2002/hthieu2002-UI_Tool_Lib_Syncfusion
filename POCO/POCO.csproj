@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FF563F4B-AF28-45E7-BFB7-C4B5C31D01F7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>POCO</RootNamespace>
+    <AssemblyName>POCO</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenPop, Version=2.0.6.1120, Culture=neutral, PublicKeyToken=6bdb97f144b7efc8, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenPop.NET.2.0.6.1120\lib\net40\OpenPop.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\AndroidPhoneModel.cs" />
+    <Compile Include="Models\AppDataModels.cs" />
+    <Compile Include="Models\AppModel.cs" />
+    <Compile Include="Models\AutoProxyInfo.cs" />
+    <Compile Include="Models\AWSUserModel.cs" />
+    <Compile Include="Models\BackupInfoModel.cs" />
+    <Compile Include="Models\DeviceConfigModel.cs" />
+    <Compile Include="Models\DeviceModel.cs" />
+    <Compile Include="Models\GetDeviceV3Response.cs" />
+    <Compile Include="Models\GmailCheckerModel.cs" />
+    <Compile Include="Models\LeadModel.cs" />
+    <Compile Include="Models\LicensesModel.cs" />
+    <Compile Include="Models\MailSessionInfo.cs" />
+    <Compile Include="Models\OfferModel.cs" />
+    <Compile Include="Models\OutputInfo.cs" />
+    <Compile Include="Models\PackageModel.cs" />
+    <Compile Include="Models\Pop3Mail.cs" />
+    <Compile Include="Models\ProxyDeviceModel.cs" />
+    <Compile Include="Models\ProxyResponseModel.cs" />
+    <Compile Include="Models\RentCodeModel.cs" />
+    <Compile Include="Models\RRSModel.cs" />
+    <Compile Include="Models\SessionStatusEnum.cs" />
+    <Compile Include="Models\SettingsModel.cs" />
+    <Compile Include="Models\SimCarrier.cs" />
+    <Compile Include="Models\UserAgentModel.cs" />
+    <Compile Include="Models\UsernameModel.cs" />
+    <Compile Include="Models\YoutubeVideoModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResponseModels\GetActiveLicensesBySerialNoResponse.cs" />
+    <Compile Include="ResponseModels\GetActiveLicensesResponse.cs" />
+    <Compile Include="ResponseModels\GetCurrentTMProxyResponse.cs" />
+    <Compile Include="ResponseModels\GetDeviceResponse.cs" />
+    <Compile Include="ResponseModels\GetDeviceWadogeNewResponse.cs" />
+    <Compile Include="ResponseModels\GetDeviceWadogeResponse.cs" />
+    <Compile Include="ResponseModels\GetGoogleDriveAccessTokenResponse.cs" />
+    <Compile Include="ResponseModels\GetProxyResponse.cs" />
+    <Compile Include="ResponseModels\GetProxySummaryResponse.cs" />
+    <Compile Include="ResponseModels\ReleaseProxyModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -16,6 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp.Model;
+using Xamarin.Forms;
 
 
 
@@ -74,6 +75,7 @@ namespace WindowsFormsApp
         FlowLayoutPanel panel;
         AutoLabel label;
         FlowLayoutPanel osPanel;
+        //
         public ViewChange()
         {
             this.SuspendLayout();
@@ -137,7 +139,6 @@ namespace WindowsFormsApp
             txtCountry.DataSource = countries;
             txtModel.DataSource = models;
             txtSim.DataSource = sims;
-
         }
       
         private void MyForm_OnSizeChange(object sender, EventArgs e)
@@ -160,7 +161,6 @@ namespace WindowsFormsApp
             headerView.SetTitle("Devices");
             mainMenu.Controls.Add(headerView);
         }
-
         private string[] GetConnectedDevices()
         {
             ProcessStartInfo startInfo = new ProcessStartInfo()
@@ -183,7 +183,6 @@ namespace WindowsFormsApp
 
             return devices;
         }
-
         private bool IsDeviceOnline(string deviceId)
         {
             var process = new Process();
@@ -199,7 +198,6 @@ namespace WindowsFormsApp
 
             return !string.IsNullOrEmpty(output) && output.Contains("1");
         }
-
         public (List<WindowsFormsApp.Model.DeviceDisplay> onlineDevices, List<WindowsFormsApp.Model.DeviceDisplay> offlineDevices) LoadDevicesFromJson()
         {
             string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "devices.json");
@@ -250,7 +248,6 @@ namespace WindowsFormsApp
 
             _deviceCheckTask = Task.Run(() => DeviceCheckLoop(_deviceCheckCancellationTokenSource.Token));
         }
-
         private async Task DeviceCheckLoop(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
@@ -321,7 +318,6 @@ namespace WindowsFormsApp
             }
             sfDataGrid.Refresh();
         }
-
         private void DeleteDeviceById(string deviceId)
         {
             var deviceToRemove = deviceDisplays.FirstOrDefault(d => d.Serial == deviceId);
@@ -374,7 +370,6 @@ namespace WindowsFormsApp
             string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "devices.json");
             File.WriteAllText(path, JsonConvert.SerializeObject(uniqueDevices, Newtonsoft.Json.Formatting.Indented));
         }
-
         private void LoadDevicesFromFile()
         {
             string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "devices.json");
@@ -415,12 +410,10 @@ namespace WindowsFormsApp
         {
             MessageBox.Show("Details option clicked.");
         }
-
         private void EditItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Edit option clicked.");
         }
-
         private void DeleteItem_Click(object sender, EventArgs e)
         {
             var selectedRow = sfDataGrid.SelectedItems.Cast<DataRowView>().FirstOrDefault();
@@ -440,7 +433,6 @@ namespace WindowsFormsApp
                 MessageBox.Show("Please select a device to delete.");
             }
         }
-
         //data
         public void SetResertDataInputForm()
         {
@@ -453,7 +445,7 @@ namespace WindowsFormsApp
             txtPhone.Text = "";
             txtSerial.Text = "";
         }
-        private void btnRandom_Click(object sender, EventArgs e)
+        private async void btnRandom_Click(object sender, EventArgs e)
         {
             int idx;
             if (_randomCount < 3)
@@ -476,6 +468,80 @@ namespace WindowsFormsApp
             _randomCount++;
 
             FillControls(_configs[idx]);
+
+            // if (miChangerGraphQLClient == null)
+            // {
+            //   //  CreateService();
+            // }
+            // //_device = ADBService.getDeviceBySerial(cbbSerials.Text);
+            // //if (_device.CodeName == DeviceCodeName.STARLTE) _device.Status = DeviceStatus.ReadyToChange;
+            // //if (_device.CodeName == DeviceCodeName.SARGO) _device.Status = DeviceStatus.ReadyToChange;
+            // //if (_device.CodeName == DeviceCodeName.CROSSHATCH) _device.Status = DeviceStatus.ReadyToChange;
+            // //if (_device.Status == DeviceStatus.Offline || _device.Status == DeviceStatus.Undefined)
+            // //{
+            // //    MessageBox.Show("Current Device is Offline or Undefined", "Notice");
+            // //    buttonChanger.Enabled = false;
+            // //    return;
+            // //}
+            // var currentSelectedCarrier = "Viettel-04";//comboBoxCarrier.SelectedValue as ComboBoxItem;
+            // var currentSelectedCountry = txtCountry.SelectedValue as SimCarrier;
+            // var mcc = currentSelectedCountry.Attribute.Mcc;
+            // var mnc = "Viettel-04";//currentSelectedCarrier.Value;
+
+            // Console.WriteLine("Country Code = {0}. MCC = {1} while carrier name = {2} MNC = {3}"
+            //     , currentSelectedCountry.CountryCode
+            //     , mcc
+            //     , "Viettel-04"//currentSelectedCarrier.Name
+            //     , mnc);
+            //// buttonRandom.Enabled = false;
+            // try
+            // {
+            //     //var probabilitySamsung = RandomService.randomInRange(1, 11) % 2 == 0;
+            //     //if (probabilitySamsung)
+            //     //{
+            //     //    tempDevice = await miChangerGraphQLClient.GetRandomDevice(
+            //     //                        _device.GoogleEmail,
+            //     //                        _device.Imei,
+            //     //                        _device.SerialNo,
+            //     //                        _device.Packages,
+            //     //                        countryIso: currentSelectedCountry.CountryIso,
+            //     //                        carrierName: currentSelectedCarrier.Name,
+            //     //                        Enum.GetName(typeof(DeviceCodeName), DeviceCodeName.TISSOT));
+            //     //}
+            //     //else
+            //     //{
+            //     //    tempDevice = await miChangerGraphQLClient.GetRandomDeviceNew();
+            //     //}
+            //     tempDevice = await miChangerGraphQLClient.GetRandomDeviceV3(sdkMin: 30);
+            //     if (tempDevice.Model == null)
+            //     {
+            //         MessageBox.Show("Devices not existed, please try again");
+            //         throw new Exception("Devices not existed, please try again");
+            //     }
+
+            //     txtImsi.Text = tempDevice.IMSI = RandomService.generateIMSI(mcc, mnc);
+            //     txtIccId.Text = tempDevice.ICCID = RandomService.generateICCID(currentSelectedCountry.CountryCode, mnc);
+            //     txtImei.Text = tempDevice.Imei;
+            //     tempDevice.SerialNo = RandomService.getRandomStringHex16Digit().Substring(0, RandomService.randomInRange(8, 13));
+            //     txtPhone.Text = tempDevice.SimPhoneNumber = string.Format("+{0}{1}", currentSelectedCountry.CountryCode, RandomService.generatePhoneNumber());
+            //     txtModel.Text = tempDevice.Model;
+            //    // tempDevice.SimOperatorNumeric = textBoxSimOperatorCode.Text = string.Concat(mcc, mnc);
+            //     tempDevice.SimOperatorCountry = currentSelectedCountry.CountryIso;
+            //  //   tempDevice.SimOperatorName = currentSelectedCarrier.Name.Substring(0, currentSelectedCarrier.Name.LastIndexOf("-")).Replace("&", "^&");
+            //     tempDevice.AndroidId = RandomService.getRandomStringHex16Digit();
+            //     tempDevice.WifiMacAddress = RandomService.generateWifiMacAddress();
+            //     tempDevice.BlueToothMacAddress = RandomService.generateMacAddress();
+            //   //  buttonChanger.Enabled = true;
+            //     //buttonSaveDeviceSU.Enabled = true;
+            // }
+            // catch (Exception ex)
+            // {
+            //     //ignored
+            // }
+            // finally
+            // {
+            //    // buttonRandom.Enabled = true;
+            // }
         }
         private void FillControls(DeviceConfig c)
         {

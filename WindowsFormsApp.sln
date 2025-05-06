@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiHttpClient", "MiHttpClien
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POCO", "POCO\POCO.csproj", "{FF563F4B-AF28-45E7-BFB7-C4B5C31D01F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{1C7375A1-3DB2-4F92-BF8A-F920CA2882F2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FF563F4B-AF28-45E7-BFB7-C4B5C31D01F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF563F4B-AF28-45E7-BFB7-C4B5C31D01F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF563F4B-AF28-45E7-BFB7-C4B5C31D01F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C7375A1-3DB2-4F92-BF8A-F920CA2882F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C7375A1-3DB2-4F92-BF8A-F920CA2882F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C7375A1-3DB2-4F92-BF8A-F920CA2882F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C7375A1-3DB2-4F92-BF8A-F920CA2882F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

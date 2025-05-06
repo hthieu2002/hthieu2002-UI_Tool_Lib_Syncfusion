@@ -136,6 +136,5 @@ namespace AccountCreatorForm.Views
                 btn.Cursor = Cursors.Default;
             }
         }
-       
     }
 }

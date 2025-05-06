@@ -9,5 +9,7 @@ namespace POCO.Models
         public string UserAgent { get; set; }
         public string Country { get; set; }
         public DateTime TransactionDate { get; set; }
+
+      
     }
 }

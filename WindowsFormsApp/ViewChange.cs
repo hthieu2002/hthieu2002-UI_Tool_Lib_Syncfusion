@@ -6,11 +6,13 @@ using MiHttpClient;
 using Newtonsoft.Json;
 using POCO.Models;
 using Services;
+using Syncfusion.Windows.Forms;
 using Syncfusion.Windows.Forms.Tools;
 using Syncfusion.WinForms.Controls;
 using Syncfusion.WinForms.DataGrid;
 using Syncfusion.WinForms.DataGrid.Enums;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -83,11 +85,15 @@ namespace WindowsFormsApp
         //
         private MiChangerGraphQLClient miChangerGraphQLClient;
         private DeviceModel tempDevice;
+
+        private List<SimCarrier> simCarriers;
+        public DeviceConfigModel _deviceConfig;
+        private List<SimCarrier> telecomDataSource = new List<SimCarrier>();
         public ViewChange()
         {
             this.SuspendLayout();
             InitializeComponent();
-
+           
             ConfigureForm(); // Cấu hình cơ bản
             Instance = this; // ← Phải set ở Constructor luôn để mọi nơi khác dùng được Instance
             setGridView();
@@ -116,36 +122,61 @@ namespace WindowsFormsApp
 
             await InitializeDeviceStatus();
             StartDeviceCheck();
-
-            LoadConfigs();
+            btnChangeDevice.Enabled = false;
+            LoadGUI();
         }
-
-        private void LoadConfigs()
+        private void LoadGUI()
         {
-            var path = Path.Combine(System.Windows.Forms.Application.StartupPath, "./Resources/data.json");
-            var json = File.ReadAllText(path);
-            _configs = JsonConvert.DeserializeObject<List<DeviceConfig>>(json);
+            var uiThreadScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+            var taskLoadCarrierJson = Task.Run(() => JsonService<SimCarrier>.loadConfigurationFromResource("carriers.json"))
+                .ContinueWith(task =>
+                {
+                    telecomDataSource = task.Result;
+                    //load list carrier to dropdownlist once loading progress (from json) done
+                    simCarriers = telecomDataSource
+                                    .GroupBy(c => c.CountryName)
+                                    .Select(c => c.First())
+                                    .OrderBy(c => c.CountryName)
+                                    .ToList();
 
-            InitComboBoxes();
+                    txtCountry.DisplayMember = "CountryName";
+                   
+                    txtCountry.DataSource = simCarriers;
+                    if (true)
+                    {
+                        try
+                        {
+                            var simCarrier = simCarriers.FirstOrDefault(x => x.CountryName.Equals("Abkhazia"));
+                            if (simCarrier != null)
+                            {
+                                txtCountry.Text = simCarrier.CountryName;
+                            }
+                        }
+                        catch
+                        {
+                            //ignored
+                        }
+                    }
+
+                    return telecomDataSource;
+                },
+                uiThreadScheduler);
+           // var taskLoadDeviceModelJson = Task.Run(() => JsonService<DeviceModel>.loadConfigurationFromResource("devices.json"))
+            //    .ContinueWith(task => { deviceModelDataSource = task.Result; return deviceModelDataSource; });
+            //comboBoxSourceInfo.SelectedIndex = 2; //0: wadoge, 1: samsung, 2: all
+          //  comboBoxOpenFrom.SelectedIndex = 0;  //0: vending, 1: setting
+          //  comboBoxRecovery.SelectedIndex = 1;  //0: NONE, 1: All, 2: yahoo.com, 3: outlook.com
         }
-
-        private void InitComboBoxes()
+        private void txtCountry_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var brands = _configs.Select(c => c.brand).Distinct().ToList();
-            var oss = _configs.Select(c => c.os).Distinct().ToList();
-            var osVers = _configs.Select(c => c.os_version).Distinct().ToList();
-            var names = _configs.Select(c => c.name).Distinct().ToList();
-            var countries = _configs.Select(c => c.country).Distinct().ToList();
-            var models = _configs.Select(c => c.model).Distinct().ToList();
-            var sims = _configs.Select(c => c.sim).Distinct().ToList();
+            var currentValue = txtCountry.SelectedValue as SimCarrier;
 
-            txtBrand.DataSource = brands;
-            txtOS.DataSource = oss;
-            txtOS_version.DataSource = osVers;
-            txtName.DataSource = names;
-            txtCountry.DataSource = countries;
-            txtModel.DataSource = models;
-            txtSim.DataSource = sims;
+            var carrierList = telecomDataSource.FindAll(c => currentValue.Attribute.Mcc.Equals(c.Attribute.Mcc))
+                .Select(c => new ComboBoxItem { Name = c.Name + "-" + c.Attribute.Mnc, Value = c.Attribute.Mnc })
+                .ToList();
+
+            txtSim.DisplayMember = "Name";
+            txtSim.DataSource = carrierList;
         }
       
         private void MyForm_OnSizeChange(object sender, EventArgs e)
@@ -454,27 +485,8 @@ namespace WindowsFormsApp
         }
         private async void btnRandom_Click(object sender, EventArgs e)
         {
-            //int idx;
-            //if (_randomCount < 3)
-            //{
-            //    var available = Enumerable.Range(0, _configs.Count)
-            //                              .Where(i => !_usedIndices.Contains(i))
-            //                              .ToArray();
-            //    if (available.Length == 0)
-            //    {
-            //        _usedIndices.Clear();
-            //        available = Enumerable.Range(0, _configs.Count).ToArray();
-            //    }
-            //    idx = available[_rnd.Next(available.Length)];
-            //    _usedIndices.Add(idx);
-            //}
-            //else
-            //{
-            //    idx = _rnd.Next(_configs.Count);
-            //}
-            //_randomCount++;
-
-            //FillControls(_configs[idx]);
+            btnRandomdevice.Enabled = false;
+            
 
             if (miChangerGraphQLClient == null)
             {
@@ -490,35 +502,19 @@ namespace WindowsFormsApp
             //    buttonChanger.Enabled = false;
             //    return;
             //}
-            var currentSelectedCarrier = "MobiFone-01";//comboBoxCarrier.SelectedValue as ComboBoxItem;
-            var currentSelectedCountry = "Viet Nam";//txtCountry.SelectedValue as SimCarrier;
-            var mcc = "452";//currentSelectedCountry.Attribute.Mcc;
+            var currentSelectedCarrier = txtSim.SelectedValue as ComboBoxItem;
+            var currentSelectedCountry = txtCountry.SelectedValue as SimCarrier;
+            var mcc = currentSelectedCountry.Attribute.Mcc;
             var mnc = "01";//currentSelectedCarrier.Value;
 
             Console.WriteLine("Country Code = {0}. MCC = {1} while carrier name = {2} MNC = {3}"
-                , "84"
+                , currentSelectedCountry.CountryCode
                 , mcc
-                , "MobiFone-01"//currentSelectedCarrier.Name
+                , currentSelectedCarrier.Name
                 , mnc);
-            // buttonRandom.Enabled = false;
+           
             try
             {
-                //var probabilitySamsung = RandomService.randomInRange(1, 11) % 2 == 0;
-                //if (probabilitySamsung)
-                //{
-                //    tempDevice = await miChangerGraphQLClient.GetRandomDevice(
-                //                        _device.GoogleEmail,
-                //                        _device.Imei,
-                //                        _device.SerialNo,
-                //                        _device.Packages,
-                //                        countryIso: currentSelectedCountry.CountryIso,
-                //                        carrierName: currentSelectedCarrier.Name,
-                //                        Enum.GetName(typeof(DeviceCodeName), DeviceCodeName.TISSOT));
-                //}
-                //else
-                //{
-                //    tempDevice = await miChangerGraphQLClient.GetRandomDeviceNew();
-                //}
                 tempDevice = await miChangerGraphQLClient.GetRandomDeviceV3(sdkMin: 30);
                 if (tempDevice.Model == null)
                 {
@@ -526,19 +522,39 @@ namespace WindowsFormsApp
                     throw new Exception("Devices not existed, please try again");
                 }
 
+                txtName.DataSource = new List<string> { tempDevice.Board };
+                txtName.SelectedItem = tempDevice.Board;
+                txtOS.DataSource = new List<string> { tempDevice.Release };
+                txtOS.SelectedItem = tempDevice.Release;
+                txtOS_version.DataSource = new List<string> { tempDevice.SDK };
+                txtOS_version.SelectedItem = tempDevice.SDK;
+                txtBrand.DataSource = new List<string> { tempDevice.Manufacturer };
+                txtBrand.SelectedItem = tempDevice.Manufacturer;
+                txtModel.DataSource = new List<string> { tempDevice.Model };
+                txtModel.SelectedItem = tempDevice.Model;
+               
+                
+                //       txtCountry.DataSource = new Li
+
                 txtImsi.Text = tempDevice.IMSI = RandomService.generateIMSI(mcc, mnc);
-                txtIccId.Text = tempDevice.ICCID = RandomService.generateICCID("84", mnc);
+                txtIccId.Text = tempDevice.ICCID = RandomService.generateICCID(currentSelectedCountry.CountryCode, mnc);
                 txtImei.Text = tempDevice.Imei;
                 tempDevice.SerialNo = RandomService.getRandomStringHex16Digit().Substring(0, RandomService.randomInRange(8, 13));
-                txtPhone.Text = tempDevice.SimPhoneNumber = string.Format("+{0}{1}", "84", RandomService.generatePhoneNumber());
+                txtSerial.Text = tempDevice.SerialNo;
+                txtPhone.Text = tempDevice.SimPhoneNumber = string.Format("+{0}{1}", currentSelectedCountry.CountryCode, RandomService.generatePhoneNumber());
                 txtModel.Text = tempDevice.Model;
-                // tempDevice.SimOperatorNumeric = textBoxSimOperatorCode.Text = string.Concat(mcc, mnc);
-                tempDevice.SimOperatorCountry = "01";
-                //   tempDevice.SimOperatorName = currentSelectedCarrier.Name.Substring(0, currentSelectedCarrier.Name.LastIndexOf("-")).Replace("&", "^&");
+                tempDevice.SimOperatorNumeric = string.Concat(mcc, mnc);
+                txtCode.Text = tempDevice.SimOperatorNumeric;
+                tempDevice.SimOperatorCountry = currentSelectedCountry.CountryIso;
+                tempDevice.SimOperatorName = currentSelectedCarrier.Name.Substring(0, currentSelectedCarrier.Name.LastIndexOf("-")).Replace("&", "^&");
                 tempDevice.AndroidId = RandomService.getRandomStringHex16Digit();
                 tempDevice.WifiMacAddress = RandomService.generateWifiMacAddress();
                 tempDevice.BlueToothMacAddress = RandomService.generateMacAddress();
-                //  buttonChanger.Enabled = true;
+                txtMac.Text = RandomService.generateMacAddress();
+
+
+                btnRandomdevice.Enabled = true;
+              
                 //buttonSaveDeviceSU.Enabled = true;
             }
             catch (Exception ex)
@@ -547,7 +563,8 @@ namespace WindowsFormsApp
             }
             finally
             {
-                // buttonRandom.Enabled = true;
+                btnChangeDevice.Enabled = true;
+                btnRandomdevice.Enabled = true;
             }
         }
         private void CreateService()
@@ -557,30 +574,14 @@ namespace WindowsFormsApp
             var cognito = new CognitoService("ap-southeast-1_Cha6gy7Ui", "4h21ba0at8flinn9iq351if381");
             var username = AppConfigService.ReadSetting("email");
             var password = AppConfigService.ReadSetting("password");
-            var endpoint = AppConfigService.ReadSetting("endpoint");
+            var endpoint = "https://nievrqo2rbdtfhmhzc2bg2epka.appsync-api.ap-southeast-1.amazonaws.com/graphql";//AppConfigService.ReadSetting("endpoint");
             var refreshToken = cognito.getIdToken("mistplay@yopmail.com", "12345678");
             if (!string.IsNullOrEmpty(refreshToken))
             {
                 miChangerGraphQLClient = new MiChangerGraphQLClient(endpoint, ApiAuthenticationType.TOKEN, refreshToken);
             }
         }
-        private void FillControls(DeviceConfig c)
-        {
-            txtBrand.SelectedItem = c.brand;
-            txtOS.SelectedItem = c.os;
-            txtOS_version.SelectedItem = c.os_version;
-            txtName.SelectedItem = c.name;
-            txtCountry.SelectedItem = c.country;
-            txtModel.SelectedItem = c.model;
-            txtSim.SelectedItem = c.sim;
-            txtSerial.Text = c.serial;
-            txtCode.Text = c.code;
-            txtPhone.Text = c.phone;
-            txtImei.Text = c.imei;
-            txtImsi.Text = c.imsi;
-            txtIccId.Text = c.iccid;
-            txtMac.Text = c.mac;
-        }
+       
         // ví dụ gọi:
         private async void btnChange_Click(object sender, EventArgs e)
         {

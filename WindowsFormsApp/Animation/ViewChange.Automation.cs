@@ -85,6 +85,7 @@ namespace WindowsFormsApp
             PanelInput.Controls.Add(CreateInputPanel("MODEL", txtModel));
             PanelInput.Controls.Add(osPanel);
             PanelInput.Controls.Add(CreateInputPanel("COUNTRY", txtCountry));
+            txtCountry.SelectedIndexChanged += txtCountry_SelectedIndexChanged;
             PanelInput.Controls.Add(CreateInputPanel("SIM", txtSim));
             PanelInput.Controls.Add(CreateInputPanel("SERIAL", txtSerial));
             PanelInput.Controls.Add(CreateInputPanel("CODE", txtCode));

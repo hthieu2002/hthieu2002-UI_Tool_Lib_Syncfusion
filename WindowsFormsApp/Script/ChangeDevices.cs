@@ -261,7 +261,7 @@ namespace WindowsFormsApp.Script
                 return false;
             }
         }
-        public static bool SaveDeviceSIm(DeviceModel tempDevice, string deviceId, string applicationPath)
+        public static bool SaveDeviceSIm(DeviceModel tempDevice, string deviceId, string applicationPath, DataRow row)
         {
             try
             {

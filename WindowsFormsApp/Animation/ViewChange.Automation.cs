@@ -276,7 +276,10 @@ namespace WindowsFormsApp
             btnAutoBackup.Paint += BtnCommon_Paint;
             btnAutochangeFull.Paint += BtnCommon_Paint;
             btnAutochangeFull.Click += btnChangeFull_Click;
+
             btnAutoChangeSim.Paint += BtnCommon_Paint;
+            btnAutoChangeSim.Click += btnChangeSimAll_Click;
+
             btnBackup.Paint += BtnCommon_Paint;
             btnBackup2.Paint += BtnCommon_Paint;
             btnChangeDevice.Paint += BtnCommon_Paint;
@@ -307,7 +310,6 @@ namespace WindowsFormsApp
             btnChangeSim.BackColor = Color.DarkGray;
             btnAutochangeFull.BackColor = Color.DarkGray;
             btnAutoChangeSim.BackColor = Color.DarkGray;
-
         }
         public void setupEnableButtonRandom()
         {

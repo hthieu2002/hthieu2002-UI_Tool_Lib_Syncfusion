@@ -871,7 +871,19 @@ namespace WindowsFormsApp
                 //Firstly, save
                 BeginInvoke(new Action(() =>
                 {
-
+                    if (autoChange != 1)
+                    {
+                        // auto
+                        btnAutoChangeSim.Text = "Running";
+                        btnAutoChangeSim.Enabled = false;
+                        btnAutoChangeSim.BackColor = System.Drawing.Color.OrangeRed;
+                    }
+                    else
+                    {
+                        btnChangeSim.Text = "Running";
+                        btnChangeSim.Enabled = false;
+                        btnChangeSim.BackColor = System.Drawing.Color.OrangeRed;
+                    }
                 }));
                 await ViewChange.Instance.updateProgress(row, "Disable wifi", 5);
                 ADBService.enableWifi(false, device);
@@ -889,7 +901,19 @@ namespace WindowsFormsApp
                     // Wipe
                     BeginInvoke(new Action(() =>
                     {
-
+                        if (autoChange != 1)
+                        {
+                            // auto
+                            btnAutoChangeSim.Text = "Running";
+                            btnAutoChangeSim.Enabled = false;
+                            btnAutoChangeSim.BackColor = System.Drawing.Color.OrangeRed;
+                        }
+                        else
+                        {
+                            btnChangeSim.Text = "Running";
+                            btnChangeSim.Enabled = false;
+                            btnChangeSim.BackColor = System.Drawing.Color.OrangeRed;
+                        }
                     }));
                     var packagesWipeAfterChanger = loadWipeListConfig();
                     wipePackagesChanger(packagesWipeAfterChanger, device);
@@ -897,7 +921,19 @@ namespace WindowsFormsApp
 
                     BeginInvoke(new Action(() =>
                     {
-
+                        if (autoChange != 1)
+                        {
+                            // auto
+                            btnAutoChangeSim.Text = "Auto Change Sim";
+                            btnAutoChangeSim.Enabled = true;
+                            btnAutoChangeSim.BackColor = System.Drawing.Color.LightBlue;
+                        }
+                        else
+                        {
+                            btnChangeSim.Text = "Change Sim";
+                            btnChangeSim.Enabled = true;
+                            btnChangeSim.BackColor = System.Drawing.Color.LightBlue;
+                        }
                     }));
                     if (device.Length >= 12)
                     {

@@ -271,6 +271,88 @@ namespace WindowsFormsApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to # Copyright (C) 2012 The Android Open Source Project
+        ///#
+        ///# IMPORTANT: Do not create world writable files or directories.
+        ///# This is a common source of Android security bugs.
+        ///#
+        ///
+        ///import /init.environ.rc
+        ///import /init.usb.rc
+        ///import /init.${ro.hardware}.rc
+        ///import /vendor/etc/init/hw/init.${ro.hardware}.rc
+        ///import /init.usb.configfs.rc
+        ///import /init.${ro.zygote}.rc
+        ///
+        ///on early-init
+        ///    # Set init and its forked children&apos;s oom_adj.
+        ///    write /proc/1/oom_score_adj -1000
+        ///
+        ///    # Disable sysrq from keyboard        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string init_lineage16 {
+            get {
+                return ResourceManager.GetString("init_lineage16", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to # Copyright (C) 2012 The Android Open Source Project
+        ///#
+        ///# IMPORTANT: Do not create world writable files or directories.
+        ///# This is a common source of Android security bugs.
+        ///#
+        ///
+        ///import /init.environ.rc
+        ///import /system/etc/init/hw/init.usb.rc
+        ///import /init.${ro.hardware}.rc
+        ///import /vendor/etc/init/hw/init.${ro.hardware}.rc
+        ///import /system/etc/init/hw/init.usb.configfs.rc
+        ///import /system/etc/init/hw/init.${ro.zygote}.rc
+        ///
+        ///# Cgroups are mounted right before early-init using list from /etc/cgroups.json
+        ///on  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string init_lineage18 {
+            get {
+                return ResourceManager.GetString("init_lineage18", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to # Copyright (C) 2012 The Android Open Source Project
+        ///#
+        ///# IMPORTANT: Do not create world writable files or directories.
+        ///# This is a common source of Android security bugs.
+        ///#
+        ///
+        ///import /init.environ.rc
+        ///import /system/etc/init/hw/init.usb.rc
+        ///import /init.${ro.hardware}.rc
+        ///import /vendor/etc/init/hw/init.${ro.hardware}.rc
+        ///import /system/etc/init/hw/init.usb.configfs.rc
+        ///import /system/etc/init/hw/init.${ro.zygote}.rc
+        ///
+        ///# Cgroups are mounted right before early-init using list from /etc/cgroups.json
+        ///on  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string init_lineage20 {
+            get {
+                return ResourceManager.GetString("init_lineage20", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] iptables {
+            get {
+                object obj = ResourceManager.GetObject("iptables", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] libusb_1_0 {
@@ -311,6 +393,138 @@ namespace WindowsFormsApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 7C:03:AB
+        ///9C:2E:A1
+        ///9C:99:A0
+        ///A0:86:C6
+        ///A4:45:19
+        ///A4:4B:D5
+        ///A4:50:46
+        ///A8:9C:ED
+        ///AC:C1:EE
+        ///AC:F7:F3
+        ///9C:28:F7
+        ///98:FA:E3
+        ///98:F6:21
+        ///7C:1D:D9
+        ///7C:2A:DB
+        ///7C:D6:61
+        ///7C:FD:6B
+        ///80:35:C1
+        ///80:AD:16
+        ///8C:BE:BE
+        ///90:78:B2
+        ///94:87:E0
+        ///B0:E2:35
+        ///B4:C4:FC
+        ///BC:7F:A4
+        ///E4:46:DA
+        ///E8:5A:8B
+        ///EC:D0:9F
+        ///F0:B4:29
+        ///F4:30:8B
+        ///F4:60:E2
+        ///F4:8B:32
+        ///F4:F5:DB
+        ///F8:A4:5F
+        ///E0:DC:FF
+        ///E0:CC:F8
+        ///E0:62:67
+        ///C4:0B:CB
+        ///C4:6A:B7
+        ///C8:3D:DC
+        ///D0:9C:7A
+        ///D4:97:0B
+        ///D8:32:E3
+        ///D8:63:75
+        ///D8:CE:3A
+        ///E0:1F:88
+        ///FC:64:BA
+        ///00:9E:C8
+        ///18:59:36
+        ///18:F0:E4
+        ///1C:CC:D6
+        ///20 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string mac {
+            get {
+                return ResourceManager.GetString("mac", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Robinson
+        ///Simmons
+        ///Potter
+        ///Jimenez
+        ///Molina
+        ///Lynn
+        ///Ryan
+        ///Branch
+        ///Hunter
+        ///Booker
+        ///Russo
+        ///Dougherty
+        ///Goodwin
+        ///Sexton
+        ///Lin
+        ///Benjamin
+        ///Huber
+        ///Garcia
+        ///Richardson
+        ///Mckay
+        ///Hines
+        ///Rose
+        ///Stark
+        ///Wright
+        ///Harper
+        ///Keller
+        ///Michael
+        ///Campbell
+        ///Li
+        ///Hooper
+        ///Spears
+        ///Griffith
+        ///Irwin
+        ///Mendez
+        ///Ayers
+        ///Park
+        ///Holder
+        ///Knapp
+        ///Wiggins
+        ///Mcfarland
+        ///Cross
+        ///Mueller
+        ///Merritt
+        ///Cooley
+        ///Wong
+        ///Sherman
+        ///Jacobs
+        ///Weiss
+        ///Barber
+        ///Camacho
+        ///Campos
+        ///Fernandez
+        ///Lara
+        ///Morrow
+        ///Weaver
+        ///Baxter
+        ///Welch
+        ///Maddox
+        ///Beasley
+        ///Herman
+        ///Duncan
+        ///Wall
+        ///Castaneda
+        ///Henry        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string names {
+            get {
+                return ResourceManager.GetString("names", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap nhiemvu_0 {
@@ -347,6 +561,26 @@ namespace WindowsFormsApp.Properties {
             get {
                 object obj = ResourceManager.GetObject("quanlyungdung_0", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] redsocks {
+            get {
+                object obj = ResourceManager.GetObject("redsocks", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] redsocks2 {
+            get {
+                object obj = ResourceManager.GetObject("redsocks2", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
@@ -468,12 +702,37 @@ namespace WindowsFormsApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] tun2socks {
+            get {
+                object obj = ResourceManager.GetObject("tun2socks", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap updated {
             get {
                 object obj = ResourceManager.GetObject("updated", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 97.0.4692.98_469209803
+        ///96.0.4664.104_466410403
+        ///95.0.4638.50_463805003
+        ///94.0.4606.71_460607103
+        ///93.0.4577.82_457708203
+        ///92.0.4515.159_451515903
+        ///91.0.4472.164_447216403.
+        /// </summary>
+        internal static string webview {
+            get {
+                return ResourceManager.GetString("webview", resourceCulture);
             }
         }
     }

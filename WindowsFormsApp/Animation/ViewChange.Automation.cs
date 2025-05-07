@@ -233,7 +233,6 @@ namespace WindowsFormsApp
         {
             var (onlineDevices, offlineDevices) = LoadDevicesFromJson();
             var connectedDevices = GetConnectedDevices().ToHashSet();
-
             foreach (var device in onlineDevices)
             {
                 if (!connectedDevices.Contains(device.Serial))
@@ -246,7 +245,6 @@ namespace WindowsFormsApp
                     UpdateDeviceStatus(device.Serial, currentStatus);
                 }
             }
-
             foreach (var device in offlineDevices)
             {
                 if (connectedDevices.Contains(device.Serial))
@@ -254,9 +252,9 @@ namespace WindowsFormsApp
                     UpdateDeviceStatus(device.Serial, "Online");
                 }
             }
-
             await Task.Delay(1000);
         }
+
         public void setInit()
         {
             PanelInput.BorderStyle = BorderStyle.FixedSingle;
@@ -329,6 +327,7 @@ namespace WindowsFormsApp
             _deviceTable.Columns.Add("Activity", typeof(string));
 
             sfDataGrid.DataSource = _deviceTable;
+
             tableLayoutPanel.Controls.Add(sfDataGrid, 0, 0);
 
             this.sfDataGrid.RecordContextMenu = new ContextMenuStrip();

@@ -24,6 +24,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp.Model;
+using WindowsFormsApp.Script;
 using Xamarin.Forms;
 
 
@@ -93,7 +94,7 @@ namespace WindowsFormsApp
         {
             this.SuspendLayout();
             InitializeComponent();
-           
+
             ConfigureForm(); // Cấu hình cơ bản
             Instance = this; // ← Phải set ở Constructor luôn để mọi nơi khác dùng được Instance
             setGridView();
@@ -123,7 +124,9 @@ namespace WindowsFormsApp
             await InitializeDeviceStatus();
             StartDeviceCheck();
             btnChangeDevice.Enabled = false;
+            btnRandomdevice.Enabled = false;
             LoadGUI();
+            btnRandomdevice.Enabled = true;
         }
         private void LoadGUI()
         {
@@ -140,7 +143,7 @@ namespace WindowsFormsApp
                                     .ToList();
 
                     txtCountry.DisplayMember = "CountryName";
-                   
+
                     txtCountry.DataSource = simCarriers;
                     if (true)
                     {
@@ -161,11 +164,11 @@ namespace WindowsFormsApp
                     return telecomDataSource;
                 },
                 uiThreadScheduler);
-           // var taskLoadDeviceModelJson = Task.Run(() => JsonService<DeviceModel>.loadConfigurationFromResource("devices.json"))
+            // var taskLoadDeviceModelJson = Task.Run(() => JsonService<DeviceModel>.loadConfigurationFromResource("devices.json"))
             //    .ContinueWith(task => { deviceModelDataSource = task.Result; return deviceModelDataSource; });
             //comboBoxSourceInfo.SelectedIndex = 2; //0: wadoge, 1: samsung, 2: all
-          //  comboBoxOpenFrom.SelectedIndex = 0;  //0: vending, 1: setting
-          //  comboBoxRecovery.SelectedIndex = 1;  //0: NONE, 1: All, 2: yahoo.com, 3: outlook.com
+            //  comboBoxOpenFrom.SelectedIndex = 0;  //0: vending, 1: setting
+            //  comboBoxRecovery.SelectedIndex = 1;  //0: NONE, 1: All, 2: yahoo.com, 3: outlook.com
         }
         private void txtCountry_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -178,7 +181,7 @@ namespace WindowsFormsApp
             txtSim.DisplayMember = "Name";
             txtSim.DataSource = carrierList;
         }
-      
+
         private void MyForm_OnSizeChange(object sender, EventArgs e)
         {
             ApplyPanelInputMargin();
@@ -335,10 +338,15 @@ namespace WindowsFormsApp
         }
         private void AddDeviceView(string deviceId)
         {
-            DataTable dataTable = sfDataGrid.DataSource as DataTable;
-            int stt = dataTable.Rows.Count + 1;
+            _deviceTable = sfDataGrid.DataSource as DataTable;
+            if (_deviceTable == null)
+            {
+                Console.WriteLine("DataSource is not assigned correctly.");
+                return;
+            }
+            int stt = _deviceTable.Rows.Count + 1;
 
-            dataTable.Rows.Add(stt, false, deviceId, 0, "Offline");
+            _deviceTable.Rows.Add(stt, false, deviceId, 0, "Offline");
 
             deviceDisplays.Add(new WindowsFormsApp.Model.DeviceDisplay { Serial = deviceId, Status = "Offline", Activity = "YES", Checkbox = false });
             SaveDevicesToFile();
@@ -346,11 +354,11 @@ namespace WindowsFormsApp
         }
         private void RemoveDeviceView(WindowsFormsApp.Model.DeviceDisplay device)
         {
-            DataTable dataTable = sfDataGrid.DataSource as DataTable;
-            var rows = dataTable.Select($"DeviceID = '{device.Serial}'");
+            _deviceTable = sfDataGrid.DataSource as DataTable;
+            var rows = _deviceTable.Select($"DeviceID = '{device.Serial}'");
             if (rows.Length > 0)
             {
-                dataTable.Rows.Remove(rows[0]);
+                _deviceTable.Rows.Remove(rows[0]);
                 deviceDisplays.Remove(device);
                 DeleteDeviceById(device.Serial);
             }
@@ -398,6 +406,7 @@ namespace WindowsFormsApp
                 sfDataGrid.Refresh();
             }
         }
+
         private void SaveDevicesToFile()
         {
             var uniqueDevices = deviceDisplays
@@ -417,13 +426,13 @@ namespace WindowsFormsApp
             }
             string json = File.ReadAllText(path);
             deviceDisplays = JsonConvert.DeserializeObject<List<WindowsFormsApp.Model.DeviceDisplay>>(json) ?? new List<WindowsFormsApp.Model.DeviceDisplay>();
-
             foreach (var device in deviceDisplays.ToList())
             {
                 AddDeviceView(device.Serial);
                 UpdateDeviceStatus(device.Serial, device.Status);
             }
         }
+
         public void CountSelectedDevices()
         {
             int selectedCount = 0;
@@ -486,11 +495,11 @@ namespace WindowsFormsApp
         private async void btnRandom_Click(object sender, EventArgs e)
         {
             btnRandomdevice.Enabled = false;
-            
+
 
             if (miChangerGraphQLClient == null)
             {
-                  CreateService();
+                CreateService();
             }
             //_device = ADBService.getDeviceBySerial(cbbSerials.Text);
             //if (_device.CodeName == DeviceCodeName.STARLTE) _device.Status = DeviceStatus.ReadyToChange;
@@ -512,7 +521,7 @@ namespace WindowsFormsApp
                 , mcc
                 , currentSelectedCarrier.Name
                 , mnc);
-           
+
             try
             {
                 tempDevice = await miChangerGraphQLClient.GetRandomDeviceV3(sdkMin: 30);
@@ -532,8 +541,8 @@ namespace WindowsFormsApp
                 txtBrand.SelectedItem = tempDevice.Manufacturer;
                 txtModel.DataSource = new List<string> { tempDevice.Model };
                 txtModel.SelectedItem = tempDevice.Model;
-               
-                
+
+
                 //       txtCountry.DataSource = new Li
 
                 txtImsi.Text = tempDevice.IMSI = RandomService.generateIMSI(mcc, mnc);
@@ -554,7 +563,7 @@ namespace WindowsFormsApp
 
 
                 btnRandomdevice.Enabled = true;
-              
+
                 //buttonSaveDeviceSU.Enabled = true;
             }
             catch (Exception ex)
@@ -581,22 +590,23 @@ namespace WindowsFormsApp
                 miChangerGraphQLClient = new MiChangerGraphQLClient(endpoint, ApiAuthenticationType.TOKEN, refreshToken);
             }
         }
-       
+
         // ví dụ gọi:
-        private async void btnChange_Click(object sender, EventArgs e)
+        public async void btnChange_Click(object sender, EventArgs e)
         {
             var dt = sfDataGrid.DataSource as System.Data.DataTable;
             if (dt == null) return;
 
             var selectedRows = dt.Rows
-                                 .Cast<System.Data.DataRow>()
-                                 .Where(r => r.Field<bool>("Checkbox"))
-                                 .ToList();
+                                   .Cast<System.Data.DataRow>()
+                                   .Where(r => r.Field<bool>("Checkbox"))
+                                   .ToList();
 
             var toAnimate = selectedRows
-                .Select(r => r.Field<string>("DeviceID"))
-                .Where(id => !_animatingDevices.Contains(id))
-                .ToList();
+                  .Select(r => r.Field<string>("DeviceID"))
+                  .Where(id => !_animatingDevices.Contains(id))
+                  .ToList();
+
             if (!toAnimate.Any())
             {
                 MessageBox.Show("Không có thiết bị mới nào để chạy.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -604,99 +614,158 @@ namespace WindowsFormsApp
             }
 
             var details = selectedRows
-                .Select(r => r.Field<string>("DeviceID"))
-                .Where(id => toAnimate.Contains(id))
-                .Select(id => $"ID: {id}, Active: { /* lấy từ DataTable nếu cần */ ""}")
-                .ToList();
+                  .Select(r => r.Field<string>("DeviceID"))
+                  .Where(id => toAnimate.Contains(id))
+                  .Select(id => $"ID: {id}, Active: { /* lấy từ DataTable nếu cần */ ""}")
+                  .ToList();
 
-            string message = $"Sẽ chạy progress cho {toAnimate.Count} thiết bị:";
-            message += "\n" + string.Join("\n", details);
-            MessageBox.Show(message);
-
-            var tasks = toAnimate
-                .Select(id => AnimateProgressAsync(id, delayMs: 30))
-                .ToArray();
-
-            foreach (var id in toAnimate)
-                ViewChange.Instance.StartBackgroundProgress(id, 30);
-        }
-        private async Task AnimateProgressAsync(string deviceId, int delayMs = 50)
-        {
-            if (_animatingDevices.Contains(deviceId))
-                return;
-
-            _animatingDevices.Add(deviceId);
-
-            for (int p = 1; p <= 100; p++)
+            var tasks = toAnimate.Select(async id =>
             {
-                ViewChange.Instance.UpdateProgress(deviceId, p, $"{p}%");
-                await Task.Delay(delayMs);
-            }
+                int rowIndex = dt.AsEnumerable().ToList().FindIndex(r => r.Field<string>("DeviceID") == id);
 
-            _animatingDevices.Remove(deviceId);
-        }
-        public void StartBackgroundProgress(string deviceId, int intervalMs = 50)
-        {
-            if (!_animatingDevices.Add(deviceId))
-                return;
+                Console.WriteLine($"DeviceID: {id}, rowIndex: {rowIndex}, Total rows: {dt.Rows.Count}");
 
-            Task.Run(async () =>
-            {
-                try
+                if (rowIndex >= 0 && rowIndex < dt.Rows.Count)
                 {
-                    for (int p = 1; p <= 100; p++)
+                    var row = dt.Rows[rowIndex];
+                    if (row != null)
                     {
-                        if (sfDataGrid.InvokeRequired)
+                        string message = "Are you sure to proceed with these changes and reboot ?";
+                        string title = "Changes Confirmation";
+                        var result = MessageBox.Show(message, title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        if (result == DialogResult.Yes)
                         {
-                            sfDataGrid.Invoke(new Action(() =>
-                                UpdateProgress(deviceId, p, $"{p}%")));
+                            await Start(id);
+                        }
+                        else
+                        {   
+                            //do nothing
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Dòng không hợp lệ.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Không tìm thấy dòng hợp lệ cho DeviceID: {id}.");
+                }
+            }).ToArray();
+
+            await Task.WhenAll(tasks);
+        }
+        public async Task Start(string device)
+        {
+            var uiThreadScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+
+           
+            var saveResult = true;
+         
+                await Task.Run(() =>
+                {
+                    //Firstly, save
+                    BeginInvoke(new Action(() =>
+                    {
+
+                    }));
+                    ADBService.enableWifi(false, device);
+                    saveResult = Util.SaveDeviceInfo(tempDevice, device, System.Windows.Forms.Application.StartupPath);
+
+                    if (saveResult)
+                    {
+                        // Wipe
+                        BeginInvoke(new Action(() =>
+                        {
+
+                        }));
+                        var packagesWipeAfterChanger = loadWipeListConfig();
+                        wipePackagesChanger(packagesWipeAfterChanger, device);
+                        ADBService.cleanGMSPackagesAndAccounts(device);
+
+                        BeginInvoke(new Action(() =>
+                        {
+
+                        }));
+                        if (device.Length >= 12)
+                        {
+                            ADBService.restartDevice(device);
+                            Thread.Sleep(10000);
                         }
                         else
                         {
-                            UpdateProgress(deviceId, p, $"{p}%");
+                            ADBService.restartDevice(device);
+                            Thread.Sleep(10000);
+                            // FakeDevicePixelAction(device, checkBoxFakeSimInfo.Checked);
                         }
-                        await Task.Delay(intervalMs);
                     }
-                }
-                finally
+                }).ContinueWith(task =>
                 {
-                    _animatingDevices.Remove(deviceId);
-                }
-            });
+                    if (!saveResult)
+                    {
+                        MessageBox.Show("This selected device cannot be changed, please check your rom and developer setting and try loading again."
+                                                , "Device Error"
+                                                , MessageBoxButtons.OK
+                                                , MessageBoxIcon.Error);
+                    }
+                }, uiThreadScheduler);
+            
+            
         }
-        // UpdateProgress
-        public void UpdateProgress(string deviceId, int percent, string displayText = null)
+        private string[] loadWipeListConfig()
         {
-            if (sfDataGrid == null)
+            var defaultConfigPath = string.Format("{0}/config/wipe-packages.config", System.Windows.Forms.Application.StartupPath);
+            try
             {
+                LocalFileService.createFileIfNotExist(defaultConfigPath);
+                return LocalFileService.readAllLinesTextFile(defaultConfigPath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new string[] { };
+            }
+        }
+        private void wipePackagesChanger(string[] packages, string deviceId)
+        {
+            var packageXmlPathInAndroid = "/data/system/packages.xml";
+            var pathXml = Path.Combine(System.Windows.Forms.Application.StartupPath, "packages.xml");
+
+
+            ADBService.pullOrPushFile(FileTransferAction.PULL, packageXmlPathInAndroid, System.Windows.Forms.Application.StartupPath, deviceId);
+
+            foreach (string pack in packages)
+            {
+                ADBService.forceStopPackage(pack, deviceId);
+                Thread.Sleep(1000);
+                ADBService.wipePackage(pack, deviceId);
+                var base64Str = RandomService.generateBase64String();
+                XmlService.editPackagesInfo(pathXml, base64Str, pack);
+                var source = string.Format("/data/app/$(ls /data/app | grep {0})", pack);
+                var destination = string.Format("/data/app/{0}-{1}/", pack, base64Str);
+                ADBService.moveFile(source, destination, deviceId);
+            }
+            ADBService.pullOrPushFile(FileTransferAction.PUSH, pathXml, "/data/system/", deviceId);
+            File.Delete(pathXml);
+        }
+
+        public async Task updateProgress(System.Data.DataRow row, string text, int p)
+        {
+            int progressValue = Math.Max(0, Math.Min(100, p));
+
+            if (row["Progress"] != DBNull.Value && (int)row["Progress"] == 100)
+            {
+                Console.WriteLine($"Tiến độ đã đạt 100% cho DeviceID: {row["DeviceID"]}, không cần cập nhật nữa.");
                 return;
             }
 
-            if (sfDataGrid.InvokeRequired)
-            {
-                sfDataGrid.Invoke(new Action(() => UpdateProgress(deviceId, percent, displayText)));
-                return;
-            }
+            row["Progress"] = progressValue;
+            _progressTextMap[row["DeviceID"].ToString()] = $"{text} - {p}%";
 
-            var dt = sfDataGrid.DataSource as DataTable;
-            if (dt == null)
-            {
-                return;
-            }
-
-            // var row = dt.Select($"DeviceID = '{deviceId.Replace("'", "''")}'").FirstOrDefault();
-            var rows = dt.Select($"DeviceID = '{deviceId.Replace("'", "''")}'");
-            if (rows.Length == 0) return;
-
-            var row = rows.FirstOrDefault();
-            if (row == null)
-            {
-                return;
-            }
-
-            row["Progress"] = Math.Max(0, Math.Min(100, percent));
-            _progressTextMap[deviceId] = displayText ?? $"{percent}%";
             sfDataGrid.Refresh();
+            Console.WriteLine($"Đã cập nhật tiến độ cho DeviceID: {row["DeviceID"]} với giá trị {p}%.");
         }
     }
 }
+
+

@@ -206,6 +206,7 @@
     <Compile Include="Control\UcPricingCard.Designer.cs">
       <DependentUpon>UcPricingCard.cs</DependentUpon>
     </Compile>
+    <Compile Include="Script\ChangeDevices.cs" />
     <Compile Include="ViewAutomation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -306,6 +307,24 @@
     <None Include="Resources\cuahang_0.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\webview.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\names.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\mac.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\init.lineage20.rc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\init.lineage18.rc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\init.lineage16.rc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="Resources\fileEdit.png" />
     <None Include="Resources\capture.png" />
     <Content Include="Resources\data.json">
@@ -317,6 +336,9 @@
     <None Include="Resources\help_0.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\iptables">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="Resources\lichtrinh_0.png" />
   </ItemGroup>
   <ItemGroup>
@@ -335,6 +357,12 @@
     <None Include="Resources\quanlyungdung_0.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\redsocks">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\redsocks2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="Resources\router_0.png" />
   </ItemGroup>
   <ItemGroup>
@@ -350,6 +378,9 @@
     <None Include="Resources\thanhtoan_0.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\tun2socks">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="Resources\updated.png" />
   </ItemGroup>
   <ItemGroup>

@@ -69,7 +69,7 @@ public static class GlobalContextMenu
             reloadItem.Click += (sender, e) => viewChange.SetResertDataInputForm();
             var loadPage = new ToolStripMenuItem("Load");
             //var (onlineDevices, offlineDevices) = viewChange.LoadDevicesFromJson();
-            //loadPage.Click += (sender, e) => viewChange.LoadUI(onlineDevices, offlineDevices);
+            loadPage.Click += (sender, e) => viewChange.LoadContextMenu();
             var autoItem = new ToolStripMenuItem($"Tự động hóa cho {count} thiết bị");
             var copyItem = new ToolStripMenuItem($"Copy ID {count} devices");
             restartItem = new ToolStripMenuItem($"Khởi động lại {count} thiết bị");

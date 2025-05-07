@@ -3,6 +3,7 @@ using POCO.Models;
 using Services;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace WindowsFormsApp.Script
 {
     public class Util
     {
-        public static bool SaveDeviceInfo(DeviceModel tempDevice, string deviceId, string applicationPath, bool isFakeSim = false)
+        public static bool SaveDeviceInfo(DeviceModel tempDevice, string deviceId, string applicationPath, bool isFakeSim = false, DataRow row = null)
         {
             try
             {
@@ -22,6 +23,7 @@ namespace WindowsFormsApp.Script
 
                 if (ADBService.getDeviceStatus(deviceId) == DeviceStatus.ReadyToChange)
                 {
+                    _ = ViewChange.Instance.updateProgress(row, "Start save info", 10);
                     ADBService.rootAndRemount(deviceId);
 
                     ADBService.shellRemoveIfContainSpecificText("/system/build.prop", "product is obsolete", deviceId);
@@ -258,6 +260,42 @@ namespace WindowsFormsApp.Script
             {
                 return false;
             }
+        }
+        public static bool SaveDeviceSIm(DeviceModel tempDevice, string deviceId, string applicationPath)
+        {
+            try
+            {
+                ADBService.putSetting(GlobalAndroidSettings.SIM_OPERATOR_NUMERIC, tempDevice.SimOperatorNumeric, deviceId); // set sim numeric e.g. 42503
+                ADBService.putSetting(GlobalAndroidSettings.SIM_OPERATOR_COUNTRY, tempDevice.SimOperatorCountry, deviceId); // set country of operator code
+                ADBService.putSetting(GlobalAndroidSettings.SIM_OPERATOR_NAME, tempDevice.SimOperatorName, deviceId); // set carrier name of current sim operator
+
+                ADBService.putSetting(GlobalAndroidSettings.NETWORK_OPERATOR_NUMERIC, tempDevice.SimOperatorNumeric, deviceId);
+                ADBService.putSetting(GlobalAndroidSettings.NETWORK_OPERATOR_COUNTRY, tempDevice.SimOperatorCountry, deviceId);
+                ADBService.putSetting(GlobalAndroidSettings.NETWORK_OPERATOR_NAME, tempDevice.SimOperatorName, deviceId);
+
+                // setting phone number, ICCID, IMSI
+                ADBService.putSetting(GlobalAndroidSettings.SIM_PHONE_NUMBER, tempDevice.SimPhoneNumber, deviceId);
+                ADBService.putSetting(GlobalAndroidSettings.ICCID, tempDevice.ICCID, deviceId);
+                ADBService.putSetting(GlobalAndroidSettings.IMSI, tempDevice.IMSI, deviceId);
+                ADBService.putSetting(GlobalAndroidSettings.SIM_STATE_READY, "1", deviceId);
+                ADBService.putSetting(GlobalAndroidSettings.SIM_ICC_AVAILABLE, "1", deviceId);
+                ADBService.putSetting(GlobalAndroidSettings.SIM_STATE, "5", deviceId);
+                ADBService.putSetting(GlobalAndroidSettings.NETWORK_TYPE, "13", deviceId);
+
+                //                        public static readonly string DATA_ACTIVITY = string.Concat(MI_PREFIX, "data_activity");
+                //public static readonly string DATA_STATE = string.Concat(MI_PREFIX, "data_state");
+                //public static readonly string DATA_NETWORK_TYPE = string.Concat(MI_PREFIX, "data_network_type");
+                ADBService.putSetting(GlobalAndroidSettings.DATA_NETWORK_TYPE, "13", deviceId);
+                ADBService.putSetting(GlobalAndroidSettings.DATA_STATE, "2", deviceId);
+                ADBService.putSetting(GlobalAndroidSettings.DATA_ACTIVITY, "4", deviceId);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+
         }
         public static void FakeSimInfo(DeviceModel tempDevice, string deviceId, bool isFakeSim)
         {

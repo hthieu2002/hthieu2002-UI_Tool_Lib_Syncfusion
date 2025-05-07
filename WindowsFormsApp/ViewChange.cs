@@ -85,7 +85,7 @@ namespace WindowsFormsApp
         FlowLayoutPanel osPanel;
         //
         private MiChangerGraphQLClient miChangerGraphQLClient;
-        private DeviceModel tempDevice;
+        private DeviceModel tempDeviceAll;
 
         private List<SimCarrier> simCarriers;
         public DeviceConfigModel _deviceConfig;
@@ -116,17 +116,14 @@ namespace WindowsFormsApp
 
             SetInputAddLayoutInput();
             SetButtonAddLayoutButton();
+
             setInit();
             setMenu();
-
             LoadDevicesFromFile();
-
             await InitializeDeviceStatus();
             StartDeviceCheck();
-            btnChangeDevice.Enabled = false;
-            btnRandomdevice.Enabled = false;
             LoadGUI();
-            btnRandomdevice.Enabled = true;
+            setupEnableButtonRandom();
         }
         private void LoadGUI()
         {
@@ -346,7 +343,7 @@ namespace WindowsFormsApp
             }
             int stt = _deviceTable.Rows.Count + 1;
 
-            _deviceTable.Rows.Add(stt, false, deviceId, 0, "Offline");
+            _deviceTable.Rows.Add(stt, false, deviceId, 0, "", "Offline");
 
             deviceDisplays.Add(new WindowsFormsApp.Model.DeviceDisplay { Serial = deviceId, Status = "Offline", Activity = "YES", Checkbox = false });
             SaveDevicesToFile();
@@ -494,27 +491,15 @@ namespace WindowsFormsApp
         }
         private async void btnRandom_Click(object sender, EventArgs e)
         {
-            btnRandomdevice.Enabled = false;
-
-
+            setupDisableButtonRandom();
             if (miChangerGraphQLClient == null)
             {
                 CreateService();
             }
-            //_device = ADBService.getDeviceBySerial(cbbSerials.Text);
-            //if (_device.CodeName == DeviceCodeName.STARLTE) _device.Status = DeviceStatus.ReadyToChange;
-            //if (_device.CodeName == DeviceCodeName.SARGO) _device.Status = DeviceStatus.ReadyToChange;
-            //if (_device.CodeName == DeviceCodeName.CROSSHATCH) _device.Status = DeviceStatus.ReadyToChange;
-            //if (_device.Status == DeviceStatus.Offline || _device.Status == DeviceStatus.Undefined)
-            //{
-            //    MessageBox.Show("Current Device is Offline or Undefined", "Notice");
-            //    buttonChanger.Enabled = false;
-            //    return;
-            //}
             var currentSelectedCarrier = txtSim.SelectedValue as ComboBoxItem;
             var currentSelectedCountry = txtCountry.SelectedValue as SimCarrier;
             var mcc = currentSelectedCountry.Attribute.Mcc;
-            var mnc = "01";//currentSelectedCarrier.Value;
+            var mnc = currentSelectedCarrier.Value;
 
             Console.WriteLine("Country Code = {0}. MCC = {1} while carrier name = {2} MNC = {3}"
                 , currentSelectedCountry.CountryCode
@@ -524,47 +509,39 @@ namespace WindowsFormsApp
 
             try
             {
-                tempDevice = await miChangerGraphQLClient.GetRandomDeviceV3(sdkMin: 30);
-                if (tempDevice.Model == null)
+                tempDeviceAll = await miChangerGraphQLClient.GetRandomDeviceV3(sdkMin: 30);
+                if (tempDeviceAll.Model == null)
                 {
                     MessageBox.Show("Devices not existed, please try again");
                     throw new Exception("Devices not existed, please try again");
                 }
 
-                txtName.DataSource = new List<string> { tempDevice.Board };
-                txtName.SelectedItem = tempDevice.Board;
-                txtOS.DataSource = new List<string> { tempDevice.Release };
-                txtOS.SelectedItem = tempDevice.Release;
-                txtOS_version.DataSource = new List<string> { tempDevice.SDK };
-                txtOS_version.SelectedItem = tempDevice.SDK;
-                txtBrand.DataSource = new List<string> { tempDevice.Manufacturer };
-                txtBrand.SelectedItem = tempDevice.Manufacturer;
-                txtModel.DataSource = new List<string> { tempDevice.Model };
-                txtModel.SelectedItem = tempDevice.Model;
+                txtName.DataSource = new List<string> { tempDeviceAll.Board };
+                txtName.SelectedItem = tempDeviceAll.Board;
+                txtOS.DataSource = new List<string> { tempDeviceAll.Release };
+                txtOS.SelectedItem = tempDeviceAll.Release;
+                txtOS_version.DataSource = new List<string> { tempDeviceAll.SDK };
+                txtOS_version.SelectedItem = tempDeviceAll.SDK;
+                txtBrand.DataSource = new List<string> { tempDeviceAll.Manufacturer };
+                txtBrand.SelectedItem = tempDeviceAll.Manufacturer;
+                txtModel.DataSource = new List<string> { tempDeviceAll.Model };
+                txtModel.SelectedItem = tempDeviceAll.Model;
 
-
-                //       txtCountry.DataSource = new Li
-
-                txtImsi.Text = tempDevice.IMSI = RandomService.generateIMSI(mcc, mnc);
-                txtIccId.Text = tempDevice.ICCID = RandomService.generateICCID(currentSelectedCountry.CountryCode, mnc);
-                txtImei.Text = tempDevice.Imei;
-                tempDevice.SerialNo = RandomService.getRandomStringHex16Digit().Substring(0, RandomService.randomInRange(8, 13));
-                txtSerial.Text = tempDevice.SerialNo;
-                txtPhone.Text = tempDevice.SimPhoneNumber = string.Format("+{0}{1}", currentSelectedCountry.CountryCode, RandomService.generatePhoneNumber());
-                txtModel.Text = tempDevice.Model;
-                tempDevice.SimOperatorNumeric = string.Concat(mcc, mnc);
-                txtCode.Text = tempDevice.SimOperatorNumeric;
-                tempDevice.SimOperatorCountry = currentSelectedCountry.CountryIso;
-                tempDevice.SimOperatorName = currentSelectedCarrier.Name.Substring(0, currentSelectedCarrier.Name.LastIndexOf("-")).Replace("&", "^&");
-                tempDevice.AndroidId = RandomService.getRandomStringHex16Digit();
-                tempDevice.WifiMacAddress = RandomService.generateWifiMacAddress();
-                tempDevice.BlueToothMacAddress = RandomService.generateMacAddress();
+                txtImsi.Text = tempDeviceAll.IMSI = RandomService.generateIMSI(mcc, mnc);
+                txtIccId.Text = tempDeviceAll.ICCID = RandomService.generateICCID(currentSelectedCountry.CountryCode, mnc);
+                txtImei.Text = tempDeviceAll.Imei;
+                tempDeviceAll.SerialNo = RandomService.getRandomStringHex16Digit().Substring(0, RandomService.randomInRange(8, 13));
+                txtSerial.Text = tempDeviceAll.SerialNo;
+                txtPhone.Text = tempDeviceAll.SimPhoneNumber = string.Format("+{0}{1}", currentSelectedCountry.CountryCode, RandomService.generatePhoneNumber());
+                txtModel.Text = tempDeviceAll.Model;
+                tempDeviceAll.SimOperatorNumeric = string.Concat(mcc, mnc);
+                txtCode.Text = tempDeviceAll.SimOperatorNumeric;
+                tempDeviceAll.SimOperatorCountry = currentSelectedCountry.CountryIso;
+                tempDeviceAll.SimOperatorName = currentSelectedCarrier.Name.Substring(0, currentSelectedCarrier.Name.LastIndexOf("-")).Replace("&", "^&");
+                tempDeviceAll.AndroidId = RandomService.getRandomStringHex16Digit();
+                tempDeviceAll.WifiMacAddress = RandomService.generateWifiMacAddress();
+                tempDeviceAll.BlueToothMacAddress = RandomService.generateMacAddress();
                 txtMac.Text = RandomService.generateMacAddress();
-
-
-                btnRandomdevice.Enabled = true;
-
-                //buttonSaveDeviceSU.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -572,8 +549,7 @@ namespace WindowsFormsApp
             }
             finally
             {
-                btnChangeDevice.Enabled = true;
-                btnRandomdevice.Enabled = true;
+                setupEnableButtonChangeDevice();
             }
         }
         private void CreateService()
@@ -590,9 +566,7 @@ namespace WindowsFormsApp
                 miChangerGraphQLClient = new MiChangerGraphQLClient(endpoint, ApiAuthenticationType.TOKEN, refreshToken);
             }
         }
-
-        // ví dụ gọi:
-        public async void btnChange_Click(object sender, EventArgs e)
+        public async void StartAllRandomChange(int button, int autoChange = 0)
         {
             var dt = sfDataGrid.DataSource as System.Data.DataTable;
             if (dt == null) return;
@@ -619,98 +593,216 @@ namespace WindowsFormsApp
                   .Select(id => $"ID: {id}, Active: { /* lấy từ DataTable nếu cần */ ""}")
                   .ToList();
 
-            var tasks = toAnimate.Select(async id =>
+            string message = "Are you sure to proceed with these changes and reboot ?";
+            string title = "Changes Confirmation";
+            var result = MessageBox.Show(message, title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result == DialogResult.Yes)
             {
-                int rowIndex = dt.AsEnumerable().ToList().FindIndex(r => r.Field<string>("DeviceID") == id);
-
-                Console.WriteLine($"DeviceID: {id}, rowIndex: {rowIndex}, Total rows: {dt.Rows.Count}");
-
-                if (rowIndex >= 0 && rowIndex < dt.Rows.Count)
+                var tasks = toAnimate.Select(async id =>
                 {
-                    var row = dt.Rows[rowIndex];
-                    if (row != null)
+                    int rowIndex = dt.AsEnumerable().ToList().FindIndex(r => r.Field<string>("DeviceID") == id);
+
+                    Console.WriteLine($"DeviceID: {id}, rowIndex: {rowIndex}, Total rows: {dt.Rows.Count}");
+
+                    if (rowIndex >= 0 && rowIndex < dt.Rows.Count)
                     {
-                        string message = "Are you sure to proceed with these changes and reboot ?";
-                        string title = "Changes Confirmation";
-                        var result = MessageBox.Show(message, title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                        if (result == DialogResult.Yes)
+                        var row = dt.Rows[rowIndex];
+                        if (row != null)
                         {
-                            await Start(id);
+                            _animatingDevices.Add(id);
+
+                            if (button == 1)
+                            {
+                                await StartChange(id, row, autoChange);
+                            }
+                            else if (button == 2)
+                            {
+                                await StartChangeSim(id, row, autoChange);
+                            }
                         }
                         else
-                        {   
-                            //do nothing
+                        {
+                            Console.WriteLine("Dòng không hợp lệ.");
                         }
                     }
                     else
                     {
-                        Console.WriteLine("Dòng không hợp lệ.");
+                        Console.WriteLine($"Không tìm thấy dòng hợp lệ cho DeviceID: {id}.");
                     }
+                }).ToArray();
+                await Task.WhenAll(tasks);
+            }
+            else
+            {
+                //do nothing
+            }
+        }
+        // ví dụ gọi:
+        public void btnChange_Click(object sender, EventArgs e)
+        {
+            StartAllRandomChange(1, 1);
+        }
+        public void btnChangeFull_Click(object sender, EventArgs e)
+        {
+            StartAllRandomChange(1);
+        }
+        private async void BtnRandomSim_Click(object sender, EventArgs e)
+        {
+            setupDisableButtonRandomSim(); // off 
+            if (miChangerGraphQLClient == null)
+            {
+                CreateService();
+            }
+            var currentSelectedCarrier = txtSim.SelectedValue as ComboBoxItem;
+            var currentSelectedCountry = txtCountry.SelectedValue as SimCarrier;
+            var mcc = currentSelectedCountry.Attribute.Mcc;
+            var mnc = currentSelectedCarrier.Value;
+
+            tempDeviceAll = await miChangerGraphQLClient.GetRandomDeviceV3(sdkMin: 30);
+            if (tempDeviceAll.Model == null)
+            {
+                MessageBox.Show("Devices not existed, please try again");
+                throw new Exception("Devices not existed, please try again");
+            }
+
+            txtPhone.Text = tempDeviceAll.SimPhoneNumber = string.Format("+{0}{1}", currentSelectedCountry.CountryCode, RandomService.generatePhoneNumber());
+
+            setupEnableButtonChangeSim(); // on
+        }
+        private void btnChangeSim_Click(object sender, EventArgs e)
+        {
+            StartAllRandomChange(2);
+        }
+        public async Task<DeviceModel> RandomDevice()
+        {
+            DeviceModel tempDevice = null;
+            if (miChangerGraphQLClient == null)
+            {
+                CreateService();
+            }
+
+            var currentSelectedCarrier = txtSim.SelectedValue as ComboBoxItem;
+            var currentSelectedCountry = txtCountry.SelectedValue as SimCarrier;
+            var mcc = currentSelectedCountry.Attribute.Mcc;
+            var mnc = currentSelectedCarrier.Value;
+
+            Console.WriteLine("Country Code = {0}. MCC = {1} while carrier name = {2} MNC = {3}"
+                , currentSelectedCountry.CountryCode
+                , mcc
+                , currentSelectedCarrier.Name
+                , mnc);
+
+            try
+            {
+                tempDevice = await miChangerGraphQLClient.GetRandomDeviceV3(sdkMin: 30);
+                if (tempDevice.Model == null)
+                {
+                    MessageBox.Show("Devices not existed, please try again");
+                    throw new Exception("Devices not existed, please try again");
+                }
+
+                tempDevice.IMSI = RandomService.generateIMSI(mcc, mnc);
+                tempDevice.ICCID = RandomService.generateICCID(currentSelectedCountry.CountryCode, mnc);
+                tempDevice.SerialNo = RandomService.getRandomStringHex16Digit().Substring(0, RandomService.randomInRange(8, 13));
+                tempDevice.SimPhoneNumber = string.Format("+{0}{1}", currentSelectedCountry.CountryCode, RandomService.generatePhoneNumber());
+                tempDevice.SimOperatorNumeric = string.Concat(mcc, mnc);
+                tempDevice.SimOperatorCountry = currentSelectedCountry.CountryIso;
+                tempDevice.SimOperatorName = currentSelectedCarrier.Name.Substring(0, currentSelectedCarrier.Name.LastIndexOf("-")).Replace("&", "^&");
+                tempDevice.AndroidId = RandomService.getRandomStringHex16Digit();
+                tempDevice.WifiMacAddress = RandomService.generateWifiMacAddress();
+                tempDevice.BlueToothMacAddress = RandomService.generateMacAddress();
+            }
+            catch (Exception ex)
+            {
+                //ignored
+            }
+            finally
+            {
+
+            }
+            return tempDevice;
+        }
+        public async Task StartChange(string device, System.Data.DataRow row, int autoChange)
+        {
+            DeviceModel deviceTemp = null;
+            if (autoChange != 1)
+            {
+                await ViewChange.Instance.updateProgress(row, "Auto random device", 1);
+                deviceTemp = await RandomDevice();
+            }
+
+            var uiThreadScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+            var saveResult = true;
+            await ViewChange.Instance.updateProgress(row, "Start change device", 2);
+            await Task.Run(async () =>
+            {
+                //Firstly, save
+                BeginInvoke(new Action(() =>
+                {
+
+                }));
+                await ViewChange.Instance.updateProgress(row, "Disable wifi", 5);
+                ADBService.enableWifi(false, device);
+                await Task.Delay(2000);
+                if (autoChange == 1)
+                {
+                    saveResult = Util.SaveDeviceInfo(tempDeviceAll, device, System.Windows.Forms.Application.StartupPath, false, row);
                 }
                 else
                 {
-                    Console.WriteLine($"Không tìm thấy dòng hợp lệ cho DeviceID: {id}.");
+                    saveResult = Util.SaveDeviceInfo(deviceTemp, device, System.Windows.Forms.Application.StartupPath, false, row);
                 }
-            }).ToArray();
 
-            await Task.WhenAll(tasks);
-        }
-        public async Task Start(string device)
-        {
-            var uiThreadScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
-           
-            var saveResult = true;
-         
-                await Task.Run(() =>
+                if (saveResult)
                 {
-                    //Firstly, save
+                    // Wipe
                     BeginInvoke(new Action(() =>
                     {
 
                     }));
-                    ADBService.enableWifi(false, device);
-                    saveResult = Util.SaveDeviceInfo(tempDevice, device, System.Windows.Forms.Application.StartupPath);
+                    var packagesWipeAfterChanger = loadWipeListConfig();
+                    wipePackagesChanger(packagesWipeAfterChanger, device);
+                    ADBService.cleanGMSPackagesAndAccounts(device);
 
-                    if (saveResult)
+                    BeginInvoke(new Action(() =>
                     {
-                        // Wipe
-                        BeginInvoke(new Action(() =>
-                        {
 
-                        }));
-                        var packagesWipeAfterChanger = loadWipeListConfig();
-                        wipePackagesChanger(packagesWipeAfterChanger, device);
-                        ADBService.cleanGMSPackagesAndAccounts(device);
-
-                        BeginInvoke(new Action(() =>
-                        {
-
-                        }));
-                        if (device.Length >= 12)
-                        {
-                            ADBService.restartDevice(device);
-                            Thread.Sleep(10000);
-                        }
-                        else
-                        {
-                            ADBService.restartDevice(device);
-                            Thread.Sleep(10000);
-                            // FakeDevicePixelAction(device, checkBoxFakeSimInfo.Checked);
-                        }
+                    }));
+                    if (device.Length >= 12)
+                    {
+                        await ViewChange.Instance.updateProgress(row, "Change success", 100);
+                        _animatingDevices.Remove(device);
+                        ADBService.restartDevice(device);
+                        Thread.Sleep(10000);
                     }
-                }).ContinueWith(task =>
+                    else
+                    {
+                        await ViewChange.Instance.updateProgress(row, "Change success", 100);
+                        _animatingDevices.Remove(device);
+                        ADBService.restartDevice(device);
+                        Thread.Sleep(10000);
+                        // FakeDevicePixelAction(device, checkBoxFakeSimInfo.Checked);
+                    }
+                }
+            }).ContinueWith(task =>
+            {
+                if (!saveResult)
                 {
-                    if (!saveResult)
-                    {
-                        MessageBox.Show("This selected device cannot be changed, please check your rom and developer setting and try loading again."
-                                                , "Device Error"
-                                                , MessageBoxButtons.OK
-                                                , MessageBoxIcon.Error);
-                    }
-                }, uiThreadScheduler);
-            
-            
+
+                    _animatingDevices.Remove(device);
+                    MessageBox.Show("This selected device cannot be changed, please check your rom and developer setting and try loading again."
+                                            , "Device Error"
+                                            , MessageBoxButtons.OK
+                                            , MessageBoxIcon.Error);
+                }
+            }, uiThreadScheduler);
+
+
+        }
+        public async Task StartChangeSim(string device, System.Data.DataRow row, int autoChange)
+        {
+
         }
         private string[] loadWipeListConfig()
         {
@@ -748,7 +840,6 @@ namespace WindowsFormsApp
             ADBService.pullOrPushFile(FileTransferAction.PUSH, pathXml, "/data/system/", deviceId);
             File.Delete(pathXml);
         }
-
         public async Task updateProgress(System.Data.DataRow row, string text, int p)
         {
             int progressValue = Math.Max(0, Math.Min(100, p));
@@ -760,10 +851,15 @@ namespace WindowsFormsApp
             }
 
             row["Progress"] = progressValue;
+            row["ProgressText"] = text;
             _progressTextMap[row["DeviceID"].ToString()] = $"{text} - {p}%";
 
             sfDataGrid.Refresh();
             Console.WriteLine($"Đã cập nhật tiến độ cho DeviceID: {row["DeviceID"]} với giá trị {p}%.");
+        }
+        public void LoadContextMenu()
+        {
+            sfDataGrid.Refresh();
         }
     }
 }

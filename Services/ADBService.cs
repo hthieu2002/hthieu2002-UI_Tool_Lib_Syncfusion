@@ -383,7 +383,6 @@ namespace Services
             runCMD(String.Format("shell \"rm -rf {0} \"", Package_Data.SYSTEM_SYNC), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", Package_Data.SYSTEM_CE), deviceId);
             //runCMD(String.Format("shell \"rm -rf {0} \"", Package_Data.SYSTEM_DE), deviceId); // Pixel is starting...
-
             runCMD(String.Format("shell \"rm {0} \"", "/data/system_de/0/accounts_de.db"), deviceId);
             runCMD(String.Format("shell \"rm {0} \"", "/data/system_de/0/accounts_de.db-journal"), deviceId);
             runCMD(String.Format("shell \"rm {0} \"", "/data/system_de/0/LocalesFromDelegatePrefs.xml"), deviceId);
@@ -393,7 +392,6 @@ namespace Services
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/system_de/0/powerstats"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/system_de/0/ringtones"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/system_de/0/system"), deviceId);
-
             runCMD(String.Format("shell \"rm {0} \"", "/data/system_de/0/accounts_de.db"), deviceId);
             runCMD(String.Format("shell \"rm {0} \"", "/data/system_de/0/accounts_de.db-journal"), deviceId);
             runCMD(String.Format("shell \"rm {0} \"", "/data/system_de/0/LocalesFromDelegatePrefs.xml"), deviceId);
@@ -403,7 +401,6 @@ namespace Services
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/system_de/0/powerstats"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/system_de/0/ringtones"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/system_de/0/system"), deviceId);
-
             runCMD(String.Format("shell \"rm -rf {0} \"", Package_Data.CHROME), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", Package_Data.IMS), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", Package_Data.CALENDAR), deviceId);
@@ -426,10 +423,12 @@ namespace Services
             // update 20/2/2025
             runCMD(String.Format("shell \"rm -rf {0} \"", "/mnt/user/0/self/primary/Android/data/com.google.android.gms"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/mnt/user/0/self/primary/Android/data/com.android.vending"), deviceId);
-            //DeviceService.setNewUserKey(deviceId);
+            // clear wifi data
+            runCMD(String.Format("shell \"rm -rf {0} \"", "/data/misc/apexdata/com.android.tethering/netstats/*"), deviceId);
+            runCMD(String.Format("shell \"rm -rf {0} \"", "/data/system/netstats/*"), deviceId);
+            //runCMD(String.Format("shell \"rm -rf {0} \"", "/data/property"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/per_boot"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/preloads"), deviceId);
-            runCMD(String.Format("shell \"rm -rf {0} \"", "/data/property"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/resource-cache"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/rollback"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/rollback-history"), deviceId);
@@ -454,27 +453,34 @@ namespace Services
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/gsi"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/gsi_persistent_data"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/incremental"), deviceId);
-            runCMD(String.Format("shell \"rm -rf {0} \"", "/data/local"), deviceId);
+            runCMD(String.Format("shell \"find /data/local -mindepth 1 -maxdepth 1 -type d -not -path '/data/local/tmp' -exec rm -rf {{}} +\""), deviceId);
+            //runCMD(String.Format("shell \"find /data/local -type f -not -name 'keybox.xml' -delete; find /data/local -type d -empty -not -path '/data/local/tmp' -delete\""), deviceId);
+            //runCMD(String.Format("shell \"rm -rf {0} \"", "/data/local"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/lost+found"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/backup"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/bootanim"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/bootchart"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/cache"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/dalvik-cache"), deviceId);
-            runCMD(String.Format("shell \"rm -rf {0} \"", "/data/data"), deviceId);
+            var getPixelExp = runCMD(String.Format("shell getprop | findstr pixelexperience"), deviceId);
+            if (string.IsNullOrEmpty(getPixelExp))
+            {
+                runCMD(String.Format("shell \"rm -rf {0} \"", "/data/data"), deviceId);
+            }
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/dpm"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/system_ce"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/user_de"), deviceId);
-            runCMD(String.Format("shell \"rm -rf {0} \"", "/data/adb"), deviceId);
+            //runCMD(String.Format("shell \"rm -rf {0} \"", "/data/adb"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/anr"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/apex"), deviceId);
-            //runCMD(String.Format("shell \"rm -rf {0} \"", "/data/app"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/app-asec"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/app-ephemeral"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/app-lib"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/app-private"), deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "/data/app-staging"), deviceId);
+            //DeviceService.setNewUserKey(deviceId);
             runCMD(String.Format("shell \"rm -rf {0} \"", "./etc/security/otacerts.zip"), deviceId);
+            //runCMD(String.Format("shell \"rm -rf {0} \"", "/data/app"), deviceId);
             updateFileDateTimeModification("./system/product/priv-app", deviceId);
             updateFileDateTimeModification("./system/product/app", deviceId);
         }

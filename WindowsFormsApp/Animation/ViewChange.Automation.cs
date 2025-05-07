@@ -206,11 +206,12 @@ namespace WindowsFormsApp
         btnOpenUrl,
         btnAutoBackup,
         btnScreenshot
-
+    
         );
             PanelButton.Controls.Add(btnRestore);
             PanelButton.Controls.Add(txtRestore);
             PanelButton.Controls.Add(btnFakeLocation);
+            setupDisableButtonChange();
         }
         private void ConfigureButtons(params SfButton[] buttons)
         {
@@ -274,19 +275,81 @@ namespace WindowsFormsApp
 
             btnAutoBackup.Paint += BtnCommon_Paint;
             btnAutochangeFull.Paint += BtnCommon_Paint;
+            btnAutochangeFull.Click += btnChangeFull_Click;
             btnAutoChangeSim.Paint += BtnCommon_Paint;
             btnBackup.Paint += BtnCommon_Paint;
             btnBackup2.Paint += BtnCommon_Paint;
             btnChangeDevice.Paint += BtnCommon_Paint;
             btnChangeDevice.Click += btnChange_Click;
             btnChangeSim.Paint += BtnCommon_Paint;
+            btnChangeSim.Click += btnChangeSim_Click;
             btnOpenUrl.Paint += BtnCommon_Paint;
             btnRandomdevice.Paint += BtnCommon_Paint;
             btnRandomdevice.Click += btnRandom_Click;
             btnRandomSim.Paint += BtnCommon_Paint;
+            btnRandomSim.Click += BtnRandomSim_Click;
             btnScreenshot.Paint += BtnCommon_Paint;
             btnRestore.Paint += BtnCommon_Paint;
             btnFakeLocation.Paint += BtnCommon_Paint;
+        }
+        public void setupDisableButtonChange()
+        {
+            btnRandomdevice.Enabled = false;
+            btnRandomSim.Enabled = false;
+            btnChangeDevice.Enabled = false;
+            btnChangeSim.Enabled = false;
+            btnAutoChangeSim.Enabled = false;
+            btnAutochangeFull.Enabled = false;
+
+            btnRandomdevice.BackColor = Color.DarkGray;
+            btnRandomSim.BackColor = Color.DarkGray;
+            btnChangeDevice.BackColor = Color.DarkGray;
+            btnChangeSim.BackColor = Color.DarkGray;
+            btnAutochangeFull.BackColor = Color.DarkGray;
+            btnAutoChangeSim.BackColor = Color.DarkGray;
+
+        }
+        public void setupEnableButtonRandom()
+        {
+            btnRandomdevice.Enabled = true;
+            btnRandomSim.Enabled = true;
+            btnAutoChangeSim.Enabled = true;
+            btnAutochangeFull.Enabled = true;
+
+            btnRandomdevice.BackColor = Color.LightBlue;
+            btnRandomSim.BackColor = Color.LightBlue;
+
+            btnAutochangeFull.BackColor = Color.LightBlue;
+            btnAutoChangeSim.BackColor = Color.LightBlue;
+        }
+        public void setupDisableButtonRandom()
+        {
+            btnRandomdevice.Enabled = false;
+            btnRandomdevice.BackColor = Color.DarkGray;
+        }
+      
+        public void setupDisableButtonRandomSim()
+        {
+            btnRandomSim.Enabled = false;
+            btnRandomSim.BackColor = Color.DarkGray;
+        }
+        public void setupEnableButtonChangeSim()
+        {
+            btnChangeSim.Enabled = true;
+            btnAutoChangeSim.Enabled = true;
+            btnRandomSim.Enabled = true;
+            btnRandomSim.BackColor = Color.LightBlue;
+            btnChangeSim.BackColor = Color.LightBlue;
+            btnAutoChangeSim.BackColor = Color.LightBlue;
+        }
+        public void setupEnableButtonChangeDevice()
+        {
+            btnChangeDevice.Enabled = true;
+            btnAutochangeFull.Enabled = true;
+            btnRandomdevice.Enabled = true;
+            btnRandomdevice.BackColor = Color.LightBlue;
+            btnChangeDevice.BackColor = Color.LightBlue;
+            btnAutochangeFull.BackColor = Color.LightBlue;
         }
         public void setGridView()
         {
@@ -306,7 +369,8 @@ namespace WindowsFormsApp
             var progressCol = new GridProgressBarColumn
             {
                 MappingName = "Progress",
-                HeaderText = "Progress",
+                HeaderText = "%",
+                Width = 150,
                 Minimum = 0,
                 Maximum = 100,
                 ValueMode = ProgressBarValueMode.Percentage
@@ -315,6 +379,7 @@ namespace WindowsFormsApp
             progressCol.CellStyle.HorizontalAlignment = HorizontalAlignment.Center;
             sfDataGrid.Columns.Add(progressCol);
 
+            sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "ProgressText", HeaderText = "Progress" });
             sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "Status", HeaderText = "Status", Width = 100 });
             sfDataGrid.Columns.Add(new GridButtonColumn { MappingName = "Activity", HeaderText = "Active", Width = 80 });
 
@@ -322,14 +387,17 @@ namespace WindowsFormsApp
             _deviceTable.Columns.Add("STT", typeof(int));
             _deviceTable.Columns.Add("Checkbox", typeof(bool));
             _deviceTable.Columns.Add("DeviceID", typeof(string));
-            _deviceTable.Columns.Add("Progress", typeof(int));    
+            _deviceTable.Columns.Add("Progress", typeof(int));
+            _deviceTable.Columns.Add("ProgressText", typeof(string));
             _deviceTable.Columns.Add("Status", typeof(string));
             _deviceTable.Columns.Add("Activity", typeof(string));
 
             sfDataGrid.DataSource = _deviceTable;
 
             tableLayoutPanel.Controls.Add(sfDataGrid, 0, 0);
-
+            /*
+             * menu context data table 
+             */
             this.sfDataGrid.RecordContextMenu = new ContextMenuStrip();
             var copyDeviceID = new ToolStripMenuItem("Copy Device ID");
             var detailsItem = new ToolStripMenuItem("Details");

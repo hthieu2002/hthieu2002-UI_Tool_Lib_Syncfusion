@@ -59,9 +59,9 @@ namespace WindowsFormsApp
             this.valueLabel = new Label();
             this.valueLabel2 = new Label();
             this.buttonPanel = new FlowLayoutPanel();
-            this.deviceLabel = new Label();
+           //this.deviceLabel = new Label();
             this.toolTip = new ToolTip();
-            this.devicePanel = new Panel();
+         //   this.devicePanel = new Panel();
             //
             // splitContainer
             //
@@ -211,15 +211,12 @@ namespace WindowsFormsApp
             //
             //deviceLabel
             //
-            this.deviceLabel.TextAlign = ContentAlignment.MiddleCenter;
-            this.deviceLabel.BackColor = ColorTranslator.FromHtml("#5677FE");
-            this.deviceLabel.Dock = DockStyle.Bottom;
-            this.deviceLabel.ForeColor = Color.White;
+           
             //
             //devicePanel
             //
-            this.devicePanel.Margin = new Padding(10);
-            this.devicePanel.BackColor = System.Drawing.Color.LightGray;
+            //this.devicePanel.Margin = new Padding(10);
+            //this.devicePanel.BackColor = System.Drawing.Color.LightGray;
 
             this.splitContainer.Panel2.Controls.Add(leftBorder);
             this.splitContainer.Panel2.Controls.Add(rightPanel);
@@ -269,8 +266,8 @@ namespace WindowsFormsApp
         private Label valueLabel;
         private Label valueLabel2;
         private FlowLayoutPanel buttonPanel;
-        private Label deviceLabel;
+        //private Label deviceLabel;
         private ToolTip toolTip;
-        private Panel devicePanel;
+      //  private Panel devicePanel;
     }
 }

@@ -815,6 +815,7 @@ namespace WindowsFormsApp
                 }
                 if (saveResult)
                 {
+                    _ = ViewChange.Instance.updateProgress(row, "Start save info", 92);
                     // Wipe
                     BeginInvoke(new Action(() =>
                     {
@@ -823,7 +824,7 @@ namespace WindowsFormsApp
                     var packagesWipeAfterChanger = loadWipeListConfig();
                     wipePackagesChanger(packagesWipeAfterChanger, device);
                     ADBService.cleanGMSPackagesAndAccounts(device);
-
+                    _ = ViewChange.Instance.updateProgress(row, "Start save info", 95);
                     BeginInvoke(new Action(() =>
                     {
                         if (autoChange != 1)

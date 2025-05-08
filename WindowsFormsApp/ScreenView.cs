@@ -77,7 +77,7 @@ namespace WindowsFormsApp
         {
             StartDeviceCheck();
             CreateActionButtons();
-            devicePanel.Size = new System.Drawing.Size(panelWidth, panelHeight + 20);
+            
             this.splitContainer.SplitterDistance = (int)(this.Width * 0.75);
         }
         private void CreateActionButtons()

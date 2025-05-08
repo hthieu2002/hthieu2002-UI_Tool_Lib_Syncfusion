@@ -30,7 +30,7 @@ namespace WindowsFormsApp.Script
                     var changedSystemInfo = new Dictionary<string, string>();
                     var changedDefaultInfo = new Dictionary<string, string>();
                     var tempBaseband = string.IsNullOrEmpty(tempDevice.Baseband) ? tempDevice.BuildIncremental : tempDevice.Baseband;
-
+                    _ = ViewChange.Instance.updateProgress(row, "Start save info", 12);
                     var lineageVersion = RandomService.generateLineageOsVersion(tempDevice.Release) + "-" + tempDevice.Code;
                     changedSystemInfo.Add(BuildKey_SYSTEM_S9.TYPE, "user");
                     changedSystemInfo.Add(BuildKey_SYSTEM_S9.USER, RandomService.generateUser());
@@ -42,6 +42,7 @@ namespace WindowsFormsApp.Script
                     changedSystemInfo.Add(BuildKey_SYSTEM_S9.BUILD_PRODUCT, tempDevice.Code);
                     changedSystemInfo.Add(BuildKey_SYSTEM_S9.BOARD, tempDevice.Board);
                     changedSystemInfo.Add(BuildKey_SYSTEM_S9.LINEAGE_BOARD, tempDevice.Board);
+                    _ = ViewChange.Instance.updateProgress(row, "Start save info", 17);
                     // changedSystemInfo.Add(BuildKey_SYSTEM_S9.EVO_DEVICE, tempDevice.Board);
                     changedSystemInfo.Add(BuildKey_SYSTEM_S9.BUILD_HOST, tempDevice.BuildHost);
                     changedSystemInfo.Add(BuildKey_SYSTEM_S9.WIFI_MAC_ADDRESS, tempDevice.WifiMacAddress);
@@ -56,7 +57,7 @@ namespace WindowsFormsApp.Script
                     changedSystemInfo.Add(BuildKey_SYSTEM_S9.LINEAGE_PLATFORM, tempDevice.Platform);
                     ///
                     // changedSystemInfo.Add(BuildKey_SYSTEM_S9.BOOTLOADER_UNLOCKED, "green");
-
+                    _ = ViewChange.Instance.updateProgress(row, "Start save info", 22);
                     changedSystemInfo.Add(BuildKey_SYSTEM_S9.BUILD_DISPLAY_ID, tempDevice.BuildDisplayId);
                     changedSystemInfo.Add(BuildKey_SYSTEM_S9.BUILD_TAGS, tempDevice.Tags);
                     changedSystemInfo.Add(BuildKey_SYSTEM_S9.BUILD_INCREMENTAL, tempDevice.BuildIncremental);
@@ -68,7 +69,7 @@ namespace WindowsFormsApp.Script
                     changedSystemInfo.Add(BuildKey_SYSTEM_S9.LINEAGE_VERSION, lineageVersion);
                     changedSystemInfo.Add(BuildKey_SYSTEM_S9.LINEAGE_BUILD_VERSION, RandomService.getLineageNumberVersion(tempDevice.Release));
                     changedSystemInfo.Add(BuildKey_SYSTEM_S9.LINEAGE_BUILD_VERSION_PLAT_SDK, tempDevice.Release);
-
+                    _ = ViewChange.Instance.updateProgress(row, "Start save info", 30);
                     changedSystemInfo.Add(BuildKey_SYSTEM_S9.BASEBAND, tempBaseband);
                     changedSystemInfo.Add(BuildKey_SYSTEM_S9.GSM_BASEBAND, tempBaseband);
                     changedSystemInfo.Add(BuildKey_SYSTEM_S9.SSID, RandomService.generateSSID());
@@ -81,7 +82,7 @@ namespace WindowsFormsApp.Script
                     changedSystemInfo.Add(BuildKey_SYSTEM_S9.FINGERPRINT_SYSTEM, tempDevice.Fingerprint);
                     //changedSystemInfo.Add(BuildKey_SYSTEM_S9.BUILD_PDA, tempBaseband);
 
-
+                    _ = ViewChange.Instance.updateProgress(row, "Start save info", 40);
                     ADBService.replaceBuildProp("/system/build.prop", changedSystemInfo, deviceId);
 
                     Dictionary<string, string> partitionList = new Dictionary<string, string>();
@@ -167,7 +168,7 @@ namespace WindowsFormsApp.Script
                          partitionList.Add("system_dlkm", "/system/system_dlkm/etc/build.prop");
                          partitionList.Add("system_ext", "/system/system_ext/etc/build.prop");
                          RepleacePropertiesForPartition(tempDevice, partitionList, deviceId);*/
-
+                    _ = ViewChange.Instance.updateProgress(row, "Start save info", 50);
                     ADBService.putSetting("bluetooth_address", tempDevice.BlueToothMacAddress, deviceId, "secure");
                     ADBService.putSetting("bluetooth_name", RandomService.generateName(), deviceId, "secure");
                     ADBService.putSetting("device_name", RandomService.generateName(), deviceId);
@@ -181,16 +182,17 @@ namespace WindowsFormsApp.Script
                     //// generate android ID
                     /* ADBService.putSetting(GlobalAndroidSettings.ANDROID_ID, tempDevice.AndroidId, deviceId);
                      ADBService.putSetting("android_id", tempDevice.AndroidId, deviceId, "secure");*/
-
+                    _ = ViewChange.Instance.updateProgress(row, "Start save info", 60);
                     ADBService.updateInitRc(tempDevice.Imei, tempDevice.Imei1, tempDevice.SerialNo, tempDevice.Bootloader, tempDevice.Baseband, tempDevice.Model, deviceId, tempDevice.Hardware, tempDevice.Platform);
                     ADBService.fakeLocalHostNameV6(deviceId);
 
                     // fake wifi mac address
                     ADBService.fakeWifiMacAddress(tempDevice.WifiMacAddress, deviceId);
-
+                    _ = ViewChange.Instance.updateProgress(row, "Start save info", 70);
                     if (isFakeSim)
                     {
                         // setting sim card
+                        _ = ViewChange.Instance.updateProgress(row, "Start save info", 80);
                         ADBService.putSetting(GlobalAndroidSettings.SIM_OPERATOR_NUMERIC, tempDevice.SimOperatorNumeric, deviceId); // set sim numeric e.g. 42503
                         ADBService.putSetting(GlobalAndroidSettings.SIM_OPERATOR_COUNTRY, tempDevice.SimOperatorCountry, deviceId); // set country of operator code
                         ADBService.putSetting(GlobalAndroidSettings.SIM_OPERATOR_NAME, tempDevice.SimOperatorName, deviceId); // set carrier name of current sim operator
@@ -214,11 +216,12 @@ namespace WindowsFormsApp.Script
                         ADBService.putSetting(GlobalAndroidSettings.DATA_NETWORK_TYPE, "13", deviceId);
                         ADBService.putSetting(GlobalAndroidSettings.DATA_STATE, "2", deviceId);
                         ADBService.putSetting(GlobalAndroidSettings.DATA_ACTIVITY, "4", deviceId);
-
+                        _ = ViewChange.Instance.updateProgress(row, "Start save info", 88);
                     }
                     else
                     {
                         // setting sim card
+                        _ = ViewChange.Instance.updateProgress(row, "Start save info", 80);
                         ADBService.deleteSetting(GlobalAndroidSettings.SIM_OPERATOR_NUMERIC, deviceId); // set sim numeric e.g. 42503
                         ADBService.deleteSetting(GlobalAndroidSettings.SIM_OPERATOR_COUNTRY, deviceId); // set country of operator code
                         ADBService.deleteSetting(GlobalAndroidSettings.SIM_OPERATOR_NAME, deviceId); // set carrier name of current sim operator
@@ -238,6 +241,7 @@ namespace WindowsFormsApp.Script
                         ADBService.deleteSetting(GlobalAndroidSettings.DATA_NETWORK_TYPE, deviceId);
                         ADBService.deleteSetting(GlobalAndroidSettings.DATA_STATE, deviceId);
                         ADBService.deleteSetting(GlobalAndroidSettings.DATA_ACTIVITY, deviceId);
+                        _ = ViewChange.Instance.updateProgress(row, "Start save info", 88);
                     }
 
 
@@ -246,7 +250,7 @@ namespace WindowsFormsApp.Script
                     //string currentGSF = ADBService.getGSFNumber(deviceId);
                     //ADBService.stringReplace(currentGSF, tempGsfInLong, "data/data/com.google.android.gms/files/checkin_id_token", deviceId);
                     //ADBService.stringReplace(currentGSF, tempGsfInLong, "data/data/com.google.android.gms/shared_prefs/Checkin.xml", deviceId);
-
+                    _ = ViewChange.Instance.updateProgress(row, "Start save info", 90);
                     Console.WriteLine("3.DONE put setting");
                     return true;
 

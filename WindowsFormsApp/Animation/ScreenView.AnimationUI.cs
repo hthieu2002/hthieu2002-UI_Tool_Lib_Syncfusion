@@ -12,6 +12,8 @@ namespace WindowsFormsApp
 {
     public partial class ScreenView : Form
     {
+        private Panel devicePanel;
+        private Label deviceLabel;
         private void AddActionPanel(Panel parent)
         {
             btnView.Click += (s, e) =>
@@ -304,8 +306,8 @@ namespace WindowsFormsApp
         {
             label.Text = labelText;
             label.Width = parent.ClientSize.Width;
-          //  parent.Controls.Add(label);
-          //  parent.Controls.Add(trackBarPanel);
+            //  parent.Controls.Add(label);
+            //  parent.Controls.Add(trackBarPanel);
             trackBar.Minimum = min;
             trackBar.Maximum = max;
             trackBar.Value = value;
@@ -438,17 +440,16 @@ namespace WindowsFormsApp
                 GlobalContextMenu.UpdateContextMenu();
                 foreach (var device in newDevices)
                 {
-                    if (device != "accd8f87")
+
+                    await Task.Run(() =>
                     {
-                        await Task.Run(() =>
+                        if (this.IsHandleCreated)
                         {
-                            if (this.IsHandleCreated)
-                            {
-                                Invoke((MethodInvoker)(() => AddDeviceView(device)));
-                            }
-                        });
-                        await Task.Delay(3000);
-                    }
+                            Invoke((MethodInvoker)(() => AddDeviceView(device)));
+                        }
+                    });
+                    await Task.Delay(3000);
+
                 }
 
                 var connectedDevices = devices.ToHashSet();
@@ -465,6 +466,11 @@ namespace WindowsFormsApp
         }
         private void AddDeviceView(string deviceId)
         {
+            devicePanel = new Panel();
+            devicePanel.Margin = new Padding(10);
+            devicePanel.BackColor = System.Drawing.Color.LightGray;
+            devicePanel.Size = new System.Drawing.Size(panelWidth, panelHeight + 20);
+
             var existingDevicePanel = flowLayoutPanel.Controls.Cast<Control>()
                 .FirstOrDefault(c => c is Panel panel && panel.Controls.OfType<Label>().FirstOrDefault()?.Text == deviceId);
 
@@ -494,8 +500,12 @@ namespace WindowsFormsApp
             IntPtr scrcpyWindow = IntPtr.Zero;
             int attempts = 0;
 
+            deviceLabel = new Label();
             deviceLabel.Text = $"View Device: {deviceId}";
-
+            deviceLabel.TextAlign = ContentAlignment.MiddleCenter;
+            deviceLabel.BackColor = ColorTranslator.FromHtml("#5677FE");
+            deviceLabel.Dock = DockStyle.Bottom;
+            deviceLabel.ForeColor = Color.White;
             devicePanel.Controls.Add(deviceLabel);
             deviceLabel.BringToFront();
             deviceLabel.Cursor = Cursors.Hand;

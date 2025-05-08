@@ -102,7 +102,6 @@ namespace WindowsFormsApp
             this.Load += async (s, e) => await LoadAsync();
             this.ResumeLayout(false);
         }
-
         private void ConfigureForm()
         {
             this.FormBorderStyle = FormBorderStyle.Sizable;
@@ -110,7 +109,6 @@ namespace WindowsFormsApp
             this.Resize += MyForm_OnSizeChange;
             this.SizeChanged += MyForm_OnSizeChange;
         }
-
         private async Task LoadAsync()
         {
 
@@ -178,12 +176,10 @@ namespace WindowsFormsApp
             txtSim.DisplayMember = "Name";
             txtSim.DataSource = carrierList;
         }
-
         private void MyForm_OnSizeChange(object sender, EventArgs e)
         {
             ApplyPanelInputMargin();
         }
-
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
@@ -403,7 +399,6 @@ namespace WindowsFormsApp
                 sfDataGrid.Refresh();
             }
         }
-
         private void SaveDevicesToFile()
         {
             var uniqueDevices = deviceDisplays
@@ -429,7 +424,6 @@ namespace WindowsFormsApp
                 UpdateDeviceStatus(device.Serial, device.Status);
             }
         }
-
         public void CountSelectedDevices()
         {
             int selectedCount = 0;
@@ -489,7 +483,6 @@ namespace WindowsFormsApp
             txtPhone.Text = "";
             txtSerial.Text = "";
         }
-      
         private void CreateService()
         {
             var poolId = AppConfigService.ReadSetting("poolId");
@@ -795,7 +788,19 @@ namespace WindowsFormsApp
                 //Firstly, save
                 BeginInvoke(new Action(() =>
                 {
-
+                    if (autoChange != 1)
+                    {
+                        // auto
+                        btnAutochangeFull.Text = "Running";
+                        btnAutochangeFull.Enabled = false;
+                        btnAutochangeFull.BackColor = System.Drawing.Color.OrangeRed;
+                    }
+                    else
+                    {
+                        btnChangeDevice.Text = "Running";
+                        btnChangeDevice.Enabled = false;
+                        btnChangeDevice.BackColor = System.Drawing.Color.OrangeRed;
+                    }
                 }));
                 await ViewChange.Instance.updateProgress(row, "Disable wifi", 5);
                 ADBService.enableWifi(false, device);
@@ -821,7 +826,19 @@ namespace WindowsFormsApp
 
                     BeginInvoke(new Action(() =>
                     {
-
+                        if (autoChange != 1)
+                        {
+                            // auto
+                            btnAutochangeFull.Text = "Auto Change Full";
+                            btnAutochangeFull.Enabled = true;
+                            btnAutochangeFull.BackColor = System.Drawing.Color.LightBlue;
+                        }
+                        else
+                        {
+                            btnChangeDevice.Text = "Change Device";
+                            btnChangeDevice.Enabled = true;
+                            btnChangeDevice.BackColor = System.Drawing.Color.LightBlue;
+                        }
                     }));
                     if (device.Length >= 12)
                     {
@@ -901,19 +918,7 @@ namespace WindowsFormsApp
                     // Wipe
                     BeginInvoke(new Action(() =>
                     {
-                        if (autoChange != 1)
-                        {
-                            // auto
-                            btnAutoChangeSim.Text = "Running";
-                            btnAutoChangeSim.Enabled = false;
-                            btnAutoChangeSim.BackColor = System.Drawing.Color.OrangeRed;
-                        }
-                        else
-                        {
-                            btnChangeSim.Text = "Running";
-                            btnChangeSim.Enabled = false;
-                            btnChangeSim.BackColor = System.Drawing.Color.OrangeRed;
-                        }
+                       
                     }));
                     var packagesWipeAfterChanger = loadWipeListConfig();
                     wipePackagesChanger(packagesWipeAfterChanger, device);

@@ -12,12 +12,10 @@ namespace AccountCreatorForm.Views
         private Label lblDescription;
         private SfButton btnAction;
         private PictureBox picItemImage;
-        private FlowLayoutPanel panelContent;
 
         private FlowLayoutPanel panelMain;
         private Panel panelLeft;
         private FlowLayoutPanel panelFill;
-        public event EventHandler UserControlClicked;
         public string Title { get => lblTitle.Text; set => lblTitle.Text = value; }
         public string UserName { get => lblUserName.Text; set => lblUserName.Text = value; }
         public string Description { get => lblDescription.Text; set => lblDescription.Text = value; }

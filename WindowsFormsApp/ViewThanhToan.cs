@@ -10,21 +10,19 @@ namespace AccountCreatorForm.Views
     public partial class ViewThanhToan : Form
     {
         private HeaderViewCommon headerView;
-        private Panel wrapperPanel;
 
         public ViewThanhToan()
         {
             InitializeComponent();
-            InitLayout();
+            init();
             LoadPricingCards();
             this.BackColor = Color.White;
         }
 
-        private void InitLayout()
+        private void init()
         {
             this.BackColor = ColorTranslator.FromHtml("#F5F7FC");
 
-            // ----- Header ----- 
             panelHeader.Dock = DockStyle.Top;
             panelHeader.Height = 70;
             panelHeader.BackColor = Color.White;
@@ -34,7 +32,6 @@ namespace AccountCreatorForm.Views
             headerView.SetTitle("Thanh toán");
             panelHeader.Controls.Add(headerView);
 
-            // ----- Label "Bảng Giá" -----
             lblBangGia.Dock = DockStyle.Top;
             lblBangGia.BackColor = Color.White;
             lblBangGia.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
@@ -42,10 +39,8 @@ namespace AccountCreatorForm.Views
             lblBangGia.Height = 90;
             lblBangGia.TextAlign = ContentAlignment.MiddleCenter;
             lblBangGia.Padding = new Padding(20, 10, 0, 0);
-            // lblBangGia.BackColor = ColorTranslator.FromHtml("#F5F7FC");
             lblBangGia.AutoSize = true;
 
-            // ----- FlowLayout chứa các card -----
             flowLayoutPanelCards = new FlowLayoutPanel
             {
                 AutoSize = true,
@@ -57,7 +52,6 @@ namespace AccountCreatorForm.Views
                 BackColor = Color.Transparent
             };
 
-            // ----- Wrapper Panel để căn giữa flow -----
             Panel centerWrapper = new Panel
             {
                 Dock = DockStyle.Fill,
@@ -68,18 +62,15 @@ namespace AccountCreatorForm.Views
 
             centerWrapper.Controls.Add(flowLayoutPanelCards);
 
-            // ✅ Responsive CĂN GIỮA + tự điều chỉnh theo chiều ngang khi resize
             centerWrapper.Resize += (s, e) =>
             {
                 int flowWidth = flowLayoutPanelCards.PreferredSize.Width;
                 int wrapperWidth = centerWrapper.ClientSize.Width;
 
-                // Điều chỉnh Left để căn giữa
                 flowLayoutPanelCards.Left = (wrapperWidth - flowWidth) / 2;
             };
 
 
-            // ----- Layout tổng -----
             var mainLayout = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
@@ -96,7 +87,6 @@ namespace AccountCreatorForm.Views
             mainLayout.Controls.Add(lblBangGia, 0, 1);
             mainLayout.Controls.Add(centerWrapper, 0, 2);
 
-            // Add vào Form
             this.Controls.Clear();
             this.Controls.Add(mainLayout);
         }

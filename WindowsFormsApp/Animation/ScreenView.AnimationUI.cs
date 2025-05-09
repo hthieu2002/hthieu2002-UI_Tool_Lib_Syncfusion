@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Services;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -67,18 +68,18 @@ namespace WindowsFormsApp
                     btnIncreaseVolume.Click += BtnIncreaseVolume_Click;
                     btnDecreaseVolume.Click += BtnDecreaseVolume_Click;
 
-                    void BtnHome_Click(object senderHome, EventArgs e1) => ExecuteAdbCommand("input keyevent 3", deviceId); // Home
-                    void BtnBack_Click(object senderBack, EventArgs e2) => ExecuteAdbCommand("input keyevent 4", deviceId); // Back
+                    void BtnHome_Click(object senderHome, EventArgs e1) => ADBService.ExecuteAdbCommand("input keyevent 3", deviceId); // Home
+                    void BtnBack_Click(object senderBack, EventArgs e2) => ADBService.ExecuteAdbCommand("input keyevent 4", deviceId); // Back
                     void BtnReboot_Click(object senderReboot, EventArgs e3)
                     {
                         deviceForm.Close();
                         // Gọi lệnh ADB để reboot Android
-                        ExecuteAdbCommand("reboot", deviceId);
+                        ADBService.ExecuteAdbCommand("reboot", deviceId);
                     }
 
-                    void BtnPowerOff_Click(object senderPowerOff, EventArgs e4) => ExecuteAdbCommand("input keyevent 26", deviceId); // Power Off
-                    void BtnIncreaseVolume_Click(object senderIncreaseVolume, EventArgs e5) => ExecuteAdbCommand("input keyevent 24", deviceId); // Increase Volume
-                    void BtnDecreaseVolume_Click(object senderDecreaseVolume, EventArgs e6) => ExecuteAdbCommand("input keyevent 25", deviceId); // Decrease Volume
+                    void BtnPowerOff_Click(object senderPowerOff, EventArgs e4) => ADBService.ExecuteAdbCommand("input keyevent 26", deviceId); // Power Off
+                    void BtnIncreaseVolume_Click(object senderIncreaseVolume, EventArgs e5) => ADBService.ExecuteAdbCommand("input keyevent 24", deviceId); // Increase Volume
+                    void BtnDecreaseVolume_Click(object senderDecreaseVolume, EventArgs e6) => ADBService.ExecuteAdbCommand("input keyevent 25", deviceId); // Decrease Volume
 
                     void ExecuteAdbCommand(string command, string device)
                     {
@@ -221,7 +222,7 @@ namespace WindowsFormsApp
                     }
                     viewedDevices.Add(deviceId);
                     deviceForm.StartPosition = FormStartPosition.Manual;
-                    deviceForm.Location = new Point(startX + (width + offsetX) * index, startY);
+                    deviceForm.Location = new System.Drawing.Point(startX + (width + offsetX) * index, startY);
                     index++;
                     Thread.Sleep(1000);
                     deviceForm.FormClosed += (object sender, FormClosedEventArgs _) =>
@@ -257,7 +258,7 @@ namespace WindowsFormsApp
 
             btnRefreshDevice.Click += (s, e) =>
             {
-                deviceIds = GetConnectedDevices();
+                deviceIds = ADBService.GetConnectedDevices();
                 AddDeviceButtons(rightPanel, deviceIds);
                 activeDevices.Clear();
                 UpdateSelectedDevicesLabel();
@@ -265,17 +266,12 @@ namespace WindowsFormsApp
             StyleButton(btnRefreshDevice);
 
 
-            btnPushFile.Click += (s, e) =>
-            {
-                MessageBox.Show("Push File clicked");
-            };
+            btnPushFile.Click += btnPushFileAllDevice_Click;
             StyleButton(btnPushFile);
 
 
-            btnInstallAPK.Click += (s, e) =>
-            {
-                MessageBox.Show("Install APK clicked");
-            };
+            btnInstallAPK.Click += btnInstallAPKAllDevice_Click;
+           
             StyleButton(btnInstallAPK);
 
             bottomPanel.Controls.Add(buttonGroup);
@@ -405,33 +401,12 @@ namespace WindowsFormsApp
                 buttonPanel.Controls.Add(btn);
             }
         }
-        private string[] GetConnectedDevices()
-        {
-            ProcessStartInfo startInfo = new ProcessStartInfo()
-            {
-                FileName = @"./Resources/adb.exe",
-                Arguments = "devices",
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
-
-            Process process = Process.Start(startInfo);
-            process.WaitForExit();
-
-            string output = process.StandardOutput.ReadToEnd();
-            var devices = output.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries)
-                                 .Where(line => !line.StartsWith("List") && !line.StartsWith("---------"))
-                                 .Select(line => line.Split('\t')[0])
-                                 .ToArray();
-
-            return devices;
-        }
+       
         private async void StartDeviceCheck()
         {
             while (true)
             {
-                var devices = GetConnectedDevices();
+                var devices = ADBService.GetConnectedDevices();
 
                 var newDevices = devices.Except(deviceDisplays.Select(d => d.Serial)).ToList();
                 int countDevice = newDevices.Count();
@@ -553,18 +528,18 @@ namespace WindowsFormsApp
                 btnIncreaseVolume.Click += BtnIncreaseVolume_Click;
                 btnDecreaseVolume.Click += BtnDecreaseVolume_Click;
 
-                void BtnHome_Click(object senderHome, EventArgs e1) => ExecuteAdbCommand("input keyevent 3", deviceId); // Home
-                void BtnBack_Click(object senderBack, EventArgs e2) => ExecuteAdbCommand("input keyevent 4", deviceId); // Back
+                void BtnHome_Click(object senderHome, EventArgs e1) => ADBService.ExecuteAdbCommand("input keyevent 3", deviceId); // Home
+                void BtnBack_Click(object senderBack, EventArgs e2) => ADBService.ExecuteAdbCommand("input keyevent 4", deviceId); // Back
                 void BtnReboot_Click(object senderReboot, EventArgs e3)
                 {
                     deviceForm.Close();
                     // Gọi lệnh ADB để reboot Android
-                    ExecuteAdbCommand("reboot", deviceId);
+                    ADBService.ExecuteAdbCommand("reboot", deviceId);
                 }
 
-                void BtnPowerOff_Click(object senderPowerOff, EventArgs e4) => ExecuteAdbCommand("input keyevent 26", deviceId); // Power Off
-                void BtnIncreaseVolume_Click(object senderIncreaseVolume, EventArgs e5) => ExecuteAdbCommand("input keyevent 24", deviceId); // Increase Volume
-                void BtnDecreaseVolume_Click(object senderDecreaseVolume, EventArgs e6) => ExecuteAdbCommand("input keyevent 25", deviceId); // Decrease Volume
+                void BtnPowerOff_Click(object senderPowerOff, EventArgs e4) => ADBService.ExecuteAdbCommand("input keyevent 26", deviceId); // Power Off
+                void BtnIncreaseVolume_Click(object senderIncreaseVolume, EventArgs e5) => ADBService.ExecuteAdbCommand("input keyevent 24", deviceId); // Increase Volume
+                void BtnDecreaseVolume_Click(object senderDecreaseVolume, EventArgs e6) => ADBService.ExecuteAdbCommand("input keyevent 25", deviceId); // Decrease Volume
 
                 void ExecuteAdbCommand(string command, string device)
                 {
@@ -793,7 +768,7 @@ namespace WindowsFormsApp
                         DevicePanel = devicePanel
                     });
 
-                    ExecuteAdbCommand("shell input swipe 500 1150 500 1000", deviceId);
+                    ADBService.ExecuteAdbCommand("shell input swipe 500 1150 500 1000", deviceId);
 
                 }
             }
@@ -804,44 +779,22 @@ namespace WindowsFormsApp
             deviceDisplay.DevicePanel.Dispose();
             deviceDisplays.Remove(deviceDisplay);
         }
-        public static void ExecuteAdbCommand(string command, string deviceId)
-        {
-            ProcessStartInfo startInfo = new ProcessStartInfo()
-            {
-                FileName = "./Resources/adb.exe",
-                Arguments = $"-s {deviceId} {command}",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
-            };
-
-            Process adbProcess = Process.Start(startInfo);
-            adbProcess.WaitForExit();
-        }
+       
         public static string PromptForAdbCommand()
         {
             using (var inputBox = new Form())
             {
                 inputBox.Text = "Nhập lệnh ADB";
-
-                // Tạo TextBox và đặt chiều cao cho TextBox nếu cần
                 var textBox = new TextBox { Dock = DockStyle.Fill, Multiline = true, Height = 100 };
-
-                // Tạo Button và đặt kích thước cho nó
                 var button = new Button { Text = "OK", Dock = DockStyle.Bottom, Height = 40 };
-
-                // Thêm TextBox và Button vào form
                 inputBox.Controls.Add(textBox);
                 inputBox.Controls.Add(button);
 
-                // Xử lý sự kiện click cho button OK
                 button.Click += (sender, e) =>
                 {
                     inputBox.Close();
                 };
 
-                // Căn chỉnh form với các điều khiển đã thêm
                 inputBox.AutoSize = true;
                 inputBox.StartPosition = FormStartPosition.CenterScreen;
                 inputBox.ShowDialog();

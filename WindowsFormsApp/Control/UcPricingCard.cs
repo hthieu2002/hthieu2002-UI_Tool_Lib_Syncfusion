@@ -13,8 +13,6 @@ namespace AccountCreatorForm.Views
         private Label lbTotal;
         private Button btnAction;
         private FlowLayoutPanel pnlFeatures;
-        private Timer hoverTimer;
-        private int targetY;
         private Panel contentPanel;
 
         public string Title { get => lblTitle.Text; set => lblTitle.Text = value; }

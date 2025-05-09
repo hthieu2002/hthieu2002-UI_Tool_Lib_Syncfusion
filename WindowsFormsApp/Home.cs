@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using WindowsFormsApp;
 using System.Drawing.Drawing2D;
 using WindowsFormsApp.Model;
+using System.Threading;
 
 namespace AccountCreatorForm.Views
 {
@@ -29,8 +30,6 @@ namespace AccountCreatorForm.Views
         public Form currentChildForm = null;
         private Dictionary<SfButton, Func<Form>> sidebarFormMap;
         private Dictionary<SfButton, Image> buttonIconMap;
-        private Dictionary<SfButton, Image> buttonIconWhiteMap;
-
         public Home()
         {
             InitializeComponent();

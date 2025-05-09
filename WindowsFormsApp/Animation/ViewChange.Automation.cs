@@ -11,6 +11,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using Syncfusion.WinForms.DataGrid.Events;
+using Syncfusion.WinForms.DataGrid.Styles;
+using Services;
 
 namespace WindowsFormsApp
 {
@@ -137,6 +140,23 @@ namespace WindowsFormsApp
                 button.Style.ForeColor = Color.Black;
             };
         }
+        private void SetupButtonCancelStyle(SfButton button)
+        {
+
+            button.Cursor = Cursors.Hand;
+
+            button.MouseEnter += (s, e) =>
+            {
+                button.Style.BackColor = Color.OrangeRed;
+                button.Style.ForeColor = Color.White;
+            };
+
+            button.MouseLeave += (s, e) =>
+            {
+                button.Style.BackColor = Color.LightBlue;
+                button.Style.ForeColor = Color.White;
+            };
+        }
         private void SetButtonAddLayoutButton()
         {
             SfButton[] buttons = {
@@ -206,11 +226,11 @@ namespace WindowsFormsApp
         btnOpenUrl,
         btnAutoBackup,
         btnScreenshot
-    
+
         );
-            PanelButton.Controls.Add(btnRestore);
-            PanelButton.Controls.Add(txtRestore);
             PanelButton.Controls.Add(btnFakeLocation);
+            PanelButton.Controls.Add(txtRestore);
+            PanelButton.Controls.Add(btnRestore);
             setupDisableButtonChange();
         }
         private void ConfigureButtons(params SfButton[] buttons)
@@ -233,7 +253,7 @@ namespace WindowsFormsApp
         public async Task InitializeDeviceStatus()
         {
             var (onlineDevices, offlineDevices) = LoadDevicesFromJson();
-            var connectedDevices = GetConnectedDevices().ToHashSet();
+            var connectedDevices = ADBService.GetConnectedDevices().ToHashSet();
             foreach (var device in onlineDevices)
             {
                 if (!connectedDevices.Contains(device.Serial))
@@ -242,7 +262,7 @@ namespace WindowsFormsApp
                 }
                 else
                 {
-                    string currentStatus = IsDeviceOnline(device.Serial) ? "Online" : "Offline";
+                    string currentStatus = ADBService.IsDeviceOnline(device.Serial) ? "Online" : "Offline";
                     UpdateDeviceStatus(device.Serial, currentStatus);
                 }
             }
@@ -274,27 +294,60 @@ namespace WindowsFormsApp
             btnScreenshot.TextAlign = ContentAlignment.MiddleLeft;
 
             btnAutoBackup.Paint += BtnCommon_Paint;
+            //
+            // btn auto change full
+            //
             btnAutochangeFull.Paint += BtnCommon_Paint;
             btnAutochangeFull.Click += btnChangeFull_Click;
-
+            //
+            // btn auto change sim
+            //
             btnAutoChangeSim.Paint += BtnCommon_Paint;
             btnAutoChangeSim.Click += btnChangeSimAll_Click;
-
+            //
+            // btn backup  
+            //
             btnBackup.Paint += BtnCommon_Paint;
+            //
+            // btn backup 2
+            //
             btnBackup2.Paint += BtnCommon_Paint;
+            //
+            // btn change device 
+            //
             btnChangeDevice.Paint += BtnCommon_Paint;
             btnChangeDevice.Click += btnChange_Click;
+            //
+            // btn change sim
+            //
             btnChangeSim.Paint += BtnCommon_Paint;
             btnChangeSim.Click += btnChangeSim_Click;
+
             btnOpenUrl.Paint += BtnCommon_Paint;
+            //
+            // btn random device
+            //
             btnRandomdevice.Paint += BtnCommon_Paint;
             btnRandomdevice.Click += btnRandom_Click;
+            //
+            // btn random sim
+            // 
             btnRandomSim.Paint += BtnCommon_Paint;
             btnRandomSim.Click += BtnRandomSim_Click;
+            // 
+            // btn screen shot
+            //
             btnScreenshot.Paint += BtnCommon_Paint;
+            btnScreenshot.Click += btnScreenShot_Click;
+
             btnRestore.Paint += BtnCommon_Paint;
+            //
+            // btn fake location
+            //
             btnFakeLocation.Paint += BtnCommon_Paint;
+            btnFakeLocation.Click += btnFakeLocation_Click;
         }
+
         public void setupDisableButtonChange()
         {
             btnRandomdevice.Enabled = false;
@@ -329,7 +382,6 @@ namespace WindowsFormsApp
             btnRandomdevice.Enabled = false;
             btnRandomdevice.BackColor = Color.DarkGray;
         }
-      
         public void setupDisableButtonRandomSim()
         {
             btnRandomSim.Enabled = false;
@@ -365,7 +417,8 @@ namespace WindowsFormsApp
                 ShowGroupDropArea = false
             };
             sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "STT", HeaderText = "#", Width = 30 });
-            sfDataGrid.Columns.Add(new GridCheckBoxColumn { MappingName = "Checkbox", HeaderText = "Box", Width = 60, AllowEditing = true });
+            sfDataGrid.Columns.Add(new GridCheckBoxColumn { MappingName = "Checkbox", HeaderText = "Box", Width = 80, AllowEditing = true });
+            sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "NameID", HeaderText = "Name", Width = 120 });
             sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "DeviceID", HeaderText = "Device ID", Width = 200 });
 
             var progressCol = new GridProgressBarColumn
@@ -383,19 +436,25 @@ namespace WindowsFormsApp
 
             sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "ProgressText", HeaderText = "Progress" });
             sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "Status", HeaderText = "Status", Width = 100 });
-            sfDataGrid.Columns.Add(new GridButtonColumn { MappingName = "Activity", HeaderText = "Active", Width = 80 });
+            sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "Activity", HeaderText = "Active", Width = 80 });
 
             _deviceTable = new DataTable();
             _deviceTable.Columns.Add("STT", typeof(int));
             _deviceTable.Columns.Add("Checkbox", typeof(bool));
+            _deviceTable.Columns.Add("NameID", typeof(string));
             _deviceTable.Columns.Add("DeviceID", typeof(string));
             _deviceTable.Columns.Add("Progress", typeof(int));
             _deviceTable.Columns.Add("ProgressText", typeof(string));
             _deviceTable.Columns.Add("Status", typeof(string));
             _deviceTable.Columns.Add("Activity", typeof(string));
 
-            sfDataGrid.DataSource = _deviceTable;
+            this.sfDataGrid.Style.HeaderStyle.Borders.All = new GridBorder(GridBorderStyle.Dotted, Color.Blue, GridBorderWeight.Thin);
+            this.sfDataGrid.Style.CellStyle.Borders.All = new GridBorder(GridBorderStyle.Dotted, Color.Blue, GridBorderWeight.Thin);
+            (this.sfDataGrid.Columns["Checkbox"] as GridCheckBoxColumn).AllowCheckBoxOnHeader = true;
+            sfDataGrid.QueryCellStyle += sfDataGrid_QueryCellStyle;
 
+            sfDataGrid.DataSource = _deviceTable;
+            //    this.sfDataGrid.ShowBusyIndicator = true;
             tableLayoutPanel.Controls.Add(sfDataGrid, 0, 0);
             /*
              * menu context data table 
@@ -413,6 +472,40 @@ namespace WindowsFormsApp
                 new ToolStripItem[] { copyDeviceID, detailsItem, editItem, deleteItem }
             );
         }
+        private void sfDataGrid_QueryCellStyle(object sender, QueryCellStyleEventArgs e)
+        {
+            if (e.Column.MappingName == "Activity")
+            {
+                if (e.DisplayText == "NO")
+                {
+                    // e.Style.BackColor = Color.Coral;
+                    e.Style.TextColor = Color.Red;
+                    //   this.e.Style.ButtonStyle.TextColor = Color.DarkBlue;
+
+              //      this.sfDataGrid.Style.ButtonStyle.BackColor = Color.LightPink;
+                   // e.Style.ButtonStyle.TextColor = Color.Red;
+                }
+                else if (e.DisplayText == "YES")
+                {
+                    //  e.Style.BackColor = Color.LightSkyBlue;
+                     e.Style.TextColor = Color.DarkSlateBlue;
+                   // this.sfDataGrid.Style.ButtonStyle.TextColor = Color.Blue;
+                }
+            }
+            if (e.Column.MappingName == "Status")
+            {
+                if(e.DisplayText == "Online")
+                {
+                    e.Style.TextColor = Color.Blue;
+                }
+                else
+                {
+                    e.Style.TextColor = Color.Red;
+                }
+            }
+        }
+
+
         private void BtnCommon_Paint(object sender, PaintEventArgs e)
         {
             Button btn = sender as Button;

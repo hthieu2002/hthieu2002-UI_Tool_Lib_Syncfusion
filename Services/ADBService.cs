@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -711,7 +712,107 @@ namespace Services
             var temp = resultParcel.Split(new[] { ".", "'" }, StringSplitOptions.RemoveEmptyEntries).Where(c => c.Length == 1);
             return String.Join(String.Empty, temp);
         }
+        /// <summary>
+        /// source ui tool 
+        /// </summary>
+        /// <param name="deviceId"></param>
+        /// <returns></returns>
+        public static bool IsDeviceActive(string deviceId)
+        {
+            try
+            {
+                var process = new Process();
+                process.StartInfo.FileName = "adb";
+                process.StartInfo.Arguments = $"-s {deviceId} shell getprop sys.boot_completed";
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+                process.Start();
 
+                string output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+
+                return !string.IsNullOrEmpty(output) && output.Contains("1");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error checking device status: {ex.Message}");
+                return false;
+            }
+        }
+        public static string ExecuteADBCommandDetail(string deviceID, string command)
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = "adb",
+                Arguments = $"-s {deviceID} {command}",
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            Process process = Process.Start(startInfo);
+            string output = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+            return output;
+        }
+        public static void ExecuteAdbCommand(string command, string deviceId)
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo()
+            {
+                FileName = "./Resources/adb.exe",
+                Arguments = $"-s {deviceId} {command}",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            };
+
+            Process adbProcess = Process.Start(startInfo);
+            adbProcess.WaitForExit();
+        }
+        public static string[] GetConnectedDevices()
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo()
+            {
+                FileName = @"./Resources/adb.exe",
+                Arguments = "devices",
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            Process process = Process.Start(startInfo);
+            process.WaitForExit();
+
+            string output = process.StandardOutput.ReadToEnd();
+            var devices = output.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries)
+                                 .Where(line => !line.StartsWith("List") && !line.StartsWith("---------"))
+                                 .Select(line => line.Split('\t')[0])
+                                 .ToArray();
+
+            return devices;
+        }
+        public static bool IsDeviceOnline(string deviceId)
+        {
+            var process = new Process();
+            process.StartInfo.FileName = "adb";
+            process.StartInfo.Arguments = $"-s {deviceId} shell getprop sys.boot_completed";
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
+            process.Start();
+
+            string output = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+
+            return !string.IsNullOrEmpty(output) && output.Contains("1");
+        }
+        /// <summary>
+        /// end
+        /// </summary>
+        /// <param name="deviceId"></param>
+        /// <returns></returns>
         public static DeviceStatus getDeviceStatus(string deviceId)
         {
             var adbRootRunning = getProp("init.svc.adb_root", deviceId).Contains("running");
@@ -821,7 +922,16 @@ namespace Services
             //return CmdProcessSingleton.Instance.ExecuteCommand(string.Format("/C adb -s {0} {1}", deviceId, commandline));
             return CmdProcess.ExecuteCommand(string.Format("/C adb -s {0} {1}", deviceId, commandline), timeout);
         }
-
+        public static void FakeLocation(string latitude, string longitude, string deviceId)
+        {
+            rootAndRemount(deviceId);
+            runCMD($"shell settings put global mi_latitude {latitude}", deviceId);
+            runCMD($"shell settings put global mi_longitude {longitude}", deviceId);
+        }
+        public static void ScreenShotDevice(string device)
+        {
+            runCMD($"shell screencap -p /sdcard/screen.png", device);
+        }
         public static void Dispose()
         {
             CmdProcessSingleton.Instance.Dispose();

@@ -11,6 +11,7 @@ using Syncfusion.Windows.Forms.Tools;
 using Syncfusion.WinForms.Controls;
 using Syncfusion.WinForms.DataGrid;
 using Syncfusion.WinForms.DataGrid.Enums;
+using Syncfusion.WinForms.DataGrid.Events;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -23,6 +24,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
+using WindowsFormsApp.Animation;
 using WindowsFormsApp.Model;
 using WindowsFormsApp.Script;
 using Xamarin.Forms;
@@ -35,16 +38,10 @@ namespace WindowsFormsApp
         private HeaderViewCommon headerView;
         private SfDataGrid sfDataGrid;
         private List<WindowsFormsApp.Model.DeviceDisplay> deviceDisplays = new List<WindowsFormsApp.Model.DeviceDisplay>();  // Danh sách các thiết bị hiện tại
-        private CancellationTokenSource _deviceCheckCancellationTokenSource;
         private Task _deviceCheckTask;
         public static ViewChange Instance { get; private set; }
         private readonly Dictionary<string, string> _progressTextMap = new Dictionary<string, string>();
         private readonly HashSet<string> _animatingDevices = new HashSet<string>();
-
-        private List<DeviceConfig> _configs;
-        private HashSet<int> _usedIndices = new HashSet<int>();
-        private int _randomCount = 0;
-        private Random _rnd = new Random();
 
         private ComboBox txtBrand;
         private ComboBox txtOS;
@@ -78,7 +75,6 @@ namespace WindowsFormsApp
         private SfButton btnFakeLocation;
         private TextBoxExt txtRestore;
         private DataTable _deviceTable;
-        private object copyContent = null;
         //
         FlowLayoutPanel panel;
         AutoLabel label;
@@ -195,43 +191,6 @@ namespace WindowsFormsApp
             headerView.SetTitle("Devices");
             mainMenu.Controls.Add(headerView);
         }
-        private string[] GetConnectedDevices()
-        {
-            ProcessStartInfo startInfo = new ProcessStartInfo()
-            {
-                FileName = @"./Resources/adb.exe",
-                Arguments = "devices",
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
-
-            Process process = Process.Start(startInfo);
-            process.WaitForExit();
-
-            string output = process.StandardOutput.ReadToEnd();
-            var devices = output.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries)
-                                 .Where(line => !line.StartsWith("List") && !line.StartsWith("---------"))
-                                 .Select(line => line.Split('\t')[0])
-                                 .ToArray();
-
-            return devices;
-        }
-        private bool IsDeviceOnline(string deviceId)
-        {
-            var process = new Process();
-            process.StartInfo.FileName = "adb";
-            process.StartInfo.Arguments = $"-s {deviceId} shell getprop sys.boot_completed";
-            process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.CreateNoWindow = true;
-            process.Start();
-
-            string output = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
-
-            return !string.IsNullOrEmpty(output) && output.Contains("1");
-        }
         public (List<WindowsFormsApp.Model.DeviceDisplay> onlineDevices, List<WindowsFormsApp.Model.DeviceDisplay> offlineDevices) LoadDevicesFromJson()
         {
             string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "devices.json");
@@ -252,41 +211,16 @@ namespace WindowsFormsApp
                 return (new List<WindowsFormsApp.Model.DeviceDisplay>(), new List<WindowsFormsApp.Model.DeviceDisplay>());
             }
         }
-        private bool IsDeviceActive(string deviceId)
-        {
-            try
-            {
-                var process = new Process();
-                process.StartInfo.FileName = "adb";
-                process.StartInfo.Arguments = $"-s {deviceId} shell getprop sys.boot_completed";
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.CreateNoWindow = true;
-                process.Start();
 
-                string output = process.StandardOutput.ReadToEnd();
-                process.WaitForExit();
-
-                return !string.IsNullOrEmpty(output) && output.Contains("1");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error checking device status: {ex.Message}");
-                return false;
-            }
-        }
         public void StartDeviceCheck()
         {
-            _deviceCheckCancellationTokenSource?.Cancel();
-            _deviceCheckCancellationTokenSource = new CancellationTokenSource();
-
-            _deviceCheckTask = Task.Run(() => DeviceCheckLoop(_deviceCheckCancellationTokenSource.Token));
+            DeviceCheckManager.StartDeviceCheck(DeviceCheckLoop);
         }
         private async Task DeviceCheckLoop(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                var connectedDevices = GetConnectedDevices().ToHashSet();
+                var connectedDevices = ADBService.GetConnectedDevices().ToHashSet();
                 var (onlineDevices, offlineDevices) = LoadDevicesFromJson();
                 foreach (var device in onlineDevices)
                 {
@@ -306,7 +240,7 @@ namespace WindowsFormsApp
 
                     if (existingDevice != null)
                     {
-                        string currentStatus = IsDeviceOnline(device) ? "Online" : "Offline";
+                        string currentStatus =ADBService.IsDeviceOnline(device) ? "Online" : "Offline";
                         if (existingDevice.Status != currentStatus)
                         {
                             Invoke((MethodInvoker)(() =>
@@ -320,7 +254,7 @@ namespace WindowsFormsApp
                     {
                         Invoke((MethodInvoker)(() =>
                         {
-                            AddDeviceView(device);
+                            AddDeviceView(device, "", 1);
                             UpdateDeviceStatus(device, "Online");
                             sfDataGrid.Refresh();
                         }));
@@ -329,7 +263,8 @@ namespace WindowsFormsApp
                 await Task.Delay(1000);
             }
         }
-        private void AddDeviceView(string deviceId)
+     
+        private void AddDeviceView(string deviceId, string name, int check)
         {
             _deviceTable = sfDataGrid.DataSource as DataTable;
             if (_deviceTable == null)
@@ -339,9 +274,17 @@ namespace WindowsFormsApp
             }
             int stt = _deviceTable.Rows.Count + 1;
 
-            _deviceTable.Rows.Add(stt, false, deviceId, 0, "", "Offline");
 
-            deviceDisplays.Add(new WindowsFormsApp.Model.DeviceDisplay { Serial = deviceId, Status = "Offline", Activity = "YES", Checkbox = false });
+            _deviceTable.Rows.Add(stt, false, name, deviceId, 0, "", "Offline");
+            if (check == 1)
+            {
+                deviceDisplays.Add(new WindowsFormsApp.Model.DeviceDisplay { Serial = deviceId, Status = "Offline", Activity = "YES", Checkbox = false });
+            }
+            else
+            {
+                deviceDisplays.Add(new WindowsFormsApp.Model.DeviceDisplay { Name = name, Serial = deviceId, Status = "Offline", Activity = "YES", Checkbox = false });
+            }
+
             SaveDevicesToFile();
             sfDataGrid.Refresh();
         }
@@ -371,7 +314,7 @@ namespace WindowsFormsApp
         private void UpdateDeviceStatus(string deviceId, string status)
         {
             var device = deviceDisplays.FirstOrDefault(d => d.Serial == deviceId);
-            bool isActive = IsDeviceActive(deviceId);
+            bool isActive = ADBService.IsDeviceActive(deviceId);
             if (device != null)
             {
                 device.Status = status;
@@ -420,7 +363,7 @@ namespace WindowsFormsApp
             deviceDisplays = JsonConvert.DeserializeObject<List<WindowsFormsApp.Model.DeviceDisplay>>(json) ?? new List<WindowsFormsApp.Model.DeviceDisplay>();
             foreach (var device in deviceDisplays.ToList())
             {
-                AddDeviceView(device.Serial);
+                AddDeviceView(device.Serial, device.Name, 0);
                 UpdateDeviceStatus(device.Serial, device.Status);
             }
         }
@@ -446,12 +389,53 @@ namespace WindowsFormsApp
         }
         private void DetailsItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Details option clicked.");
+            var selectedRow = sfDataGrid.SelectedItems.Cast<DataRowView>().FirstOrDefault();
+            if (selectedRow != null)
+            {
+                string deviceId = selectedRow["DeviceID"].ToString();
+
+                DeviceDetailsForm detailsForm = new DeviceDetailsForm(deviceId);
+
+                detailsForm.ShowDialog();
+            }
         }
         private void EditItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Edit option clicked.");
+            var selectedRow = sfDataGrid.SelectedItems.Cast<DataRowView>().FirstOrDefault();
+            if (selectedRow != null)
+            {
+                string deviceId = selectedRow["DeviceID"].ToString();
+
+                var deviceToUpdate = deviceDisplays.FirstOrDefault(d => d.Serial == deviceId);
+
+                if (deviceToUpdate != null)
+                {
+                    NameInputForm nameForm = new NameInputForm(deviceToUpdate.Name);
+                    if (nameForm.ShowDialog() == DialogResult.OK)
+                    {
+                        string newName = nameForm.NewName;
+
+                        deviceToUpdate.Name = newName;
+
+                        _deviceTable = sfDataGrid.DataSource as DataTable;
+                        var rows = _deviceTable.Select($"DeviceID = '{deviceToUpdate.Serial}'");
+                        if (rows.Length > 0)
+                        {
+                            rows[0]["NameID"] = deviceToUpdate.Name;
+                        }
+
+                        SaveDevicesToFile();
+                        sfDataGrid.Refresh();
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn một thiết bị để chỉnh sửa.");
+            }
         }
+
+
         private void DeleteItem_Click(object sender, EventArgs e)
         {
             var selectedRow = sfDataGrid.SelectedItems.Cast<DataRowView>().FirstOrDefault();
@@ -497,8 +481,9 @@ namespace WindowsFormsApp
                 miChangerGraphQLClient = new MiChangerGraphQLClient(endpoint, ApiAuthenticationType.TOKEN, refreshToken);
             }
         }
-        public async void StartAllRandomChange(int button, int autoChange = 0)
+        private async void StartAllRandomChange(int button, int autoChange = 0)
         {
+            var result = DialogResult.No;
             var dt = sfDataGrid.DataSource as System.Data.DataTable;
             if (dt == null) return;
 
@@ -517,17 +502,14 @@ namespace WindowsFormsApp
                 MessageBox.Show("Không có thiết bị mới nào để chạy.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-
-            //var details = selectedRows
-            //      .Select(r => r.Field<string>("DeviceID"))
-            //      .Where(id => toAnimate.Contains(id))
-            //      .Select(id => $"ID: {id}, Active: { /* lấy từ DataTable nếu cần */ ""}")
-            //      .ToList();
-
             string message = "Are you sure to proceed with these changes and reboot ?";
             string title = "Changes Confirmation";
-            var result = MessageBox.Show(message, title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (result == DialogResult.Yes)
+            if (button == 1 || button == 2)
+            {
+                result = MessageBox.Show(message, title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            }
+
+            if (result == DialogResult.Yes || button > 2)
             {
                 var tasks = toAnimate.Select(async id =>
                 {
@@ -542,13 +524,22 @@ namespace WindowsFormsApp
                         {
                             _animatingDevices.Add(id);
 
-                            if (button == 1)
+                            switch (button)
                             {
-                                await StartChange(id, row, autoChange);
-                            }
-                            else if (button == 2)
-                            {
-                                await StartChangeSim(id, row, autoChange);
+                                case 1: // change device
+                                    await StartChange(id, row, autoChange);
+                                    break;
+                                case 2: // change sim
+                                    await StartChangeSim(id, row, autoChange);
+                                    break;
+                                case 3: // fake location
+                                    await StartFakeLocation(id, row);
+                                    break;
+                                case 4: // screen shot
+                                    await StartScreenShot(id, row);
+                                    break;
+                                case 5:
+                                    break;
                             }
                         }
                         else
@@ -568,6 +559,7 @@ namespace WindowsFormsApp
                 //do nothing
             }
         }
+
         private async void btnRandom_Click(object sender, EventArgs e)
         {
             setupDisableButtonRandom();
@@ -625,6 +617,7 @@ namespace WindowsFormsApp
             catch (Exception ex)
             {
                 //ignored
+                Console.WriteLine(ex);
             }
             finally
             {
@@ -677,6 +670,14 @@ namespace WindowsFormsApp
         {
             StartAllRandomChange(2);
         }
+        private void btnFakeLocation_Click(object sender, EventArgs e)
+        {
+            StartAllRandomChange(3);
+        }
+        private void btnScreenShot_Click(object sender, EventArgs e)
+        {
+            StartAllRandomChange(4);
+        }
         public async Task<DeviceModel> RandomDevice()
         {
             DeviceModel tempDevice = null;
@@ -719,6 +720,7 @@ namespace WindowsFormsApp
             catch (Exception ex)
             {
                 //ignored
+                Console.WriteLine(ex);
             }
             finally
             {
@@ -764,6 +766,7 @@ namespace WindowsFormsApp
             catch (Exception ex)
             {
                 //ignored
+                Console.WriteLine(ex);
             }
             finally
             {
@@ -815,18 +818,24 @@ namespace WindowsFormsApp
                 }
                 if (saveResult)
                 {
-                    _ = ViewChange.Instance.updateProgress(row, "Start save info", 92);
+                    _ = ViewChange.Instance.updateProgress(row, "Save info ...", 92);
                     // Wipe
                     BeginInvoke(new Action(() =>
                     {
 
                     }));
+                    _ = ViewChange.Instance.updateProgress(row, "Save info success", 93);
+
+                    _ = ViewChange.Instance.updateProgress(row, "Wipe data", 94);
                     var packagesWipeAfterChanger = loadWipeListConfig();
                     wipePackagesChanger(packagesWipeAfterChanger, device);
+                    _ = ViewChange.Instance.updateProgress(row, "Clean GMS ...", 95);
+                    _ = ViewChange.Instance.updateProgress(row, "Clean GMS ...", 96);
                     ADBService.cleanGMSPackagesAndAccounts(device);
-                    _ = ViewChange.Instance.updateProgress(row, "Start save info", 95);
+                    _ = ViewChange.Instance.updateProgress(row, "Clean GMS success", 98);
                     BeginInvoke(new Action(() =>
                     {
+                        _ = ViewChange.Instance.updateProgress(row, "Change device success", 99);
                         if (autoChange != 1)
                         {
                             // auto
@@ -843,14 +852,14 @@ namespace WindowsFormsApp
                     }));
                     if (device.Length >= 12)
                     {
-                        await ViewChange.Instance.updateProgress(row, "Change success", 100);
+                        await ViewChange.Instance.updateProgress(row, "Rebooting ... ", 100);
                         _animatingDevices.Remove(device);
                         ADBService.restartDevice(device);
                         Thread.Sleep(10000);
                     }
                     else
                     {
-                        await ViewChange.Instance.updateProgress(row, "Change success", 100);
+                        await ViewChange.Instance.updateProgress(row, "Rebooting ...", 100);
                         _animatingDevices.Remove(device);
                         ADBService.restartDevice(device);
                         Thread.Sleep(10000);
@@ -908,10 +917,12 @@ namespace WindowsFormsApp
                 await Task.Delay(2000);
                 if (autoChange == 1)
                 {
+                    await ViewChange.Instance.updateProgress(row, "Start change sim", 7);
                     saveResult = Util.SaveDeviceSIm(tempDeviceAll, device, System.Windows.Forms.Application.StartupPath, row);
                 }
                 else
                 {
+                    await ViewChange.Instance.updateProgress(row, "Start change sim full", 7);
                     saveResult = Util.SaveDeviceSIm(deviceTemp, device, System.Windows.Forms.Application.StartupPath, row);
                 }
                 if (saveResult)
@@ -919,12 +930,13 @@ namespace WindowsFormsApp
                     // Wipe
                     BeginInvoke(new Action(() =>
                     {
-                       
-                    }));
-                    var packagesWipeAfterChanger = loadWipeListConfig();
-                    wipePackagesChanger(packagesWipeAfterChanger, device);
-                    ADBService.cleanGMSPackagesAndAccounts(device);
 
+                    }));
+                    //await ViewChange.Instance.updateProgress(row, "Wipe change", 92);
+                    //var packagesWipeAfterChanger = loadWipeListConfig();
+                    //wipePackagesChanger(packagesWipeAfterChanger, device);
+                    //ADBService.cleanGMSPackagesAndAccounts(device);
+                    //await ViewChange.Instance.updateProgress(row, "Success Wipe change", 94);
                     BeginInvoke(new Action(() =>
                     {
                         if (autoChange != 1)
@@ -943,14 +955,14 @@ namespace WindowsFormsApp
                     }));
                     if (device.Length >= 12)
                     {
-                        await ViewChange.Instance.updateProgress(row, "Change success", 100);
+                        await ViewChange.Instance.updateProgress(row, "Rebooting ...", 100);
                         _animatingDevices.Remove(device);
                         ADBService.restartDevice(device);
                         Thread.Sleep(10000);
                     }
                     else
                     {
-                        await ViewChange.Instance.updateProgress(row, "Change success", 100);
+                        await ViewChange.Instance.updateProgress(row, "Rebooting ...", 100);
                         _animatingDevices.Remove(device);
                         ADBService.restartDevice(device);
                         Thread.Sleep(10000);
@@ -969,6 +981,169 @@ namespace WindowsFormsApp
                                             , MessageBoxIcon.Error);
                 }
             }, uiThreadScheduler);
+        }
+        public async Task StartFakeLocation(string device, System.Data.DataRow row)
+        {
+            await ViewChange.Instance.updateProgress(row, "Fake location", 1);
+            try
+            {
+                // Tạo form nhập tọa độ
+                Form inputForm = new Form()
+                {
+                    Width = 300,
+                    Height = 200,
+                    FormBorderStyle = FormBorderStyle.FixedDialog,
+                    Text = "Nhập tọa độ",
+                    StartPosition = FormStartPosition.CenterScreen,
+                    MaximizeBox = false,
+                    MinimizeBox = false
+                };
+                await ViewChange.Instance.updateProgress(row, "Info form location", 1);
+                AutoLabel lblX = new AutoLabel() { Left = 20, Top = 20, Text = "Latitude:", AutoSize = true };
+                TextBoxExt txtX = new TextBoxExt() { Left = 100, Top = 20, Width = 160 };
+
+                txtX.KeyPress += (s, e) =>
+                {
+                    TextBox tb = s as TextBox;
+
+                    if (char.IsControl(e.KeyChar))
+                        return;
+
+                    if (char.IsDigit(e.KeyChar))
+                        return;
+
+                    if (e.KeyChar == '.' && !tb.Text.Contains('.'))
+                        return;
+
+                    if ((e.KeyChar == '-' || e.KeyChar == '+') && tb.SelectionStart == 0 && !tb.Text.Contains("-") && !tb.Text.Contains("+"))
+                        return;
+                    e.Handled = true;
+                };
+                txtX.Leave += (s, e) =>
+                {
+                    if (double.TryParse(txtX.Text, out double value))
+                    {
+                        if (value < -180.0 || value > 180.0)
+                        {
+                            MessageBox.Show("Giá trị Latitude phải nằm trong khoảng từ -180.0 đến 180.0", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            txtX.Focus();
+                        }
+                    }
+                    else if (!string.IsNullOrWhiteSpace(txtX.Text))
+                    {
+                        MessageBox.Show("Giá trị không hợp lệ.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        txtX.Focus();
+                    }
+                };
+                AutoLabel lblY = new AutoLabel() { Left = 20, Top = 60, Text = "Longitude:", AutoSize = true };
+                TextBoxExt txtY = new TextBoxExt() { Left = 100, Top = 60, Width = 160 };
+                txtY.KeyPress += (s, e) =>
+                {
+                    TextBox tb = s as TextBox;
+
+                    if (char.IsControl(e.KeyChar))
+                        return;
+
+                    if (char.IsDigit(e.KeyChar))
+                        return;
+
+                    if (e.KeyChar == '.' && !tb.Text.Contains('.'))
+                        return;
+
+                    if ((e.KeyChar == '-' || e.KeyChar == '+') && tb.SelectionStart == 0 && !tb.Text.Contains("-") && !tb.Text.Contains("+"))
+                        return;
+                    e.Handled = true;
+                };
+                txtY.Leave += (s, e) =>
+                {
+                    if (double.TryParse(txtY.Text, out double value))
+                    {
+                        if (value < -90.0 || value > 90.0)
+                        {
+                            MessageBox.Show("Giá trị Longitude phải nằm trong khoảng từ -90.0 đến 90.0", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            txtY.Focus();
+                        }
+                    }
+                    else if (!string.IsNullOrWhiteSpace(txtY.Text))
+                    {
+                        MessageBox.Show("Giá trị không hợp lệ.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        txtY.Focus();
+                    }
+                };
+                SfButton btnOK = new SfButton() { Text = "OK", Left = 70, Width = 80, Top = 110, DialogResult = DialogResult.OK };
+                SfButton btnCancel = new SfButton() { Text = "Cancel", Left = 170, Width = 80, Top = 110, DialogResult = DialogResult.Cancel };
+
+                btnOK.Paint += BtnCommon_Paint;
+                btnCancel.Paint += BtnCommon_Paint;
+                btnOK.Style.BackColor = System.Drawing.Color.LightBlue;
+                btnOK.Style.ForeColor = System.Drawing.Color.White;
+                btnCancel.Style.BackColor = System.Drawing.Color.LightBlue;
+                btnCancel.Style.ForeColor = System.Drawing.Color.White;
+                SetupButtonStyle(btnOK);
+                SetupButtonCancelStyle(btnCancel);
+
+
+                inputForm.Controls.Add(lblX);
+                inputForm.Controls.Add(txtX);
+                inputForm.Controls.Add(lblY);
+                inputForm.Controls.Add(txtY);
+                inputForm.Controls.Add(btnOK);
+                inputForm.Controls.Add(btnCancel);
+
+                inputForm.AcceptButton = btnOK;
+                inputForm.CancelButton = btnCancel;
+
+                if (inputForm.ShowDialog() == DialogResult.OK)
+                {
+                    await ViewChange.Instance.updateProgress(row, "Success info form location", 5);
+                    string x = txtX.Text;
+                    string y = txtY.Text;
+                    await ViewChange.Instance.updateProgress(row, "Start fake location", 10);
+                    btnFakeLocation.Enabled = false;
+                    btnFakeLocation.Text = "Running";
+                    btnFakeLocation.BackColor = System.Drawing.Color.OrangeRed;
+                    await ViewChange.Instance.updateProgress(row, "Fake location", 30);
+                    ADBService.FakeLocation(x, y, device);
+                    await ViewChange.Instance.updateProgress(row, "Fake location", 99);
+                    btnFakeLocation.Enabled = true;
+                    btnFakeLocation.Text = "Fake location";
+                    btnFakeLocation.BackColor = System.Drawing.Color.LightBlue;
+                    await ViewChange.Instance.updateProgress(row, "Success", 100);
+                    _animatingDevices.Remove(device);
+                }
+                _animatingDevices.Remove(device);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            await ViewChange.Instance.updateProgress(row, "", 0);
+            _animatingDevices.Remove(device);
+
+        }
+        public async Task StartScreenShot(string device, System.Data.DataRow row)
+        {
+            try
+            {
+                btnScreenshot.Text = "Running";
+                btnScreenshot.Enabled = false;
+                btnScreenshot.BackColor = System.Drawing.Color.OrangeRed;
+                await ViewChange.Instance.updateProgress(row, "Running Screen shot device", 50);
+                //
+                ADBService.ScreenShotDevice(device);
+                //
+                await ViewChange.Instance.updateProgress(row, "Success Screen shot device", 99);
+
+                btnScreenshot.Text = "ScreenShot";
+                btnScreenshot.Enabled = true;
+                btnScreenshot.BackColor = System.Drawing.Color.LightBlue;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            await ViewChange.Instance.updateProgress(row, "Success", 100);
+            _animatingDevices.Remove(device);
         }
         private string[] loadWipeListConfig()
         {
@@ -1010,11 +1185,11 @@ namespace WindowsFormsApp
         {
             int progressValue = Math.Max(0, Math.Min(100, p));
 
-            if (row["Progress"] != DBNull.Value && (int)row["Progress"] == 100)
-            {
-                Console.WriteLine($"Tiến độ đã đạt 100% cho DeviceID: {row["DeviceID"]}, không cần cập nhật nữa.");
-                return;
-            }
+            //if (row["Progress"] != DBNull.Value && (int)row["Progress"] == 100)
+            //{
+            //    Console.WriteLine($"Tiến độ đã đạt 100% cho DeviceID: {row["DeviceID"]}, không cần cập nhật nữa.");
+            //    return;
+            //}
 
             row["Progress"] = progressValue;
             row["ProgressText"] = text;

@@ -178,6 +178,7 @@ namespace WindowsFormsApp
             //
             this.cbLoadFile.Width = 250;
             this.cbLoadFile.DropDownStyle = DropDownStyle.DropDownList;
+            this.cbLoadFile.AutoCompleteMode = AutoCompleteMode.Suggest;
             flowLayoutPanel2.Controls.Add(cbLoadFile);
             //
             // btnLoadFile

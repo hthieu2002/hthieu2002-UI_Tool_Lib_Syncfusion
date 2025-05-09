@@ -9,15 +9,23 @@ using System.Windows.Forms;
 using Syncfusion.WinForms.DataGrid.Enums;
 using Syncfusion.WinForms.DataGrid;
 using System.Data;
+using Syncfusion.WinForms.DataGrid.Styles;
+using Newtonsoft.Json;
+using WindowsFormsApp.Model;
+using System.IO;
+using Services;
 
 namespace WindowsFormsApp
 {
 	public partial class ViewAutomation : Form
 	{
-		private void setControl()
+        private List<WindowsFormsApp.Model.DeviceDisplay> deviceDisplays = new List<WindowsFormsApp.Model.DeviceDisplay>();
+        private void setControl()
 		{
 			btnLoadFile.Paint += BtnCommon_Paint;
-			btnRun.Paint += BtnCommon_Paint;
+			btnLoadFile.Click += LoadFileScript_Click;
+
+            btnRun.Paint += BtnCommon_Paint;
 			btnScript.Click += Script_Click;
 			btnScript.Paint += BtnCommon_Paint;
 
@@ -41,49 +49,138 @@ namespace WindowsFormsApp
 			flowLayoutPanel1.Controls.Add(btnScreen);
 			flowLayoutPanel1.Controls.Add(panel);
 		}
-		public void setGridView()
-		{
-			sfDataGrid = new SfDataGrid
-			{
-				Dock = DockStyle.Fill,
-				AutoSizeColumnsMode = AutoSizeColumnsMode.Fill,
-				AllowEditing = false,
-				AllowDeleting = false,
-				AllowSorting = true,
-				ShowGroupDropArea = false
-			};
-			sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "STT", HeaderText = "#", Width = 30 });
-			sfDataGrid.Columns.Add(new GridCheckBoxColumn { MappingName = "Checkbox", HeaderText = "Box", Width = 60, AllowEditing = true });
-			sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "DeviceID", HeaderText = "Device ID", Width = 200 });
+        public void setGridView()
+        {
+            sfDataGrid = new SfDataGrid
+            {
+                Dock = DockStyle.Fill,
+                AutoSizeColumnsMode = AutoSizeColumnsMode.Fill,
+                AllowEditing = false,
+                AllowDeleting = false,
+                AllowSorting = true,
+                ShowGroupDropArea = false
+            };
+            sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "STT", HeaderText = "#", Width = 30 });
+            sfDataGrid.Columns.Add(new GridCheckBoxColumn { MappingName = "Checkbox", HeaderText = "Box", Width = 80, AllowEditing = true });
+            sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "NameID", HeaderText = "Name", Width = 120 });
+            sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "DeviceID", HeaderText = "Device ID", Width = 200 });
 
-			var progressCol = new GridProgressBarColumn
-			{
-				MappingName = "Progress",
-				HeaderText = "Progress",
-				Minimum = 0,
-				Maximum = 100,
-				ValueMode = ProgressBarValueMode.Percentage
-			};
-			progressCol.CellStyle.TextColor = Color.White;
-			progressCol.CellStyle.HorizontalAlignment = HorizontalAlignment.Center;
-			sfDataGrid.Columns.Add(progressCol);
+            var progressCol = new GridProgressBarColumn
+            {
+                MappingName = "Progress",
+                HeaderText = "%",
+                Width = 150,
+                Minimum = 0,
+                Maximum = 100,
+                ValueMode = ProgressBarValueMode.Percentage
+            };
+            progressCol.CellStyle.TextColor = Color.White;
+            progressCol.CellStyle.HorizontalAlignment = HorizontalAlignment.Center;
+            sfDataGrid.Columns.Add(progressCol);
 
-			sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "Status", HeaderText = "Status", Width = 100 });
-			sfDataGrid.Columns.Add(new GridButtonColumn { MappingName = "Activity", HeaderText = "Active", Width = 80 });
+            sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "ProgressText", HeaderText = "Progress" });
+            sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "Status", HeaderText = "Status", Width = 100 });
+            sfDataGrid.Columns.Add(new GridTextColumn { MappingName = "Activity", HeaderText = "Active", Width = 80 });
 
-			_deviceTable = new DataTable();
-			_deviceTable.Columns.Add("STT", typeof(int));
-			_deviceTable.Columns.Add("Checkbox", typeof(bool));
-			_deviceTable.Columns.Add("DeviceID", typeof(string));
-			_deviceTable.Columns.Add("Progress", typeof(int));   
-			_deviceTable.Columns.Add("Status", typeof(string));
-			_deviceTable.Columns.Add("Activity", typeof(string));
+            _deviceTable = new DataTable();
+            _deviceTable.Columns.Add("STT", typeof(int));
+            _deviceTable.Columns.Add("Checkbox", typeof(bool));
+            _deviceTable.Columns.Add("NameID", typeof(string));
+            _deviceTable.Columns.Add("DeviceID", typeof(string));
+            _deviceTable.Columns.Add("Progress", typeof(int));
+            _deviceTable.Columns.Add("ProgressText", typeof(string));
+            _deviceTable.Columns.Add("Status", typeof(string));
+            _deviceTable.Columns.Add("Activity", typeof(string));
 
-			sfDataGrid.DataSource = _deviceTable;
-			tableLayoutPanel1.Controls.Add(sfDataGrid, 0, 0);
+            this.sfDataGrid.Style.HeaderStyle.Borders.All = new GridBorder(GridBorderStyle.Dotted, Color.Blue, GridBorderWeight.Thin);
+            this.sfDataGrid.Style.CellStyle.Borders.All = new GridBorder(GridBorderStyle.Dotted, Color.Blue, GridBorderWeight.Thin);
+            (this.sfDataGrid.Columns["Checkbox"] as GridCheckBoxColumn).AllowCheckBoxOnHeader = true;
+            sfDataGrid.QueryCellStyle += sfDataGrid_QueryCellStyle;
 
-		}
-		private void BtnCommon_Paint(object sender, PaintEventArgs e)
+            sfDataGrid.DataSource = _deviceTable;
+            tableLayoutPanel1.Controls.Add(sfDataGrid, 0, 0);
+        }
+        private void LoadDevicesFromFile()
+        {
+            string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "devices.json");
+            if (!File.Exists(path))
+            {
+                SaveDevicesToFile();
+            }
+            string json = File.ReadAllText(path);
+            deviceDisplays = JsonConvert.DeserializeObject<List<WindowsFormsApp.Model.DeviceDisplay>>(json) ?? new List<WindowsFormsApp.Model.DeviceDisplay>();
+            foreach (var device in deviceDisplays.ToList())
+            {
+                AddDeviceView(device.Serial, device.Name, 0);
+                UpdateDeviceStatus(device.Serial, device.Status);
+            }
+        }
+        private void SaveDevicesToFile()
+        {
+            var uniqueDevices = deviceDisplays
+                .GroupBy(d => d.Serial)
+                .Select(g => g.First())
+                .ToList();
+
+            string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "devices.json");
+            File.WriteAllText(path, JsonConvert.SerializeObject(uniqueDevices, Newtonsoft.Json.Formatting.Indented));
+        }
+        private void AddDeviceView(string deviceId, string name, int check)
+        {
+            _deviceTable = sfDataGrid.DataSource as DataTable;
+            if (_deviceTable == null)
+            {
+                Console.WriteLine("DataSource is not assigned correctly.");
+                return;
+            }
+            int stt = _deviceTable.Rows.Count + 1;
+
+
+            _deviceTable.Rows.Add(stt, false, name, deviceId, 0, "", "Offline");
+            if (check == 1)
+            {
+                deviceDisplays.Add(new WindowsFormsApp.Model.DeviceDisplay { Serial = deviceId, Status = "Offline", Activity = "YES", Checkbox = false });
+            }
+            else
+            {
+                deviceDisplays.Add(new WindowsFormsApp.Model.DeviceDisplay { Name = name, Serial = deviceId, Status = "Offline", Activity = "YES", Checkbox = false });
+            }
+
+            SaveDevicesToFile();
+            sfDataGrid.Refresh();
+        }
+        private void UpdateDeviceStatus(string deviceId, string status)
+        {
+            var device = deviceDisplays.FirstOrDefault(d => d.Serial == deviceId);
+            bool isActive = ADBService.IsDeviceActive(deviceId);
+            if (device != null)
+            {
+                device.Status = status;
+                DataTable dataTable = sfDataGrid.DataSource as DataTable;
+                var row = dataTable.Select($"DeviceID = '{deviceId}'").FirstOrDefault();
+                if (row != null)
+                {
+                    row["Status"] = status;
+                    if (status == "Online")
+                    {
+                        row["Progress"] = 0;
+                        row["Checkbox"] = true;
+                        row["Activity"] = isActive ? "NO" : "YES";
+                        device.Activity = "YES";
+                    }
+                    else
+                    {
+                        row["Progress"] = 0;
+                        row["Checkbox"] = false;
+                        row["Activity"] = "---";
+                        device.Activity = "YES";
+                    }
+                }
+                SaveDevicesToFile();
+                sfDataGrid.Refresh();
+            }
+        }
+        private void BtnCommon_Paint(object sender, PaintEventArgs e)
 		{
 			Button btn = sender as Button;
 			if (btn == null) return;
@@ -112,7 +209,6 @@ namespace WindowsFormsApp
 			Rectangle textRect = new Rectangle(rect.X + 2, rect.Y + 2, rect.Width - 4, rect.Height - 4); // Điều chỉnh phạm vi để tránh chữ bị đè lên
 			TextRenderer.DrawText(e.Graphics, btn.Text, btn.Font, textRect, textColor, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
 		}
-
 		private Pen GetButtonBorderPen(Button btn)
 		{
 			if (!btn.Enabled)
@@ -132,7 +228,6 @@ namespace WindowsFormsApp
 				return new Pen(Color.Gray);
 			}
 		}
-
 		private Color GetButtonTextColor(Button btn)
 		{
 			if (btn.ClientRectangle.Contains(PointToClient(Cursor.Position)))
@@ -141,7 +236,6 @@ namespace WindowsFormsApp
 			}
 			return btn.ForeColor;
 		}
-
 		private GraphicsPath GetRoundedRect(Rectangle rect, int radius)
 		{
 			GraphicsPath graphicsPath = new GraphicsPath();

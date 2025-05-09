@@ -1,3 +1,4 @@
+using Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -95,7 +96,7 @@ namespace WindowsFormsApp
             AddActionPanel(rightPanel);
             selectedDevicesLabel.Text = $"Số thiết bị được chọn: {activeDevices.Count}";
            
-            deviceIds = GetConnectedDevices();
+            deviceIds = ADBService.GetConnectedDevices();
             AddDeviceButtons(rightPanel, deviceIds);
         }
         private void CbTurnOffScreen_CheckedChanged(object sender, EventArgs e)
@@ -111,7 +112,7 @@ namespace WindowsFormsApp
         {
             foreach (var device in screenView.deviceDisplays)
             {
-                ExecuteAdbCommand("reboot", device.Serial); // Thực thi lệnh reboot cho thiết bị
+               ADBService.ExecuteAdbCommand("reboot", device.Serial); // Thực thi lệnh reboot cho thiết bị
             }
             MessageBox.Show("Tất cả các thiết bị đã được khởi động lại.");
         }
@@ -129,30 +130,82 @@ namespace WindowsFormsApp
                 foreach (var device in screenView.deviceDisplays)
                 {
                     string command = $"install {apkFilePath}";
-                    ExecuteAdbCommand(command, device.Serial);
+                    ADBService.ExecuteAdbCommand(command, device.Serial);
                 }
                 MessageBox.Show("APK đã được cài đặt cho tất cả các thiết bị.");
             }
         }
+        private void btnPushFileAllDevice_Click(object render, EventArgs args)
+        {
+            try
+            {
+                OpenFileDialog fileDialog = new OpenFileDialog
+                {
+                    Filter = "All Files|*.*",
+                    Title = "Chọn file bất kỳ"
+                };
+                if (fileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = fileDialog.FileName;
+                    foreach (var deviceId in activeDevices)
+                    {
+                        string command = $"push {filePath} /sdcard/";
+                        ADBService.ExecuteAdbCommand(command, deviceId);
+                    }
+                    MessageBox.Show("File đã được push và SDCARD cho tất cả các thiết bị.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Đã xảy ra lỗi khi chọn file: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+       
+        private void btnInstallAPKAllDevice_Click(object render , EventArgs args)
+        {
+            try
+            {
+                OpenFileDialog fileDialog = new OpenFileDialog
+                {
+                    Filter = "APK Files|*.apk",
+                    Title = "Chọn file APK"
+                };
+                if (fileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string apkFilePath = fileDialog.FileName;
+                    foreach (var deviceId in activeDevices)
+                    {
+                        string command = $"install {apkFilePath}";
+                        ADBService.ExecuteAdbCommand(command, deviceId);
+                    }
+                    MessageBox.Show(".APK đã được cài đặt cho tất cả các thiết bị.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Đã xảy ra lỗi khi chọn file: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+      
         public void CaptureScreenshot_Click(ScreenView screenView)
         {
             foreach (var device in screenView.deviceDisplays)
             {
                 string command = $"shell screencap -p /sdcard/screenshot{device.Serial}.png";
-                ExecuteAdbCommand(command, device.Serial);
-                ExecuteAdbCommand($"pull /sdcard/screenshot{device.Serial}.png", device.Serial);  // Tải ảnh về máy tính
+                ADBService.ExecuteAdbCommand(command, device.Serial);
+                ADBService.ExecuteAdbCommand($"pull /sdcard/screenshot{device.Serial}.png", device.Serial); 
             }
             MessageBox.Show("Chụp màn hình đã được thực hiện cho tất cả các thiết bị.");
         }
         public void ExecuteAdbCommand_Click(ScreenView screenView)
         {
-            string adbCommand = PromptForAdbCommand();  // Hàm này có thể yêu cầu người dùng nhập lệnh ADB
+            string adbCommand = PromptForAdbCommand(); 
 
             if (!string.IsNullOrEmpty(adbCommand))
             {
                 foreach (var device in screenView.deviceDisplays)
                 {
-                    ExecuteAdbCommand(adbCommand, device.Serial);
+                    ADBService.ExecuteAdbCommand(adbCommand, device.Serial);
                 }
                 MessageBox.Show("Lệnh ADB đã được thực hiện cho tất cả các thiết bị.");
             }
@@ -161,7 +214,7 @@ namespace WindowsFormsApp
         {
             foreach (var device in screenView.deviceDisplays)
             {
-                ExecuteAdbCommand("disconnect", device.Serial);  // Ngắt kết nối
+                ADBService.ExecuteAdbCommand("disconnect", device.Serial);  // Ngắt kết nối
                 flowLayoutPanel.Controls.Remove(device.DevicePanel);
                 device.DevicePanel.Dispose();
             }

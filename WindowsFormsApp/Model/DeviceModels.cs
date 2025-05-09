@@ -8,6 +8,7 @@ namespace WindowsFormsApp.Model
 {
     public class DeviceDisplay
     {
+        public string Name { get; set; }
         public string Serial { get; set; }
         public string Status { get; set; }
         public string Activity { get; set; }

@@ -199,8 +199,33 @@ namespace WindowsFormsApp
         }
         private void RunScript_Click(object sender, EventArgs e)
         {
-
+            if (cbLoadFile.SelectedItem == null)
+            {
+                MessageBox.Show("Vui lòng load file script.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+          
+            if (cbAuto.Checked)
+            {
+                MessageBox.Show("Đang chạy vô hạn");
+            }
+            else
+            {
+                int numberOfRuns = (int)nudNumber.Value; 
+                MessageBox.Show($"Đang chạy {numberOfRuns} lần");
+            }
         }
-
+        private void cbAuto_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbAuto.Checked)
+            {
+                nudNumber.Enabled = false;
+                nudNumber.Value = 0;      
+            }
+            else
+            {
+                nudNumber.Enabled = true;  
+            }
+        }
     }
 }

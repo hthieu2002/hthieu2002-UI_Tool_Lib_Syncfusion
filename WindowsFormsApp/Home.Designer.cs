@@ -51,32 +51,24 @@ namespace AccountCreatorForm.Views
             this.panelSidebarContent = new System.Windows.Forms.Panel();
             this.gradientPanelSidebar = new Syncfusion.Windows.Forms.Tools.GradientPanel();
             this.btnLogo = new Syncfusion.WinForms.Controls.SfButton();
+            this.panelPlanInfo = new System.Windows.Forms.Panel();
+            this.picPlan = new System.Windows.Forms.PictureBox();
+            this.lblPlanTitle = new System.Windows.Forms.Label();
+            this.lblExpire = new System.Windows.Forms.Label();
+            this.lblUnlimited = new System.Windows.Forms.Label();
+            this.btnUpgrade = new Syncfusion.WinForms.Controls.SfButton();
             this.panelAutoSubMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanelSidebar)).BeginInit();
             this.gradientPanelSidebar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPlan)).BeginInit();
             this.SuspendLayout();
-            this.panelAutoSubMenu.Visible = false;
-            this.btnManagerApp.Visible = false;
-            this.btnManagerAccount.Visible = false;
-            this.btnUngDung.Visible = false;
-            this.btnLuotChay.Visible = false;
-            this.btnNhiemVu.Visible = false;
-            this.btnStore.Visible = false;
-            this.btnCaiDat.Visible = false;
-            this.btnHelp.Visible = false;
-            this.panelPlanInfo = new Panel();
-            this.picPlan = new PictureBox();
-            this.lblPlanTitle = new Label();
-            this.lblExpire = new Label();
-            this.lblUnlimited = new Label();
-            this.btnUpgrade = new Syncfusion.WinForms.Controls.SfButton();
             // 
             // panelMainView
             // 
             this.panelMainView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelMainView.Location = new System.Drawing.Point(214, 0);
+            this.panelMainView.Location = new System.Drawing.Point(240, 0);
             this.panelMainView.Name = "panelMainView";
-            this.panelMainView.Size = new System.Drawing.Size(1048, 673);
+            this.panelMainView.Size = new System.Drawing.Size(1022, 673);
             this.panelMainView.TabIndex = 1;
             // 
             // btnDieuKhien
@@ -100,19 +92,19 @@ namespace AccountCreatorForm.Views
             // 
             // panelAutoSubMenu
             // 
+            this.panelAutoSubMenu.AutoSize = true;
+            this.panelAutoSubMenu.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panelAutoSubMenu.BackColor = System.Drawing.Color.Transparent;
             this.panelAutoSubMenu.Controls.Add(this.btnNhiemVu);
             this.panelAutoSubMenu.Controls.Add(this.btnLuotChay);
             this.panelAutoSubMenu.Controls.Add(this.btnUngDung);
-            this.panelAutoSubMenu.Location = new System.Drawing.Point(-2, 131);
+            this.panelAutoSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelAutoSubMenu.Location = new System.Drawing.Point(0, 16);
+            this.panelAutoSubMenu.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.panelAutoSubMenu.Name = "panelAutoSubMenu";
-            this.panelAutoSubMenu.Size = new System.Drawing.Size(210, 86);
+            this.panelAutoSubMenu.Size = new System.Drawing.Size(236, 88);
             this.panelAutoSubMenu.TabIndex = 3;
-            this.panelAutoSubMenu.AutoSize = true;
-            this.panelAutoSubMenu.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             this.panelAutoSubMenu.Visible = false;
-            this.panelAutoSubMenu.Margin = new Padding(10, 0, 0, 0);
-            this.panelAutoSubMenu.BackColor = Color.Transparent;
-            this.panelAutoSubMenu.Dock = DockStyle.Top;
             // 
             // btnNhiemVu
             // 
@@ -122,6 +114,7 @@ namespace AccountCreatorForm.Views
             this.btnNhiemVu.Size = new System.Drawing.Size(210, 28);
             this.btnNhiemVu.TabIndex = 2;
             this.btnNhiemVu.Text = "Nhiệm vụ";
+            this.btnNhiemVu.Visible = false;
             // 
             // btnLuotChay
             // 
@@ -131,6 +124,7 @@ namespace AccountCreatorForm.Views
             this.btnLuotChay.Size = new System.Drawing.Size(210, 28);
             this.btnLuotChay.TabIndex = 1;
             this.btnLuotChay.Text = "Lượt chạy";
+            this.btnLuotChay.Visible = false;
             // 
             // btnUngDung
             // 
@@ -140,6 +134,7 @@ namespace AccountCreatorForm.Views
             this.btnUngDung.Size = new System.Drawing.Size(210, 28);
             this.btnUngDung.TabIndex = 0;
             this.btnUngDung.Text = "Ứng dụng";
+            this.btnUngDung.Visible = false;
             // 
             // btnStore
             // 
@@ -149,6 +144,7 @@ namespace AccountCreatorForm.Views
             this.btnStore.Size = new System.Drawing.Size(210, 28);
             this.btnStore.TabIndex = 4;
             this.btnStore.Text = "Cửa hàng";
+            this.btnStore.Visible = false;
             // 
             // btnManagerApp
             // 
@@ -158,6 +154,7 @@ namespace AccountCreatorForm.Views
             this.btnManagerApp.Size = new System.Drawing.Size(210, 28);
             this.btnManagerApp.TabIndex = 5;
             this.btnManagerApp.Text = "Quản lý ứng dụng";
+            this.btnManagerApp.Visible = false;
             // 
             // btnManagerAccount
             // 
@@ -167,6 +164,7 @@ namespace AccountCreatorForm.Views
             this.btnManagerAccount.Size = new System.Drawing.Size(210, 28);
             this.btnManagerAccount.TabIndex = 6;
             this.btnManagerAccount.Text = "Quản lý tài khoản";
+            this.btnManagerAccount.Visible = false;
             // 
             // btnLichTrinh
             // 
@@ -194,6 +192,7 @@ namespace AccountCreatorForm.Views
             this.btnCaiDat.Size = new System.Drawing.Size(210, 28);
             this.btnCaiDat.TabIndex = 10;
             this.btnCaiDat.Text = "Cài đặt";
+            this.btnCaiDat.Visible = false;
             // 
             // btnHelp
             // 
@@ -203,6 +202,7 @@ namespace AccountCreatorForm.Views
             this.btnHelp.Size = new System.Drawing.Size(210, 28);
             this.btnHelp.TabIndex = 11;
             this.btnHelp.Text = "Trợ giúp - tài liệu";
+            this.btnHelp.Visible = false;
             // 
             // panelSidebarContent
             // 
@@ -210,19 +210,16 @@ namespace AccountCreatorForm.Views
             this.panelSidebarContent.BackColor = System.Drawing.Color.Transparent;
             this.panelSidebarContent.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelSidebarContent.Location = new System.Drawing.Point(0, 0);
+            this.panelSidebarContent.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.panelSidebarContent.Name = "panelSidebarContent";
-            this.panelSidebarContent.Size = new System.Drawing.Size(210, 0);
+            this.panelSidebarContent.Padding = new System.Windows.Forms.Padding(8);
+            this.panelSidebarContent.Size = new System.Drawing.Size(236, 16);
             this.panelSidebarContent.TabIndex = 0;
-            this.panelSidebarContent.Dock = DockStyle.Top;
-            this.panelSidebarContent.AutoSize = true;
-            this.panelSidebarContent.BackColor = Color.Transparent;
-            this.panelSidebarContent.Margin = new Padding(10, 0, 0, 0);
-            this.panelSidebarContent.Padding = new Padding(8, 8, 8, 8);
             // 
             // gradientPanelSidebar
             // 
             this.gradientPanelSidebar.AutoScroll = true;
-            this.gradientPanelSidebar.BackColor = System.Drawing.Color.LightGray;
+            this.gradientPanelSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(252)))));
             this.gradientPanelSidebar.Controls.Add(this.btnLogo);
             this.gradientPanelSidebar.Controls.Add(this.btnHelp);
             this.gradientPanelSidebar.Controls.Add(this.btnCaiDat);
@@ -238,79 +235,92 @@ namespace AccountCreatorForm.Views
             this.gradientPanelSidebar.Dock = System.Windows.Forms.DockStyle.Left;
             this.gradientPanelSidebar.Location = new System.Drawing.Point(0, 0);
             this.gradientPanelSidebar.Name = "gradientPanelSidebar";
-            this.gradientPanelSidebar.Size = new System.Drawing.Size(214, 673);
+            this.gradientPanelSidebar.Size = new System.Drawing.Size(240, 673);
             this.gradientPanelSidebar.TabIndex = 0;
-            this.gradientPanelSidebar.BackColor = ColorTranslator.FromHtml("#F5F7FC");
-            this.gradientPanelSidebar.Width = 240;
             // 
             // btnLogo
             // 
             this.btnLogo.Dock = System.Windows.Forms.DockStyle.Top;
-           
-            this.btnLogo.Location = new System.Drawing.Point(0, 0);
+            this.btnLogo.FlatAppearance.BorderSize = 0;
+            this.btnLogo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLogo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnLogo.Location = new System.Drawing.Point(0, 104);
             this.btnLogo.Name = "btnLogo";
-            this.btnLogo.Size = new System.Drawing.Size(210, 71);
+            this.btnLogo.Size = new System.Drawing.Size(236, 50);
+            this.btnLogo.Style.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(252)))));
+            this.btnLogo.Style.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.btnLogo.TabIndex = 0;
             this.btnLogo.Text = "Logo";
-            this.btnLogo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            this.btnLogo.Height = 50;
-            this.btnLogo.Style.BackColor = ColorTranslator.FromHtml("#F5F7FC");
-            this.btnLogo.Style.ForeColor = Color.FromArgb(51, 51, 51);
-            this.btnLogo.FlatStyle = FlatStyle.Flat;
-            this.btnLogo.FlatAppearance.BorderSize = 0;
+            // 
+            // panelPlanInfo
+            // 
+            this.panelPlanInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(86)))), ((int)(((byte)(119)))), ((int)(((byte)(254)))));
+            this.panelPlanInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelPlanInfo.Location = new System.Drawing.Point(0, 0);
+            this.panelPlanInfo.Margin = new System.Windows.Forms.Padding(10);
+            this.panelPlanInfo.Name = "panelPlanInfo";
+            this.panelPlanInfo.Padding = new System.Windows.Forms.Padding(10);
+            this.panelPlanInfo.Size = new System.Drawing.Size(200, 140);
+            this.panelPlanInfo.TabIndex = 0;
+            // 
+            // picPlan
+            // 
+            this.picPlan.Image = global::WindowsFormsApp.Properties.Resources.updated;
+            this.picPlan.Location = new System.Drawing.Point(10, 10);
+            this.picPlan.Name = "picPlan";
+            this.picPlan.Size = new System.Drawing.Size(24, 24);
+            this.picPlan.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picPlan.TabIndex = 0;
+            this.picPlan.TabStop = false;
+            // 
+            // lblPlanTitle
+            // 
+            this.lblPlanTitle.AutoSize = true;
+            this.lblPlanTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblPlanTitle.ForeColor = System.Drawing.Color.White;
+            this.lblPlanTitle.Location = new System.Drawing.Point(34, 10);
+            this.lblPlanTitle.Name = "lblPlanTitle";
+            this.lblPlanTitle.Size = new System.Drawing.Size(100, 23);
+            this.lblPlanTitle.TabIndex = 0;
+            this.lblPlanTitle.Text = "Default Plan";
+            // 
+            // lblExpire
+            // 
+            this.lblExpire.AutoSize = true;
+            this.lblExpire.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblExpire.ForeColor = System.Drawing.Color.White;
+            this.lblExpire.Location = new System.Drawing.Point(10, 45);
+            this.lblExpire.Name = "lblExpire";
+            this.lblExpire.Size = new System.Drawing.Size(100, 23);
+            this.lblExpire.TabIndex = 0;
+            this.lblExpire.Text = "Expired at";
+            // 
+            // lblUnlimited
+            // 
+            this.lblUnlimited.AutoSize = true;
+            this.lblUnlimited.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblUnlimited.ForeColor = System.Drawing.Color.White;
+            this.lblUnlimited.Location = new System.Drawing.Point(0, 0);
+            this.lblUnlimited.Name = "lblUnlimited";
+            this.lblUnlimited.Size = new System.Drawing.Size(100, 23);
+            this.lblUnlimited.TabIndex = 0;
+            this.lblUnlimited.Text = "Unlimited";
+            // 
+            // btnUpgrade
+            // 
+            this.btnUpgrade.FlatAppearance.BorderSize = 0;
+            this.btnUpgrade.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnUpgrade.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnUpgrade.Location = new System.Drawing.Point(0, 0);
+            this.btnUpgrade.Name = "btnUpgrade";
+            this.btnUpgrade.Size = new System.Drawing.Size(96, 32);
+            this.btnUpgrade.Style.BackColor = System.Drawing.Color.White;
+            this.btnUpgrade.Style.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(86)))), ((int)(((byte)(119)))), ((int)(((byte)(254)))));
+            this.btnUpgrade.TabIndex = 0;
+            this.btnUpgrade.Text = "↑  Upgrade";
             // 
             // Home
             // 
-
-            //
-            //panelPlanInfo
-            //
-            this.panelPlanInfo.Height = 140;
-            this.panelPlanInfo.Dock = DockStyle.Bottom;
-            this.panelPlanInfo.BackColor = ColorTranslator.FromHtml("#5677FE");
-            this.panelPlanInfo.Padding = new Padding(10);
-            this.panelPlanInfo.Margin = new Padding(10);
-            //
-            //picPlan
-            //
-            this.picPlan.Image = Resources.updated;
-            this.picPlan.Size = new Size(24, 24);
-            this.picPlan.SizeMode = PictureBoxSizeMode.Zoom;
-            this.picPlan.Location = new Point(10, 10);
-            //
-            //lblPlanTitle
-            //
-            lblPlanTitle.Text = "Default Plan";
-            lblPlanTitle.ForeColor = Color.White;
-            lblPlanTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblPlanTitle.AutoSize = true;
-            lblPlanTitle.Location = new Point(picPlan.Right + 8, picPlan.Top + 4);
-            //
-            //lblExpire
-            //
-            lblExpire.Text = "Expired at";
-            lblExpire.ForeColor = Color.White;
-            lblExpire.Font = new Font("Segoe UI", 8F);
-            lblExpire.AutoSize = true;
-            lblExpire.Location = new Point(10, 45);
-            //
-            //lblUnlimited
-            //
-            lblUnlimited.Text = "Unlimited";
-            lblUnlimited.ForeColor = Color.White;
-            lblUnlimited.Font = new Font("Segoe UI", 8F);
-            lblUnlimited.AutoSize = true;
-            //
-            //btnUpgrade
-            //
-            btnUpgrade.Text = "↑  Upgrade";
-            btnUpgrade.Height = 32;
-            btnUpgrade.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            btnUpgrade.FlatStyle = FlatStyle.Flat;
-            btnUpgrade.Style.BackColor = Color.White;
-            btnUpgrade.Style.ForeColor = ColorTranslator.FromHtml("#5677FE");
-            btnUpgrade.FlatAppearance.BorderSize = 0;
-
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1262, 673);
@@ -318,13 +328,14 @@ namespace AccountCreatorForm.Views
             this.Controls.Add(this.gradientPanelSidebar);
             this.Name = "Home";
             this.Text = "Home";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Home_FormClosing);
             this.Load += new System.EventHandler(this.Home_Load);
             this.panelAutoSubMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanelSidebar)).EndInit();
             this.gradientPanelSidebar.ResumeLayout(false);
             this.gradientPanelSidebar.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPlan)).EndInit();
             this.ResumeLayout(false);
-
 
         }
 

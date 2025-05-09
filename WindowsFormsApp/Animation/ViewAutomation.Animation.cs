@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using WindowsFormsApp.Model;
 using System.IO;
 using Services;
+using Syncfusion.WinForms.ListView;
 
 namespace WindowsFormsApp
 {
@@ -26,11 +27,14 @@ namespace WindowsFormsApp
 			btnLoadFile.Click += LoadFileScript_Click;
 
             btnRun.Paint += BtnCommon_Paint;
-			btnScript.Click += Script_Click;
-			btnScript.Paint += BtnCommon_Paint;
+            btnRun.Click += RunScript_Click;
 
-			flowLayoutPanel3.Controls.Add(nudNumber);
+            btnScript.Click += Script_Click;
+			btnScript.Paint += BtnCommon_Paint;
+            cbAuto.CheckedChanged += cbAuto_CheckedChanged;
+            flowLayoutPanel3.Controls.Add(nudNumber);
 			flowLayoutPanel3.Controls.Add(cbAuto);
+            
 			flowLayoutPanel3.Controls.Add(btnRun);
 			flowLayoutPanel3.Controls.Add(btnScript);
 

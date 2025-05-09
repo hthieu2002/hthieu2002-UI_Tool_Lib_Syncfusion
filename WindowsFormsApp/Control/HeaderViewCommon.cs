@@ -11,6 +11,8 @@ using System.Security.Principal;
 using Syncfusion.Windows.Forms.Tools;
 using Syncfusion.WinForms.Controls;
 using WindowsFormsApp.Model;
+using System.IO;
+using System.Net.Http;
 
 namespace AccountCreatorForm.Controls
 {
@@ -174,18 +176,19 @@ namespace AccountCreatorForm.Controls
                 SizeMode = PictureBoxSizeMode.Zoom,
                 Cursor = Cursors.Hand,
                 BackColor = Color.Transparent,
-                Image = Resources.cuahang_0 
+                //Image = Resources.cuahang_0 
             };
-
+            SetImageFromUrl("https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-Free-Download.png");
             Label lblEmail = new Label
             {
-                Text = "blua@gmail.com",
+                Text = "admin@gmail.com",
                 Font = new Font("Segoe UI", 9F),
+                Margin = new Padding(10, 30, 0, 0),
                 ForeColor = Color.FromArgb(33, 33, 33),
                 AutoSize = true
             };
 
-            lblEmail.Location = new Point(picAvatar.Right + 10, picAvatar.Top); 
+            lblEmail.Location = new Point(picAvatar.Right + 10, picAvatar.Top + 10); 
 
             picArrow = new PictureBox
             {
@@ -200,6 +203,32 @@ namespace AccountCreatorForm.Controls
             accountPanel.Controls.Add(picAvatar);
             accountPanel.Controls.Add(lblEmail);
             accountPanel.Controls.Add(picArrow);
+        }
+        private async void SetImageFromUrl(string imageUrl)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    // Tải hình ảnh từ URL
+                    byte[] imageBytes = await client.GetByteArrayAsync(imageUrl);
+
+                    // Chuyển đổi byte array thành Image
+                    using (MemoryStream stream = new MemoryStream(imageBytes))
+                    {
+                        Bitmap bitmap = new Bitmap(Image.FromStream(stream));
+
+                        //Color white = Color.Red; 
+                        //bitmap.MakeTransparent(white); // Biến màu trắng thành trong suốt
+
+                        picAvatar.Image = bitmap;  // Gán hình ảnh đã xử lý vào PictureBox
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Không thể tải hình ảnh: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         private void HeaderViewCommon_Resize(object sender, EventArgs e)
         {

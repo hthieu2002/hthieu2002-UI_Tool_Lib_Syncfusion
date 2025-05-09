@@ -100,7 +100,6 @@ namespace WindowsFormsApp
 				TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter
 			);
 		}
-
 		private Pen GetButtonBorderPen(Button btn)
 		{
 			if (!btn.Enabled)
@@ -120,7 +119,6 @@ namespace WindowsFormsApp
 				return new Pen(Color.Gray);
 			}
 		}
-
 		private Color GetButtonTextColor(Button btn)
 		{
 			if (btn.ClientRectangle.Contains(PointToClient(Cursor.Position)))
@@ -129,7 +127,6 @@ namespace WindowsFormsApp
 			}
 			return btn.ForeColor;
 		}
-
 		private GraphicsPath GetRoundedRect(Rectangle rect, int radius)
 		{
 			GraphicsPath graphicsPath = new GraphicsPath();
@@ -160,7 +157,6 @@ namespace WindowsFormsApp
 			selectedItem.ForeColor = Color.Black;              // Chữ trắng
 			selectedItem.Font = new Font("Segoe UI", 9f, FontStyle.Bold); // In đậm
 		}
-
 		private void BuildDataTableUI()
 		{
 			var dataGridView = new DataGridView
@@ -232,8 +228,6 @@ namespace WindowsFormsApp
 
 			datagrid.Controls.Add(dataGridView); // datagrid là panel hoặc groupbox bạn đặt sẵn trong Designer
 		}
-
-
 		private void editText()
 		{
 			richTextBox1.Font = new Font("Consolas", 12);
@@ -330,7 +324,6 @@ namespace WindowsFormsApp
 			richTextBox1.Select(selectionStart, selectionLength);
 			richTextBox1.SelectionColor = Color.White;
 		}
-
 		private void Panel1_Paint(object sender, PaintEventArgs e)
 		{
 			e.Graphics.Clear(panel1.BackColor);
@@ -369,5 +362,9 @@ namespace WindowsFormsApp
 				}
 			}
 		}
+		///
+		/// 
+		///
+
 	}
 }

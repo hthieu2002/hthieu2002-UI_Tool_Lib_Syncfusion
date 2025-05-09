@@ -6,29 +6,20 @@ using MiHttpClient;
 using Newtonsoft.Json;
 using POCO.Models;
 using Services;
-using Syncfusion.Windows.Forms;
 using Syncfusion.Windows.Forms.Tools;
 using Syncfusion.WinForms.Controls;
 using Syncfusion.WinForms.DataGrid;
-using Syncfusion.WinForms.DataGrid.Enums;
-using Syncfusion.WinForms.DataGrid.Events;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 using WindowsFormsApp.Animation;
 using WindowsFormsApp.Model;
 using WindowsFormsApp.Script;
-using Xamarin.Forms;
 
 
 namespace WindowsFormsApp
@@ -86,6 +77,10 @@ namespace WindowsFormsApp
         private List<SimCarrier> simCarriers;
         public DeviceConfigModel _deviceConfig;
         private List<SimCarrier> telecomDataSource = new List<SimCarrier>();
+
+        private static string latitude = null;
+        private static string longitude = null;
+        private static Form inputForm = null;
         public ViewChange()
         {
             this.SuspendLayout();
@@ -553,6 +548,9 @@ namespace WindowsFormsApp
                     }
                 }).ToArray();
                 await Task.WhenAll(tasks);
+                inputForm = null;  
+                latitude = null;   
+                longitude = null;
             }
             else
             {
@@ -985,141 +983,153 @@ namespace WindowsFormsApp
         public async Task StartFakeLocation(string device, System.Data.DataRow row)
         {
             await ViewChange.Instance.updateProgress(row, "Fake location", 1);
+
             try
             {
-                // Tạo form nhập tọa độ
-                Form inputForm = new Form()
+                // Kiểm tra nếu form chưa được tạo
+                if (inputForm == null)
                 {
-                    Width = 300,
-                    Height = 200,
-                    FormBorderStyle = FormBorderStyle.FixedDialog,
-                    Text = "Nhập tọa độ",
-                    StartPosition = FormStartPosition.CenterScreen,
-                    MaximizeBox = false,
-                    MinimizeBox = false
-                };
-                await ViewChange.Instance.updateProgress(row, "Info form location", 1);
-                AutoLabel lblX = new AutoLabel() { Left = 20, Top = 20, Text = "Latitude:", AutoSize = true };
-                TextBoxExt txtX = new TextBoxExt() { Left = 100, Top = 20, Width = 160 };
-
-                txtX.KeyPress += (s, e) =>
-                {
-                    TextBox tb = s as TextBox;
-
-                    if (char.IsControl(e.KeyChar))
-                        return;
-
-                    if (char.IsDigit(e.KeyChar))
-                        return;
-
-                    if (e.KeyChar == '.' && !tb.Text.Contains('.'))
-                        return;
-
-                    if ((e.KeyChar == '-' || e.KeyChar == '+') && tb.SelectionStart == 0 && !tb.Text.Contains("-") && !tb.Text.Contains("+"))
-                        return;
-                    e.Handled = true;
-                };
-                txtX.Leave += (s, e) =>
-                {
-                    if (double.TryParse(txtX.Text, out double value))
+                    // Tạo form nhập tọa độ
+                    inputForm = new Form()
                     {
-                        if (value < -180.0 || value > 180.0)
+                        Width = 300,
+                        Height = 200,
+                        FormBorderStyle = FormBorderStyle.FixedDialog,
+                        Text = "Nhập tọa độ",
+                        StartPosition = FormStartPosition.CenterScreen,
+                        MaximizeBox = false,
+                        MinimizeBox = false
+                    };
+
+                    AutoLabel lblX = new AutoLabel() { Left = 20, Top = 20, Text = "Latitude:", AutoSize = true };
+                    TextBoxExt txtX = new TextBoxExt() { Left = 100, Top = 20, Width = 160 };
+
+                    txtX.KeyPress += (s, e) =>
+                    {
+                        TextBox tb = s as TextBox;
+
+                        if (char.IsControl(e.KeyChar))
+                            return;
+
+                        if (char.IsDigit(e.KeyChar))
+                            return;
+
+                        if (e.KeyChar == '.' && !tb.Text.Contains('.'))
+                            return;
+
+                        if ((e.KeyChar == '-' || e.KeyChar == '+') && tb.SelectionStart == 0 && !tb.Text.Contains("-") && !tb.Text.Contains("+"))
+                            return;
+                        e.Handled = true;
+                    };
+                    txtX.Leave += (s, e) =>
+                    {
+                        if (double.TryParse(txtX.Text, out double value))
                         {
-                            MessageBox.Show("Giá trị Latitude phải nằm trong khoảng từ -180.0 đến 180.0", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            if (value < -180.0 || value > 180.0)
+                            {
+                                MessageBox.Show("Giá trị Latitude phải nằm trong khoảng từ -180.0 đến 180.0", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                txtX.Focus();
+                            }
+                        }
+                        else if (!string.IsNullOrWhiteSpace(txtX.Text))
+                        {
+                            MessageBox.Show("Giá trị không hợp lệ.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             txtX.Focus();
                         }
-                    }
-                    else if (!string.IsNullOrWhiteSpace(txtX.Text))
+                    };
+
+                    AutoLabel lblY = new AutoLabel() { Left = 20, Top = 60, Text = "Longitude:", AutoSize = true };
+                    TextBoxExt txtY = new TextBoxExt() { Left = 100, Top = 60, Width = 160 };
+
+                    txtY.KeyPress += (s, e) =>
                     {
-                        MessageBox.Show("Giá trị không hợp lệ.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        txtX.Focus();
-                    }
-                };
-                AutoLabel lblY = new AutoLabel() { Left = 20, Top = 60, Text = "Longitude:", AutoSize = true };
-                TextBoxExt txtY = new TextBoxExt() { Left = 100, Top = 60, Width = 160 };
-                txtY.KeyPress += (s, e) =>
-                {
-                    TextBox tb = s as TextBox;
+                        TextBox tb = s as TextBox;
 
-                    if (char.IsControl(e.KeyChar))
-                        return;
+                        if (char.IsControl(e.KeyChar))
+                            return;
 
-                    if (char.IsDigit(e.KeyChar))
-                        return;
+                        if (char.IsDigit(e.KeyChar))
+                            return;
 
-                    if (e.KeyChar == '.' && !tb.Text.Contains('.'))
-                        return;
+                        if (e.KeyChar == '.' && !tb.Text.Contains('.'))
+                            return;
 
-                    if ((e.KeyChar == '-' || e.KeyChar == '+') && tb.SelectionStart == 0 && !tb.Text.Contains("-") && !tb.Text.Contains("+"))
-                        return;
-                    e.Handled = true;
-                };
-                txtY.Leave += (s, e) =>
-                {
-                    if (double.TryParse(txtY.Text, out double value))
+                        if ((e.KeyChar == '-' || e.KeyChar == '+') && tb.SelectionStart == 0 && !tb.Text.Contains("-") && !tb.Text.Contains("+"))
+                            return;
+                        e.Handled = true;
+                    };
+                    txtY.Leave += (s, e) =>
                     {
-                        if (value < -90.0 || value > 90.0)
+                        if (double.TryParse(txtY.Text, out double value))
                         {
-                            MessageBox.Show("Giá trị Longitude phải nằm trong khoảng từ -90.0 đến 90.0", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            if (value < -90.0 || value > 90.0)
+                            {
+                                MessageBox.Show("Giá trị Longitude phải nằm trong khoảng từ -90.0 đến 90.0", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                txtY.Focus();
+                            }
+                        }
+                        else if (!string.IsNullOrWhiteSpace(txtY.Text))
+                        {
+                            MessageBox.Show("Giá trị không hợp lệ.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             txtY.Focus();
                         }
-                    }
-                    else if (!string.IsNullOrWhiteSpace(txtY.Text))
+                    };
+
+                    SfButton btnOK = new SfButton() { Text = "OK", Left = 70, Width = 80, Top = 110, DialogResult = DialogResult.OK };
+                    SfButton btnCancel = new SfButton() { Text = "Cancel", Left = 170, Width = 80, Top = 110, DialogResult = DialogResult.Cancel };
+
+                    btnOK.Paint += BtnCommon_Paint;
+                    btnCancel.Paint += BtnCommon_Paint;
+                    btnOK.Style.BackColor = System.Drawing.Color.LightBlue;
+                    btnOK.Style.ForeColor = System.Drawing.Color.White;
+                    btnCancel.Style.BackColor = System.Drawing.Color.LightBlue;
+                    btnCancel.Style.ForeColor = System.Drawing.Color.White;
+                    SetupButtonStyle(btnOK);
+                    SetupButtonCancelStyle(btnCancel);
+
+                    inputForm.Controls.Add(lblX);
+                    inputForm.Controls.Add(txtX);
+                    inputForm.Controls.Add(lblY);
+                    inputForm.Controls.Add(txtY);
+                    inputForm.Controls.Add(btnOK);
+                    inputForm.Controls.Add(btnCancel);
+
+                    inputForm.AcceptButton = btnOK;
+                    inputForm.CancelButton = btnCancel;
+
+                    if (inputForm.ShowDialog() == DialogResult.OK)
                     {
-                        MessageBox.Show("Giá trị không hợp lệ.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        txtY.Focus();
+                        latitude = txtX.Text;
+                        longitude = txtY.Text;
                     }
-                };
-                SfButton btnOK = new SfButton() { Text = "OK", Left = 70, Width = 80, Top = 110, DialogResult = DialogResult.OK };
-                SfButton btnCancel = new SfButton() { Text = "Cancel", Left = 170, Width = 80, Top = 110, DialogResult = DialogResult.Cancel };
+                }
 
-                btnOK.Paint += BtnCommon_Paint;
-                btnCancel.Paint += BtnCommon_Paint;
-                btnOK.Style.BackColor = System.Drawing.Color.LightBlue;
-                btnOK.Style.ForeColor = System.Drawing.Color.White;
-                btnCancel.Style.BackColor = System.Drawing.Color.LightBlue;
-                btnCancel.Style.ForeColor = System.Drawing.Color.White;
-                SetupButtonStyle(btnOK);
-                SetupButtonCancelStyle(btnCancel);
-
-
-                inputForm.Controls.Add(lblX);
-                inputForm.Controls.Add(txtX);
-                inputForm.Controls.Add(lblY);
-                inputForm.Controls.Add(txtY);
-                inputForm.Controls.Add(btnOK);
-                inputForm.Controls.Add(btnCancel);
-
-                inputForm.AcceptButton = btnOK;
-                inputForm.CancelButton = btnCancel;
-
-                if (inputForm.ShowDialog() == DialogResult.OK)
+                // Sau khi form được hiển thị và người dùng nhập tọa độ, dùng cùng một tọa độ cho tất cả các thiết bị
+                if (latitude != null && longitude != null)
                 {
-                    await ViewChange.Instance.updateProgress(row, "Success info form location", 5);
-                    string x = txtX.Text;
-                    string y = txtY.Text;
                     await ViewChange.Instance.updateProgress(row, "Start fake location", 10);
                     btnFakeLocation.Enabled = false;
                     btnFakeLocation.Text = "Running";
                     btnFakeLocation.BackColor = System.Drawing.Color.OrangeRed;
+
                     await ViewChange.Instance.updateProgress(row, "Fake location", 30);
-                    ADBService.FakeLocation(x, y, device);
+                    ADBService.FakeLocation(latitude, longitude, device);
                     await ViewChange.Instance.updateProgress(row, "Fake location", 99);
                     btnFakeLocation.Enabled = true;
                     btnFakeLocation.Text = "Fake location";
                     btnFakeLocation.BackColor = System.Drawing.Color.LightBlue;
+
                     await ViewChange.Instance.updateProgress(row, "Success", 100);
                     _animatingDevices.Remove(device);
                 }
-                _animatingDevices.Remove(device);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            await ViewChange.Instance.updateProgress(row, "", 0);
+             await Task.Delay(2000);
+             await ViewChange.Instance.updateProgress(row, "", 0);
             _animatingDevices.Remove(device);
-
         }
         public async Task StartScreenShot(string device, System.Data.DataRow row)
         {

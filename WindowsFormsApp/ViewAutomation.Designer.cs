@@ -179,6 +179,8 @@ namespace WindowsFormsApp
             this.cbLoadFile.Width = 250;
             this.cbLoadFile.DropDownStyle = DropDownStyle.DropDownList;
             this.cbLoadFile.AutoCompleteMode = AutoCompleteMode.Suggest;
+            this.cbLoadFile.Watermark = "Choose a file";
+            this.cbLoadFile.Style.EditorStyle.WatermarkForeColor = Color.Blue;
             flowLayoutPanel2.Controls.Add(cbLoadFile);
             //
             // btnLoadFile

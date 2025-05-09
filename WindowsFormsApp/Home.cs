@@ -30,9 +30,13 @@ namespace AccountCreatorForm.Views
         public Form currentChildForm = null;
         private Dictionary<SfButton, Func<Form>> sidebarFormMap;
         private Dictionary<SfButton, Image> buttonIconMap;
+        private bool isOkClicked = false;    // Biến cờ để theo dõi người dùng chọn OK
+        private bool isCancelClicked = false; // Biến cờ để theo dõi người dùng chọn Cancel
+
         public Home()
         {
             InitializeComponent();
+
             ToggleDarkLightMode();
             this.WindowState = FormWindowState.Maximized;
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -78,6 +82,7 @@ namespace AccountCreatorForm.Views
             Form_Load();
             Form_Load_Icon();
             UpdateWindowMode();
+
             foreach (var pair in buttonIconMap)
             {
                 StyleSidebarButtonWithIcon(pair.Key, pair.Value);
@@ -104,7 +109,7 @@ namespace AccountCreatorForm.Views
             base.OnLocationChanged(e);
             UpdateWindowMode();
         }
-        
+
         private void btnAuto_Click(object sender, EventArgs e)
         {
             panelAutoSubMenu.Visible = !panelAutoSubMenu.Visible;
@@ -133,6 +138,35 @@ namespace AccountCreatorForm.Views
             {
 
                 btn.Cursor = Cursors.Default;
+            }
+        }
+
+        private void Home_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!isOkClicked && !isCancelClicked)
+            {
+                var confirm = MessageBox.Show("Are you want close program?", "Notice", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+
+                if (confirm == DialogResult.OK)
+                {
+                    isOkClicked = true;  
+                    e.Cancel = false;     
+                }
+                else
+                {
+                    isCancelClicked = true;
+                    e.Cancel = true;
+                }
+            }
+            else if (isOkClicked)
+            {
+                e.Cancel = false;
+                isOkClicked = false;
+            }
+            else if (isCancelClicked)
+            {
+                e.Cancel = true;
+                isCancelClicked = false;
             }
         }
     }

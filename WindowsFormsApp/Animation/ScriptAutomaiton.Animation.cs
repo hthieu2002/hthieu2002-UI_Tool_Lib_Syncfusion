@@ -26,6 +26,8 @@ namespace WindowsFormsApp
 			btnLoadFile.Paint += BtnCommon_Paint;
 			btnDelete.Paint += BtnCommon_Paint;
 			btnCreate.Paint += BtnCommon_Paint;
+			sfView.Paint += BtnCommon_Paint;
+			
 		}
 		private void BtnCommon_Paint(object sender, PaintEventArgs e)
 		{
@@ -52,18 +54,15 @@ namespace WindowsFormsApp
 
 			Color textColor = GetButtonTextColor(btn);
 
-			int iconSize = 24;                      // Kích thước icon (vuông)
-			int iconPadding = 5;                    // Khoảng cách icon với viền và text
+			int iconSize = 24;                      
+			int iconPadding = 5;                    
 			int textOffsetX = 0;
 
-			// === BỔ SUNG: Vẽ icon nếu có ===
 			if (btn.Image != null)
 			{
-				// Giữ nguyên aspect ratio (nếu cần)
 				int drawWidth = iconSize;
 				int drawHeight = iconSize;
 
-				// Nếu icon không phải hình vuông thì scale theo chiều nhỏ nhất
 				if (btn.Image.Width != btn.Image.Height)
 				{
 					float scale = Math.Min((float)iconSize / btn.Image.Width, (float)iconSize / btn.Image.Height);
@@ -83,7 +82,6 @@ namespace WindowsFormsApp
 				textOffsetX = drawWidth + iconPadding * 2;
 			}
 
-			// === Phần vẽ text vẫn GIỮ NGUYÊN như bạn viết, chỉ cộng thêm offset icon ===
 			Rectangle textRect = new Rectangle(
 				rect.X + textOffsetX,
 				rect.Y + 2,
@@ -159,7 +157,7 @@ namespace WindowsFormsApp
 		}
 		private void BuildDataTableUI()
 		{
-			var dataGridView = new DataGridView
+			dataGridView = new DataGridView
 			{
 				Width = 565,
 				Height = 364,

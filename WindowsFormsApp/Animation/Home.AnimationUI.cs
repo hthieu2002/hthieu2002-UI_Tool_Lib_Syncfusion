@@ -14,6 +14,7 @@ namespace AccountCreatorForm.Views
 {
     public partial class Home : Form
     {
+        private List<Form> currentChildForms = new List<Form>();
         public void Form_Load()
         {
             sidebarFormMap = new Dictionary<SfButton, Func<Form>>
@@ -24,6 +25,8 @@ namespace AccountCreatorForm.Views
                 { btnAuto, () => new ViewAutomation() },
             };
         }
+
+
         public void Form_Load_Icon()
         {
             buttonIconMap = new Dictionary<SfButton, Image>
@@ -219,35 +222,68 @@ namespace AccountCreatorForm.Views
             btn.Style.PressedBackColor = colorHoverBack;
             btn.Style.PressedForeColor = colorNormalText;
         }
-
-        private void OpenChildForm(Form childForm)
+        private async void OpenChildForm(Form childForm)
         {
-            if (currentChildForm != null)
+            var existingForm = currentChildForms.FirstOrDefault(f => f.GetType() == childForm.GetType());
+
+            if (existingForm != null)
             {
-                currentChildForm.Hide();
+                if (currentChildForm != null)
+                {
+                    currentChildForm.Hide();
+                }
+
+                currentChildForm = existingForm;
+
+                currentChildForm.TopLevel = false;
+                currentChildForm.FormBorderStyle = FormBorderStyle.None;
+                currentChildForm.Dock = DockStyle.Fill;
+
+                panelMainView.Controls.Clear();
+                panelMainView.Controls.Add(currentChildForm);
+
+                currentChildForm.Show();
             }
+            else
+            {
+                if (currentChildForm != null)
+                {
+                    currentChildForm.Hide();
+                }
 
-            currentChildForm = childForm;
-            currentChildForm.TopLevel = false;
-            currentChildForm.FormBorderStyle = FormBorderStyle.None;
-            currentChildForm.Dock = DockStyle.Fill;
+                currentChildForm = childForm;
+                currentChildForm.TopLevel = false;
+                currentChildForm.FormBorderStyle = FormBorderStyle.None;
+                currentChildForm.Dock = DockStyle.Fill;
 
-            panelMainView.Controls.Clear();
-            panelMainView.Controls.Add(childForm);
+                panelMainView.Controls.Clear();
+                panelMainView.Controls.Add(childForm);
+                await Task.Run(() =>
+                {
+                    this.Invoke((MethodInvoker)delegate
+                    {
+                        var loading = new Loading();
+                        loading.Dock = DockStyle.Fill;
+                        panelMainView.Controls.Add(loading);
+                        loading.BringToFront();
 
-            var loading = new Loading();
-            loading.Dock = DockStyle.Fill;
-            panelMainView.Controls.Add(loading);
-            loading.BringToFront();
-         
-            childForm.Shown += (sender, e) => {
 
-                panelMainView.Controls.Remove(loading); 
-            };
+                        childForm.Shown += (sender, e) =>
+                        {
+                            panelMainView.Controls.Remove(loading);
+                        };
+                        if (!(childForm is ScreenView))
+                        {
+                            currentChildForms.Add(childForm);
+                        }
 
-            childForm.Show();
-            GlobalContextMenu.SetHomeForm(this);
+                        childForm.Show();
+                        GlobalContextMenu.SetHomeForm(this);
+                    });
+                });
+            }
         }
+
         private void StyleSidebarButtonWithIcon(SfButton btn, Image icon)
         {
             btn.Image = icon;
@@ -271,6 +307,5 @@ namespace AccountCreatorForm.Views
             ThemeManager.ToggleDarkMode();
             ThemeManager.ApplyTheme();
         }
-       
     }
 }

@@ -650,6 +650,8 @@ namespace WindowsFormsApp
             txtCode.Text = tempDeviceAll.SimOperatorNumeric;
             tempDeviceAll.SimOperatorCountry = currentSelectedCountry.CountryIso;
             tempDeviceAll.SimOperatorName = currentSelectedCarrier.Name.Substring(0, currentSelectedCarrier.Name.LastIndexOf("-")).Replace("&", "^&");
+            tempDeviceAll.WifiMacAddress = RandomService.generateWifiMacAddress();
+            tempDeviceAll.BlueToothMacAddress = RandomService.generateMacAddress();
             setupEnableButtonChangeSim(); // on
         }
         public void btnChange_Click(object sender, EventArgs e)

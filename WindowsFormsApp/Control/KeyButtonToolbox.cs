@@ -30,7 +30,6 @@ namespace WindowsFormsApp
                 Padding = new Padding(20)
             };
 
-            // Panel chứa nút Send key + LinkLabel List key
             var panelTop = new Panel
             {
                 AutoSize = true
@@ -49,7 +48,6 @@ namespace WindowsFormsApp
             panelTop.Controls.Add(btnSendKey);
             panelTop.Controls.Add(linkListKey);
 
-            // Các nút còn lại
             var btnCtrlA = CreateStyledButton("CTRL + A");
 
             var btnCheckKeyboard = CreateStyledButton("Check keyboard");
@@ -81,8 +79,24 @@ namespace WindowsFormsApp
             btn.MouseEnter += (s, e) => btn.BackColor = Color.SlateBlue;
             // Hover ra: trả về màu gốc
             btn.MouseLeave += (s, e) => btn.BackColor = Color.MediumSlateBlue;
-            btn.Click += (s, e) => MessageBox.Show($"Clicked: {text}");
+            btn.Click += (s, e) => OnButtonClick(btn);
             return btn;
+        }
+
+        private void OnButtonClick(System.Windows.Forms.Button button)
+        {
+            if (button.Text == "Send key")
+            {
+                MessageBox.Show("đã click vào button send key");
+            }
+            else if (button.Text == "Check keyboard")
+            {
+                MessageBox.Show("đã click vào button Check keyboard");
+            }
+            else if (button.Text == "CTRL + A")
+            {
+                MessageBox.Show("đã click vào button crtl a");
+            }
         }
     }
 }

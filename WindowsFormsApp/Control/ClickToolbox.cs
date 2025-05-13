@@ -11,7 +11,7 @@ using WindowsFormsApp.Model;
 
 namespace WindowsFormsApp
 {
-    public partial class ClickToolbox: UserControl
+    public partial class ClickToolbox : UserControl
     {
         private ITextAppender textAppender;
         public ClickToolbox(ITextAppender appender)
@@ -65,7 +65,7 @@ namespace WindowsFormsApp
             // RIGHT
             rightPanel.Controls.Add(CreateGroupRight("Xử lý logic", new string[] {
             "FOR LOOP", "IF", "GOTO", "BREAK", "Continue",
-            "Stop Script", "Return()", "Comment", "Show status"
+            "Stop Script", "Return", "Comment", "Show status"
         }, 140));
 
             rootPanel.Controls.Add(leftPanel, 0, 0);
@@ -82,7 +82,7 @@ namespace WindowsFormsApp
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 Padding = new Padding(5),
-                Margin = new Padding(10,5,0,5),
+                Margin = new Padding(10, 5, 0, 5),
                 Font = new Font("Segoe UI", 8.5f, FontStyle.Bold)
             };
 
@@ -93,7 +93,7 @@ namespace WindowsFormsApp
                 WrapContents = true,
                 FlowDirection = FlowDirection.LeftToRight,
                 MaximumSize = new Size(maxWidth, 0),
-                MinimumSize = new Size(maxWidth , 0),
+                MinimumSize = new Size(maxWidth, 0),
                 Padding = new Padding(3),
             };
 
@@ -183,7 +183,7 @@ namespace WindowsFormsApp
 
                 btn.Tag = new ButtonContext
                 {
-                    GroupName = "Search text click",
+                    GroupName = title,
                     ButtonText = text
                 };
 
@@ -254,7 +254,32 @@ namespace WindowsFormsApp
                         return "Wait(1000)";
                 }
             }
-            return buttonText; 
+            else if (groupName == "Xử lý logic")
+            {
+                switch (buttonText)
+                {
+                    case "FOR LOOP":
+                        return "for";
+                    case "IF":
+                        return "if";
+                    case "GOTO":
+                        return "goto";
+                    case "BREAK":
+                        return "break";
+                    case "Continue":
+                        return "continue";
+                    case "Stop Script":
+                        return "stop";
+                    case "Return":
+                        return "return";
+                    case "Comment":
+                        return "//";
+                    case "Show status":
+                        return "show status";
+                }
+            }
+
+            return buttonText;
         }
 
     }

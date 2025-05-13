@@ -29,12 +29,15 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.y = new Syncfusion.Windows.Forms.Tools.AutoLabel();
+            this.x = new Syncfusion.Windows.Forms.Tools.AutoLabel();
+            this.lbLog = new Syncfusion.Windows.Forms.Tools.AutoLabel();
             this.datagrid = new System.Windows.Forms.Panel();
             this.autoLabel1 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
             this.sfbtnCapture = new Syncfusion.WinForms.Controls.SfButton();
             this.sfbtnLoadDevice = new Syncfusion.WinForms.Controls.SfButton();
-            this.sfComboBox2 = new Syncfusion.WinForms.ListView.SfComboBox();
-            this.sfComboBox1 = new Syncfusion.WinForms.ListView.SfComboBox();
+            this.sfCbModelDump = new Syncfusion.WinForms.ListView.SfComboBox();
+            this.sfCbLoadDevices = new Syncfusion.WinForms.ListView.SfComboBox();
             this.panelContent = new System.Windows.Forms.Panel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.clickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,6 +51,7 @@
             this.sfbtnTest = new Syncfusion.WinForms.Controls.SfButton();
             this.textBoxExt2 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.panelTest = new System.Windows.Forms.Panel();
+            this.pictureBoxScreen = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
@@ -57,12 +61,15 @@
             this.btnCreate = new Syncfusion.WinForms.Controls.SfButton();
             this.btnLoadFile = new Syncfusion.WinForms.Controls.SfButton();
             this.sfCbFile = new Syncfusion.WinForms.ListView.SfComboBox();
+            this.sfView = new Syncfusion.WinForms.Controls.SfButton();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sfComboBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfComboBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sfCbModelDump)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sfCbLoadDevices)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sftxtSend)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.textBoxExt2)).BeginInit();
+            this.panelTest.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxScreen)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -74,18 +81,49 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.sfView);
+            this.panel1.Controls.Add(this.y);
+            this.panel1.Controls.Add(this.x);
+            this.panel1.Controls.Add(this.lbLog);
             this.panel1.Controls.Add(this.datagrid);
             this.panel1.Controls.Add(this.autoLabel1);
             this.panel1.Controls.Add(this.sfbtnCapture);
             this.panel1.Controls.Add(this.sfbtnLoadDevice);
-            this.panel1.Controls.Add(this.sfComboBox2);
-            this.panel1.Controls.Add(this.sfComboBox1);
+            this.panel1.Controls.Add(this.sfCbModelDump);
+            this.panel1.Controls.Add(this.sfCbLoadDevices);
             this.panel1.Controls.Add(this.panelContent);
             this.panel1.Controls.Add(this.menuStrip1);
             this.panel1.Location = new System.Drawing.Point(1018, 4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(578, 976);
             this.panel1.TabIndex = 0;
+            // 
+            // y
+            // 
+            this.y.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.y.Location = new System.Drawing.Point(58, 525);
+            this.y.Name = "y";
+            this.y.Size = new System.Drawing.Size(35, 16);
+            this.y.TabIndex = 10;
+            this.y.Text = "999 ]";
+            // 
+            // x
+            // 
+            this.x.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.x.Location = new System.Drawing.Point(24, 525);
+            this.x.Name = "x";
+            this.x.Size = new System.Drawing.Size(35, 16);
+            this.x.TabIndex = 9;
+            this.x.Text = "[ 999";
+            // 
+            // lbLog
+            // 
+            this.lbLog.ForeColor = System.Drawing.Color.Red;
+            this.lbLog.Location = new System.Drawing.Point(341, 573);
+            this.lbLog.Name = "lbLog";
+            this.lbLog.Size = new System.Drawing.Size(26, 16);
+            this.lbLog.TabIndex = 8;
+            this.lbLog.Text = "log";
             // 
             // datagrid
             // 
@@ -96,7 +134,7 @@
             // 
             // autoLabel1
             // 
-            this.autoLabel1.Location = new System.Drawing.Point(34, 573);
+            this.autoLabel1.Location = new System.Drawing.Point(24, 573);
             this.autoLabel1.Name = "autoLabel1";
             this.autoLabel1.Size = new System.Drawing.Size(82, 16);
             this.autoLabel1.TabIndex = 6;
@@ -111,6 +149,7 @@
             this.sfbtnCapture.Style.Image = global::WindowsFormsApp.Properties.Resources.capture;
             this.sfbtnCapture.TabIndex = 5;
             this.sfbtnCapture.Text = "Capture";
+            this.sfbtnCapture.Click += new System.EventHandler(this.sfbtnCapture_Click);
             // 
             // sfbtnLoadDevice
             // 
@@ -120,26 +159,27 @@
             this.sfbtnLoadDevice.Size = new System.Drawing.Size(110, 28);
             this.sfbtnLoadDevice.TabIndex = 4;
             this.sfbtnLoadDevice.Text = "Load devices";
+            this.sfbtnLoadDevice.Click += new System.EventHandler(this.sfbtnLoadDevice_Click);
             // 
-            // sfComboBox2
+            // sfCbModelDump
             // 
-            this.sfComboBox2.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
-            this.sfComboBox2.Location = new System.Drawing.Point(128, 558);
-            this.sfComboBox2.Name = "sfComboBox2";
-            this.sfComboBox2.Size = new System.Drawing.Size(197, 31);
-            this.sfComboBox2.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.sfComboBox2.TabIndex = 3;
-            this.sfComboBox2.TabStop = false;
+            this.sfCbModelDump.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
+            this.sfCbModelDump.Location = new System.Drawing.Point(128, 558);
+            this.sfCbModelDump.Name = "sfCbModelDump";
+            this.sfCbModelDump.Size = new System.Drawing.Size(197, 31);
+            this.sfCbModelDump.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.sfCbModelDump.TabIndex = 3;
+            this.sfCbModelDump.TabStop = false;
             // 
-            // sfComboBox1
+            // sfCbLoadDevices
             // 
-            this.sfComboBox1.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
-            this.sfComboBox1.Location = new System.Drawing.Point(128, 510);
-            this.sfComboBox1.Name = "sfComboBox1";
-            this.sfComboBox1.Size = new System.Drawing.Size(197, 31);
-            this.sfComboBox1.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.sfComboBox1.TabIndex = 2;
-            this.sfComboBox1.TabStop = false;
+            this.sfCbLoadDevices.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
+            this.sfCbLoadDevices.Location = new System.Drawing.Point(128, 510);
+            this.sfCbLoadDevices.Name = "sfCbLoadDevices";
+            this.sfCbLoadDevices.Size = new System.Drawing.Size(197, 31);
+            this.sfCbLoadDevices.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.sfCbLoadDevices.TabIndex = 2;
+            this.sfCbLoadDevices.TabStop = false;
             // 
             // panelContent
             // 
@@ -218,7 +258,7 @@
             // 
             this.sftxtSend.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.sftxtSend.BeforeTouchSize = new System.Drawing.Size(200, 30);
+            this.sftxtSend.BeforeTouchSize = new System.Drawing.Size(298, 27);
             this.sftxtSend.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sftxtSend.Location = new System.Drawing.Point(755, 13);
             this.sftxtSend.Name = "sftxtSend";
@@ -251,7 +291,7 @@
             // 
             this.textBoxExt2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxExt2.BeforeTouchSize = new System.Drawing.Size(200, 30);
+            this.textBoxExt2.BeforeTouchSize = new System.Drawing.Size(298, 27);
             this.textBoxExt2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxExt2.Location = new System.Drawing.Point(596, 63);
             this.textBoxExt2.Name = "textBoxExt2";
@@ -263,10 +303,22 @@
             this.panelTest.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelTest.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.panelTest.Controls.Add(this.pictureBoxScreen);
             this.panelTest.Location = new System.Drawing.Point(596, 111);
             this.panelTest.Name = "panelTest";
             this.panelTest.Size = new System.Drawing.Size(416, 869);
             this.panelTest.TabIndex = 6;
+            // 
+            // pictureBoxScreen
+            // 
+            this.pictureBoxScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBoxScreen.Location = new System.Drawing.Point(3, 3);
+            this.pictureBoxScreen.Name = "pictureBoxScreen";
+            this.pictureBoxScreen.Size = new System.Drawing.Size(410, 862);
+            this.pictureBoxScreen.TabIndex = 0;
+            this.pictureBoxScreen.TabStop = false;
             // 
             // panel2
             // 
@@ -363,6 +415,16 @@
             this.sfCbFile.TabIndex = 0;
             this.sfCbFile.TabStop = false;
             // 
+            // sfView
+            // 
+            this.sfView.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            this.sfView.Location = new System.Drawing.Point(472, 561);
+            this.sfView.Name = "sfView";
+            this.sfView.Size = new System.Drawing.Size(77, 28);
+            this.sfView.TabIndex = 11;
+            this.sfView.Text = "View";
+            this.sfView.Click += new System.EventHandler(this.sfView_Click);
+            // 
             // ScriptAutomation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -381,12 +443,14 @@
             this.Text = "ScriptAutomation";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sfComboBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sfComboBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sfCbModelDump)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sfCbLoadDevices)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sftxtSend)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.textBoxExt2)).EndInit();
+            this.panelTest.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxScreen)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
@@ -409,8 +473,8 @@
         private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel1;
         private Syncfusion.WinForms.Controls.SfButton sfbtnCapture;
         private Syncfusion.WinForms.Controls.SfButton sfbtnLoadDevice;
-        private Syncfusion.WinForms.ListView.SfComboBox sfComboBox2;
-        private Syncfusion.WinForms.ListView.SfComboBox sfComboBox1;
+        private Syncfusion.WinForms.ListView.SfComboBox sfCbModelDump;
+        private Syncfusion.WinForms.ListView.SfComboBox sfCbLoadDevices;
         private System.Windows.Forms.Panel datagrid;
         private Syncfusion.WinForms.Controls.SfButton sfbtnEditScript;
         private Syncfusion.Windows.Forms.Tools.TextBoxExt sftxtSend;
@@ -427,5 +491,10 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private Syncfusion.Windows.Forms.Tools.AutoLabel lbLog;
+        private System.Windows.Forms.PictureBox pictureBoxScreen;
+        private Syncfusion.Windows.Forms.Tools.AutoLabel y;
+        private Syncfusion.Windows.Forms.Tools.AutoLabel x;
+        private Syncfusion.WinForms.Controls.SfButton sfView;
     }
 }

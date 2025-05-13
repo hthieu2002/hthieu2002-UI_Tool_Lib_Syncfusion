@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Services
 {
@@ -712,6 +714,36 @@ namespace Services
             var temp = resultParcel.Split(new[] { ".", "'" }, StringSplitOptions.RemoveEmptyEntries).Where(c => c.Length == 1);
             return String.Join(String.Empty, temp);
         }
+        public static System.Collections.Generic.List<string> GetDevices()
+        {
+            var processStartInfo = new ProcessStartInfo("adb", "devices")
+            {
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            var process = Process.Start(processStartInfo);
+            string output = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+
+            string[] lines = output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            var devices = new System.Collections.Generic.List<string>();
+
+            foreach (var line in lines)
+            {
+                if (line.EndsWith("device"))
+                {
+                    // Tách ID thiết bị (chỉ lấy phần đầu trước "device")
+                    string deviceId = line.Split('\t')[0];
+                    devices.Add(deviceId);
+                }
+            }
+
+            return devices;
+        }
+
+        
         /// <summary>
         /// source ui tool 
         /// </summary>

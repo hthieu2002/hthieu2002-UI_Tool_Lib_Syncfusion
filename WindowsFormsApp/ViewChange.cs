@@ -424,6 +424,10 @@ namespace WindowsFormsApp
                         if (rows.Length > 0)
                         {
                             rows[0]["NameID"] = deviceToUpdate.Name;
+                            if (ViewAutomation.Instance != null)
+                            {
+                                _ = ViewAutomation.Instance.UpdateNameGridView(deviceToUpdate.Serial, deviceToUpdate.Name);
+                            }
                         }
 
                         SaveDevicesToFile();

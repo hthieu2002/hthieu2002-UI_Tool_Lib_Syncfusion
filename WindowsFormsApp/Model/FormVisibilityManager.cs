@@ -11,5 +11,7 @@ namespace WindowsFormsApp.Model
         // Biến static để theo dõi trạng thái của các form
         public static bool IsFormViewAutomationVisible { get; set; } = false;
         public static bool IsFormViewChangeVisible { get; set; } = false;
+
+        public static Dictionary<string, string> _updatedNames = new Dictionary<string, string>();
     }
 }

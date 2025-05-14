@@ -21,6 +21,7 @@ using Services;
 using Newtonsoft.Json;
 using System.Threading;
 using WindowsFormsApp.Model;
+using System.Xml.Linq;
 
 namespace WindowsFormsApp
 {
@@ -29,9 +30,12 @@ namespace WindowsFormsApp
         List<string> dataFileScript;
         private Task _deviceCheckTask;
         private static CancellationTokenSource _deviceCheckCancellationTokenSource;
+
+        public static ViewAutomation Instance { get; private set; }
         public ViewAutomation()
         {
             InitializeComponent();
+            Instance = this;
             setControl();
             setControlRight();
             setGridView();
@@ -45,7 +49,31 @@ namespace WindowsFormsApp
             StartDeviceCheck();
             await InitializeDeviceStatus();
         }
-       
+        public async Task UpdateNameGridView(string id, string name)
+        {
+            var dt = sfDataGrid.DataSource as System.Data.DataTable;
+            if (dt == null) return;
+
+            // Tìm kiếm chỉ mục dòng dựa trên DeviceID
+            int rowIndex = dt.AsEnumerable().ToList().FindIndex(r => r.Field<string>("DeviceID") == id);
+
+            if (rowIndex >= 0 && rowIndex < dt.Rows.Count)
+            {
+                var row = dt.Rows[rowIndex];
+                row["NameID"] = name;
+
+                // Lưu thay đổi vào dictionary
+                FormVisibilityManager._updatedNames[id] = name;
+
+                // Nếu form đang được mở, làm mới giao diện
+                if (this.Visible)
+                {
+                    sfDataGrid.Refresh();
+                }
+            }
+        }
+
+
         private void Script_Click(object sender, EventArgs e)
         {
             ScriptAutomation script = new ScriptAutomation();
@@ -122,7 +150,7 @@ namespace WindowsFormsApp
                             }));
                         }
                     }
-                 
+
                     foreach (var device in connectedDevices)
                     {
                         var existingDevice = deviceDisplays.FirstOrDefault(d => d.Serial == device);
@@ -162,8 +190,6 @@ namespace WindowsFormsApp
                 await Task.Delay(1000);
             }
         }
-
-
         private void sfDataGrid_QueryCellStyle(object sender, QueryCellStyleEventArgs e)
         {
             if (e.Column.MappingName == "Activity")
@@ -220,7 +246,7 @@ namespace WindowsFormsApp
         }
         private void btnAutoRun_Click(object sender, EventArgs e)
         {
-
+            FormVisibilityManager._updatedNames["97XAY12C0F"] = "hahha";
         }
         private void RunScript_Click(object sender, EventArgs e)
         {
@@ -252,10 +278,31 @@ namespace WindowsFormsApp
                 nudNumber.Enabled = true;
             }
         }
-
         private void ViewAutoamtion_VisibleChanged(object sender, EventArgs e)
         {
             FormVisibilityManager.IsFormViewAutomationVisible = this.Visible;
+
+            if (FormVisibilityManager.IsFormViewAutomationVisible)
+            {
+                if (FormVisibilityManager._updatedNames.Count > 0)
+                {
+                    foreach (var item in FormVisibilityManager._updatedNames)
+                    {
+                        var dt = sfDataGrid.DataSource as DataTable;
+                        if (dt != null)
+                        {
+                            var row = dt.Rows.Cast<System.Data.DataRow>().FirstOrDefault(r => r["DeviceID"].ToString() == item.Key);
+                            if (row != null)
+                            {
+                                row["NameID"] = item.Value;
+                            }
+                        }
+                    }
+                    FormVisibilityManager._updatedNames.Clear();
+                    sfDataGrid.Refresh();
+                }
+            }
         }
     }
 }
+

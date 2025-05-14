@@ -59,6 +59,7 @@
     <Compile Include="LocalFileService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomService.cs" />
+    <Compile Include="RedSocksService.cs" />
     <Compile Include="rsalib\BytesExtensions.cs" />
     <Compile Include="rsalib\RsaExtensions.cs" />
     <Compile Include="rsalib\RSAGenerator.cs" />

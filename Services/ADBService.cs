@@ -803,6 +803,25 @@ namespace Services
             Process adbProcess = Process.Start(startInfo);
             adbProcess.WaitForExit();
         }
+        public static async Task ExecuteAdbCommand(string command)
+        {
+            try
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    Arguments = "/c " + command,
+                    CreateNoWindow = true,
+                    UseShellExecute = false
+                };
+
+                await Task.Run(() => Process.Start(startInfo)); 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi khi gọi adb: " + ex.Message);
+            }
+        }
         public static string[] GetConnectedDevices()
         {
             ProcessStartInfo startInfo = new ProcessStartInfo()

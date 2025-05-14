@@ -43,10 +43,10 @@ namespace WindowsFormsApp
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.cbLoadFile = new Syncfusion.WinForms.ListView.SfComboBox();
             this.btnLoadFile = new Syncfusion.WinForms.Controls.SfButton();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.nudNumber = new System.Windows.Forms.NumericUpDown();
             this.cbAuto = new System.Windows.Forms.CheckBox();
             this.btnRun = new Syncfusion.WinForms.Controls.SfButton();
@@ -62,7 +62,12 @@ namespace WindowsFormsApp
             this.tableLayoutPanel2.SuspendLayout();
             this.panelInfo.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cbLoadFile)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudNumber)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbNomal)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtRestore)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -133,12 +138,42 @@ namespace WindowsFormsApp
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.AutoSize = true;
+            this.flowLayoutPanel2.Controls.Add(this.cbLoadFile);
+            this.flowLayoutPanel2.Controls.Add(this.btnLoadFile);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(10, 20);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(10, 20, 3, 3);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(243, 15);
             this.flowLayoutPanel2.TabIndex = 0;
+            // 
+            // cbLoadFile
+            // 
+            this.cbLoadFile.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.cbLoadFile.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
+            this.cbLoadFile.DropDownStyle = Syncfusion.WinForms.ListView.Enums.DropDownStyle.DropDownList;
+            this.cbLoadFile.Location = new System.Drawing.Point(3, 3);
+            this.cbLoadFile.Name = "cbLoadFile";
+            this.cbLoadFile.Size = new System.Drawing.Size(250, 31);
+            this.cbLoadFile.Style.EditorStyle.WatermarkForeColor = System.Drawing.Color.Blue;
+            this.cbLoadFile.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cbLoadFile.TabIndex = 0;
+            this.cbLoadFile.Watermark = "Choose a file";
+            // 
+            // btnLoadFile
+            // 
+            this.btnLoadFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(140)))), ((int)(((byte)(250)))));
+            this.btnLoadFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLoadFile.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            this.btnLoadFile.ForeColor = System.Drawing.Color.White;
+            this.btnLoadFile.Location = new System.Drawing.Point(3, 40);
+            this.btnLoadFile.Name = "btnLoadFile";
+            this.btnLoadFile.Size = new System.Drawing.Size(120, 35);
+            this.btnLoadFile.Style.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(140)))), ((int)(((byte)(250)))));
+            this.btnLoadFile.Style.ForeColor = System.Drawing.Color.White;
+            this.btnLoadFile.TabIndex = 1;
+            this.btnLoadFile.Text = "Load file";
+            this.btnLoadFile.UseVisualStyleBackColor = false;
             // 
             // panel1
             // 
@@ -158,6 +193,146 @@ namespace WindowsFormsApp
             this.flowLayoutPanel1.Size = new System.Drawing.Size(522, 77);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
+            // nudNumber
+            // 
+            this.nudNumber.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.nudNumber.Location = new System.Drawing.Point(0, 0);
+            this.nudNumber.Name = "nudNumber";
+            this.nudNumber.Size = new System.Drawing.Size(60, 30);
+            this.nudNumber.TabIndex = 0;
+            this.nudNumber.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // cbAuto
+            // 
+            this.cbAuto.AutoSize = true;
+            this.cbAuto.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cbAuto.Location = new System.Drawing.Point(0, 0);
+            this.cbAuto.Name = "cbAuto";
+            this.cbAuto.Size = new System.Drawing.Size(104, 30);
+            this.cbAuto.TabIndex = 0;
+            this.cbAuto.Text = "Vô hạn";
+            // 
+            // btnRun
+            // 
+            this.btnRun.BackColor = System.Drawing.Color.Teal;
+            this.btnRun.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            this.btnRun.ForeColor = System.Drawing.Color.White;
+            this.btnRun.Location = new System.Drawing.Point(0, 0);
+            this.btnRun.Name = "btnRun";
+            this.btnRun.Size = new System.Drawing.Size(120, 35);
+            this.btnRun.Style.BackColor = System.Drawing.Color.Teal;
+            this.btnRun.Style.ForeColor = System.Drawing.Color.White;
+            this.btnRun.TabIndex = 0;
+            this.btnRun.Text = "Run Script";
+            this.btnRun.UseVisualStyleBackColor = false;
+            // 
+            // btnScript
+            // 
+            this.btnScript.BackColor = System.Drawing.Color.MediumPurple;
+            this.btnScript.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            this.btnScript.ForeColor = System.Drawing.Color.White;
+            this.btnScript.Location = new System.Drawing.Point(0, 0);
+            this.btnScript.Name = "btnScript";
+            this.btnScript.Size = new System.Drawing.Size(120, 35);
+            this.btnScript.Style.BackColor = System.Drawing.Color.MediumPurple;
+            this.btnScript.Style.ForeColor = System.Drawing.Color.White;
+            this.btnScript.TabIndex = 0;
+            this.btnScript.Text = "Code script";
+            this.btnScript.UseVisualStyleBackColor = false;
+            // 
+            // cbNomal
+            // 
+            this.cbNomal.DropDownPosition = Syncfusion.WinForms.Core.Enums.PopupRelativeAlignment.Center;
+            this.cbNomal.DropDownStyle = Syncfusion.WinForms.ListView.Enums.DropDownStyle.DropDownList;
+            this.cbNomal.Location = new System.Drawing.Point(0, 0);
+            this.cbNomal.Name = "cbNomal";
+            this.cbNomal.Size = new System.Drawing.Size(250, 31);
+            this.cbNomal.Style.TokenStyle.CloseButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cbNomal.TabIndex = 0;
+            // 
+            // btnAutoRun
+            // 
+            this.btnAutoRun.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(140)))), ((int)(((byte)(250)))));
+            this.btnAutoRun.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAutoRun.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            this.btnAutoRun.ForeColor = System.Drawing.Color.White;
+            this.btnAutoRun.Location = new System.Drawing.Point(0, 0);
+            this.btnAutoRun.Name = "btnAutoRun";
+            this.btnAutoRun.Size = new System.Drawing.Size(120, 35);
+            this.btnAutoRun.Style.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(140)))), ((int)(((byte)(250)))));
+            this.btnAutoRun.Style.ForeColor = System.Drawing.Color.White;
+            this.btnAutoRun.TabIndex = 0;
+            this.btnAutoRun.Text = "Auto run";
+            this.btnAutoRun.UseVisualStyleBackColor = false;
+            // 
+            // btnBackup
+            // 
+            this.btnBackup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(140)))), ((int)(((byte)(250)))));
+            this.btnBackup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBackup.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            this.btnBackup.ForeColor = System.Drawing.Color.White;
+            this.btnBackup.Location = new System.Drawing.Point(0, 0);
+            this.btnBackup.Name = "btnBackup";
+            this.btnBackup.Size = new System.Drawing.Size(120, 35);
+            this.btnBackup.Style.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(140)))), ((int)(((byte)(250)))));
+            this.btnBackup.Style.ForeColor = System.Drawing.Color.White;
+            this.btnBackup.TabIndex = 0;
+            this.btnBackup.Text = "Backup";
+            this.btnBackup.UseVisualStyleBackColor = false;
+            // 
+            // btnScreen
+            // 
+            this.btnScreen.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(140)))), ((int)(((byte)(250)))));
+            this.btnScreen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnScreen.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            this.btnScreen.ForeColor = System.Drawing.Color.White;
+            this.btnScreen.Location = new System.Drawing.Point(0, 0);
+            this.btnScreen.Name = "btnScreen";
+            this.btnScreen.Size = new System.Drawing.Size(120, 35);
+            this.btnScreen.Style.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(140)))), ((int)(((byte)(250)))));
+            this.btnScreen.Style.ForeColor = System.Drawing.Color.White;
+            this.btnScreen.TabIndex = 0;
+            this.btnScreen.Text = "Screenshoot";
+            this.btnScreen.UseVisualStyleBackColor = false;
+            // 
+            // panel
+            // 
+            this.panel.AutoSize = true;
+            this.panel.Location = new System.Drawing.Point(0, 0);
+            this.panel.Name = "panel";
+            this.panel.Size = new System.Drawing.Size(200, 100);
+            this.panel.TabIndex = 0;
+            // 
+            // txtRestore
+            // 
+            this.txtRestore.BeforeTouchSize = new System.Drawing.Size(200, 30);
+            this.txtRestore.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtRestore.ForeColor = System.Drawing.Color.Black;
+            this.txtRestore.Location = new System.Drawing.Point(0, 0);
+            this.txtRestore.Margin = new System.Windows.Forms.Padding(5, 8, 10, 0);
+            this.txtRestore.Name = "txtRestore";
+            this.txtRestore.Size = new System.Drawing.Size(200, 30);
+            this.txtRestore.TabIndex = 0;
+            // 
+            // btnRestore
+            // 
+            this.btnRestore.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(140)))), ((int)(((byte)(250)))));
+            this.btnRestore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRestore.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            this.btnRestore.ForeColor = System.Drawing.Color.White;
+            this.btnRestore.Location = new System.Drawing.Point(0, 0);
+            this.btnRestore.Name = "btnRestore";
+            this.btnRestore.Size = new System.Drawing.Size(120, 35);
+            this.btnRestore.Style.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(140)))), ((int)(((byte)(250)))));
+            this.btnRestore.Style.ForeColor = System.Drawing.Color.White;
+            this.btnRestore.TabIndex = 0;
+            this.btnRestore.Text = "Restore";
+            this.btnRestore.UseVisualStyleBackColor = false;
+            // 
             // ViewAutomation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -166,120 +341,20 @@ namespace WindowsFormsApp
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "ViewAutomation";
             this.Text = "ViewAutomation";
+            this.VisibleChanged += new System.EventHandler(this.ViewAutoamtion_VisibleChanged);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.panelInfo.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
+            this.flowLayoutPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cbLoadFile)).EndInit();
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nudNumber)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbNomal)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtRestore)).EndInit();
             this.ResumeLayout(false);
-            //
-            // cbLoadFile
-            //
-            this.cbLoadFile.Width = 250;
-            this.cbLoadFile.DropDownStyle = DropDownStyle.DropDownList;
-            this.cbLoadFile.AutoCompleteMode = AutoCompleteMode.Suggest;
-            this.cbLoadFile.Watermark = "Choose a file";
-            this.cbLoadFile.Style.EditorStyle.WatermarkForeColor = Color.Blue;
-            flowLayoutPanel2.Controls.Add(cbLoadFile);
-            //
-            // btnLoadFile
-            //
-            this.btnLoadFile.Text = "Load file";
-            this.btnLoadFile.Width = 120;
-            this.btnLoadFile.Height = 35;
-            this.btnLoadFile.BackColor = Color.FromArgb(150, 140, 250);
-            this.btnLoadFile.ForeColor = Color.White;
-            this.btnLoadFile.FlatStyle = FlatStyle.Flat;
 
-            flowLayoutPanel2.Controls.Add(btnLoadFile);
-            //
-            //nudNumber
-            //
-            this.nudNumber.Value = 1;
-            this.nudNumber.Width = 60;
-            this.nudNumber.Height = 30;
-            this.nudNumber.Font = new Font("Segoe UI", 10);
-            //
-            //cbAuto
-            //
-            this.cbAuto.Text = "Vô hạn";
-            this.cbAuto.AutoSize = true;
-            this.cbAuto.Font = new Font("Segoe UI", 10);
-            this.cbAuto.Height = 30;
-            //
-            //btnRun
-            //
-            this.btnRun.Text = "Run Script";
-            this.btnRun.Width = 120;
-            this.btnRun.Height = 35;
-            this.btnRun.BackColor = Color.Teal;
-            this.btnRun.ForeColor = Color.White;
-            this.btnRun.TextImageRelation = TextImageRelation.ImageBeforeText;
-            //
-            //btnScript
-            //
-            this.btnScript.Text = "Code script";
-            this.btnScript.Width = 120;
-            this.btnScript.Height = 35;
-            this.btnScript.BackColor = Color.MediumPurple;
-            this.btnScript.ForeColor = Color.White;
-            this.btnScript.TextImageRelation = TextImageRelation.ImageBeforeText;
-            //
-            //cbNomal
-            //
-            this.cbNomal.Width = 250;
-            this.cbNomal.DropDownStyle = DropDownStyle.DropDownList;
-            //
-            //btnAutoRun
-            //
-            this.btnAutoRun.Text = "Auto run";
-            this.btnAutoRun.Width = 120;
-            this.btnAutoRun.Height = 35;
-            this.btnAutoRun.BackColor = Color.FromArgb(150, 140, 250);
-            this.btnAutoRun.ForeColor = Color.White;
-            this.btnAutoRun.FlatStyle = FlatStyle.Flat;
-            //
-            //btnBackup
-            //
-            this.btnBackup.Text = "Backup";
-            this.btnBackup.Width = 120;
-            this.btnBackup.Height = 35;
-            this.btnBackup.BackColor = Color.FromArgb(150, 140, 250);
-            this.btnBackup.ForeColor = Color.White;
-            this.btnBackup.FlatStyle = FlatStyle.Flat;
-            //
-            //btnScreen
-            //
-            this.btnScreen.Text = "Screenshoot";
-            this.btnScreen.Width = 120;
-            this.btnScreen.Height = 35;
-            this.btnScreen.BackColor = Color.FromArgb(150, 140, 250);
-            this.btnScreen.ForeColor = Color.White;
-            this.btnScreen.FlatStyle = FlatStyle.Flat;
-            //
-            //panel
-            //
-            panel.AutoSize = true;
-            //
-            //txtRestore
-            //
-            this.txtRestore.Width = 200;
-            this.txtRestore.ForeColor = Color.Black;
-            this.txtRestore.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
-            this.txtRestore.Padding = new Padding(10);
-            this.txtRestore.Margin = new Padding(5, 8, 10, 0);
-            this.txtRestore.Height = 40;
-            //
-            //btnRestore
-            //
-            this.btnRestore.Text = "Restore";
-            this.btnRestore.Width = 120;
-            this.btnRestore.Height = 35;
-            this.btnRestore.BackColor = Color.FromArgb(150, 140, 250);
-            this.btnRestore.ForeColor = Color.White;
-            this.btnRestore.FlatStyle = FlatStyle.Flat;
-          
         }
 
         #endregion

@@ -30,6 +30,11 @@ namespace WindowsFormsApp
         private Process scrcpyProcess = null;
 
         DataGridView dataGridView;
+
+        //data text test 
+        private int clickCount = 0;
+        private int x1, y1;
+        private int x2, y2;
         public ScriptAutomation()
         {
             InitializeComponent();
@@ -54,7 +59,7 @@ namespace WindowsFormsApp
             }
 
             this.FormClosing += new FormClosingEventHandler(Form_FormClosing);
-
+            sfCbLoadDevices.SelectedIndexChanged += sfCbLoadDevices_SelectedIndexChanged;
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -69,7 +74,7 @@ namespace WindowsFormsApp
         private void dataChangeInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SetActiveMenu((ToolStripMenuItem)sender);
-            LoadContent(new DataChangeInfoToolbox());
+            LoadContent(new DataChangeInfoToolbox(this));
         }
 
         private void clickToolStripMenuItem_Click(object sender, EventArgs e)
@@ -93,7 +98,7 @@ namespace WindowsFormsApp
         private void generalToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SetActiveMenu((ToolStripMenuItem)sender);
-            LoadContent(new GeneralToolbox());
+            LoadContent(new GeneralToolbox(this));
         }
         private void sfbtnEditScript_Click(object sender, EventArgs e)
         {
@@ -102,7 +107,7 @@ namespace WindowsFormsApp
                 sfbtnEditScript.Text = "Save script";
                 // btnEditSave.Image = Properties.Resources.icon_save;
                 isEditing = true;
-                richTextBox1.ReadOnly = false;
+                richTextBox1.ReadOnly = false;  
             }
             else
             {
@@ -394,7 +399,7 @@ namespace WindowsFormsApp
 
                     if (string.IsNullOrEmpty(node.Attributes["bounds"]?.Value))
                     {
-                        continue; 
+                        continue;
                     }
 
                     var element = new UiElement
@@ -438,11 +443,11 @@ namespace WindowsFormsApp
             if (System.IO.File.Exists(imagePath))
             {
                 pictureBoxScreen.Image?.Dispose();
-                pictureBoxScreen.Image = null;  
+                pictureBoxScreen.Image = null;
 
-                Bitmap bitmap = new Bitmap(imagePath);  
+                Bitmap bitmap = new Bitmap(imagePath);
 
-                pictureBoxScreen.Image = bitmap; 
+                pictureBoxScreen.Image = bitmap;
                 pictureBoxScreen.SizeMode = PictureBoxSizeMode.Zoom;
             }
             else
@@ -472,6 +477,9 @@ namespace WindowsFormsApp
 
                 //x.Text = $"[ {position.X} ]";
                 //y.Text = $": {position.Y} ]";
+                // import dữ liệu cho txt test
+                ImportDataTextTest(position.X, position.Y);
+
 
                 var element = GetElementAtPosition(position.X, position.Y);
 
@@ -526,7 +534,7 @@ namespace WindowsFormsApp
             using (Graphics g = pictureBox.CreateGraphics())
             {
                 Pen pen = new Pen(Color.Red, 1);
-                pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;  
+                pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
 
                 g.DrawRectangle(pen, new Rectangle(pictureBoxLeft, pictureBoxTop, pictureBoxRight - pictureBoxLeft, pictureBoxBottom - pictureBoxTop));
             }
@@ -606,7 +614,43 @@ namespace WindowsFormsApp
             return selectedElement;
 
         }
+        private void ImportDataTextTest(int x, int y)
+        {
+            string command = txtTest.Text.Split('(')[0].Trim();
+            clickCount++;
 
+            if (command == "ClickXY")
+            {
+                txtTest.Text = "";
+                txtTest.Text = $"ClickXY({x} {y})";
+            }
+            if (command == "Swipe")
+            {
+                if (clickCount % 2 == 0)
+                {
+                    //chẵn
+                    x2 = x;
+                    y2 = y;
+                }
+                else
+                {
+                    // lẻ
+                    x1 = x;
+                    y1 = y;
+                }
+
+                if (x2 == 0 && y2 == 0)
+                {
+                    txtTest.Text = "";
+                    txtTest.Text = $"Swipe({x1} {y1} null null 500)";
+                }
+                else
+                {
+                    txtTest.Text = "";
+                    txtTest.Text = $"Swipe({x1} {y1} {x2} {y2} 500)";
+                }
+            }
+        }
         private void DisplayElementInfo(UiElement element)
         {
             dataGridView.Rows.Clear();
@@ -624,6 +668,7 @@ namespace WindowsFormsApp
             var xY = $"[ {centerX} : {centerY} ]";
 
             dataGridView.Rows.Add("index", element.Index);
+            dataGridView.Rows.Add("[X : Y ]", xY);
             dataGridView.Rows.Add("text", element.Text);
             dataGridView.Rows.Add("resource-id", element.ResourceId);
             dataGridView.Rows.Add("class", element.Class);
@@ -639,12 +684,12 @@ namespace WindowsFormsApp
             dataGridView.Rows.Add("long-clickable", element.LongClickable);
             dataGridView.Rows.Add("password", element.Password);
             dataGridView.Rows.Add("selected", element.Selected);
-            dataGridView.Rows.Add("[X : Y ]", xY);
+
         }
 
         private void sfView_Click(object sender, EventArgs e)
         {
-            if (sfCbLoadDevices.Text == "") 
+            if (sfCbLoadDevices.Text == "")
             {
                 MessageBox.Show("Hãy load và chọn thiết bị view");
                 return;
@@ -662,7 +707,7 @@ namespace WindowsFormsApp
                         Arguments = $"-s {deviceId} --always-on-top --window-x 0 --window-y 30",
                         UseShellExecute = false,
                         CreateNoWindow = true,
-                        WindowStyle = ProcessWindowStyle.Hidden 
+                        WindowStyle = ProcessWindowStyle.Hidden
                     };
 
                     scrcpyProcess = Process.Start(startInfo);
@@ -677,12 +722,78 @@ namespace WindowsFormsApp
                 MessageBox.Show("Lỗi khi gọi scrcpy: " + ex.Message);
             }
         }
+
+        private void sfbtnSend_Click(object sender, EventArgs e)
+        {
+            string message = txtTest.Text;
+            if (sfCbFile.Text == "")
+            {
+                // 
+                MessageBox.Show("Load file cần xử lý.", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (!string.IsNullOrEmpty(message))  
+            {
+                richTextBox1.AppendText("\n" + message); 
+
+               // txtTest.Clear();
+            }
+            else
+            {
+                MessageBox.Show("Click các chức năng trước khi gửi.", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+        private void sfCbLoadDevices_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (sfCbLoadDevices.SelectedItem != null)
+            {
+                sfView.Text = "View device: " + sfCbLoadDevices.SelectedItem.ToString();
+            }
+        }
+
         private void Form_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (scrcpyProcess != null && !scrcpyProcess.HasExited)
             {
                 scrcpyProcess.Kill();
             }
+        }
+
+        private async void sfbtnTest_Click(object sender, EventArgs e)
+        {
+            // test
+            if (txtTest.Text == "")
+            {
+                MessageBox.Show("Vui lòng điền chức năng test");
+                return;
+            }
+            if (sfCbLoadDevices.Text == "")
+            {
+                MessageBox.Show("Chọn load và click thiết bị");
+                return;
+            }
+            try
+            {
+                sfbtnTest.Text = "Running";
+                Script.Roslyn.ScriptAutomation scriptRolyn = new Script.Roslyn.ScriptAutomation();
+                await scriptRolyn.TestFunction(txtTest.Text, sfCbLoadDevices.Text);
+
+                await Task.Delay(1000);
+                lbLog.Text = "Chụp màn hình";
+                CaptureScreenshot(sfCbLoadDevices.Text);
+                lbLog.Text = "Dump xml";
+                DumpUIDetails(sfCbLoadDevices.Text);
+                lbLog.Text = "Success";
+                ShowScreenshot();
+                lbLog.Text = "";
+
+                sfbtnTest.Text = "Test";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            sfbtnTest.Text = "Test";
         }
     }
 }

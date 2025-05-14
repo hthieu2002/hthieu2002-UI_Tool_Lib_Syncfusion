@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -12,9 +12,11 @@ namespace WindowsFormsApp
 {
     public partial class DataChangeInfoToolbox: UserControl
     {
-        public DataChangeInfoToolbox()
+        private ITextAppender textAppender;
+        public DataChangeInfoToolbox(ITextAppender appender)
         {
             InitializeComponent();
+            textAppender = appender;
             BuildUI();
         }
 
@@ -114,65 +116,44 @@ namespace WindowsFormsApp
             btn.MouseLeave += (s, e) => btn.BackColor = Color.MediumSlateBlue;
             btn.Paint += RoundedButtonPainter.PaintButton;
             // Gán sự kiện Click riêng từng nút
-            btn.Click += (s, e) => HandleButtonClick(text);
+            btn.Click += (s, e) =>
+            {
+                var textResult =  HandleButtonClick(text);
+                textAppender?.AppendText(textResult);
+            };
             return btn;
         }
 
-        private void HandleButtonClick(string action)
+        private string HandleButtonClick(string action)
         {
             switch (action)
             {
                 case "Backup":
-                    BackupAction();
-                    break;
+                    return "Backupdata()";
                 case "Restore":
-                    RestoreAction();
-                    break;
+                    return "Restoredata()";
                 case "Login Gmail":
-                    LoginGmailAction();
-                    break;
+                    return "LoginGmail()";
                 case "Load play store":
-                    LoadPlayStoreAction();
-                    break;
+                    return "LoadPlayStore()";
                 case "Change Info":
-                    ChangeInfoAction();
-                    break;
+                    return "ChangeInfo()";
                 case "Change SIM":
-                    ChangeSimAction();
-                    break;
+                    return "ChangeSim()";
                 case "Wipe Account":
-                    WipeAccountAction();
-                    break;
+                    return "WipeAccount()";
                 case "Wait reboot":
-                    WaitRebootAction();
-                    break;
+                    return "WaitReboot()";
                 case "Wait internet":
-                    WaitInternetAction();
-                    break;
+                    return "WaitInternet()";
                 case "Push File To Phone":
-                    PushFileToPhoneAction();
-                    break;
+                    return "PushFile(\"FromPC\", \"SendToPhone\")";
                 case "Pull FIle To PC":
-                    PullFileToPCAction();
-                    break;
+                    return "PullFile(\"FromPhone\", \"SendToPC\")";
                 default:
-                    MessageBox.Show($"No action defined for: {action}");
-                    break;
+                    return action;
             }
         }
-
-        // ====== Các hàm xử lý từng action ======
-        private void BackupAction() => MessageBox.Show("Backup started...");
-        private void RestoreAction() => MessageBox.Show("Restore started...");
-        private void LoginGmailAction() => MessageBox.Show("Logging into Gmail...");
-        private void LoadPlayStoreAction() => MessageBox.Show("Loading Play Store...");
-        private void ChangeInfoAction() => MessageBox.Show("Changing device info...");
-        private void ChangeSimAction() => MessageBox.Show("Changing SIM...");
-        private void WipeAccountAction() => MessageBox.Show("Wiping account...");
-        private void WaitRebootAction() => MessageBox.Show("Waiting for reboot...");
-        private void WaitInternetAction() => MessageBox.Show("Waiting for internet...");
-        private void PushFileToPhoneAction() => MessageBox.Show("Pushing file to phone...");
-        private void PullFileToPCAction() => MessageBox.Show("Pulling file to PC...");
     }
 }
 

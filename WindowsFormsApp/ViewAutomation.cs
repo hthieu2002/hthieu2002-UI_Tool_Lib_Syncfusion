@@ -28,6 +28,7 @@ namespace WindowsFormsApp
     {
         List<string> dataFileScript;
         private Task _deviceCheckTask;
+        private static CancellationTokenSource _deviceCheckCancellationTokenSource;
         public ViewAutomation()
         {
             InitializeComponent();
@@ -35,13 +36,16 @@ namespace WindowsFormsApp
             setControlRight();
             setGridView();
             LoadDevicesFromFile();
+
             this.Load += async (s, e) => await LoadAsync();
         }
+
         public async Task LoadAsync()
         {
             StartDeviceCheck();
             await InitializeDeviceStatus();
         }
+       
         private void Script_Click(object sender, EventArgs e)
         {
             ScriptAutomation script = new ScriptAutomation();
@@ -92,57 +96,74 @@ namespace WindowsFormsApp
                 return (new List<WindowsFormsApp.Model.DeviceDisplay>(), new List<WindowsFormsApp.Model.DeviceDisplay>());
             }
         }
-        public void StartDeviceCheck()
+        public async Task StartDeviceCheck()
         {
-            DeviceCheckManager.StartDeviceCheck(DeviceCheckLoop);
+            _deviceCheckCancellationTokenSource?.Cancel();
+            _deviceCheckCancellationTokenSource = new CancellationTokenSource();
+            await DeviceCheckLoop(_deviceCheckCancellationTokenSource.Token);
         }
         private async Task DeviceCheckLoop(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                var connectedDevices = ADBService.GetConnectedDevices().ToHashSet();
-                var (onlineDevices, offlineDevices) = LoadDevicesFromJson();
-                foreach (var device in onlineDevices)
+                if (!FormVisibilityManager.IsFormViewChangeVisible)
                 {
-                    if (!connectedDevices.Contains(device.Serial))
-                    {
-                        Invoke((MethodInvoker)(() =>
-                        {
-                            UpdateDeviceStatus(device.Serial, "Offline");
-                            sfDataGrid.Refresh();
-                        }));
-                    }
-                }
+                    var connectedDevices = ADBService.GetConnectedDevices().ToHashSet();
+                    var (onlineDevices, offlineDevices) = LoadDevicesFromJson();
 
-                foreach (var device in connectedDevices)
-                {
-                    var existingDevice = deviceDisplays.FirstOrDefault(d => d.Serial == device);
-
-                    if (existingDevice != null)
+                    foreach (var device in onlineDevices)
                     {
-                        string currentStatus = ADBService.IsDeviceOnline(device) ? "Online" : "Offline";
-                        if (existingDevice.Status != currentStatus)
+                        if (!connectedDevices.Contains(device.Serial))
                         {
                             Invoke((MethodInvoker)(() =>
                             {
-                                UpdateDeviceStatus(device, currentStatus);
+                                UpdateDeviceStatus(device.Serial, "Offline");
                                 sfDataGrid.Refresh();
                             }));
                         }
                     }
-                    else
+                 
+                    foreach (var device in connectedDevices)
                     {
-                        Invoke((MethodInvoker)(() =>
+                        var existingDevice = deviceDisplays.FirstOrDefault(d => d.Serial == device);
+
+                        if (existingDevice != null)
                         {
-                            AddDeviceView(device, "", 1);
-                            UpdateDeviceStatus(device, "Online");
-                            sfDataGrid.Refresh();
-                        }));
+                            string currentStatus = ADBService.IsDeviceOnline(device) ? "Online" : "Offline";
+                            if (existingDevice.Status != currentStatus)
+                            {
+                                Invoke((MethodInvoker)(() =>
+                                {
+                                    UpdateDeviceStatus(device, currentStatus);
+                                    sfDataGrid.Refresh();
+                                }));
+                            }
+                        }
+                        else
+                        {
+                            Invoke((MethodInvoker)(() =>
+                            {
+                                string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "devices.json");
+                                if (!File.Exists(path))
+                                {
+                                    SaveDevicesToFile();
+                                }
+                                string json = File.ReadAllText(path);
+                                List<Model.DeviceDisplay> devices = JsonConvert.DeserializeObject<List<Model.DeviceDisplay>>(json);
+                                var deviceName = devices.FirstOrDefault(d => d.Serial == device);
+                                //AddDeviceView(device, "", 1);
+                                UpdateDeviceStatus(device, "Online");
+                                sfDataGrid.Refresh();
+                            }));
+                        }
                     }
+                    await Task.Delay(1000);
                 }
                 await Task.Delay(1000);
             }
         }
+
+
         private void sfDataGrid_QueryCellStyle(object sender, QueryCellStyleEventArgs e)
         {
             if (e.Column.MappingName == "Activity")
@@ -197,6 +218,10 @@ namespace WindowsFormsApp
             cbLoadFile.SelectedIndex = 0;
 
         }
+        private void btnAutoRun_Click(object sender, EventArgs e)
+        {
+
+        }
         private void RunScript_Click(object sender, EventArgs e)
         {
             if (cbLoadFile.SelectedItem == null)
@@ -204,14 +229,14 @@ namespace WindowsFormsApp
                 MessageBox.Show("Vui lòng load file script.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-          
+
             if (cbAuto.Checked)
             {
                 MessageBox.Show("Đang chạy vô hạn");
             }
             else
             {
-                int numberOfRuns = (int)nudNumber.Value; 
+                int numberOfRuns = (int)nudNumber.Value;
                 MessageBox.Show($"Đang chạy {numberOfRuns} lần");
             }
         }
@@ -220,12 +245,17 @@ namespace WindowsFormsApp
             if (cbAuto.Checked)
             {
                 nudNumber.Enabled = false;
-                nudNumber.Value = 0;      
+                nudNumber.Value = 0;
             }
             else
             {
-                nudNumber.Enabled = true;  
+                nudNumber.Enabled = true;
             }
+        }
+
+        private void ViewAutoamtion_VisibleChanged(object sender, EventArgs e)
+        {
+            FormVisibilityManager.IsFormViewAutomationVisible = this.Visible;
         }
     }
 }

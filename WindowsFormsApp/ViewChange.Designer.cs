@@ -135,6 +135,7 @@ namespace WindowsFormsApp
             this.Controls.Add(this.mainMenu);
             this.Name = "ViewChange";
             this.Text = "ViewChange";
+            this.VisibleChanged += new System.EventHandler(this.ViewChange_VisibleChanged);
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);

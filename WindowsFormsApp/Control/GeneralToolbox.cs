@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -7,14 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp.Animation;
 
 namespace WindowsFormsApp
 {
     public partial class GeneralToolbox: UserControl
     {
-        public GeneralToolbox()
+        private ITextAppender textAppender;
+        public GeneralToolbox(ITextAppender appender)
         {
             InitializeComponent();
+            textAppender = appender;
             BuildFullUI();
         }
 
@@ -133,7 +136,19 @@ namespace WindowsFormsApp
             btn.MouseEnter += (s, e) => btn.BackColor = Color.SlateBlue;
             // Hover ra: trả về màu gốc
             btn.MouseLeave += (s, e) => btn.BackColor = Color.MediumSlateBlue;
-            btn.Click += (s, e) => MessageBox.Show($"Clicked: {text}");
+            btn.Click += (s, e) =>
+            {
+                if (text.Equals("Load app"))
+                {
+                    LoadAppForm loadAppFrm = new LoadAppForm();
+                    loadAppFrm.Show();
+                }
+                else
+                {
+                    var textResult = GetTextHandleByButton(text);
+                    textAppender?.AppendText(textResult);
+                }
+            };
             return btn;
         }
         private Button CreateStyledButton(string text)
@@ -155,9 +170,49 @@ namespace WindowsFormsApp
             btn.MouseEnter += (s, e) => btn.BackColor = Color.SlateBlue;
             // Hover ra: trả về màu gốc
             btn.MouseLeave += (s, e) => btn.BackColor = Color.MediumSlateBlue;
-            btn.Click += (s, e) => MessageBox.Show($"Clicked: {text}");
+            btn.Click += (s, e) => {
+                var textResult = GetTextHandleByButton(text);
+                textAppender?.AppendText(textResult);
+            };
             return btn;
         }
-
+        private string GetTextHandleByButton(string action)
+        {
+            switch (action)
+            {
+                case "WiFi ON":
+                    return "WiFiON()";
+                case "WiFi OFF":
+                    return "WiFiOFF()";
+                case "Open URL":
+                    return "OpenURL(\"YOU_URL\")";
+                case "ON Bproxy":
+                    return "ConnectBproxy()";
+                case "Auto proxy":
+                    return "AutoProxy()";
+                case "Check SIM":
+                    return "CheckSimOnline()";
+                case "Command(shell)":
+                    return "RunCommandShell(\"command\")";
+                case "Open App":
+                    return "OpenApp(\"package_app\")";
+                case "Close App":
+                    return "CloseApp(\"package_app\")";
+                case "Enable App":
+                    return "EnableApp(\"package_app\")";
+                case "Disable App":
+                    return "DisbledApp(\"package_app\")";
+                case "Install app":
+                    return "InstallApp(\"path_to_apk\")";
+                case "Uninstall":
+                    return "UninstallApp(\"package_app\")";
+                case "Clear data":
+                    return "ClearDataApp(\"package_app\")";
+                case "Swipe close app":
+                    return "SwipeCloseApp()";
+                default:
+                    return action;
+            }
+        }
     }
 }

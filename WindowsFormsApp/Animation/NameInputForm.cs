@@ -13,13 +13,13 @@ namespace WindowsFormsApp.Animation
 
         public string NewName { get; private set; }
 
-        public NameInputForm(string currentName)
+        public NameInputForm(string currentName, string nameForm)
         {
             InitializeComponent();
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-
+            this.Text = nameForm;
             // Thiết lập kích thước cho form
             this.Width = 350;  // Chiều rộng form
             this.Height = 180;  // Chiều cao form

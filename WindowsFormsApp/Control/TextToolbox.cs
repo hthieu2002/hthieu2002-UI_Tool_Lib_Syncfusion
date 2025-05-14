@@ -221,7 +221,7 @@ namespace WindowsFormsApp
                 if (!string.IsNullOrEmpty(selectedText))
                 {
                     string command = ConvertCombo1TextToCommand(selectedText);
-                    textAppender?.AppendText(command);
+                    textAppender?.AppendText(command );
                 }
                 else
                 {

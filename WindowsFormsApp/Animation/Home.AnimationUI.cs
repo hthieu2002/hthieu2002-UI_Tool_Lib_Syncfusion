@@ -272,7 +272,7 @@ namespace AccountCreatorForm.Views
                         {
                             panelMainView.Controls.Remove(loading);
                         };
-                        if (!(childForm is ScreenView))
+                        if (!(childForm is ScreenView) || !(childForm is ViewAutomation))
                         {
                             currentChildForms.Add(childForm);
                         }
@@ -283,7 +283,7 @@ namespace AccountCreatorForm.Views
                 });
             }
         }
-
+        
         private void StyleSidebarButtonWithIcon(SfButton btn, Image icon)
         {
             btn.Image = icon;

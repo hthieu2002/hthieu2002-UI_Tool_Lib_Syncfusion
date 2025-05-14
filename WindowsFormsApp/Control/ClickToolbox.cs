@@ -52,7 +52,7 @@ namespace WindowsFormsApp
             };
 
             // LEFT
-            leftPanel.Controls.Add(CreateGroup("Click tọa độ", new string[] { "ClickXY", "Swipe up", "Random Click", "Swipe down", "Wait" }, 370));
+            leftPanel.Controls.Add(CreateGroup("Click tọa độ", new string[] { "ClickXY", "Swipe", "Random Click", "Wait" }, 370));
             leftPanel.Controls.Add(CreateGroup("Search text click", new string[] {
             "Tìm đúng && click", "Tìm gần đúng && click",
             "Tìm đúng && wait", "Tìm gần đúng && wait",
@@ -243,13 +243,11 @@ namespace WindowsFormsApp
                 switch (buttonText)
                 {
                     case "ClickXY":
-                        return "ClickXY()";
-                    case "Swipe up":
-                        return "Swipeup(500 500 5 10)";
+                        return "ClickXY(100 100)";
+                    case "Swipe":
+                        return "Swipe(500 500 5 10 500)";
                     case "Random Click":
                         return "RandomClick(100 100, 900 1900)";
-                    case "Swipe down":
-                        return "Swipedown(500 500 5 10)";
                     case "Wait":
                         return "Wait(1000)";
                 }

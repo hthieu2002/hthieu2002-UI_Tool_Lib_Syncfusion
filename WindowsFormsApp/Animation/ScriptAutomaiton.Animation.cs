@@ -12,357 +12,366 @@ namespace WindowsFormsApp
 {
     public partial class ScriptAutomation : Form, ITextAppender
     {
-		private void init()
-		{
-			sfbtnEditScript.Image = Properties.Resources.fileEdit;
-			sfbtnCapture.Image = Properties.Resources.capture;
+        private void init()
+        {
+            sfbtnEditScript.Image = Properties.Resources.fileEdit;
+            sfbtnCapture.Image = Properties.Resources.capture;
 
-			sfbtnEditScript.Paint += BtnCommon_Paint;
-			sfbtnLoadDevice.Paint += BtnCommon_Paint;
-			sfbtnSend.Paint += BtnCommon_Paint;
-			sfbtnTest.Paint += BtnCommon_Paint;
-			sfbtnCapture.Paint += BtnCommon_Paint;
+            sfbtnEditScript.Paint += BtnCommon_Paint;
+            sfbtnLoadDevice.Paint += BtnCommon_Paint;
+            sfbtnSend.Paint += BtnCommon_Paint;
+            sfbtnTest.Paint += BtnCommon_Paint;
+            sfbtnCapture.Paint += BtnCommon_Paint;
 
-			btnLoadFile.Paint += BtnCommon_Paint;
-			btnDelete.Paint += BtnCommon_Paint;
-			btnCreate.Paint += BtnCommon_Paint;
-			sfView.Paint += BtnCommon_Paint;
-			
-		}
-		private void BtnCommon_Paint(object sender, PaintEventArgs e)
-		{
-			Button btn = sender as Button;
-			if (btn == null) return;
+            btnLoadFile.Paint += BtnCommon_Paint;
+            btnDelete.Paint += BtnCommon_Paint;
+            btnCreate.Paint += BtnCommon_Paint;
+            sfView.Paint += BtnCommon_Paint;
 
-			int radius = 5;
-			e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+        }
+        private void BtnCommon_Paint(object sender, PaintEventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn == null) return;
 
-			Rectangle rect = new Rectangle(
-				btn.ClientRectangle.X + 1,
-				btn.ClientRectangle.Y + 1,
-				btn.ClientRectangle.Width - 2,
-				btn.ClientRectangle.Height - 2
-			);
+            int radius = 5;
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
-			btn.Region = new Region(GetRoundedRect(rect, radius));
-			rect = new Rectangle(rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2);
+            Rectangle rect = new Rectangle(
+                btn.ClientRectangle.X + 1,
+                btn.ClientRectangle.Y + 1,
+                btn.ClientRectangle.Width - 2,
+                btn.ClientRectangle.Height - 2
+            );
 
-			e.Graphics.FillRectangle(new SolidBrush(btn.BackColor), rect);
+            btn.Region = new Region(GetRoundedRect(rect, radius));
+            rect = new Rectangle(rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2);
 
-			Pen borderPen = GetButtonBorderPen(btn);
-			e.Graphics.DrawPath(borderPen, GetRoundedRect(rect, radius));
+            e.Graphics.FillRectangle(new SolidBrush(btn.BackColor), rect);
 
-			Color textColor = GetButtonTextColor(btn);
+            Pen borderPen = GetButtonBorderPen(btn);
+            e.Graphics.DrawPath(borderPen, GetRoundedRect(rect, radius));
 
-			int iconSize = 24;                      
-			int iconPadding = 5;                    
-			int textOffsetX = 0;
+            Color textColor = GetButtonTextColor(btn);
 
-			if (btn.Image != null)
-			{
-				int drawWidth = iconSize;
-				int drawHeight = iconSize;
+            int iconSize = 24;
+            int iconPadding = 5;
+            int textOffsetX = 0;
 
-				if (btn.Image.Width != btn.Image.Height)
-				{
-					float scale = Math.Min((float)iconSize / btn.Image.Width, (float)iconSize / btn.Image.Height);
-					drawWidth = (int)(btn.Image.Width * scale);
-					drawHeight = (int)(btn.Image.Height * scale);
-				}
+            if (btn.Image != null)
+            {
+                int drawWidth = iconSize;
+                int drawHeight = iconSize;
 
-				Rectangle iconRect = new Rectangle(
-					rect.X + iconPadding,
-					rect.Y + (rect.Height - drawHeight) / 2,
-					drawWidth,
-					drawHeight
-				);
+                if (btn.Image.Width != btn.Image.Height)
+                {
+                    float scale = Math.Min((float)iconSize / btn.Image.Width, (float)iconSize / btn.Image.Height);
+                    drawWidth = (int)(btn.Image.Width * scale);
+                    drawHeight = (int)(btn.Image.Height * scale);
+                }
 
-				e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-				e.Graphics.DrawImage(btn.Image, iconRect);
-				textOffsetX = drawWidth + iconPadding * 2;
-			}
+                Rectangle iconRect = new Rectangle(
+                    rect.X + iconPadding,
+                    rect.Y + (rect.Height - drawHeight) / 2,
+                    drawWidth,
+                    drawHeight
+                );
 
-			Rectangle textRect = new Rectangle(
-				rect.X + textOffsetX,
-				rect.Y + 2,
-				rect.Width - textOffsetX - 4,
-				rect.Height - 4
-			);
+                e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                e.Graphics.DrawImage(btn.Image, iconRect);
+                textOffsetX = drawWidth + iconPadding * 2;
+            }
 
-			TextRenderer.DrawText(
-				e.Graphics,
-				btn.Text,
-				btn.Font,
-				textRect,
-				textColor,
-				TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter
-			);
-		}
-		private Pen GetButtonBorderPen(Button btn)
-		{
-			if (!btn.Enabled)
-			{
-				return new Pen(Color.Gray);
-			}
-			else if (btn.ClientRectangle.Contains(PointToClient(Cursor.Position)))
-			{
-				return new Pen(Color.Blue);
-			}
-			else if (btn.Focused)
-			{
-				return new Pen(Color.Green);
-			}
-			else
-			{
-				return new Pen(Color.Gray);
-			}
-		}
-		private Color GetButtonTextColor(Button btn)
-		{
-			if (btn.ClientRectangle.Contains(PointToClient(Cursor.Position)))
-			{
-				return Color.Blue;
-			}
-			return btn.ForeColor;
-		}
-		private GraphicsPath GetRoundedRect(Rectangle rect, int radius)
-		{
-			GraphicsPath graphicsPath = new GraphicsPath();
-			graphicsPath.AddArc(rect.X, rect.Y, radius * 2, radius * 2, 180, 90); // Top-left corner
-			graphicsPath.AddLine(rect.X + radius, rect.Y, rect.Right - radius, rect.Y); // Top edge
-			graphicsPath.AddArc(rect.Right - radius * 2, rect.Y, radius * 2, radius * 2, 270, 90); // Top-right corner
-			graphicsPath.AddLine(rect.Right, rect.Y + radius, rect.Right, rect.Bottom - radius); // Right edge
-			graphicsPath.AddArc(rect.Right - radius * 2, rect.Bottom - radius * 2, radius * 2, radius * 2, 0, 90); // Bottom-right corner
-			graphicsPath.AddLine(rect.Right - radius, rect.Bottom, rect.X + radius, rect.Bottom); // Bottom edge
-			graphicsPath.AddArc(rect.X, rect.Bottom - radius * 2, radius * 2, radius * 2, 90, 90); // Bottom-left corner
-			graphicsPath.AddLine(rect.X, rect.Bottom - radius, rect.X, rect.Y + radius); // Left edge
-			graphicsPath.CloseFigure();
-			return graphicsPath;
-		}
-		private void SetActiveMenu(ToolStripMenuItem selectedItem)
-		{
-			// Duyệt toàn bộ các item cấp 1 trong MenuStrip
-			foreach (ToolStripMenuItem item in menuStrip1.Items)
-			{
-				// Reset về trạng thái bình thường
-				item.BackColor = Color.WhiteSmoke;
-				item.ForeColor = Color.Black;
-				item.Font = new Font("Segoe UI", 9f, FontStyle.Regular);
-			}
+            Rectangle textRect = new Rectangle(
+                rect.X + textOffsetX,
+                rect.Y + 2,
+                rect.Width - textOffsetX - 4,
+                rect.Height - 4
+            );
 
-			// Set trạng thái cho item đang được chọn
-			selectedItem.BackColor = Color.WhiteSmoke;// Nền tím
-			selectedItem.ForeColor = Color.Black;              // Chữ trắng
-			selectedItem.Font = new Font("Segoe UI", 9f, FontStyle.Bold); // In đậm
-		}
-		private void BuildDataTableUI()
-		{
-			dataGridView = new DataGridView
-			{
-				Width = 565,
-				Height = 364,
-				ColumnCount = 2,
-				ReadOnly = true,
-				AllowUserToAddRows = false,
-				AllowUserToDeleteRows = false,
-				RowHeadersVisible = false,
-				SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-				MultiSelect = false,
-				ScrollBars = ScrollBars.Vertical,
-				Font = new Font("Segoe UI", 9f),
-				AllowUserToResizeRows = false,
-				ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
-				{
-					BackColor = Color.MediumSlateBlue,
-					ForeColor = Color.White,
-					Font = new Font("Segoe UI", 9f, FontStyle.Bold),
-					Alignment = DataGridViewContentAlignment.MiddleCenter
-				},
-				DefaultCellStyle = new DataGridViewCellStyle
-				{
-					BackColor = Color.WhiteSmoke,
-					ForeColor = Color.Black,
-					SelectionBackColor = Color.LightSteelBlue,
-					SelectionForeColor = Color.Black
-				}
-			};
-			dataGridView.CellMouseEnter += (s, e) =>
-			{
-				if (e.RowIndex >= 0)
-				{
-					dataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGray;
-				}
-			};
-			dataGridView.CellMouseLeave += (s, e) =>
-			{
-				if (e.RowIndex >= 0)
-				{
-					dataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.WhiteSmoke;
-				}
-			};
-			// Đặt tên cột
-			dataGridView.Columns[0].Name = "Key";
-			dataGridView.Columns[1].Name = "Value";
+            TextRenderer.DrawText(
+                e.Graphics,
+                btn.Text,
+                btn.Font,
+                textRect,
+                textColor,
+                TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter
+            );
+        }
+        private Pen GetButtonBorderPen(Button btn)
+        {
+            if (!btn.Enabled)
+            {
+                return new Pen(Color.Gray);
+            }
+            else if (btn.ClientRectangle.Contains(PointToClient(Cursor.Position)))
+            {
+                return new Pen(Color.Blue);
+            }
+            else if (btn.Focused)
+            {
+                return new Pen(Color.Green);
+            }
+            else
+            {
+                return new Pen(Color.Gray);
+            }
+        }
+        private Color GetButtonTextColor(Button btn)
+        {
+            if (btn.ClientRectangle.Contains(PointToClient(Cursor.Position)))
+            {
+                return Color.Blue;
+            }
+            return btn.ForeColor;
+        }
+        private GraphicsPath GetRoundedRect(Rectangle rect, int radius)
+        {
+            GraphicsPath graphicsPath = new GraphicsPath();
+            graphicsPath.AddArc(rect.X, rect.Y, radius * 2, radius * 2, 180, 90); // Top-left corner
+            graphicsPath.AddLine(rect.X + radius, rect.Y, rect.Right - radius, rect.Y); // Top edge
+            graphicsPath.AddArc(rect.Right - radius * 2, rect.Y, radius * 2, radius * 2, 270, 90); // Top-right corner
+            graphicsPath.AddLine(rect.Right, rect.Y + radius, rect.Right, rect.Bottom - radius); // Right edge
+            graphicsPath.AddArc(rect.Right - radius * 2, rect.Bottom - radius * 2, radius * 2, radius * 2, 0, 90); // Bottom-right corner
+            graphicsPath.AddLine(rect.Right - radius, rect.Bottom, rect.X + radius, rect.Bottom); // Bottom edge
+            graphicsPath.AddArc(rect.X, rect.Bottom - radius * 2, radius * 2, radius * 2, 90, 90); // Bottom-left corner
+            graphicsPath.AddLine(rect.X, rect.Bottom - radius, rect.X, rect.Y + radius); // Left edge
+            graphicsPath.CloseFigure();
+            return graphicsPath;
+        }
+        private void SetActiveMenu(ToolStripMenuItem selectedItem)
+        {
+            // Duyệt toàn bộ các item cấp 1 trong MenuStrip
+            foreach (ToolStripMenuItem item in menuStrip1.Items)
+            {
+                // Reset về trạng thái bình thường
+                item.BackColor = Color.WhiteSmoke;
+                item.ForeColor = Color.Black;
+                item.Font = new Font("Segoe UI", 9f, FontStyle.Regular);
+            }
 
-			// Cho cột tự dãn ra đều nhau:
-			dataGridView.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-			dataGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            // Set trạng thái cho item đang được chọn
+            selectedItem.BackColor = Color.WhiteSmoke;// Nền tím
+            selectedItem.ForeColor = Color.Black;              // Chữ trắng
+            selectedItem.Font = new Font("Segoe UI", 9f, FontStyle.Bold); // In đậm
+        }
+        private void BuildDataTableUI()
+        {
+            dataGridView = new DataGridView
+            {
+                Width = 565,
+                Height = 364,
+                ColumnCount = 2,
+                ReadOnly = true,
+                AllowUserToAddRows = false,
+                AllowUserToDeleteRows = false,
+                RowHeadersVisible = false,
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                MultiSelect = false,
+                ScrollBars = ScrollBars.Vertical,
+                Font = new Font("Segoe UI", 9f),
+                AllowUserToResizeRows = false,
+                ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
+                {
+                    BackColor = Color.MediumSlateBlue,
+                    ForeColor = Color.White,
+                    Font = new Font("Segoe UI", 9f, FontStyle.Bold),
+                    Alignment = DataGridViewContentAlignment.MiddleCenter
+                },
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    BackColor = Color.WhiteSmoke,
+                    ForeColor = Color.Black,
+                    SelectionBackColor = Color.LightSteelBlue,
+                    SelectionForeColor = Color.Black
+                }
+            };
+            dataGridView.CellMouseEnter += (s, e) =>
+            {
+                if (e.RowIndex >= 0)
+                {
+                    dataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGray;
+                }
+            };
+            dataGridView.CellMouseLeave += (s, e) =>
+            {
+                if (e.RowIndex >= 0)
+                {
+                    dataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.WhiteSmoke;
+                }
+            };
+            // Đặt tên cột
+            dataGridView.Columns[0].Name = "Key";
+            dataGridView.Columns[1].Name = "Value";
 
-			// (Tuỳ chỉnh nếu muốn Key nhỏ hơn)
-			dataGridView.Columns[0].FillWeight = 40;
-			dataGridView.Columns[1].FillWeight = 60;
+            // Cho cột tự dãn ra đều nhau:
+            dataGridView.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-			// Nội dung các dòng theo như bạn gửi:
-			string[] keys = {
-		"index", "text", "resource-id", "class", "package", "content-desc", "checkable",
-		"checked", "clickable", "enabled", "focusable", "focused",
-		"scrollable", "long-clickable", "password", "selected", "bounds"
-	};
+            // (Tuỳ chỉnh nếu muốn Key nhỏ hơn)
+            dataGridView.Columns[0].FillWeight = 40;
+            dataGridView.Columns[1].FillWeight = 60;
 
-			foreach (var key in keys)
-			{
-				dataGridView.Rows.Add(key, "");
-			}
+            // Nội dung các dòng theo như bạn gửi:
+            string[] keys = {
+        "index", "text", "resource-id", "class", "package", "content-desc", "checkable",
+        "checked", "clickable", "enabled", "focusable", "focused",
+        "scrollable", "long-clickable", "password", "selected", "bounds"
+    };
 
-			datagrid.Controls.Add(dataGridView); // datagrid là panel hoặc groupbox bạn đặt sẵn trong Designer
-		}
-		private void editText()
-		{
-			richTextBox1.Font = new Font("Consolas", 12);
-			richTextBox1.BackColor = Color.FromArgb(40, 40, 40);
-			richTextBox1.ForeColor = Color.White;
-			richTextBox1.BorderStyle = BorderStyle.None;
-			richTextBox1.WordWrap = false; // Rất quan trọng để scroll đúng
-			richTextBox1.Multiline = true;
-			richTextBox1.SelectAll();
-			richTextBox1.SelectionIndent = 40;
-			richTextBox1.DeselectAll();
+            foreach (var key in keys)
+            {
+                dataGridView.Rows.Add(key, "");
+            }
 
-			panel5.Paint += Panel1_Paint;
-			richTextBox1.VScroll += (s, e) => panel5.Invalidate();
-			richTextBox1.TextChanged += (s, e) => panel5.Invalidate();
-			richTextBox1.Resize += (s, e) => panel5.Invalidate();
-			richTextBox1.KeyUp += (s, e) =>
-			{
-				if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete)
-				{
-					panel5.Invalidate();
-				}
-			};
-			richTextBox1.TextChanged += (s, e) =>
-			{
-				HighlightSyntax();
-			};
+            datagrid.Controls.Add(dataGridView); // datagrid là panel hoặc groupbox bạn đặt sẵn trong Designer
+        }
+        private void editText()
+        {
+            richTextBox1.Font = new Font("Consolas", 12);
+            richTextBox1.BackColor = Color.FromArgb(40, 40, 40);
+            richTextBox1.ForeColor = Color.White;
+            richTextBox1.BorderStyle = BorderStyle.None;
+            richTextBox1.WordWrap = false; // Rất quan trọng để scroll đúng
+            richTextBox1.Multiline = true;
+            richTextBox1.SelectAll();
+            richTextBox1.SelectionIndent = 40;
+            richTextBox1.DeselectAll();
 
-		}
-		public void AppendText(string textToAdd)
-		{
-			if (!string.IsNullOrEmpty(richTextBox1.Text))
-			{
-				richTextBox1.Text += " ";
-			}
-			richTextBox1.Text += textToAdd;
-		}
-		private void HighlightSyntax()
-		{
-			int selectionStart = richTextBox1.SelectionStart;
-			int selectionLength = richTextBox1.SelectionLength;
+            panel5.Paint += Panel1_Paint;
+            richTextBox1.VScroll += (s, e) => panel5.Invalidate();
+            richTextBox1.TextChanged += (s, e) => panel5.Invalidate();
+            richTextBox1.Resize += (s, e) => panel5.Invalidate();
+            richTextBox1.KeyUp += (s, e) =>
+            {
+                if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete)
+                {
+                    panel5.Invalidate();
+                }
+            };
+            richTextBox1.TextChanged += (s, e) =>
+            {
+                HighlightSyntax();
+            };
 
-			// Reset toàn bộ về mặc định
-			richTextBox1.SelectAll();
-			richTextBox1.SelectionColor = Color.White;
+        }
+        public void AppendText(string textToAdd)
+        {
+            if (!string.IsNullOrEmpty(richTextBox1.Text))
+            {
+                richTextBox1.Text += "";
+            }
+            if (isEditing)
+            {
+                // edit
+                txtTest.Text = "";
+                txtTest.Text = textToAdd;
+                richTextBox1.Text += "\n" + textToAdd;
 
-			// Regex: tìm hàm dạng TênHàm( ... )
-			var regex = new Regex(@"\w+\(.*?\)");
-			var matches = regex.Matches(richTextBox1.Text);
+            }
+            else
+            {
+                // save
+                txtTest.Text = "";
+                txtTest.Text = textToAdd;
+                return;
+            }
 
-			foreach (Match match in matches)
-			{
-				// Tô màu vàng cho toàn bộ hàm + ()
-				richTextBox1.Select(match.Index, match.Length);
-				richTextBox1.SelectionColor = Color.Gold;
+        }
+        private void HighlightSyntax()
+        {
+            int selectionStart = richTextBox1.SelectionStart;
+            int selectionLength = richTextBox1.SelectionLength;
 
-				// Xử lý bên trong ()
-				int openParen = richTextBox1.Text.IndexOf('(', match.Index);
-				int closeParen = richTextBox1.Text.IndexOf(')', openParen);
-				if (openParen >= 0 && closeParen > openParen)
-				{
-					int paramStart = openParen + 1;
-					int paramLength = closeParen - paramStart;
-					string paramText = richTextBox1.Text.Substring(paramStart, paramLength);
+            richTextBox1.SelectAll();
+            richTextBox1.SelectionColor = Color.White;
 
-					// Quét từng token bên trong ()
-					var paramRegex = new Regex(@"\d+|\"".*?\""|\w+");
-					var paramMatches = paramRegex.Matches(paramText);
+            var regex = new Regex(@"\w+\(.*?\)");
+            var matches = regex.Matches(richTextBox1.Text);
 
-					foreach (Match paramMatch in paramMatches)
-					{
-						int tokenIndex = paramStart + paramMatch.Index;
-						int tokenLength = paramMatch.Length;
+            foreach (Match match in matches)
+            {
+                richTextBox1.Select(match.Index, match.Length);
+                richTextBox1.SelectionColor = Color.Gold;
 
-						richTextBox1.Select(tokenIndex, tokenLength);
+                int openParen = richTextBox1.Text.IndexOf('(', match.Index);
+                int closeParen = richTextBox1.Text.IndexOf(')', openParen);
+                if (openParen >= 0 && closeParen > openParen)
+                {
+                    int paramStart = openParen + 1;
+                    int paramLength = closeParen - paramStart;
+                    string paramText = richTextBox1.Text.Substring(paramStart, paramLength);
 
-						if (Regex.IsMatch(paramMatch.Value, @"^\d+$")) // số
-						{
-							richTextBox1.SelectionColor = Color.DeepSkyBlue;
-						}
-						else if (Regex.IsMatch(paramMatch.Value, "^\".*\"$")) // chuỗi trong dấu "
-						{
-							richTextBox1.SelectionColor = Color.LightPink;
-						}
-						else // từ bình thường
-						{
-							richTextBox1.SelectionColor = Color.Pink;
-						}
-					}
-				}
-			}
+                    var paramRegex = new Regex(@"\d+|\"".*?\""|\w+");
+                    var paramMatches = paramRegex.Matches(paramText);
 
-			// Khôi phục lại selection đang gõ
-			richTextBox1.Select(selectionStart, selectionLength);
-			richTextBox1.SelectionColor = Color.White;
-		}
-		private void Panel1_Paint(object sender, PaintEventArgs e)
-		{
-			e.Graphics.Clear(panel1.BackColor);
+                    foreach (Match paramMatch in paramMatches)
+                    {
+                        int tokenIndex = paramStart + paramMatch.Index;
+                        int tokenLength = paramMatch.Length;
 
-			int firstIndex = richTextBox1.GetCharIndexFromPosition(new Point(0, 0));
-			int firstLine = richTextBox1.GetLineFromCharIndex(firstIndex);
+                        richTextBox1.Select(tokenIndex, tokenLength);
 
-			int lineHeight;
-			try
-			{
-				lineHeight = richTextBox1.GetPositionFromCharIndex(firstIndex + 1).Y
-							 - richTextBox1.GetPositionFromCharIndex(firstIndex).Y;
-			}
-			catch
-			{
-				lineHeight = (int)richTextBox1.Font.GetHeight() + 4;
-			}
+                        if (Regex.IsMatch(paramMatch.Value, @"^\d+$"))
+                        {
+                            richTextBox1.SelectionColor = Color.DeepSkyBlue;
+                        }
+                        else if (Regex.IsMatch(paramMatch.Value, "^\".*\"$"))
+                        {
+                            richTextBox1.SelectionColor = Color.LightPink;
+                        }
+                        else
+                        {
+                            richTextBox1.SelectionColor = Color.Pink;
+                        }
+                    }
+                }
+            }
 
-			if (lineHeight <= 0) lineHeight = (int)richTextBox1.Font.GetHeight() + 4;
+            richTextBox1.Select(selectionStart, selectionLength);
+            richTextBox1.SelectionColor = Color.White;
+        }
+        private void Panel1_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(panel1.BackColor);
 
-			int visibleLines = (richTextBox1.Height / lineHeight) + 1;
+            int firstIndex = richTextBox1.GetCharIndexFromPosition(new Point(0, 0));
+            int firstLine = richTextBox1.GetLineFromCharIndex(firstIndex);
 
-			using (Brush brush = new SolidBrush(Color.Black))
-			{
-				for (int i = 0; i <= visibleLines; i++)
-				{
-					int lineNumber = firstLine + i + 1;
+            int lineHeight;
+            try
+            {
+                lineHeight = richTextBox1.GetPositionFromCharIndex(firstIndex + 1).Y
+                             - richTextBox1.GetPositionFromCharIndex(firstIndex).Y;
+            }
+            catch
+            {
+                lineHeight = (int)richTextBox1.Font.GetHeight() + 4;
+            }
 
-					int charIndex = richTextBox1.GetFirstCharIndexFromLine(lineNumber - 1);
-					if (charIndex == -1) break; // Không có dòng tiếp theo
+            if (lineHeight <= 0) lineHeight = (int)richTextBox1.Font.GetHeight() + 4;
 
-					int y = richTextBox1.GetPositionFromCharIndex(charIndex).Y;
+            int visibleLines = (richTextBox1.Height / lineHeight) + 1;
 
-					e.Graphics.DrawString(lineNumber.ToString(),
-						richTextBox1.Font, brush, new PointF(5, y));
-				}
-			}
-		}
-		///
-		/// 
-		///
+            using (Brush brush = new SolidBrush(Color.Black))
+            {
+                for (int i = 0; i <= visibleLines; i++)
+                {
+                    int lineNumber = firstLine + i + 1;
 
-	}
+                    int charIndex = richTextBox1.GetFirstCharIndexFromLine(lineNumber - 1);
+                    if (charIndex == -1) break;
+
+                    int y = richTextBox1.GetPositionFromCharIndex(charIndex).Y;
+
+                    e.Graphics.DrawString(lineNumber.ToString(),
+                        richTextBox1.Font, brush, new PointF(5, y));
+                }
+            }
+        }
+        ///
+        /// 
+        ///
+
+    }
 }

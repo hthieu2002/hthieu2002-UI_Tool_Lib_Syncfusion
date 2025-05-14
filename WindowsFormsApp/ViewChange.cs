@@ -30,6 +30,7 @@ namespace WindowsFormsApp
         private SfDataGrid sfDataGrid;
         private List<WindowsFormsApp.Model.DeviceDisplay> deviceDisplays = new List<WindowsFormsApp.Model.DeviceDisplay>();  // Danh sách các thiết bị hiện tại
         private Task _deviceCheckTask;
+        private static CancellationTokenSource _deviceCheckCancellationTokenSource;
         public static ViewChange Instance { get; private set; }
         private readonly Dictionary<string, string> _progressTextMap = new Dictionary<string, string>();
         private readonly HashSet<string> _animatingDevices = new HashSet<string>();
@@ -87,9 +88,9 @@ namespace WindowsFormsApp
             InitializeComponent();
 
             ConfigureForm(); // Cấu hình cơ bản
-            Instance = this; // ← Phải set ở Constructor luôn để mọi nơi khác dùng được Instance
+            Instance = this;
             setGridView();
-            // Delay load UI logic sang sự kiện Load
+
             this.Load += async (s, e) => await LoadAsync();
             this.ResumeLayout(false);
         }
@@ -207,58 +208,64 @@ namespace WindowsFormsApp
             }
         }
 
-        public void StartDeviceCheck()
+        public async Task StartDeviceCheck()
         {
-            DeviceCheckManager.StartDeviceCheck(DeviceCheckLoop);
+            _deviceCheckCancellationTokenSource?.Cancel();
+            _deviceCheckCancellationTokenSource = new CancellationTokenSource();
+            await DeviceCheckLoop(_deviceCheckCancellationTokenSource.Token);
         }
         private async Task DeviceCheckLoop(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                var connectedDevices = ADBService.GetConnectedDevices().ToHashSet();
-                var (onlineDevices, offlineDevices) = LoadDevicesFromJson();
-                foreach (var device in onlineDevices)
+                if (!FormVisibilityManager.IsFormViewAutomationVisible)
                 {
-                    if (!connectedDevices.Contains(device.Serial))
+                    var connectedDevices = ADBService.GetConnectedDevices().ToHashSet();
+                    var (onlineDevices, offlineDevices) = LoadDevicesFromJson();
+                    foreach (var device in onlineDevices)
                     {
-                        Invoke((MethodInvoker)(() =>
-                        {
-                            UpdateDeviceStatus(device.Serial, "Offline");
-                            sfDataGrid.Refresh();
-                        }));
-                    }
-                }
-
-                foreach (var device in connectedDevices)
-                {
-                    var existingDevice = deviceDisplays.FirstOrDefault(d => d.Serial == device);
-
-                    if (existingDevice != null)
-                    {
-                        string currentStatus =ADBService.IsDeviceOnline(device) ? "Online" : "Offline";
-                        if (existingDevice.Status != currentStatus)
+                        if (!connectedDevices.Contains(device.Serial))
                         {
                             Invoke((MethodInvoker)(() =>
                             {
-                                UpdateDeviceStatus(device, currentStatus);
+                                UpdateDeviceStatus(device.Serial, "Offline");
                                 sfDataGrid.Refresh();
                             }));
                         }
                     }
-                    else
+
+                    foreach (var device in connectedDevices)
                     {
-                        Invoke((MethodInvoker)(() =>
+                        var existingDevice = deviceDisplays.FirstOrDefault(d => d.Serial == device);
+
+                        if (existingDevice != null)
                         {
-                            AddDeviceView(device, "", 1);
-                            UpdateDeviceStatus(device, "Online");
-                            sfDataGrid.Refresh();
-                        }));
+                            string currentStatus = ADBService.IsDeviceOnline(device) ? "Online" : "Offline";
+                            if (existingDevice.Status != currentStatus)
+                            {
+                                Invoke((MethodInvoker)(() =>
+                                {
+                                    UpdateDeviceStatus(device, currentStatus);
+                                    sfDataGrid.Refresh();
+                                }));
+                            }
+                        }
+                        else
+                        {
+                            Invoke((MethodInvoker)(() =>
+                            {
+                                AddDeviceView(device, "", 1);
+                                UpdateDeviceStatus(device, "Online");
+                                sfDataGrid.Refresh();
+                            }));
+                        }
                     }
+                    await Task.Delay(1000);
                 }
                 await Task.Delay(1000);
             }
         }
-     
+
         private void AddDeviceView(string deviceId, string name, int check)
         {
             _deviceTable = sfDataGrid.DataSource as DataTable;
@@ -405,7 +412,7 @@ namespace WindowsFormsApp
 
                 if (deviceToUpdate != null)
                 {
-                    NameInputForm nameForm = new NameInputForm(deviceToUpdate.Name);
+                    NameInputForm nameForm = new NameInputForm(deviceToUpdate.Name, "Name device");
                     if (nameForm.ShowDialog() == DialogResult.OK)
                     {
                         string newName = nameForm.NewName;
@@ -548,8 +555,8 @@ namespace WindowsFormsApp
                     }
                 }).ToArray();
                 await Task.WhenAll(tasks);
-                inputForm = null;  
-                latitude = null;   
+                inputForm = null;
+                latitude = null;
                 longitude = null;
             }
             else
@@ -1129,8 +1136,8 @@ namespace WindowsFormsApp
             {
                 MessageBox.Show(ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-             await Task.Delay(2000);
-             await ViewChange.Instance.updateProgress(row, "", 0);
+            await Task.Delay(2000);
+            await ViewChange.Instance.updateProgress(row, "", 0);
             _animatingDevices.Remove(device);
         }
         public async Task StartScreenShot(string device, System.Data.DataRow row)
@@ -1213,6 +1220,11 @@ namespace WindowsFormsApp
         public void LoadContextMenu()
         {
             sfDataGrid.Refresh();
+        }
+
+        private void ViewChange_VisibleChanged(object sender, EventArgs e)
+        {
+            FormVisibilityManager.IsFormViewChangeVisible = this.Visible;
         }
     }
 }

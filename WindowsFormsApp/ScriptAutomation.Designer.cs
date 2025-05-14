@@ -46,10 +46,9 @@
             this.dataChangeInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sfbtnEditScript = new Syncfusion.WinForms.Controls.SfButton();
-            this.sftxtSend = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.sfbtnSend = new Syncfusion.WinForms.Controls.SfButton();
             this.sfbtnTest = new Syncfusion.WinForms.Controls.SfButton();
-            this.textBoxExt2 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.txtTest = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.panelTest = new System.Windows.Forms.Panel();
             this.pictureBoxScreen = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -66,8 +65,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.sfCbModelDump)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sfCbLoadDevices)).BeginInit();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sftxtSend)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtTest)).BeginInit();
             this.panelTest.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxScreen)).BeginInit();
             this.panel2.SuspendLayout();
@@ -81,7 +79,6 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.sfView);
             this.panel1.Controls.Add(this.y);
             this.panel1.Controls.Add(this.x);
             this.panel1.Controls.Add(this.lbLog);
@@ -248,22 +245,11 @@
             this.sfbtnEditScript.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.sfbtnEditScript.Location = new System.Drawing.Point(596, 12);
             this.sfbtnEditScript.Name = "sfbtnEditScript";
-            this.sfbtnEditScript.Size = new System.Drawing.Size(134, 28);
+            this.sfbtnEditScript.Size = new System.Drawing.Size(104, 44);
             this.sfbtnEditScript.Style.Image = global::WindowsFormsApp.Properties.Resources.fileEdit;
             this.sfbtnEditScript.TabIndex = 1;
             this.sfbtnEditScript.Text = "Edit script";
             this.sfbtnEditScript.Click += new System.EventHandler(this.sfbtnEditScript_Click);
-            // 
-            // sftxtSend
-            // 
-            this.sftxtSend.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.sftxtSend.BeforeTouchSize = new System.Drawing.Size(298, 27);
-            this.sftxtSend.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sftxtSend.Location = new System.Drawing.Point(755, 13);
-            this.sftxtSend.Name = "sftxtSend";
-            this.sftxtSend.Size = new System.Drawing.Size(139, 27);
-            this.sftxtSend.TabIndex = 2;
             // 
             // sfbtnSend
             // 
@@ -272,9 +258,10 @@
             this.sfbtnSend.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.sfbtnSend.Location = new System.Drawing.Point(900, 12);
             this.sfbtnSend.Name = "sfbtnSend";
-            this.sfbtnSend.Size = new System.Drawing.Size(101, 28);
+            this.sfbtnSend.Size = new System.Drawing.Size(101, 44);
             this.sfbtnSend.TabIndex = 3;
             this.sfbtnSend.Text = "Send";
+            this.sfbtnSend.Click += new System.EventHandler(this.sfbtnSend_Click);
             // 
             // sfbtnTest
             // 
@@ -286,17 +273,18 @@
             this.sfbtnTest.Size = new System.Drawing.Size(101, 28);
             this.sfbtnTest.TabIndex = 4;
             this.sfbtnTest.Text = "Test";
+            this.sfbtnTest.Click += new System.EventHandler(this.sfbtnTest_Click);
             // 
-            // textBoxExt2
+            // txtTest
             // 
-            this.textBoxExt2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.txtTest.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxExt2.BeforeTouchSize = new System.Drawing.Size(298, 27);
-            this.textBoxExt2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxExt2.Location = new System.Drawing.Point(596, 63);
-            this.textBoxExt2.Name = "textBoxExt2";
-            this.textBoxExt2.Size = new System.Drawing.Size(298, 27);
-            this.textBoxExt2.TabIndex = 5;
+            this.txtTest.BeforeTouchSize = new System.Drawing.Size(298, 27);
+            this.txtTest.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTest.Location = new System.Drawing.Point(596, 63);
+            this.txtTest.Name = "txtTest";
+            this.txtTest.Size = new System.Drawing.Size(298, 27);
+            this.txtTest.TabIndex = 5;
             // 
             // panelTest
             // 
@@ -417,12 +405,14 @@
             // 
             // sfView
             // 
+            this.sfView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.sfView.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
-            this.sfView.Location = new System.Drawing.Point(472, 561);
+            this.sfView.Location = new System.Drawing.Point(706, 12);
             this.sfView.Name = "sfView";
-            this.sfView.Size = new System.Drawing.Size(77, 28);
+            this.sfView.Size = new System.Drawing.Size(188, 44);
             this.sfView.TabIndex = 11;
-            this.sfView.Text = "View";
+            this.sfView.Text = "View device";
             this.sfView.Click += new System.EventHandler(this.sfView_Click);
             // 
             // ScriptAutomation
@@ -430,12 +420,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1599, 983);
+            this.Controls.Add(this.sfView);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panelTest);
-            this.Controls.Add(this.textBoxExt2);
+            this.Controls.Add(this.txtTest);
             this.Controls.Add(this.sfbtnTest);
             this.Controls.Add(this.sfbtnSend);
-            this.Controls.Add(this.sftxtSend);
             this.Controls.Add(this.sfbtnEditScript);
             this.Controls.Add(this.panel1);
             this.MainMenuStrip = this.menuStrip1;
@@ -447,8 +437,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.sfCbLoadDevices)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sftxtSend)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtTest)).EndInit();
             this.panelTest.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxScreen)).EndInit();
             this.panel2.ResumeLayout(false);
@@ -477,10 +466,9 @@
         private Syncfusion.WinForms.ListView.SfComboBox sfCbLoadDevices;
         private System.Windows.Forms.Panel datagrid;
         private Syncfusion.WinForms.Controls.SfButton sfbtnEditScript;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt sftxtSend;
         private Syncfusion.WinForms.Controls.SfButton sfbtnSend;
         private Syncfusion.WinForms.Controls.SfButton sfbtnTest;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt2;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtTest;
         private System.Windows.Forms.Panel panelTest;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;

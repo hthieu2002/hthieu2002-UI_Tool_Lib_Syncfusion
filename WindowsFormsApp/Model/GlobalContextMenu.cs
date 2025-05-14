@@ -83,8 +83,7 @@ public static class GlobalContextMenu
 
             ContextMenu.Items.AddRange(new ToolStripItem[] { reloadItem, loadPage, autoItem, copyItem, restartItem, proxyItem, adbItem, textShortcutItem, deleteItem, changeImageItem, changeOrderItem, addToGroupItem });
         }
-
-        
+       
     }
 
 }

@@ -1760,7 +1760,12 @@ namespace Services
 
         public static void FakeTimezone(string timezone, string deviceId)
         {
-            runCMD($"shell \"cmd time_zone_detector suggest_telephony_time_zone --suggestion --slot_index 0 --zone_id {timezone} --quality multiple_same --match_type country\"", deviceId);
+            rootAndRemount(deviceId);
+            runCMD($"shell setprop persist.sys.timezone \"{timezone}\"", deviceId);
+            runCMD($"shell am broadcast -a android.intent.action.TIMEZONE_CHANGED", deviceId);
+            runCMD($"shell settings put system time_12_24 24", deviceId);
+            runCMD($"shell am broadcast -a android.intent.action.TIME_SET", deviceId);
+            //runCMD($"shell \"cmd time_zone_detector suggest_telephony_time_zone --suggestion --slot_index 0 --zone_id {timezone} --quality multiple_same --match_type country\"", deviceId);
         }
 
         public static void AdjustVolume(bool isUp, string deviceId)

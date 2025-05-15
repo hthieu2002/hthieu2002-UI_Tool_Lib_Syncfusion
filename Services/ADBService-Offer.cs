@@ -1,6 +1,7 @@
-﻿using POCO.Models;
+using POCO.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -54,6 +55,53 @@ namespace Services
         public static void shellRemoveIfContainSpecificText(string filePath, string text, string deviceIP)
         {
             runCMD(string.Format("shell \"sed -i '/{0}/d' {1}\"", text, filePath), deviceIP);
+        }
+        public static void FakeLocalIP(string deviceIP, string NewIp)
+        {
+
+            if (NewIp == "")
+            {
+                Random random = new Random();
+                int randomNewIP = random.Next(2, 254);
+
+                NewIp = $"192.168.1.{randomNewIP}";
+            }
+            Thread.Sleep(2000);
+            string oldIP = GetDeviceIP(deviceIP);
+            while (string.IsNullOrEmpty(oldIP))
+            {
+                oldIP = GetDeviceIP(deviceIP);
+            }
+            Console.WriteLine(oldIP);
+            runCMD("root", deviceIP);
+            runCMD("remount", deviceIP);
+            Thread.Sleep(2000);
+            runCMD(string.Format("shell \"ip addr add {0} dev wlan0\"", NewIp), deviceIP);
+            Thread.Sleep(2000);
+            runCMD($"shell ip addr del {oldIP} dev wlan0", deviceIP);
+            Thread.Sleep(2000);
+        }
+        public static string GetDeviceIP(string deviceIP)
+        {
+            // Tạo một đối tượng ProcessStartInfo để thiết lập các thuộc tính cho quá trình
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = "adb", // Lệnh cần thực thi (ở đây là adb)
+                Arguments = $"-s {deviceIP} shell ip addr show dev wlan0 | grep 'inet ' | awk '{{print $2}}' | cut -d/ -f1", // Tham số lệnh
+                RedirectStandardOutput = true, // Chuyển hướng đầu ra tiêu chuẩn để lấy kết quả
+                UseShellExecute = false, // Không sử dụng shell thực thi mặc định
+                CreateNoWindow = true // Không tạo cửa sổ mới cho quá trình
+            };
+
+            // Tạo và bắt đầu quá trình
+            using (Process process = Process.Start(psi))
+            {
+                process.WaitForExit(); // Chờ quá trình hoàn thành
+                string output = process.StandardOutput.ReadToEnd(); // Đọc toàn bộ đầu ra của quá trình
+
+                // Loại bỏ ký tự thừa (nếu có) và trả về IP
+                return output.Trim();
+            }
         }
         public static ProxyResponseModel getDevicePublicIpV4V6(string proxy, string deviceId, string urlToCheck = URL_Data.URL_CHECK_IPv4v6)
         {
@@ -291,13 +339,16 @@ namespace Services
             runCMD("shell \"iptables -t nat -F\"", deviceId);
             runCMD("shell \"iptables -t mangle -F\"", deviceId);
             runCMD("shell \"iptables -F\"", deviceId);
+            runCMD("shell \"iptables -X\"", deviceId);
             runCMD("shell \"iptables -t nat -X REDSOCKS\"", deviceId);
+            runCMD("shell \"iptables -t mangle -X REDSOCKS\"", deviceId);
             runCMD("shell \"killall redsocks\"", deviceId);
+            runCMD("shell \"killall redsocks2\"", deviceId);
         }
 
         public static void enableInternet(string deviceId, bool enabled = true)
         {
-            var tag = enabled ? "-D" : "-A" ;
+            var tag = enabled ? "-D" : "-A";
             runCMD($"shell \"iptables {tag} INPUT -j DROP\"", deviceId);
             runCMD($"shell \"iptables {tag} FORWARD -j DROP\"", deviceId);
             runCMD($"shell \"iptables {tag} OUTPUT -j DROP\"", deviceId);
@@ -347,7 +398,7 @@ namespace Services
             runCMD("shell \"iptables -t nat -A PREROUTING -p udp --dport 53 -j DNAT --to-destination 8.8.8.8:53\"", deviceId);
             runCMD("shell \"iptables -t nat -A PREROUTING -p tcp --dport 53 -j DNAT --to-destination 8.8.8.8:53\"", deviceId);
             runCMD("shell \"iptables -t nat -A POSTROUTING -j MASQUERADE\"", deviceId);
-            
+
             //runCMD("shell \"iptables -t filter -A fw_INPUT -j fw_standby\"", deviceId);
             //runCMD("shell \"iptables -t filter -A fw_OUTPUT -j fw_standby\"", deviceId);
             //runCMD("shell \"iptables -t filter -P INPUT ACCEPT\"", deviceId);
@@ -389,32 +440,13 @@ namespace Services
 
         public static void startRedSocks(string proxyHostIP, string redsocksDeviceDir, string deviceId)
         {
-            //runCMD("root", deviceId);
-            //runCMD("remount", deviceId);
+            /*runCMD("shell \"iptables -A INPUT -j DROP\"", deviceId);
+            runCMD("shell \"iptables -A FORWARD -j DROP\"", deviceId);
+            runCMD("shell \"iptables -A OUTPUT -j DROP\"", deviceId);
+            Thread.Sleep(3000);
+            // wifi on
+            ADBService.enableWifi(true, deviceId); //ensure wifi always on*/
 
-
-            ////create table
-            Console.WriteLine(runCMD("shell \"iptables -t nat -N REDSOCKS\"", deviceId));
-            //// create filter
-            //runCMD("shell \"iptables -t nat -A REDSOCKS -d 0.0.0.0/8 -j RETURN\"", deviceId);
-            //runCMD("shell \"iptables -t nat -A REDSOCKS -d 10.0.0.0/8 -j RETURN\"", deviceId);
-            //runCMD("shell \"iptables -t nat -A REDSOCKS -d 127.0.0.0/8 -j RETURN\"", deviceId);
-            //runCMD("shell \"iptables -t nat -A REDSOCKS -d 169.254.0.0/16 -j RETURN\"", deviceId);
-            //runCMD("shell \"iptables -t nat -A REDSOCKS -d 172.16.0.0/12 -j RETURN\"", deviceId);
-            //runCMD("shell \"iptables -t nat -A REDSOCKS -d 192.168.0.0/16 -j RETURN\"", deviceId);
-            //runCMD("shell \"iptables -t nat -A REDSOCKS -d 224.0.0.0/4 -j RETURN\"", deviceId);
-            //runCMD("shell \"iptables -t nat -A REDSOCKS -d 240.0.0.0/4 -j RETURN\"", deviceId);
-
-            //// create port for redirection
-            //Console.WriteLine(runCMD("shell \"iptables -t nat -A REDSOCKS -p tcp -j REDIRECT --to-ports 12345\"", deviceId));// 12345 is default port
-
-            //// create filter rule for http and https
-            //runCMD("shell \"iptables -t nat -A OUTPUT -p tcp --dport 80 -j REDSOCKS\"", deviceId);
-            //runCMD("shell \"iptables -t nat -A OUTPUT -p tcp --dport 443 -j REDSOCKS\"", deviceId);
-
-            //runCMD("shell \"iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDSOCKS\"", deviceId);
-            //runCMD("shell \"iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDSOCKS\"", deviceId);
-            //runCMD("shell \"iptables -t nat -A PREROUTING -p tcp --dport 1080 -j REDSOCKS\"", deviceId);
             runCMD("shell \"iptables -A INPUT -i ap+ -p tcp --dport 12345 -j ACCEPT\"", deviceId);
 
             runCMD("shell \"iptables -A INPUT -i lo -p tcp --dport 12345 -j ACCEPT\"", deviceId);
@@ -424,28 +456,12 @@ namespace Services
             runCMD("shell \"iptables -t nat -A PREROUTING -i ap+ -p tcp -d 192.168.1.0/24 -j RETURN\"", deviceId);
 
             runCMD("shell \"iptables -t nat -A PREROUTING -i ap+ -p tcp -j REDIRECT --to 12345\"", deviceId);
-
+            Thread.Sleep(2000);
             runCMD(string.Format("shell \"iptables -t nat -A OUTPUT -p tcp -d {0} -j RETURN\"", proxyHostIP), deviceId);
-            runCMD("shell \"iptables -t nat -A REDSOCKS -p udp -j REDIRECT --to-ports 10053\"", deviceId);
-
-
-            //runCMD("shell \"iptables -t nat -A OUTPUT -p udp --dport 53 -j DNAT --to-destination 1.1.1.1\"", deviceId);
-
-            //runCMD("shell \"iptables -t nat -A OUTPUT -p tcp -d bd-slw09.viettelidc.com.vn -j RETURN\"", deviceId);
 
             runCMD("shell \"iptables -t nat -A OUTPUT -p tcp -j REDIRECT --to 12345\"", deviceId);
-            runCMD("shell \"iptables -t nat -A OUTPUT -p udp -j REDIRECT --to 10053\"", deviceId);
+            runCMD("shell \"iptables -t mangle -A PREROUTING -i wlan0 -p udp --dport 10000:65535 -j TPROXY --on-port 10053 --tproxy-mark 0x01/0x01\"", deviceId);
 
-            // create filter rule for http and https
-            runCMD("shell \"iptables -t nat -A OUTPUT -p tcp --dport 80 -j REDSOCKS\"", deviceId);
-            runCMD("shell \"iptables -t nat -A OUTPUT -p tcp --dport 443 -j REDSOCKS\"", deviceId);
-            runCMD("shell \"iptables -t nat -A OUTPUT -p udp --dport 3478 -j REDSOCKS\"", deviceId);
-
-            runCMD("shell \"iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDSOCKS\"", deviceId);
-            runCMD("shell \"iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDSOCKS\"", deviceId);
-            runCMD("shell \"iptables -t nat -A PREROUTING -p tcp --dport 1080 -j REDSOCKS\"", deviceId);
-
-            // execute redsock
             bool isRedsocksStarted = false;
             var maximumRetry = 3;
             var retry = 0;
@@ -453,14 +469,16 @@ namespace Services
             {
                 var resocksStartedResponse = runCMD(String.Format("shell \"{0}/redsocks -c {0}/redsocks.conf\"", redsocksDeviceDir), deviceId);
                 Console.WriteLine(resocksStartedResponse);
+                Thread.Sleep(3000);
                 isRedsocksStarted = resocksStartedResponse.Contains("Address already in use");
+                ADBService.enableWifi(true, deviceId);
+
+                /*runCMD("shell \"iptables -D INPUT -j DROP\"", deviceId);
+                runCMD("shell \"iptables -D FORWARD -j DROP\"", deviceId);
+                runCMD("shell \"iptables -D OUTPUT -j DROP\"", deviceId);*/
                 retry++;
-                Thread.Sleep(300); // each retry would delay 0.3 sec
+                Thread.Sleep(3000); // each retry would delay 0.3 sec
             }
-            //runCMD(String.Format("shell \"curl -s -S {0}\"", "http://api.ipify.org"), deviceId);
-
-            //runCMD("unroot", deviceId);
-
         }
 
         public static void changeLanguage(string languageCode, string deviceIP)
@@ -743,7 +761,7 @@ namespace Services
         public static string GetMediaSession(string deviceId)
         {
             var mediaSession = runCMD("shell dumpsys media_session", deviceId);
-            if(!String.IsNullOrEmpty(mediaSession))
+            if (!String.IsNullOrEmpty(mediaSession))
             {
                 return mediaSession;
             }

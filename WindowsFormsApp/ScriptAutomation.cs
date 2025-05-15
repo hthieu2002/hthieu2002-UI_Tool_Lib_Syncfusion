@@ -315,6 +315,11 @@ namespace WindowsFormsApp
         {
             string deviceId = sfCbLoadDevices.Text;
 
+            if (sfCbLoadDevices.Text == "")
+            {
+                MessageBox.Show("Hãy load devices và chọn thiết bị ");
+                return;
+            }
             lbLog.Text = "Chụp màn hình";
             CaptureScreenshot(deviceId);
             lbLog.Text = "Dump xml";

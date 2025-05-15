@@ -19,27 +19,33 @@ namespace WindowsFormsApp
 {
     public partial class ViewChange : Form
     {
+        private Model.WindowMode _previousWindowMode = Model.WindowMode.Normal;
         private void ApplyPanelInputMargin()
         {
-            if (Model.AppState.CurrentWindowMode == Model.WindowMode.Maximized)
+            var current = Model.AppState.CurrentWindowMode;
+            var previous = _previousWindowMode;
+            if (current == previous)
+                return;
+            bool isTransitionBetweenNormalAndMaximized =
+                (previous == Model.WindowMode.Normal && current == Model.WindowMode.Maximized) ||
+                (previous == Model.WindowMode.Maximized && current == Model.WindowMode.Normal);
+            if (!isTransitionBetweenNormalAndMaximized)
             {
-                tableLayoutPanel1.ColumnStyles.Clear();
-                tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65F));  // mặc định 60/40
+                _previousWindowMode = current;
+                return;
+            }
+            tableLayoutPanel1.ColumnStyles.Clear();
+            if (current == Model.WindowMode.Maximized)
+            {
+                tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65F));
                 tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35F));
             }
-            else if ((Model.AppState.CurrentWindowMode == Model.WindowMode.Normal))
+            else if (current == Model.WindowMode.Normal)
             {
-                tableLayoutPanel1.ColumnStyles.Clear();
-                tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));  // mặc định 60/40
+                tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
                 tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
             }
-            else
-            {
-                tableLayoutPanel1.ColumnStyles.Clear();
-                tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));  // mặc định 60/40
-                tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-
-            }
+            _previousWindowMode = current;
         }
         private void SetInputAddLayoutInput()
         {

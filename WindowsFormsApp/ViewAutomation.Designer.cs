@@ -239,7 +239,7 @@ namespace WindowsFormsApp
             this.btnStopRun.Location = new System.Drawing.Point(0, 0);
             this.btnStopRun.Name = "btnStopRun";
             this.btnStopRun.Size = new System.Drawing.Size(120, 35);
-            this.btnStopRun.Style.BackColor = System.Drawing.Color.Teal;
+            this.btnStopRun.Style.BackColor = System.Drawing.Color.OrangeRed;
             this.btnStopRun.Style.ForeColor = System.Drawing.Color.White;
             this.btnStopRun.TabIndex = 0;
             this.btnStopRun.Text = "Stop script";

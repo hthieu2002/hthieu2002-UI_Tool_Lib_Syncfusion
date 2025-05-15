@@ -280,8 +280,37 @@ namespace WindowsFormsApp
         }
         private void btnAutoRun_Click(object sender, EventArgs e)
         {
-          
+            // Lấy DataTable hiện tại
+            _deviceTable = sfDataGrid.DataSource as DataTable;
+
+            if (_deviceTable == null)
+            {
+                Console.WriteLine("DataSource chưa được gán hoặc không đúng kiểu DataTable.");
+                return;
+            }
+
+            // Xóa dữ liệu cũ
+            _deviceTable.Rows.Clear();
+
+            string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "devices.json");
+            if (!File.Exists(path))
+            {
+                SaveDevicesToFile();
+            }
+
+            string json = File.ReadAllText(path);
+            deviceDisplays = JsonConvert.DeserializeObject<List<WindowsFormsApp.Model.DeviceDisplay>>(json) ?? new List<WindowsFormsApp.Model.DeviceDisplay>();
+
+            foreach (var device in deviceDisplays)
+            {
+                int stt = _deviceTable.Rows.Count + 1;
+                _deviceTable.Rows.Add(stt, device.Checkbox, device.Name, device.Serial, 0, "", device.Status);
+            }
+
+            // Refresh lại grid
+            sfDataGrid.Refresh();
         }
+
         private async void RunScript_Click(object sender, EventArgs e)
         {
             if (cbLoadFile.SelectedItem == null)

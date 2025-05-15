@@ -283,7 +283,7 @@ namespace WindowsFormsApp
             this.btnAutoRun.Style.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(140)))), ((int)(((byte)(250)))));
             this.btnAutoRun.Style.ForeColor = System.Drawing.Color.White;
             this.btnAutoRun.TabIndex = 0;
-            this.btnAutoRun.Text = "Auto run";
+            this.btnAutoRun.Text = "Load devices";
             this.btnAutoRun.UseVisualStyleBackColor = false;
             // 
             // btnBackup

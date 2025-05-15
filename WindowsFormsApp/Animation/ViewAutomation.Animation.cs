@@ -132,7 +132,7 @@ namespace WindowsFormsApp
                 int stt = _deviceTable.Rows.Count + 1;
 
 
-                _deviceTable.Rows.Add(stt, false, device.Name, device.Serial, 0, "", "Offline");
+                _deviceTable.Rows.Add(stt, device.Checkbox, device.Name, device.Serial, 0, "", device.Status);
 
                 sfDataGrid.Refresh();
             }

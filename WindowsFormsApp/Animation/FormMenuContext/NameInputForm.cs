@@ -55,12 +55,16 @@ namespace WindowsFormsApp.Animation
         {
             NewName = txtName.Text;
 
-            if (string.IsNullOrWhiteSpace(NewName))
+            if (string.IsNullOrWhiteSpace(NewName) && Text == "Name device")
             {
                 MessageBox.Show("Tên không hợp lệ.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
+            else if (string.IsNullOrWhiteSpace(NewName) && Text == "Input Proxy Socks5")
+            {
+                MessageBox.Show("Proxy Trống!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

@@ -463,13 +463,15 @@ namespace WindowsFormsApp
             var copyDeviceID = new ToolStripMenuItem("Copy Device ID");
             var detailsItem = new ToolStripMenuItem("Details");
             var editItem = new ToolStripMenuItem("Edit");
+            var fakeRedsocks = new ToolStripMenuItem("Fake Proxy");
             var deleteItem = new ToolStripMenuItem("Delete");
             copyDeviceID.Click += CopyDeviceID_Click;
             detailsItem.Click += DetailsItem_Click;
             editItem.Click += EditItem_Click;
+            fakeRedsocks.Click += FakeRedsocks_Click;
             deleteItem.Click += DeleteItem_Click;
             this.sfDataGrid.RecordContextMenu.Items.AddRange(
-                new ToolStripItem[] { copyDeviceID, detailsItem, editItem, deleteItem }
+                new ToolStripItem[] { copyDeviceID, detailsItem, editItem, fakeRedsocks, deleteItem }
             );
         }
         private void sfDataGrid_QueryCellStyle(object sender, QueryCellStyleEventArgs e)

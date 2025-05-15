@@ -17,6 +17,10 @@ namespace WindowsFormsApp.Script.RoslynTest
         {
             return ParseSwipeCoordinates(input);
         }
+        public (int, int, int, int ) getParseRandomClickCoordinates(string input)
+        {
+            return ParseRandomClickCoordinates(input);
+        }
         private (int, int) ParseClickCoordinates(string input)
         {
             var regex = new Regex(@"ClickXY\((\d+)\s+(\d+)\)");
@@ -54,6 +58,20 @@ namespace WindowsFormsApp.Script.RoslynTest
             {
                 throw new FormatException("Chuỗi đầu vào không đúng định dạng.");
             }
+        }
+        private (int , int , int , int ) ParseRandomClickCoordinates(string input)
+        {
+            MatchCollection matches = Regex.Matches(input, @"\d+");
+            if (matches.Count < 4)
+                throw new ArgumentException("Chuỗi không đủ 4 số.");
+
+            Console.WriteLine($"{matches}");
+            return (
+                int.Parse(matches[0].Value),
+                int.Parse(matches[1].Value),
+                int.Parse(matches[2].Value),
+                int.Parse(matches[3].Value)
+            );
         }
     }
 }

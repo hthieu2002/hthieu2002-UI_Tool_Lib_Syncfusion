@@ -36,7 +36,8 @@ namespace WindowsFormsApp.Script.Roslyn
                     await ExecuteDynamicCode(swipeCode, globals);
                     break;
                 case "RandomClick":
-
+                    string randomClickCode = $"await eventRoslyn.HandleRandom(\"{textRoslyn}\", \"{deviceId}\")";
+                    await ExecuteDynamicCode(randomClickCode, globals);
                     break;
                 default:
                     Console.WriteLine("Lệnh không nhận diện.");

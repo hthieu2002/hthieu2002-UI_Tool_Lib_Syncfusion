@@ -4,6 +4,7 @@ using AccountCreatorForm.Controls;
 using AuthenticationService;
 using MiHttpClient;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using POCO.Models;
 using Services;
 using Syncfusion.Windows.Forms.Tools;
@@ -1229,6 +1230,155 @@ namespace WindowsFormsApp
         private void ViewChange_VisibleChanged(object sender, EventArgs e)
         {
             FormVisibilityManager.IsFormViewChangeVisible = this.Visible;
+        }
+
+        async private void FakeRedsocks_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectedRow = sfDataGrid.SelectedItems.Cast<DataRowView>().FirstOrDefault();
+                if (selectedRow != null)
+                {
+                    string deviceId = selectedRow["DeviceID"].ToString();
+                    var deviceToFake = deviceDisplays.FirstOrDefault(
+                        d => d.Serial == deviceId && d.Status == "Online"
+                        );
+                    if (deviceToFake != null)
+                    {
+                        NameInputForm proxyForm = new NameInputForm("", "Input Proxy Socks5");
+                        if (proxyForm.ShowDialog() == DialogResult.OK)
+                        {
+                            string proxy = proxyForm.NewName;
+                            var peelProxy = proxy.Split(':');
+                            var dt = sfDataGrid.DataSource as System.Data.DataTable;
+                            if (dt == null) return;
+                            // Tìm kiếm chỉ mục dòng dựa trên DeviceID
+                            int rowIndex = dt.AsEnumerable().ToList().FindIndex(r => r.Field<string>("DeviceID") == deviceToFake.Serial);
+                            if (rowIndex >= 0 && rowIndex < dt.Rows.Count)
+                            {
+                                var row = dt.Rows[rowIndex];
+                                _ = updateProgress(row, "Start Fake Timezone...", 10);
+                                // fake timezone
+                                var isFakeTimeZone = FakeTimeZone(proxy, deviceToFake.Serial);
+                                if (isFakeTimeZone)
+                                {
+                                    _ = updateProgress(row, "Fake Timezone Success!", 25);
+                                    // fake redsocks
+                                    var currentTask = TaskScheduler.FromCurrentSynchronizationContext();
+                                    Thread.Sleep(10000);
+                                    await Task.Run(() =>
+                                    {
+                                        _ = updateProgress(row, "Faking proxy...", 26);
+                                        string ip = peelProxy[0];
+                                        int port = int.Parse(peelProxy[1]);
+                                        string user = (peelProxy.Length >= 3) ? peelProxy[2] : "";
+                                        string password = (peelProxy.Length >= 4) ? peelProxy[3] : "";
+                                        ADBService.enableWifi(false, deviceId);
+                                        ADBService.rootAndRemount(deviceId);
+                                        ADBService.putSetting("http_proxy", ":0", deviceId);
+                                        _ = updateProgress(row, "Faking proxy...", 35);
+                                        //Tun2SocksService.stop(9988, deviceId);
+                                        RedSocksService.stop(deviceId);
+                                        if (ADBService.checkFileOnDevice("/data/local/tmp/redsocks.conf", deviceId))
+                                        {
+                                            RedSocksService.stop(deviceId);
+                                        }
+                                        _ = updateProgress(row, "Faking proxy: Setup file config...", 50);
+                                        RedSocksService.setUpRedSocksOnDevice("/data/local/tmp", deviceId);
+                                        _ = updateProgress(row, "Faking proxy: Start command...", 70);
+                                        RedSocksService.start(ip, port, "/data/local/tmp", deviceId, user, password);
+                                        _ = updateProgress(row, "Faking proxy: Open wifi setting...", 90);
+                                        ADBService.openWifiSettings(deviceId);
+                                        Thread.Sleep(3000);
+                                        while (!ADBService.isWifiConnectedV2(deviceId) && !ADBService.isWifiConnected(deviceId))
+                                        {
+                                            _ = updateProgress(row, "Faking proxy: Open wifi setting...", 95);
+                                            ADBService.openWifiSettings(deviceId);
+                                            Thread.Sleep(3000);
+                                        }
+                                        Thread.Sleep(5000);
+                                        ADBService.OpenBrowserWithUrl("https://browserleaks.com/ip", deviceId);
+                                        _ = updateProgress(row, "Faking proxy: Open BrowserleaksIP...", 99);
+                                    }).ContinueWith(task =>
+                                    {
+                                        _ = updateProgress(row, "Faking proxy Done", 100);
+                                    }, currentTask);
+                                }
+                                else
+                                {
+                                    _ = updateProgress(row, "Fake Timezone False!", 0);
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Thiết bị hiện không hoạt động hoặc chưa xác thực.");
+                        return;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Vui lòng chọn một thiết bị.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private bool FakeTimeZone(string proxy, string deviceId)
+        {
+            try
+            {
+                ADBService.enableWifi(false, deviceId);
+                var url = "http://ip-api.com/json";
+                var proxyParts = proxy.Split(':');
+                ADBService.rootAndRemount(deviceId);
+                if (proxyParts.Length == 4)
+                {
+                    var commandline = $"curl --socks5 {proxyParts[0]}:{proxyParts[1]} --proxy-user {proxyParts[2]}:{proxyParts[3]} \"{url}\"";
+                    var str = CmdProcess.ExecuteCommand(string.Format("/C {0}", commandline));
+                    if (!string.IsNullOrEmpty(str))
+                    {
+                        JObject jsonOblect = JObject.Parse(str);
+                        ADBService.FakeTimezone(jsonOblect["timezone"].ToString(), deviceId);
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Failed to connect to {proxyParts[0]} port {proxyParts[0]}", "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
+                }
+                else if (proxyParts.Length == 2)
+                {
+                    var commandline = $"curl --socks5 {proxyParts[0]}:{proxyParts[1]} \"{url}\"";
+                    var str = CmdProcess.ExecuteCommand(string.Format("/C {0}", commandline));
+                    if (!string.IsNullOrEmpty(str))
+                    {
+                        JObject jsonOblect = JObject.Parse(str);
+                        ADBService.FakeTimezone(jsonOblect["timezone"].ToString(), deviceId);
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Failed to connect to {proxyParts[0]} port {proxyParts[0]}", "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Invalid Proxy", "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
         }
     }
 }

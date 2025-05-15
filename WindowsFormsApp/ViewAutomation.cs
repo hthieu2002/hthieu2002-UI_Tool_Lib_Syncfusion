@@ -22,6 +22,7 @@ using Newtonsoft.Json;
 using System.Threading;
 using WindowsFormsApp.Model;
 using System.Xml.Linq;
+using WindowsFormsApp.Script.RoslynScript;
 
 namespace WindowsFormsApp
 {
@@ -246,23 +247,27 @@ namespace WindowsFormsApp
         }
         private void btnAutoRun_Click(object sender, EventArgs e)
         {
-            FormVisibilityManager._updatedNames["97XAY12C0F"] = "hahha";
+          
         }
         private void RunScript_Click(object sender, EventArgs e)
         {
             if (cbLoadFile.SelectedItem == null)
             {
                 MessageBox.Show("Vui lòng load file script.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+               
+               
                 return;
             }
 
             if (cbAuto.Checked)
             {
                 MessageBox.Show("Đang chạy vô hạn");
+                RoslynScriptAutomation.Run($"./Resources/script/{cbLoadFile.Text}");
             }
             else
             {
                 int numberOfRuns = (int)nudNumber.Value;
+                RoslynScriptAutomation.Run($"./Resources/script/{cbLoadFile.Text}");
                 MessageBox.Show($"Đang chạy {numberOfRuns} lần");
             }
         }

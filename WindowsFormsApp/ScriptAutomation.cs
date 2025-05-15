@@ -353,7 +353,11 @@ namespace WindowsFormsApp
             };
 
             var process = Process.Start(processStartInfo);
-            process.WaitForExit();
+            if (process != null)
+            {
+                process.WaitForExit();
+            }
+           
 
             processStartInfo = new ProcessStartInfo("adb", $"-s {deviceId} pull /sdcard/screen.png {imagePath}")
             {
@@ -363,7 +367,10 @@ namespace WindowsFormsApp
             };
 
             process = Process.Start(processStartInfo);
-            process.WaitForExit();
+            if (process != null)
+            {
+                process.WaitForExit();
+            }
         }
 
         private void DumpUIDetails(string deviceId)

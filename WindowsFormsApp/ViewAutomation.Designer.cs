@@ -50,6 +50,7 @@ namespace WindowsFormsApp
             this.nudNumber = new System.Windows.Forms.NumericUpDown();
             this.cbAuto = new System.Windows.Forms.CheckBox();
             this.btnRun = new Syncfusion.WinForms.Controls.SfButton();
+            this.btnStopRun = new Syncfusion.WinForms.Controls.SfButton();
             this.btnScript = new Syncfusion.WinForms.Controls.SfButton();
             this.cbNomal = new Syncfusion.WinForms.ListView.SfComboBox();
             this.btnAutoRun = new Syncfusion.WinForms.Controls.SfButton();
@@ -230,6 +231,22 @@ namespace WindowsFormsApp
             this.btnRun.Text = "Run Script";
             this.btnRun.UseVisualStyleBackColor = false;
             // 
+            // btnStopRun
+            // 
+            this.btnStopRun.BackColor = System.Drawing.Color.Teal;
+            this.btnStopRun.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            this.btnStopRun.ForeColor = System.Drawing.Color.White;
+            this.btnStopRun.Location = new System.Drawing.Point(0, 0);
+            this.btnStopRun.Name = "btnStopRun";
+            this.btnStopRun.Size = new System.Drawing.Size(120, 35);
+            this.btnStopRun.Style.BackColor = System.Drawing.Color.Teal;
+            this.btnStopRun.Style.ForeColor = System.Drawing.Color.White;
+            this.btnStopRun.TabIndex = 0;
+            this.btnStopRun.Text = "Stop script";
+            this.btnStopRun.UseVisualStyleBackColor = false;
+            this.btnStopRun.Visible = false;
+
+            // 
             // btnScript
             // 
             this.btnScript.BackColor = System.Drawing.Color.MediumPurple;
@@ -372,6 +389,7 @@ namespace WindowsFormsApp
         private System.Windows.Forms.NumericUpDown nudNumber;
         private System.Windows.Forms.CheckBox cbAuto;
         private Syncfusion.WinForms.Controls.SfButton btnRun;
+        private Syncfusion.WinForms.Controls.SfButton btnStopRun;
         private Syncfusion.WinForms.Controls.SfButton btnScript;
         //
         private Syncfusion.WinForms.ListView.SfComboBox cbNomal;

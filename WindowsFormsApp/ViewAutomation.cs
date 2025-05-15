@@ -23,6 +23,8 @@ using System.Threading;
 using WindowsFormsApp.Model;
 using System.Xml.Linq;
 using WindowsFormsApp.Script.RoslynScript;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
+using Newtonsoft.Json.Linq;
 
 namespace WindowsFormsApp
 {
@@ -30,8 +32,10 @@ namespace WindowsFormsApp
     {
         List<string> dataFileScript;
         private Task _deviceCheckTask;
-        private static CancellationTokenSource _deviceCheckCancellationTokenSource;
+        private CancellationTokenSource _cts;
 
+        private static CancellationTokenSource _deviceCheckCancellationTokenSource;
+        private readonly HashSet<string> _animatingDevices = new HashSet<string>();
         public static ViewAutomation Instance { get; private set; }
         public ViewAutomation()
         {
@@ -73,7 +77,36 @@ namespace WindowsFormsApp
                 }
             }
         }
+        public async Task UpdateProgressGridView(string id, string text, int p = 1)
+        {
+            var dt = sfDataGrid.DataSource as System.Data.DataTable;
+            if (dt == null) return;
 
+            // Tìm kiếm chỉ mục dòng dựa trên DeviceID
+            int rowIndex = dt.AsEnumerable().ToList().FindIndex(r => r.Field<string>("DeviceID") == id);
+
+            Console.WriteLine(text + "Đã nhận");
+            if (rowIndex >= 0 && rowIndex < dt.Rows.Count)
+            {
+                var row = dt.Rows[rowIndex];
+                if (sfDataGrid.InvokeRequired)
+                {
+                    sfDataGrid.Invoke(new Action(() =>
+                    {
+                        row["Progress"] = p;
+                        row["ProgressText"] = text;
+                        sfDataGrid.Refresh();
+                    }));
+                }
+                else
+                {
+                    row["Progress"] = p;
+                    row["ProgressText"] = text;
+                    sfDataGrid.Refresh();
+                }
+
+            }
+        }
 
         private void Script_Click(object sender, EventArgs e)
         {
@@ -249,28 +282,97 @@ namespace WindowsFormsApp
         {
           
         }
-        private void RunScript_Click(object sender, EventArgs e)
+        private async void RunScript_Click(object sender, EventArgs e)
         {
             if (cbLoadFile.SelectedItem == null)
             {
                 MessageBox.Show("Vui lòng load file script.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-               
-               
                 return;
             }
+            var dt = sfDataGrid.DataSource as System.Data.DataTable;
+            if (dt == null) return;
+
+            var selectedRows = dt.Rows
+                                   .Cast<System.Data.DataRow>()
+                                   .Where(r => r.Field<bool>("Checkbox"))
+                                   .ToList();
+
+            var toAnimate = selectedRows
+                  .Select(r => r.Field<string>("DeviceID"))
+                  .Where(id => !_animatingDevices.Contains(id))
+                  .ToList();
+
+            if (!toAnimate.Any())
+            {
+                MessageBox.Show("Không có thiết bị mới nào để chạy.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            var deviceIds = selectedRows
+                .Select(r => r.Field<string>("DeviceID")) 
+                .ToList();
+
+            var tasks = new List<Task>();
+
+            btnRun.Visible = false;
+            btnStopRun.Visible = true;
 
             if (cbAuto.Checked)
             {
-                MessageBox.Show("Đang chạy vô hạn");
-                RoslynScriptAutomation.Run($"./Resources/script/{cbLoadFile.Text}");
+               _cts = new CancellationTokenSource();
+                int i = 0;
+                while (!_cts.Token.IsCancellationRequested)
+                {
+                    i++;
+                    foreach (var deviceId in deviceIds)
+                    {
+                        var task = Task.Run(async () =>
+                        {
+                            await UpdateProgressGridView(deviceId, $"Start script {cbLoadFile.Text} vô hạn lần {i}", 1);
+                            RoslynScriptAutomation.Run($"./Resources/script/{cbLoadFile.Text}", deviceId);
+
+                            await UpdateProgressGridView(deviceId, $"Success", 100);
+                        });
+                        tasks.Add(task);
+
+                    }
+                    await Task.WhenAll(tasks);
+
+                    await Task.Delay(1000);
+                }
             }
             else
             {
                 int numberOfRuns = (int)nudNumber.Value;
-                RoslynScriptAutomation.Run($"./Resources/script/{cbLoadFile.Text}");
-                MessageBox.Show($"Đang chạy {numberOfRuns} lần");
+                for (int i = 0; i < numberOfRuns; i++)
+                {
+                    foreach (var deviceId in deviceIds)
+                    {
+                        var task = Task.Run(async () =>
+                        {
+                            await UpdateProgressGridView(deviceId, $"Start script {cbLoadFile.Text} lần {i+1}", 1);
+                            RoslynScriptAutomation.Run($"./Resources/script/{cbLoadFile.Text}", deviceId);
+
+                            await UpdateProgressGridView(deviceId, $"Success", 100);
+                        });
+                        tasks.Add(task);
+
+                    }
+
+                    await Task.WhenAll(tasks);
+                }
+                await Task.Delay(1000);
             }
         }
+        private async void StopRunScript_Click(object sender, EventArgs e)
+        {
+            if (_cts != null)
+            {
+                _cts.Cancel();
+                btnRun.Visible = true;
+                btnStopRun.Visible = false;
+            }
+        }
+
         private void cbAuto_CheckedChanged(object sender, EventArgs e)
         {
             if (cbAuto.Checked)

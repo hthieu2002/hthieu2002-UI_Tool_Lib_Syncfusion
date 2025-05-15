@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace WindowsFormsApp.Script.RoslynScript
 {
@@ -19,6 +20,8 @@ namespace WindowsFormsApp.Script.RoslynScript
         public static void CompileAndExecute(CompilationUnitSyntax compilationUnit)
         {
             var syntaxTree = compilationUnit.SyntaxTree;
+            string relativePath = @"./WindowsFormsApp.exe";
+            string absolutePath = Path.GetFullPath(relativePath);
 
             Console.WriteLine(syntaxTree);
 
@@ -28,15 +31,18 @@ namespace WindowsFormsApp.Script.RoslynScript
             MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
             MetadataReference.CreateFromFile(typeof(Thread).Assembly.Location),
             MetadataReference.CreateFromFile(typeof(Process).Assembly.Location),
-            };
-      
+            MetadataReference.CreateFromFile(typeof(Services.ADBService).Assembly.Location),
+            MetadataReference.CreateFromFile(absolutePath),
+            MetadataReference.CreateFromFile(typeof(Form).Assembly.Location)
+        };
+
             var compilation = CSharpCompilation.Create(
       assemblyName: "DynamicAssembly",
       syntaxTrees: new[] { syntaxTree },
       references: references,
       options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
-        
+
             using (var ms = new MemoryStream())
             {
                 try
@@ -61,7 +67,8 @@ namespace WindowsFormsApp.Script.RoslynScript
                     var method = type.GetMethod("Run");
 
                     method.Invoke(instance, null);
-                }catch(Exception ex)
+                }
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex);
                 }

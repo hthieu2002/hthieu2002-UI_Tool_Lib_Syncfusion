@@ -27,7 +27,9 @@ namespace WindowsFormsApp
             btnLoadFile.Click += LoadFileScript_Click;
 
             btnRun.Paint += BtnCommon_Paint;
+            btnStopRun.Paint += BtnCommon_Paint;
             btnRun.Click += RunScript_Click;
+            btnStopRun.Click += StopRunScript_Click;
 
             btnScript.Click += Script_Click;
             btnScript.Paint += BtnCommon_Paint;
@@ -36,6 +38,7 @@ namespace WindowsFormsApp
             flowLayoutPanel3.Controls.Add(cbAuto);
 
             flowLayoutPanel3.Controls.Add(btnRun);
+            flowLayoutPanel3.Controls.Add(btnStopRun);
             flowLayoutPanel3.Controls.Add(btnScript);
 
         }

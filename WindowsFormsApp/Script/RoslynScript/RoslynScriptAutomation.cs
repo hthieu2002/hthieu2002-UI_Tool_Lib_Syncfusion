@@ -12,7 +12,7 @@ namespace WindowsFormsApp.Script.RoslynScript
 {
     public static class RoslynScriptAutomation
     {
-        public static void Run(string commandsFile)
+        public static void Run(string commandsFile, string deviceID)
         {
             var commandLines = File.ReadAllLines(commandsFile)
                                    .Where(l => !string.IsNullOrWhiteSpace(l))
@@ -21,13 +21,16 @@ namespace WindowsFormsApp.Script.RoslynScript
             var statements = CommandParser.ParseCommandsToStatements(commandLines);
 
             var runMethod = MethodFactory.CreateRunMethod(statements);
-            var commandExecutorClass = MethodFactory.CreateCommandExecutorClass(runMethod);
+            var commandExecutorClass = MethodFactory.CreateCommandExecutorClass(runMethod, deviceID);
             var compilationUnit = SyntaxFactory.CompilationUnit()
                 .AddMembers(commandExecutorClass)
                 .AddUsings(
                     SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System")),
                     SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.Threading")),
-                    SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.Diagnostics"))
+                    SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.Diagnostics")),
+                    SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("Services")),
+                    SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("WindowsFormsApp")),
+                    SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.Threading.Tasks"))
                 )
                 .NormalizeWhitespace();
 

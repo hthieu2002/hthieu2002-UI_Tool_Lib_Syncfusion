@@ -1257,6 +1257,9 @@ namespace WindowsFormsApp
                             if (rowIndex >= 0 && rowIndex < dt.Rows.Count)
                             {
                                 var row = dt.Rows[rowIndex];
+                                var currentTask = TaskScheduler.FromCurrentSynchronizationContext();
+                                await Task.Run(() =>
+                                {
                                 _ = updateProgress(row, "Start Fake Timezone...", 10);
                                 // fake timezone
                                 var isFakeTimeZone = FakeTimeZone(proxy, deviceToFake.Serial);
@@ -1264,10 +1267,9 @@ namespace WindowsFormsApp
                                 {
                                     _ = updateProgress(row, "Fake Timezone Success!", 25);
                                     // fake redsocks
-                                    var currentTask = TaskScheduler.FromCurrentSynchronizationContext();
+                                    
                                     Thread.Sleep(10000);
-                                    await Task.Run(() =>
-                                    {
+                                  
                                         _ = updateProgress(row, "Faking proxy...", 26);
                                         string ip = peelProxy[0];
                                         int port = int.Parse(peelProxy[1]);
@@ -1299,16 +1301,17 @@ namespace WindowsFormsApp
                                         Thread.Sleep(5000);
                                         ADBService.OpenBrowserWithUrl("https://browserleaks.com/ip", deviceId);
                                         _ = updateProgress(row, "Faking proxy: Open BrowserleaksIP...", 99);
-                                    }).ContinueWith(task =>
-                                    {
-                                        _ = updateProgress(row, "Faking proxy Done", 100);
-                                    }, currentTask);
+                                   
                                 }
                                 else
                                 {
                                     _ = updateProgress(row, "Fake Timezone False!", 0);
                                     return;
                                 }
+                                }).ContinueWith(task =>
+                                {
+                                    _ = updateProgress(row, "Faking proxy Done", 100);
+                                }, currentTask);
                             }
                         }
                     }

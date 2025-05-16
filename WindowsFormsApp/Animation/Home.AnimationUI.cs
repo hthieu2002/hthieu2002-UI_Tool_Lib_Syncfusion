@@ -272,7 +272,7 @@ namespace AccountCreatorForm.Views
                         {
                             panelMainView.Controls.Remove(loading);
                         };
-                        if (!(childForm is ScreenView) || !(childForm is ViewAutomation))
+                        if (!(childForm is ScreenView))
                         {
                             currentChildForms.Add(childForm);
                         }

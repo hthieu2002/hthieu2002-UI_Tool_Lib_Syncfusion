@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Services
@@ -803,25 +804,44 @@ namespace Services
             Process adbProcess = Process.Start(startInfo);
             adbProcess.WaitForExit();
         }
-        public static async Task ExecuteAdbCommand(string command)
+        public static void ExecuteAdbCommand(string command)
         {
             try
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo
+                var startInfo = new ProcessStartInfo
                 {
                     FileName = "cmd.exe",
                     Arguments = "/c " + command,
                     CreateNoWindow = true,
-                    UseShellExecute = false
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
                 };
 
-                await Task.Run(() => Process.Start(startInfo)); 
+                using (var process = new Process { StartInfo = startInfo })
+                {
+                    process.Start();
+
+                    // Đợi tiến trình kết thúc (đồng bộ)
+                    process.WaitForExit();
+
+                    // Đọc output, error đồng bộ
+                    string output = process.StandardOutput.ReadToEnd();
+                    string error = process.StandardError.ReadToEnd();
+
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        Console.WriteLine($"ADB Error: {error}");
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Lỗi khi gọi adb: " + ex.Message);
             }
         }
+
+
         public static string[] GetConnectedDevices()
         {
             ProcessStartInfo startInfo = new ProcessStartInfo()
@@ -859,6 +879,97 @@ namespace Services
 
             return !string.IsNullOrEmpty(output) && output.Contains("1");
         }
+
+        public static string FindBoundsByText(string xmlPath, string text)
+        {
+            try
+            {
+                if (!File.Exists(xmlPath))
+                    return null;
+
+                XDocument doc = XDocument.Load(xmlPath);
+                XElement root = doc.Root;
+
+                XElement foundNode = FindNodeWithText(root, text);
+                if (foundNode == null)
+                    return null;
+
+                XAttribute boundsAttr = foundNode.Attribute("bounds");
+                if (boundsAttr == null)
+                    return null;
+
+                return boundsAttr.Value;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+
+
+        // Đệ quy tìm node có attribute text = text
+        private static XElement FindNodeWithText(XElement element, string text)
+        {
+            if (element.Attribute("text")?.Value == text)
+                return element;
+
+            foreach (var child in element.Elements())
+            {
+                XElement found = FindNodeWithText(child, text);
+                if (found != null)
+                    return found;
+            }
+            return null;
+        }
+
+        // Phân tích chuỗi bounds "[left,top][right,bottom]" thành tọa độ tâm (x,y)
+        public static (int x, int y) ParseCenter(string bounds)
+        {
+            if (string.IsNullOrWhiteSpace(bounds))
+                throw new ArgumentException("Bounds string is null or empty.");
+
+            var parts = bounds.Split(new[] { '[', ']', ',' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length != 4)
+                throw new FormatException("Bounds string is not in expected format.");
+
+            int left = int.Parse(parts[0]);
+            int top = int.Parse(parts[1]);
+            int right = int.Parse(parts[2]);
+            int bottom = int.Parse(parts[3]);
+
+            int centerX = (left + right) / 2;
+            int centerY = (top + bottom) / 2;
+
+            return (centerX, centerY);
+        }
+
+        public static void WaitFileExists(string filePath, int timeoutMs = 5000)
+        {
+            int waited = 0;
+            while (!File.Exists(filePath) && waited < timeoutMs)
+            {
+                System.Threading.Thread.Sleep(100);
+                waited += 100;
+            }
+
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException($"File {filePath} was not found after waiting {timeoutMs}ms");
+        }
+
+        public static void EnsureFileDeleted(string path)
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+                while (File.Exists(path))
+                {
+                    System.Threading.Thread.Sleep(100);
+                }
+            }
+        }
+
+
         /// <summary>
         /// end
         /// </summary>

@@ -280,7 +280,6 @@ namespace WindowsFormsApp
         }
         private void btnAutoRun_Click(object sender, EventArgs e)
         {
-            // Lấy DataTable hiện tại
             _deviceTable = sfDataGrid.DataSource as DataTable;
 
             if (_deviceTable == null)
@@ -289,7 +288,6 @@ namespace WindowsFormsApp
                 return;
             }
 
-            // Xóa dữ liệu cũ
             _deviceTable.Rows.Clear();
 
             string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "devices.json");
@@ -307,7 +305,6 @@ namespace WindowsFormsApp
                 _deviceTable.Rows.Add(stt, device.Checkbox, device.Name, device.Serial, 0, "", device.Status);
             }
 
-            // Refresh lại grid
             sfDataGrid.Refresh();
         }
 
@@ -382,6 +379,7 @@ namespace WindowsFormsApp
                             RoslynScriptAutomation.Run($"./Resources/script/{cbLoadFile.Text}", deviceId);
 
                             await UpdateProgressGridView(deviceId, $"Success", 100);
+
                         });
                         tasks.Add(task);
 
@@ -389,6 +387,12 @@ namespace WindowsFormsApp
 
                     await Task.WhenAll(tasks);
                 }
+                btnRun.Invoke((MethodInvoker)(() =>
+                {
+                    btnRun.Visible = true;
+                    btnStopRun.Visible = false;
+                }));
+
                 await Task.Delay(1000);
             }
         }

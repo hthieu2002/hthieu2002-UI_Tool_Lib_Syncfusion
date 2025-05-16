@@ -31,23 +31,41 @@ namespace WindowsFormsApp.Script.RoslynScript
             string methodName = line.Substring(0, idxOpen);
             string argsStr = line.Substring(idxOpen + 1, idxClose - idxOpen - 1);
 
-            // Xử lý args: thay dấu phẩy thành dấu cách, tách ra mảng
             string[] argsParts = argsStr.Replace(",", " ").Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
 
             var arguments = new List<ArgumentSyntax>();
             foreach (var arg in argsParts)
             {
-                if (int.TryParse(arg, out int val))
+                if (arg.StartsWith("\"") && arg.EndsWith("\""))
+                {
+                    string stringValue = arg.Substring(1, arg.Length - 2);
+                    arguments.Add(
+                        SyntaxFactory.Argument(
+                            SyntaxFactory.LiteralExpression(
+                                SyntaxKind.StringLiteralExpression,
+                                SyntaxFactory.Literal(stringValue)
+                            )
+                        )
+                    );
+                }
+                else if (int.TryParse(arg, out int val))
                 {
                     arguments.Add(
                         SyntaxFactory.Argument(
                             SyntaxFactory.LiteralExpression(
                                 SyntaxKind.NumericLiteralExpression,
-                                SyntaxFactory.Literal(val))));
+                                SyntaxFactory.Literal(val)
+                            )
+                        )
+                    );
                 }
                 else
                 {
-                    // Nếu muốn hỗ trợ kiểu khác thì bổ sung xử lý ở đây
+                    arguments.Add(
+                        SyntaxFactory.Argument(
+                            SyntaxFactory.IdentifierName(arg)
+                        )
+                    );
                 }
             }
 
@@ -57,5 +75,6 @@ namespace WindowsFormsApp.Script.RoslynScript
 
             return SyntaxFactory.ExpressionStatement(invocation);
         }
+
     }
 }

@@ -257,17 +257,20 @@ namespace WindowsFormsApp
         }
         public void AppendText(string textToAdd)
         {
-            if (!string.IsNullOrEmpty(richTextBox1.Text))
+            if (string.IsNullOrEmpty(richTextBox1.Text))
             {
-                richTextBox1.Text += "";
+                richTextBox1.Text = ""; // Cũng có thể bỏ qua nếu không cần thiết
             }
+
             if (isEditing)
             {
                 // edit
                 txtTest.Text = "";
                 txtTest.Text = textToAdd;
-                richTextBox1.Text += "\n" + textToAdd;
 
+                richTextBox1.Text = richTextBox1.Text.Insert(richTextBox1.SelectionStart, textToAdd);
+
+                richTextBox1.SelectionStart = richTextBox1.SelectionStart + textToAdd.Length + 1;
             }
             else
             {
@@ -276,8 +279,8 @@ namespace WindowsFormsApp
                 txtTest.Text = textToAdd;
                 return;
             }
-
         }
+
         private void HighlightSyntax()
         {
             int selectionStart = richTextBox1.SelectionStart;

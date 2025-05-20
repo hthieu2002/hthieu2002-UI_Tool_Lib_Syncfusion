@@ -7,21 +7,21 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace WindowsFormsApp.Script.RoslynScript
 {
     public static class RoslynScriptAutomation
     {
-        public static void Run(string commandsFile, string deviceID)
+        public static void Run(string commandsFile, string deviceID, Form view)
         {
             var commandLines = File.ReadAllLines(commandsFile)
                                    .Where(l => !string.IsNullOrWhiteSpace(l))
                                    .ToArray();
 
             var statements = CommandParser.ParseCommandsToStatements(commandLines);
-
             var runMethod = MethodFactory.CreateRunMethod(statements);
-            var commandExecutorClass = MethodFactory.CreateCommandExecutorClass(runMethod, deviceID);
+            var commandExecutorClass = MethodFactory.CreateCommandExecutorClass(runMethod, deviceID, "ViewAutomation");
             var compilationUnit = SyntaxFactory.CompilationUnit()
                 .AddMembers(commandExecutorClass)
                 .AddUsings(
@@ -35,7 +35,12 @@ namespace WindowsFormsApp.Script.RoslynScript
                 .NormalizeWhitespace();
 
             Console.WriteLine(compilationUnit.ToFullString());
-            CompilerRunner.CompileAndExecute(compilationUnit);
+            var assembly = CompilerRunner.CompileAndLoadAssembly(compilationUnit);
+            var commandExecutorType = assembly.GetType("CommandExecutor");
+            var executorInstance = Activator.CreateInstance(commandExecutorType, deviceID, view);
+            var runMethodInfo = commandExecutorType.GetMethod("Run");
+            runMethodInfo.Invoke(executorInstance, null);
         }
+
     }
 }

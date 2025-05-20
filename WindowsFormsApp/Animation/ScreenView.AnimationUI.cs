@@ -68,8 +68,8 @@ namespace WindowsFormsApp
                     btnIncreaseVolume.Click += BtnIncreaseVolume_Click;
                     btnDecreaseVolume.Click += BtnDecreaseVolume_Click;
 
-                    void BtnHome_Click(object senderHome, EventArgs e1) => ADBService.ExecuteAdbCommand("input keyevent 3", deviceId); // Home
-                    void BtnBack_Click(object senderBack, EventArgs e2) => ADBService.ExecuteAdbCommand("input keyevent 4", deviceId); // Back
+                    void BtnHome_Click(object senderHome, EventArgs e1) => ADBService.ExecuteAdbCommand("shell input keyevent 3", deviceId); // Home
+                    void BtnBack_Click(object senderBack, EventArgs e2) => ADBService.ExecuteAdbCommand("shell input keyevent 4", deviceId); // Back
                     void BtnReboot_Click(object senderReboot, EventArgs e3)
                     {
                         deviceForm.Close();
@@ -77,9 +77,9 @@ namespace WindowsFormsApp
                         ADBService.ExecuteAdbCommand("reboot", deviceId);
                     }
 
-                    void BtnPowerOff_Click(object senderPowerOff, EventArgs e4) => ADBService.ExecuteAdbCommand("input keyevent 26", deviceId); // Power Off
-                    void BtnIncreaseVolume_Click(object senderIncreaseVolume, EventArgs e5) => ADBService.ExecuteAdbCommand("input keyevent 24", deviceId); // Increase Volume
-                    void BtnDecreaseVolume_Click(object senderDecreaseVolume, EventArgs e6) => ADBService.ExecuteAdbCommand("input keyevent 25", deviceId); // Decrease Volume
+                    void BtnPowerOff_Click(object senderPowerOff, EventArgs e4) => ADBService.ExecuteAdbCommand("shell input keyevent 26", deviceId); // Power Off
+                    void BtnIncreaseVolume_Click(object senderIncreaseVolume, EventArgs e5) => ADBService.ExecuteAdbCommand("shell input keyevent 24", deviceId); // Increase Volume
+                    void BtnDecreaseVolume_Click(object senderDecreaseVolume, EventArgs e6) => ADBService.ExecuteAdbCommand("shell input keyevent 25", deviceId); // Decrease Volume
 
                     void ExecuteAdbCommand(string command, string device)
                     {
@@ -528,8 +528,8 @@ namespace WindowsFormsApp
                 btnIncreaseVolume.Click += BtnIncreaseVolume_Click;
                 btnDecreaseVolume.Click += BtnDecreaseVolume_Click;
 
-                void BtnHome_Click(object senderHome, EventArgs e1) => ADBService.ExecuteAdbCommand("input keyevent 3", deviceId); // Home
-                void BtnBack_Click(object senderBack, EventArgs e2) => ADBService.ExecuteAdbCommand("input keyevent 4", deviceId); // Back
+                void BtnHome_Click(object senderHome, EventArgs e1) => ADBService.ExecuteAdbCommand("shell input keyevent 3", deviceId); // Home
+                void BtnBack_Click(object senderBack, EventArgs e2) => ADBService.ExecuteAdbCommand("shell input keyevent 4", deviceId); // Back
                 void BtnReboot_Click(object senderReboot, EventArgs e3)
                 {
                     deviceForm.Close();
@@ -537,9 +537,9 @@ namespace WindowsFormsApp
                     ADBService.ExecuteAdbCommand("reboot", deviceId);
                 }
 
-                void BtnPowerOff_Click(object senderPowerOff, EventArgs e4) => ADBService.ExecuteAdbCommand("input keyevent 26", deviceId); // Power Off
-                void BtnIncreaseVolume_Click(object senderIncreaseVolume, EventArgs e5) => ADBService.ExecuteAdbCommand("input keyevent 24", deviceId); // Increase Volume
-                void BtnDecreaseVolume_Click(object senderDecreaseVolume, EventArgs e6) => ADBService.ExecuteAdbCommand("input keyevent 25", deviceId); // Decrease Volume
+                void BtnPowerOff_Click(object senderPowerOff, EventArgs e4) => ADBService.ExecuteAdbCommand("shell input keyevent 26", deviceId); // Power Off
+                void BtnIncreaseVolume_Click(object senderIncreaseVolume, EventArgs e5) => ADBService.ExecuteAdbCommand("shell input keyevent 24", deviceId); // Increase Volume
+                void BtnDecreaseVolume_Click(object senderDecreaseVolume, EventArgs e6) => ADBService.ExecuteAdbCommand("shell input keyevent 25", deviceId); // Decrease Volume
 
                 void ExecuteAdbCommand(string command, string device)
                 {

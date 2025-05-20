@@ -257,9 +257,9 @@ namespace WindowsFormsApp
                 switch (buttonText)
                 {
                     case "FOR LOOP":
-                        return "for";
+                        return "for=,end=100 \n{ \n\n }";
                     case "IF":
-                        return "if";
+                        return "if= \n { \n\n }";
                     case "GOTO":
                         return "goto";
                     case "BREAK":
@@ -273,7 +273,7 @@ namespace WindowsFormsApp
                     case "Comment":
                         return "//";
                     case "Show status":
-                        return "show status";
+                        return "Log(\"\")";
                 }
             }
 

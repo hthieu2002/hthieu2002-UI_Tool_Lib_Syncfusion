@@ -77,6 +77,7 @@ namespace WindowsFormsApp
                 }
             }
         }
+     
         public async Task UpdateProgressGridView(string id, string text, int p = 1)
         {
             var dt = sfDataGrid.DataSource as System.Data.DataTable;
@@ -85,7 +86,7 @@ namespace WindowsFormsApp
             // Tìm kiếm chỉ mục dòng dựa trên DeviceID
             int rowIndex = dt.AsEnumerable().ToList().FindIndex(r => r.Field<string>("DeviceID") == id);
 
-            Console.WriteLine(text + "Đã nhận");
+            Console.WriteLine(text);
             if (rowIndex >= 0 && rowIndex < dt.Rows.Count)
             {
                 var row = dt.Rows[rowIndex];
@@ -100,9 +101,12 @@ namespace WindowsFormsApp
                 }
                 else
                 {
+                    row.BeginEdit();
                     row["Progress"] = p;
                     row["ProgressText"] = text;
-                    sfDataGrid.Refresh();
+                    row.EndEdit();
+                    dt.AcceptChanges();
+                    sfDataGrid.View.Refresh();
                 }
 
             }
@@ -354,7 +358,7 @@ namespace WindowsFormsApp
                         var task = Task.Run(async () =>
                         {
                             await UpdateProgressGridView(deviceId, $"Start script {cbLoadFile.Text} vô hạn lần {i}", 1);
-                            RoslynScriptAutomation.Run($"./Resources/script/{cbLoadFile.Text}", deviceId);
+                            RoslynScriptAutomation.Run($"./Resources/script/{cbLoadFile.Text}", deviceId, this);
 
                             await UpdateProgressGridView(deviceId, $"Success", 100);
                         });
@@ -376,7 +380,7 @@ namespace WindowsFormsApp
                         var task = Task.Run(async () =>
                         {
                             await UpdateProgressGridView(deviceId, $"Start script {cbLoadFile.Text} lần {i+1}", 1);
-                            RoslynScriptAutomation.Run($"./Resources/script/{cbLoadFile.Text}", deviceId);
+                            RoslynScriptAutomation.Run($"./Resources/script/{cbLoadFile.Text}", deviceId, this);
 
                             await UpdateProgressGridView(deviceId, $"Success", 100);
 

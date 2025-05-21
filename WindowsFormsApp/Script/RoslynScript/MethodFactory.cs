@@ -91,6 +91,7 @@ namespace WindowsFormsApp.Script.RoslynScript
             var installApp = CreateMethodInstallApp();
             var uninstallApp = CreateMethodUninstallApp();
             var clearDataApp = CreateMethodClearDataApp();
+            var swipeCloseApp = CreateMethodSwipeCloseApp();
             // data change info
             var waitReboot = CreateMethodWaitForReboot();
             var waitInternet = CreateMethodWaitForInternet();
@@ -134,6 +135,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                     installApp,
                     uninstallApp,
                     clearDataApp,
+                    swipeCloseApp,
                     runMethod
                 );
         }
@@ -558,34 +560,39 @@ namespace WindowsFormsApp.Script.RoslynScript
                 .AddParameterListParameters()
                 .WithBody(
                     SyntaxFactory.Block(
-                        // Bước 1: Chờ thiết bị kết nối lại (wait-for-device)
-                        SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommandString($\"adb wait-for-device\")"),
-
-                        // Bước 2: Lặp kiểm tra sys.boot_completed == 1
+                        SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommandString($\"adb wait-for-device\");"),
                         SyntaxFactory.WhileStatement(
                             SyntaxFactory.PrefixUnaryExpression(
                                 SyntaxKind.LogicalNotExpression,
                                 SyntaxFactory.InvocationExpression(
                                     SyntaxFactory.MemberAccessExpression(
                                         SyntaxKind.SimpleMemberAccessExpression,
-                                        SyntaxFactory.IdentifierName("ADBService.ExecuteAdbCommand"),
+                                        SyntaxFactory.InvocationExpression(
+                                            SyntaxFactory.MemberAccessExpression(
+                                                SyntaxKind.SimpleMemberAccessExpression,
+                                                SyntaxFactory.IdentifierName("ADBService"),
+                                                SyntaxFactory.IdentifierName("ExecuteAdbCommandString")
+                                            )
+                                        ).WithArgumentList(
+                                            SyntaxFactory.ArgumentList(
+                                                SyntaxFactory.SingletonSeparatedList(
+                                                    SyntaxFactory.Argument(
+                                                        SyntaxFactory.ParseExpression($"\"adb -s {{_deviceID}} shell getprop sys.boot_completed\"")
+                                                    )
+                                                )
+                                            )
+                                        ),
                                         SyntaxFactory.IdentifierName("Contains")
                                     )
                                 ).WithArgumentList(
                                     SyntaxFactory.ArgumentList(
-                                        SyntaxFactory.SeparatedList<ArgumentSyntax>(
-                                            new SyntaxNodeOrToken[]{
-                                        SyntaxFactory.Argument(
-                                            SyntaxFactory.ParseExpression("$\"adb -s {_deviceID} shell getprop sys.boot_completed\"")
-                                        ),
-                                        SyntaxFactory.Token(SyntaxKind.CommaToken),
-                                        SyntaxFactory.Argument(
-                                            SyntaxFactory.LiteralExpression(
-                                                SyntaxKind.StringLiteralExpression,
-                                                SyntaxFactory.Literal("1")
+                                        SyntaxFactory.SingletonSeparatedList(
+                                            SyntaxFactory.Argument(
+                                                SyntaxFactory.LiteralExpression(
+                                                    SyntaxKind.StringLiteralExpression,
+                                                    SyntaxFactory.Literal("1")
+                                                )
                                             )
-                                        )
-                                            }
                                         )
                                     )
                                 )
@@ -594,12 +601,11 @@ namespace WindowsFormsApp.Script.RoslynScript
                                 SyntaxFactory.ParseStatement("System.Threading.Thread.Sleep(1000);")
                             )
                         ),
-
-                        // Khi xong trả về true
                         SyntaxFactory.ParseStatement("return true;")
                     )
                 );
         }
+
         // wait internet 
         public static MethodDeclarationSyntax CreateMethodWaitForInternet()
         {
@@ -735,7 +741,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                   SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
                   "OpenURL")
               .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
-              .AddParameterListParameters()
+              .AddParameterListParameters(paramUrl)
               .WithBody(SyntaxFactory.Block(
                   SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell am start -a android.intent.action.VIEW -d {url}\");")
                   ));
@@ -853,9 +859,18 @@ namespace WindowsFormsApp.Script.RoslynScript
                   SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell pm clear {package}\");")
                   ));
         }
-        // swipe close app
-
-        // load app
+        // SwipeCloseApp
+        public static MethodDeclarationSyntax CreateMethodSwipeCloseApp()
+        {
+            return SyntaxFactory.MethodDeclaration(
+                  SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                  "SwipeCloseApp")
+              .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+              .AddParameterListParameters()
+              .WithBody(SyntaxFactory.Block(
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input keyevent 3\");")
+                  ));
+        }
         //
     }
 }

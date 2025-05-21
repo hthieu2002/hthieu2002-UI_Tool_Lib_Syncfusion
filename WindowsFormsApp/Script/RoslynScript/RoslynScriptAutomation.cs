@@ -30,7 +30,8 @@ namespace WindowsFormsApp.Script.RoslynScript
                     SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.Diagnostics")),
                     SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("Services")),
                     SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("WindowsFormsApp")),
-                    SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.Threading.Tasks"))
+                    SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.Threading.Tasks")),
+                    SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.Linq"))
                 )
                 .NormalizeWhitespace();
 

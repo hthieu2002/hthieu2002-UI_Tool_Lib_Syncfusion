@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using System.Runtime.InteropServices;
 
 namespace WindowsFormsApp
 {
@@ -255,6 +256,8 @@ namespace WindowsFormsApp
             };
 
         }
+       
+
         public void AppendText(string textToAdd)
         {
             if (string.IsNullOrEmpty(richTextBox1.Text))
@@ -280,59 +283,123 @@ namespace WindowsFormsApp
                 return;
             }
         }
-
         private void HighlightSyntax()
         {
             int selectionStart = richTextBox1.SelectionStart;
             int selectionLength = richTextBox1.SelectionLength;
+            int vertScrollPos = GetScrollPos(richTextBox1.Handle, SB_VERT);
 
-            richTextBox1.SelectAll();
-            richTextBox1.SelectionColor = Color.White;
+            BeginUpdate();
 
-            var regex = new Regex(@"\w+\(.*?\)");
-            var matches = regex.Matches(richTextBox1.Text);
-
-            foreach (Match match in matches)
+            try
             {
-                richTextBox1.Select(match.Index, match.Length);
-                richTextBox1.SelectionColor = Color.Gold;
+                richTextBox1.SelectAll();
+                richTextBox1.SelectionColor = Color.White;
 
-                int openParen = richTextBox1.Text.IndexOf('(', match.Index);
-                int closeParen = richTextBox1.Text.IndexOf(')', openParen);
-                if (openParen >= 0 && closeParen > openParen)
+                // Tô màu comment
+                var commentRegex = new Regex(@"//.*$", RegexOptions.Multiline);
+                var commentMatches = commentRegex.Matches(richTextBox1.Text);
+                foreach (Match commentMatch in commentMatches)
                 {
-                    int paramStart = openParen + 1;
-                    int paramLength = closeParen - paramStart;
-                    string paramText = richTextBox1.Text.Substring(paramStart, paramLength);
+                    richTextBox1.Select(commentMatch.Index, commentMatch.Length);
+                    richTextBox1.SelectionColor = Color.Green;
+                }
 
-                    var paramRegex = new Regex(@"\d+|\"".*?\""|\w+");
-                    var paramMatches = paramRegex.Matches(paramText);
-
-                    foreach (Match paramMatch in paramMatches)
+                // Tô màu từ khóa (cam sáng đậm)
+                string keywords = @"\b(if|for|while|return|break|continue|goto|end)\b";
+                var keywordRegex = new Regex(keywords);
+                var keywordMatches = keywordRegex.Matches(richTextBox1.Text);
+                foreach (Match keywordMatch in keywordMatches)
+                {
+                    if (!IsInsideComment(keywordMatch.Index, commentMatches))
                     {
-                        int tokenIndex = paramStart + paramMatch.Index;
-                        int tokenLength = paramMatch.Length;
+                        richTextBox1.Select(keywordMatch.Index, keywordMatch.Length);
+                        richTextBox1.SelectionColor = Color.DarkOrange;
+                    }
+                }
 
-                        richTextBox1.Select(tokenIndex, tokenLength);
+                // Tô màu toán tử (đỏ đậm)
+                string operators = @"[+\-*/%=<>!&|^~]+";
+                var operatorRegex = new Regex(operators);
+                var operatorMatches = operatorRegex.Matches(richTextBox1.Text);
+                foreach (Match opMatch in operatorMatches)
+                {
+                    if (!IsInsideComment(opMatch.Index, commentMatches))
+                    {
+                        richTextBox1.Select(opMatch.Index, opMatch.Length);
+                        richTextBox1.SelectionColor = Color.DarkRed;
+                    }
+                }
 
-                        if (Regex.IsMatch(paramMatch.Value, @"^\d+$"))
+                // Tô màu dấu ngoặc { } [ ] (hồng)
+                string brackets = @"[\{\}\[\]]";
+                var bracketRegex = new Regex(brackets);
+                var bracketMatches = bracketRegex.Matches(richTextBox1.Text);
+                foreach (Match bracketMatch in bracketMatches)
+                {
+                    if (!IsInsideComment(bracketMatch.Index, commentMatches))
+                    {
+                        richTextBox1.Select(bracketMatch.Index, bracketMatch.Length);
+                        richTextBox1.SelectionColor = Color.HotPink;
+                    }
+                }
+
+                // Tô màu các hàm và tham số (giữ nguyên như bạn có)
+                var funcRegex = new Regex(@"\w+\(.*?\)");
+                var funcMatches = funcRegex.Matches(richTextBox1.Text);
+
+                foreach (Match match in funcMatches)
+                {
+                    if (!IsInsideComment(match.Index, commentMatches))
+                    {
+                        richTextBox1.Select(match.Index, match.Length);
+                        richTextBox1.SelectionColor = Color.Gold;
+
+                        int openParen = richTextBox1.Text.IndexOf('(', match.Index);
+                        int closeParen = richTextBox1.Text.IndexOf(')', openParen);
+                        if (openParen >= 0 && closeParen > openParen)
                         {
-                            richTextBox1.SelectionColor = Color.DeepSkyBlue;
-                        }
-                        else if (Regex.IsMatch(paramMatch.Value, "^\".*\"$"))
-                        {
-                            richTextBox1.SelectionColor = Color.LightPink;
-                        }
-                        else
-                        {
-                            richTextBox1.SelectionColor = Color.Pink;
+                            int paramStart = openParen + 1;
+                            int paramLength = closeParen - paramStart;
+                            string paramText = richTextBox1.Text.Substring(paramStart, paramLength);
+
+                            var paramRegex = new Regex(@"\d+|\"".*?\""|\w+");
+                            var paramMatches = paramRegex.Matches(paramText);
+
+                            foreach (Match paramMatch in paramMatches)
+                            {
+                                int tokenIndex = paramStart + paramMatch.Index;
+                                int tokenLength = paramMatch.Length;
+
+                                if (!IsInsideComment(tokenIndex, commentMatches))
+                                {
+                                    richTextBox1.Select(tokenIndex, tokenLength);
+
+                                    if (Regex.IsMatch(paramMatch.Value, @"^\d+$"))
+                                    {
+                                        richTextBox1.SelectionColor = Color.DeepSkyBlue;
+                                    }
+                                    else if (Regex.IsMatch(paramMatch.Value, "^\".*\"$"))
+                                    {
+                                        richTextBox1.SelectionColor = Color.LightPink;
+                                    }
+                                    else
+                                    {
+                                        richTextBox1.SelectionColor = Color.Pink;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
-
-            richTextBox1.Select(selectionStart, selectionLength);
-            richTextBox1.SelectionColor = Color.White;
+            finally
+            {
+                richTextBox1.Select(selectionStart, selectionLength);
+                SetScrollPos(richTextBox1.Handle, SB_VERT, vertScrollPos, true);
+                SendMessage(richTextBox1.Handle, WM_VSCROLL, (IntPtr)(SB_THUMBPOSITION + 0x10000 * vertScrollPos), IntPtr.Zero);
+                EndUpdate();
+            }
         }
         private void Panel1_Paint(object sender, PaintEventArgs e)
         {
@@ -371,6 +438,18 @@ namespace WindowsFormsApp
                         richTextBox1.Font, brush, new PointF(5, y));
                 }
             }
+        }
+
+        private bool IsInsideComment(int index, MatchCollection commentMatches)
+        {
+            foreach (Match comment in commentMatches)
+            {
+                if (index >= comment.Index && index < comment.Index + comment.Length)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         ///
         /// 

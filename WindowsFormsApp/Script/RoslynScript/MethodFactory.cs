@@ -70,6 +70,11 @@ namespace WindowsFormsApp.Script.RoslynScript
             var searchAndContinueMethod = CreateMethodSearchAndContinue();
             var stopScriptMethod = CretateMethodStopScrit();
             var logMessageMethod = CretateMethodLogMessage();
+            var sendText = CreateMethodSendText();
+            var randomTextAndSend = CreateMethodRandomTextAndSend();
+            var sendTextFromFileDel = CreateMethodSendTextFromFileDel();
+            var delTextChar = CreateMethodDelTextChar();
+            var delAllText = CreateMethodDelAllText();
 
             return SyntaxFactory.ClassDeclaration("CommandExecutor")
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
@@ -86,6 +91,11 @@ namespace WindowsFormsApp.Script.RoslynScript
                     searchAndContinueMethod,
                     stopScriptMethod,
                     logMessageMethod,
+                    sendText,
+                    randomTextAndSend,
+                    sendTextFromFileDel,
+                    delTextChar,
+                    delAllText,
                     runMethod
                 );
         }
@@ -268,7 +278,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
                .AddParameterListParameters()
                .WithBody(SyntaxFactory.Block(
-                   SyntaxFactory.ParseStatement("Environment.Exit(0);")
+                   SyntaxFactory.ParseStatement("return;")
                ));
         }
         // log message 
@@ -287,7 +297,123 @@ namespace WindowsFormsApp.Script.RoslynScript
                ));
         }
 
+        // send text 
+        public static MethodDeclarationSyntax CreateMethodSendText()
+        {
+            var paramText = SyntaxFactory.Parameter(SyntaxFactory.Identifier("text"))
+                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
 
+
+            return SyntaxFactory.MethodDeclaration(
+                    SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                    "SendText")
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                .AddParameterListParameters(paramText)
+                .WithBody(SyntaxFactory.Block(
+                    SyntaxFactory.ParseStatement("var input = ADBService.EscapeAdbInputText(text);"),
+                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input text {input}\");")
+                    ));
+        }
+        // random text and send text 15 
+        public static MethodDeclarationSyntax CreateMethodRandomTextAndSend()
+        {
+            var paramRandomCount = SyntaxFactory.Parameter(SyntaxFactory.Identifier("count"))
+             .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.IntKeyword)))
+             .WithDefault(SyntaxFactory.EqualsValueClause(SyntaxFactory.LiteralExpression(SyntaxKind.NumericLiteralExpression, SyntaxFactory.Literal(15)
+             )));
+
+            return SyntaxFactory.MethodDeclaration(
+                  SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                  "RandomTextAndSend")
+              .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+              .AddParameterListParameters(paramRandomCount)
+              .WithBody(SyntaxFactory.Block(
+                  SyntaxFactory.ParseStatement("var input = ADBService.RandomString(count);"),
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input text {input}\");")
+                  ));
+        }
+
+        // send text file and delete
+        public static MethodDeclarationSyntax CreateMethodSendTextFromFileDel()
+        {
+            var paramUrlFile = SyntaxFactory.Parameter(SyntaxFactory.Identifier("url"))
+                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
+
+            var statements = new List<StatementSyntax>();
+
+            statements.Add(SyntaxFactory.ParseStatement("System.IO.Directory.CreateDirectory(\"./Resources/script/file\");"));
+            statements.Add(SyntaxFactory.ParseStatement("if (!System.IO.File.Exists($\"./Resources/script/file/{url}\")) { Console.WriteLine($\"[Log] File không tồn tại: {url}\"); return; }"));
+
+            statements.Add(SyntaxFactory.ParseStatement("var lines = System.IO.File.ReadAllLines($\"./Resources/script/file/{url}\");"));
+            statements.Add(SyntaxFactory.ParseStatement("Console.WriteLine($\"[Log] Đã đọc {lines.Length} dòng từ file.\");"));
+
+            statements.Add(SyntaxFactory.ParseStatement("if (lines.Length == 0) { Console.WriteLine(\"[Log] File rỗng, không có dòng nào để gửi.\"); return; }"));
+
+            statements.Add(SyntaxFactory.ParseStatement("var firstLine = lines[0];"));
+            statements.Add(SyntaxFactory.ParseStatement("Console.WriteLine($\"[Log] Dòng đầu tiên sẽ gửi: {firstLine}\");"));
+
+            statements.Add(SyntaxFactory.ParseStatement("SendText(firstLine);"));
+            statements.Add(SyntaxFactory.ParseStatement("Console.WriteLine(\"[Log] Đã gửi dòng đầu tiên.\");"));
+
+            statements.Add(SyntaxFactory.ParseStatement("var remainingLines = lines.Skip(1).ToArray();"));
+            statements.Add(SyntaxFactory.ParseStatement("System.IO.File.WriteAllLines($\"./Resources/script/file/{url}\", remainingLines);"));
+            statements.Add(SyntaxFactory.ParseStatement("Console.WriteLine($\"[Log] Đã xóa dòng đầu và ghi lại file. Còn lại {remainingLines.Length} dòng.\");"));
+
+            return SyntaxFactory.MethodDeclaration(
+                    SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                    "SendTextFromFileDel")
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                .AddParameterListParameters(paramUrlFile)
+                .WithBody(SyntaxFactory.Block(statements));
+        }
+        // xóa 1 ký tự
+        public static MethodDeclarationSyntax CreateMethodDelTextChar()
+        {
+            var paramCount = SyntaxFactory.Parameter(SyntaxFactory.Identifier("count"))
+                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.IntKeyword)));
+
+            var statements = new List<StatementSyntax>();
+
+            var forStatement = SyntaxFactory.ForStatement(
+                    SyntaxFactory.Block(
+                        SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input keyevent 67\");")
+                    ))
+                .WithDeclaration(
+                    SyntaxFactory.VariableDeclaration(
+                        SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.IntKeyword)))
+                    .AddVariables(SyntaxFactory.VariableDeclarator("i")
+                        .WithInitializer(SyntaxFactory.EqualsValueClause(SyntaxFactory.LiteralExpression(SyntaxKind.NumericLiteralExpression, SyntaxFactory.Literal(0))))))
+                .WithCondition(
+                    SyntaxFactory.BinaryExpression(SyntaxKind.LessThanExpression,
+                        SyntaxFactory.IdentifierName("i"),
+                        SyntaxFactory.IdentifierName("count")))
+                .WithIncrementors(
+                    SyntaxFactory.SingletonSeparatedList<ExpressionSyntax>(
+                        SyntaxFactory.PostfixUnaryExpression(SyntaxKind.PostIncrementExpression, SyntaxFactory.IdentifierName("i"))));
+
+            statements.Add(forStatement);
+
+            return SyntaxFactory.MethodDeclaration(
+                    SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                    "DelTextChar")
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                .AddParameterListParameters(paramCount)
+                .WithBody(SyntaxFactory.Block(statements));
+        }
+
+        // xóa toàn bộ
+        public static MethodDeclarationSyntax CreateMethodDelAllText()
+        {
+            return SyntaxFactory.MethodDeclaration(
+                  SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                  "DelAllText")
+              .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+              .AddParameterListParameters()
+              .WithBody(SyntaxFactory.Block(
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input keycombination 113 29\");"),
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input keyevent 67\");")
+                  ));
+        }
         //
     }
 }

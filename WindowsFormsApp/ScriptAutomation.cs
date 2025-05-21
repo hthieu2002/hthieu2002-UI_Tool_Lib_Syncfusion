@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -35,9 +36,25 @@ namespace WindowsFormsApp
         private int clickCount = 0;
         private int x1, y1;
         private int x2, y2;
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+
+        private const int WM_SETREDRAW = 0x000B;
+
+        private const int SB_VERT = 1;
+        private const int WM_VSCROLL = 0x0115;
+        private const int SB_THUMBPOSITION = 4;
+
+        [DllImport("user32.dll")]
+        private static extern int GetScrollPos(IntPtr hWnd, int nBar);
+
+        [DllImport("user32.dll")]
+        private static extern int SetScrollPos(IntPtr hWnd, int nBar, int nPos, bool bRedraw);
         public ScriptAutomation()
         {
             InitializeComponent();
+
             _uiElements = new List<UiElement>();
             init();
             BuildDataTableUI();
@@ -60,6 +77,16 @@ namespace WindowsFormsApp
 
             this.FormClosing += new FormClosingEventHandler(Form_FormClosing);
             sfCbLoadDevices.SelectedIndexChanged += sfCbLoadDevices_SelectedIndexChanged;
+        }
+        private void BeginUpdate()
+        {
+            SendMessage(richTextBox1.Handle, WM_SETREDRAW, IntPtr.Zero, IntPtr.Zero);
+        }
+
+        private void EndUpdate()
+        {
+            SendMessage(richTextBox1.Handle, WM_SETREDRAW, new IntPtr(1), IntPtr.Zero);
+            richTextBox1.Invalidate();
         }
         private void Form1_Load(object sender, EventArgs e)
         {

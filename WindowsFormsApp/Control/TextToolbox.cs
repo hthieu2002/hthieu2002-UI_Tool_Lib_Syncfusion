@@ -9,12 +9,25 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using WindowsFormsApp.Model;
+using System.Runtime.InteropServices;
 
 namespace WindowsFormsApp
 {
     public partial class TextToolbox : UserControl
     {
         private ITextAppender textAppender;
+        private ToolTip buttonToolTip = new ToolTip();
+
+        private readonly Dictionary<string, string> buttonTooltips = new Dictionary<string, string>
+{
+    { "Send text", "Send text \n - Gửi text cố định \n SendText(\"Abcd\")" },
+    { "Send text from file(delete)", "Gửi văn bản từ file và xóa sau khi gửi." },
+    { "Send text from", "Gửi văn bản lấy từ nguồn xác định." },
+    { "Random text & send", "Tạo văn bản ngẫu nhiên và gửi." },
+    { "Xoá text(1 ký tự)", "Xóa một ký tự khỏi văn bản." },
+    { "Xoá text(xoá all)", "Xóa toàn bộ văn bản." }
+};
+
         public TextToolbox(ITextAppender textAppender)
         {
             InitializeComponent();
@@ -103,6 +116,15 @@ namespace WindowsFormsApp
                 // Hover ra: trả về màu gốc
                 btn.MouseLeave += (s, e) => btn.BackColor = Color.MediumSlateBlue;
 
+                if (buttonTooltips.TryGetValue(text, out var tooltip))
+                {
+                    buttonToolTip.SetToolTip(btn, tooltip);
+                }
+                else
+                {
+                    buttonToolTip.SetToolTip(btn, "Chức năng nút: " + text);
+                }
+
                 btn.Tag = new ButtonContext
                 {
                     GroupName = title,
@@ -123,7 +145,6 @@ namespace WindowsFormsApp
                 flow.Controls.Add(btn);
             }
 
-            // Tính toán vị trí căn giữa sau khi đã thêm xong button
             flow.PerformLayout(); // Bắt buộc gọi để cập nhật kích thước
             int centerX = (fixedWidth - flow.PreferredSize.Width) / 2;
             flow.Location = new Point(centerX, 30); // 30 là khoảng cách từ trên xuống, có thể chỉnh lại
@@ -164,6 +185,8 @@ namespace WindowsFormsApp
         "Code backup", "Code authen",
         "Status3(0)", "DeleteStatus3(0)"
     });
+
+
             combo1.SelectedIndex = 0;
 
             var btnSend1 = CreateButton("Send", 70);
@@ -182,7 +205,6 @@ namespace WindowsFormsApp
         "Code authen ok",
         "Code authen failed"
     });
-            combo2.SelectedIndex = 0;
 
             var btnSend2 = CreateButton("Send", 70);
             btnSend2.Tag = combo2; // Gán combo2 vào Send2
@@ -221,7 +243,7 @@ namespace WindowsFormsApp
                 if (!string.IsNullOrEmpty(selectedText))
                 {
                     string command = ConvertCombo1TextToCommand(selectedText);
-                    textAppender?.AppendText(command );
+                    textAppender?.AppendText(command);
                 }
                 else
                 {
@@ -363,8 +385,8 @@ namespace WindowsFormsApp
             };
 
             // Chia nút ra 2 nhóm
-            string[] leftButtons = buttons.Take(2).ToArray();   
-            string[] rightButtons = buttons.Skip(2).ToArray();  
+            string[] leftButtons = buttons.Take(2).ToArray();
+            string[] rightButtons = buttons.Skip(2).ToArray();
 
             // Panel trái (xếp từ trên xuống)
             var leftPanel = new FlowLayoutPanel

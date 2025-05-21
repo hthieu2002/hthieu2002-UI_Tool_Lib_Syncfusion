@@ -8,11 +8,74 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp.Model;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WindowsFormsApp
 {
     public partial class ClickToolbox : UserControl
     {
+        private ToolTip buttonToolTip = new ToolTip();
+        private readonly Dictionary<(string groupName, string buttonText), string> buttonTooltips = new Dictionary<(string, string), string>
+{
+    { ("Click tọa độ", "ClickXY"), "Click theo tọa độ x,y \n Ví dụ \n - Click cố định \n ClickXY(300 400) \n Sự dụng capture để chụp ảnh lấy tọa độ" },
+    { ("Click tọa độ", "Swipe"), "Thao tác cuộn \n Cuộn sẽ có 4 giá trị x1 x2 y1 y2 \n x1 x2 là x,y điểm ban đầu \n y1 y2 là điểm kết thúc \n cuộn sẽ bắt đầu từ điểm x đến y theo bất cứ chiều lên xuống nào \n Ví dụ \n Swipe(200 100 600 800) \n 200 100 tương ứng x1 x2 \n 600 800 tương ứng y1 y2 \n Thông số thứ 5 là độ trễ ms(mặc định là 500ms) \n Sự dụng capture để lấy tọa độ" },
+    { ("Click tọa độ", "Random Click"), "Click random \n - Được ngăn cách 2 giá trị bởi dấu , \n Ví dụ ClickRandom(100 200 , 300 800) \n X được random trong khoảng 100-200\n Y được random trong khoảng 300-800" },
+    { ("Click tọa độ", "Wait"), "Wait \n Là lệnh chờ đợi \n Wait(1000) chờ 1 giây " },
+    { ("Search text click", "Tìm đúng && click"), "Tìm đúng text và click " +
+                "\n Lệnh tìm chữ Next nếu nó tồn tại thì click " +
+                "\n SearchAndClick(\"Next\")" },
+    { ("Search text click", "Tìm đúng && wait"), "Tìm đúng và đợi" +
+                "\n Lệnh này giống lệnh tìm đúng và click nhưng nó sẽ đợi thêm số giây sau khi đã click" +
+                "\n SearchWaitClick(\"Next\", 1000)" },
+    { ("Search text click", "Tìm đúng && tiếp tục"), "Tìm đúng và tiếp tục" +
+                "\n Lệnh này giống lệnh tìm đúng" +
+                "\n Nhưng lệnh sẽ bỏ qua khi tìm thấy" +
+                "\n Phù hợp trong các lệnh điều kiện if" +
+                "SearchAndContinue(\"Next\")" },
+    { ("Xử lý logic", "IF"), "If dùng để đặt lệnh trong nó khi thỏa mãn điều kiện " +
+                "\n Ví dụ if = điều kiện { run }" +
+                "\n điều kiện là lệnh thỏa mãn if để run được chạy" },
+    { ("Xử lý logic", "FOR LOOP"), "For " +
+                "\n Vòng lặp for dùng để đặt vòng lặp xử lý cho các lệnh ở trong đó" +
+                "\n Mẫu " +
+                "\n for=main,end=100" +
+                "\n {" +
+                "\n Wait(1000)" +
+                "\n }" +
+                "\n main là tên bắt buộc phải có giữa các for" +
+                "\n không được đặt trùng sẽ gây ra rối và chạy loạn" },
+    { ("Xử lý logic", "Continue"), "Lệnh continue" +
+                "\n Được sự dụng trong for" +
+                "\n dùng để bỏ qua for hiện tại và chuyển sang for khác" +
+                "\n hoặc bỏ qua các lệnh trong vòng lặp" +
+                "\n Ví dụ" +
+                "\n for =main, end=100" +
+                "\n {" +
+                "\n Wait(1000)" +
+                "\n continue" +
+                "\n Wait(4000)" +
+                "\n }" +
+                "\n lệnh continue bỏ qua lệnh 4000" },
+    { ("Xử lý logic","BREAK"),"Lệnh break" +
+                "\n Dùng để dừng vòng lặp" +
+                "\n Hoặc thoát script nếu không để trong vòng lặp" },
+    { ("Xử lý logic", "Stop Script"), "Lệnh stop script " +
+                "\n Dùng để dừng script ngay lập tức"},
+    { ("Xử lý logic","Return"), "Trong quá trình chạy " +
+                "\n Gặp lệnh này sẽ dừng hoặc chuyển script nếu chạy nhiều lần " },
+    { ("Xử lý logic", "Comment"), "Sự dụng lệnh này để ghi chú lại script " +
+                "\n những gì được ghi sau Comment sẽ không được thực thi "},
+    { ("Xử lý logic", "Show status"), "Lệnh Show status" +
+                "\n Sẽ hiện thị log lên hiện thị quá trình chạy đến lệnh nào "},
+    { ("Search text image","Tìm đúng && click"), "Lệnh này tương tự lệnh tìm đúng click " +
+                "\n Nhưng nó sẽ tìm trên hình ảnh xử lý những nơi k thể lấy được text"},
+    { ("Search text image","Tìm đúng && wait"), "Lệnh này tương tự lệnh tìm đúng và đợi " +
+                "\n Nhưng nó sẽ tìm trên hình ảnh xử lý những nơi k thể lấy được text"},
+    { ("Search text image","Tìm đúng && tiếp tục"), "Lệnh này tương tự lệnh tìm đúng tiếp tục " +
+                "\n Nhưng nó sẽ tìm trên hình ảnh xử lý những nơi k thể lấy được text"}
+};
+
+
         private ITextAppender textAppender;
         public ClickToolbox(ITextAppender appender)
         {
@@ -123,6 +186,14 @@ namespace WindowsFormsApp
                     ButtonText = text
                 };
 
+                if (buttonTooltips.TryGetValue((title, text), out var tooltip))
+                {
+                    buttonToolTip.SetToolTip(btn, tooltip);
+                }
+                else
+                {
+                    buttonToolTip.SetToolTip(btn, $"Chức năng nút: {text}");
+                }
 
                 btn.Click += (s, e) =>
                 {
@@ -187,6 +258,14 @@ namespace WindowsFormsApp
                     ButtonText = text
                 };
 
+                if (buttonTooltips.TryGetValue((title, text), out var tooltip))
+                {
+                    buttonToolTip.SetToolTip(btn, tooltip);
+                }
+                else
+                {
+                    buttonToolTip.SetToolTip(btn, $"Chức năng nút: {text}");
+                }
 
                 btn.Click += (s, e) =>
                 {
@@ -225,6 +304,8 @@ namespace WindowsFormsApp
                     case "Tìm gần đúng && tiếp tục":
                         return "SearchOfAndContinue(\"\")";
                 }
+
+
             }
             else if (groupName == "Search text image")
             {
@@ -267,7 +348,7 @@ namespace WindowsFormsApp
                     case "Continue":
                         return "continue";
                     case "Stop Script":
-                        return "stop";
+                        return "StopScript()";
                     case "Return":
                         return "return";
                     case "Comment":

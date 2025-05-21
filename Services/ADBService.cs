@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -968,7 +969,44 @@ namespace Services
                 }
             }
         }
-       
+        public static string EscapeAdbInputText(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return string.Empty;
+
+            var sb = new StringBuilder();
+
+            foreach (char c in input)
+            {
+                if (c == ' ')
+                {
+                    sb.Append("%s");
+                }
+                else if (char.IsLetterOrDigit(c))
+                {
+                    sb.Append(c);
+                }
+                else
+                {
+                    sb.AppendFormat("%{0:X2}", (int)c);
+                }
+            }
+
+            return sb.ToString();
+        }
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            var random = new Random();
+            var result = new char[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                result[i] = chars[random.Next(chars.Length)];
+            }
+
+            return new string(result);
+        }
 
         /// <summary>
         /// end

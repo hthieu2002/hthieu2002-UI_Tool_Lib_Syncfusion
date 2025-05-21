@@ -106,7 +106,7 @@ namespace WindowsFormsApp.Script.RoslynScript
         private static StatementSyntax ParseLineToStatement(string line)
         {
             line = line.Trim();
-            if (line.StartsWith("Log("))
+            if (line.StartsWith("Log(") || line.StartsWith("SendText("))
             {
                 var expr = SyntaxFactory.ParseExpression(line);
                 return SyntaxFactory.ExpressionStatement(expr);

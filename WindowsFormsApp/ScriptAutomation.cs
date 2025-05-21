@@ -119,7 +119,7 @@ namespace WindowsFormsApp
         private void keyButtonToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SetActiveMenu((ToolStripMenuItem)sender);
-            LoadContent(new KeyButtonToolbox());
+            LoadContent(new KeyButtonToolbox(this));
         }
 
         private void generalToolStripMenuItem_Click(object sender, EventArgs e)

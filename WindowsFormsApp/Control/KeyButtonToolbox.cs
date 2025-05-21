@@ -12,9 +12,11 @@ namespace WindowsFormsApp
 {
     public partial class KeyButtonToolbox: UserControl
     {
-        public KeyButtonToolbox()
+        private ITextAppender textAppender;
+        public KeyButtonToolbox(ITextAppender textAppender)
         {
             InitializeComponent();
+            this.textAppender = textAppender;
             BuildUI();
         }
 
@@ -87,15 +89,15 @@ namespace WindowsFormsApp
         {
             if (button.Text == "Send key")
             {
-                MessageBox.Show("đã click vào button send key");
+                textAppender?.AppendText("SendKey(66)");
             }
             else if (button.Text == "Check keyboard")
             {
-                MessageBox.Show("đã click vào button Check keyboard");
+                textAppender?.AppendText("CheckKeyBoard()");
             }
             else if (button.Text == "CTRL + A")
             {
-                MessageBox.Show("đã click vào button crtl a");
+                textAppender?.AppendText("CtrlA()");
             }
         }
     }

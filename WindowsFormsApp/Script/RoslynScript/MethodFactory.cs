@@ -60,7 +60,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                     SyntaxFactory.ParseStatement("_deviceID = deviceID;"),
                     SyntaxFactory.ParseStatement("_view = view;")
                 ));
-
+            // click tool box
             var clickMethod = CreateMethodClickXY();
             var waitMethod = CreateMethodWait();
             var swipeMethod = CreateMethodSwipe();
@@ -70,11 +70,16 @@ namespace WindowsFormsApp.Script.RoslynScript
             var searchAndContinueMethod = CreateMethodSearchAndContinue();
             var stopScriptMethod = CretateMethodStopScrit();
             var logMessageMethod = CretateMethodLogMessage();
+            // text tool box
             var sendText = CreateMethodSendText();
             var randomTextAndSend = CreateMethodRandomTextAndSend();
             var sendTextFromFileDel = CreateMethodSendTextFromFileDel();
             var delTextChar = CreateMethodDelTextChar();
             var delAllText = CreateMethodDelAllText();
+            // key button tool box
+            var sendKey = CreateMethodSendKey();
+            var ctrlA = CreateMethodCtrlA();
+            var checkKeyboard = CreateMethodCheckKeyboard();
 
             return SyntaxFactory.ClassDeclaration("CommandExecutor")
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
@@ -96,6 +101,9 @@ namespace WindowsFormsApp.Script.RoslynScript
                     sendTextFromFileDel,
                     delTextChar,
                     delAllText,
+                    sendKey,
+                    ctrlA,
+                    checkKeyboard,
                     runMethod
                 );
         }
@@ -414,6 +422,88 @@ namespace WindowsFormsApp.Script.RoslynScript
                   SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input keyevent 67\");")
                   ));
         }
+        // send key
+        public static MethodDeclarationSyntax CreateMethodSendKey()
+        {
+            var paramKey = SyntaxFactory.Parameter(SyntaxFactory.Identifier("key"))
+                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.IntKeyword)));
+
+            return SyntaxFactory.MethodDeclaration(
+                SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)), "SendKey")
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                .AddParameterListParameters(paramKey)
+                .WithBody(SyntaxFactory.Block(
+                     SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input keyevent {key}\");")
+                    ));
+        }
+        // ctrl A
+        public static MethodDeclarationSyntax CreateMethodCtrlA()
+        {
+            return SyntaxFactory.MethodDeclaration(
+                  SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                  "CtrlA")
+              .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+              .AddParameterListParameters()
+              .WithBody(SyntaxFactory.Block(
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input keycombination 113 29\");")
+                  ));
+        }
+        // check key board
+        public static MethodDeclarationSyntax CreateMethodCheckKeyboard()
+        {
+            return SyntaxFactory.MethodDeclaration(
+                    SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.BoolKeyword)),
+                    "CheckKeyboard")
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword)) // ❌ Không thêm Static
+                .AddParameterListParameters()
+                .WithBody(SyntaxFactory.Block(
+                    SyntaxFactory.LocalDeclarationStatement(
+                        SyntaxFactory.VariableDeclaration(
+                            SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)))
+                        .AddVariables(
+                            SyntaxFactory.VariableDeclarator("output")
+                                .WithInitializer(SyntaxFactory.EqualsValueClause(
+                                    SyntaxFactory.ParseExpression("ADBService.ExecuteAdbCommandString($\"adb -s {_deviceID} shell dumpsys input_method\")")
+                                ))
+                        )
+                    ),
+                    SyntaxFactory.ReturnStatement(
+                        SyntaxFactory.BinaryExpression(
+                            SyntaxKind.LogicalOrExpression,
+                            SyntaxFactory.InvocationExpression(
+                                SyntaxFactory.MemberAccessExpression(
+                                    SyntaxKind.SimpleMemberAccessExpression,
+                                    SyntaxFactory.IdentifierName("output"),
+                                    SyntaxFactory.IdentifierName("Contains")
+                                )
+                            ).WithArgumentList(SyntaxFactory.ArgumentList(
+                                SyntaxFactory.SingletonSeparatedList(
+                                    SyntaxFactory.Argument(
+                                        SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression,
+                                            SyntaxFactory.Literal("mInputShown=true"))
+                                    )
+                                )
+                            )),
+                            SyntaxFactory.InvocationExpression(
+                                SyntaxFactory.MemberAccessExpression(
+                                    SyntaxKind.SimpleMemberAccessExpression,
+                                    SyntaxFactory.IdentifierName("output"),
+                                    SyntaxFactory.IdentifierName("Contains")
+                                )
+                            ).WithArgumentList(SyntaxFactory.ArgumentList(
+                                SyntaxFactory.SingletonSeparatedList(
+                                    SyntaxFactory.Argument(
+                                        SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression,
+                                            SyntaxFactory.Literal("mIsInputViewShown=true"))
+                                    )
+                                )
+                            ))
+                        )
+                    )
+                ));
+        }
+
+
         //
     }
 }

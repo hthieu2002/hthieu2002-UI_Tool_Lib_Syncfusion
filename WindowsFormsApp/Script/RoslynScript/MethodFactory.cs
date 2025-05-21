@@ -80,6 +80,10 @@ namespace WindowsFormsApp.Script.RoslynScript
             var sendKey = CreateMethodSendKey();
             var ctrlA = CreateMethodCtrlA();
             var checkKeyboard = CreateMethodCheckKeyboard();
+            //general 
+            var onWifi = CreateMethodOnWifi();
+            var offWifi = CreateMethodOffWifi();
+            var openUrl = CreateMethodOpenUrl();
 
             return SyntaxFactory.ClassDeclaration("CommandExecutor")
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
@@ -104,11 +108,16 @@ namespace WindowsFormsApp.Script.RoslynScript
                     sendKey,
                     ctrlA,
                     checkKeyboard,
+                    onWifi,
+                    offWifi,
+                    openUrl,
                     runMethod
                 );
         }
 
-
+        /// <summary>
+        /// text tool box
+        /// </summary>
         // Phương thức ClickXY(int x, int y)
         public static MethodDeclarationSyntax CreateMethodClickXY()
         {
@@ -270,13 +279,6 @@ namespace WindowsFormsApp.Script.RoslynScript
                     SyntaxFactory.ParseStatement("return true;")
                 ));
         }
-        // OCR hình ảnh
-        /*
-         * 
-         */
-
-        // Các vòng lặp điều kiện lệnh 
-
         // stop script 
         public static MethodDeclarationSyntax CretateMethodStopScrit()
         {
@@ -304,7 +306,9 @@ namespace WindowsFormsApp.Script.RoslynScript
                    SyntaxFactory.ParseStatement(@"await _view.UpdateProgressGridView($""{_deviceID}"", text, 5);")
                ));
         }
-
+        /// <summary>
+        /// text tool box
+        /// </summary>
         // send text 
         public static MethodDeclarationSyntax CreateMethodSendText()
         {
@@ -340,7 +344,6 @@ namespace WindowsFormsApp.Script.RoslynScript
                   SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input text {input}\");")
                   ));
         }
-
         // send text file and delete
         public static MethodDeclarationSyntax CreateMethodSendTextFromFileDel()
         {
@@ -408,7 +411,6 @@ namespace WindowsFormsApp.Script.RoslynScript
                 .AddParameterListParameters(paramCount)
                 .WithBody(SyntaxFactory.Block(statements));
         }
-
         // xóa toàn bộ
         public static MethodDeclarationSyntax CreateMethodDelAllText()
         {
@@ -422,6 +424,10 @@ namespace WindowsFormsApp.Script.RoslynScript
                   SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input keyevent 67\");")
                   ));
         }
+        /// <summary>
+        /// Key button
+        /// </summary>
+        /// <returns></returns>
         // send key
         public static MethodDeclarationSyntax CreateMethodSendKey()
         {
@@ -502,8 +508,98 @@ namespace WindowsFormsApp.Script.RoslynScript
                     )
                 ));
         }
+        /// <summary>
+        /// data change info
+        /// </summary>
+        // backup
 
+        // restore
 
+        // login gmail
+
+        // load play store
+
+        // change info
+
+        // change sim
+
+        // wipe Account 
+
+        //Wait rebot
+
+        // wait internet 
+
+        // push file to phone 
+
+        // pull file to pc
+
+        /// <summary>
+        /// general
+        /// </summary>
+        // wifi on
+        public static MethodDeclarationSyntax CreateMethodOnWifi()
+        {
+            return SyntaxFactory.MethodDeclaration(
+                  SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                  "WiFiON")
+              .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+              .AddParameterListParameters()
+              .WithBody(SyntaxFactory.Block(
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell svc wifi enable\");")
+                  ));
+        }
+        // wifi off
+        public static MethodDeclarationSyntax CreateMethodOffWifi()
+        {
+            return SyntaxFactory.MethodDeclaration(
+                  SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                  "WiFiOFF")
+              .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+              .AddParameterListParameters()
+              .WithBody(SyntaxFactory.Block(
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell svc wifi disable\");")
+                  ));
+        }
+        // open url
+        public static MethodDeclarationSyntax CreateMethodOpenUrl()
+        {
+            var paramUrl = SyntaxFactory.Parameter(SyntaxFactory.Identifier("url"))
+               .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
+
+            return SyntaxFactory.MethodDeclaration(
+                  SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                  "OpenURL")
+              .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+              .AddParameterListParameters()
+              .WithBody(SyntaxFactory.Block(
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell am start -a android.intent.action.VIEW -d {url}\");")
+                  ));
+        }
+        // on Bproxy
+
+        // auto proxy
+
+        // check sim
+
+        // command (shell)
+
+        // open app
+
+        // close app
+
+        //enable app
+
+        // disable app 
+
+        // install app 
+
+        // uninstall app 
+
+        // clear data app
+
+        // swipe close app
+
+        // load app
         //
     }
 }

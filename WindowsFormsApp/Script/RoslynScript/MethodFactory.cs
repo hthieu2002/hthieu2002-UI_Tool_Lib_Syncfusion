@@ -84,6 +84,18 @@ namespace WindowsFormsApp.Script.RoslynScript
             var onWifi = CreateMethodOnWifi();
             var offWifi = CreateMethodOffWifi();
             var openUrl = CreateMethodOpenUrl();
+            var openApp = CreateMethodOpenApp();
+            var closeApp = CreateMethodCloseApp();
+            var enableApp = CreateMethodEnableApp();
+            var disableApp = CreateMethodDisbledApp();
+            var installApp = CreateMethodInstallApp();
+            var uninstallApp = CreateMethodUninstallApp();
+            var clearDataApp = CreateMethodClearDataApp();
+            // data change info
+            var waitReboot = CreateMethodWaitForReboot();
+            var waitInternet = CreateMethodWaitForInternet();
+            var pushFile = CreateMethodPushFile();
+            var pullFile = CreateMethodPullFile();
 
             return SyntaxFactory.ClassDeclaration("CommandExecutor")
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
@@ -111,6 +123,17 @@ namespace WindowsFormsApp.Script.RoslynScript
                     onWifi,
                     offWifi,
                     openUrl,
+                    waitReboot,
+                    waitInternet,
+                    pushFile,
+                    pullFile,
+                    openApp,
+                    closeApp,
+                    enableApp,
+                    disableApp,
+                    installApp,
+                    uninstallApp,
+                    clearDataApp,
                     runMethod
                 );
         }
@@ -526,13 +549,155 @@ namespace WindowsFormsApp.Script.RoslynScript
         // wipe Account 
 
         //Wait rebot
+        public static MethodDeclarationSyntax CreateMethodWaitForReboot()
+        {
+            return SyntaxFactory.MethodDeclaration(
+                    SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.BoolKeyword)),
+                    "WaitForReboot")
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                .AddParameterListParameters()
+                .WithBody(
+                    SyntaxFactory.Block(
+                        // Bước 1: Chờ thiết bị kết nối lại (wait-for-device)
+                        SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommandString($\"adb wait-for-device\")"),
 
+                        // Bước 2: Lặp kiểm tra sys.boot_completed == 1
+                        SyntaxFactory.WhileStatement(
+                            SyntaxFactory.PrefixUnaryExpression(
+                                SyntaxKind.LogicalNotExpression,
+                                SyntaxFactory.InvocationExpression(
+                                    SyntaxFactory.MemberAccessExpression(
+                                        SyntaxKind.SimpleMemberAccessExpression,
+                                        SyntaxFactory.IdentifierName("ADBService.ExecuteAdbCommand"),
+                                        SyntaxFactory.IdentifierName("Contains")
+                                    )
+                                ).WithArgumentList(
+                                    SyntaxFactory.ArgumentList(
+                                        SyntaxFactory.SeparatedList<ArgumentSyntax>(
+                                            new SyntaxNodeOrToken[]{
+                                        SyntaxFactory.Argument(
+                                            SyntaxFactory.ParseExpression("$\"adb -s {_deviceID} shell getprop sys.boot_completed\"")
+                                        ),
+                                        SyntaxFactory.Token(SyntaxKind.CommaToken),
+                                        SyntaxFactory.Argument(
+                                            SyntaxFactory.LiteralExpression(
+                                                SyntaxKind.StringLiteralExpression,
+                                                SyntaxFactory.Literal("1")
+                                            )
+                                        )
+                                            }
+                                        )
+                                    )
+                                )
+                            ),
+                            SyntaxFactory.Block(
+                                SyntaxFactory.ParseStatement("System.Threading.Thread.Sleep(1000);")
+                            )
+                        ),
+
+                        // Khi xong trả về true
+                        SyntaxFactory.ParseStatement("return true;")
+                    )
+                );
+        }
         // wait internet 
-
+        public static MethodDeclarationSyntax CreateMethodWaitForInternet()
+        {
+            return SyntaxFactory.MethodDeclaration(
+                    SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.BoolKeyword)),
+                    "WaitInternet")
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                .AddParameterListParameters()
+                .WithBody(
+                    SyntaxFactory.Block(
+                        SyntaxFactory.WhileStatement(
+                            SyntaxFactory.LiteralExpression(SyntaxKind.TrueLiteralExpression),
+                            SyntaxFactory.Block(
+                                SyntaxFactory.LocalDeclarationStatement(
+                                    SyntaxFactory.VariableDeclaration(
+                                        SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)))
+                                    .AddVariables(
+                                        SyntaxFactory.VariableDeclarator("output")
+                                            .WithInitializer(SyntaxFactory.EqualsValueClause(
+                                                SyntaxFactory.ParseExpression("ADBService.ExecuteAdbCommandString($\"adb -s {_deviceID} shell ping -c 1 8.8.8.8\")")
+                                            ))
+                                    )
+                                ),
+                                SyntaxFactory.IfStatement(
+                                    SyntaxFactory.BinaryExpression(
+                                        SyntaxKind.LogicalAndExpression,
+                                        SyntaxFactory.InvocationExpression(
+                                            SyntaxFactory.MemberAccessExpression(
+                                                SyntaxKind.SimpleMemberAccessExpression,
+                                                SyntaxFactory.IdentifierName("output"),
+                                                SyntaxFactory.IdentifierName("Contains")
+                                            )
+                                        ).WithArgumentList(SyntaxFactory.ArgumentList(
+                                            SyntaxFactory.SingletonSeparatedList(
+                                                SyntaxFactory.Argument(
+                                                    SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression,
+                                                        SyntaxFactory.Literal("icmp_seq=1"))
+                                                )
+                                            )
+                                        )),
+                                        SyntaxFactory.InvocationExpression(
+                                            SyntaxFactory.MemberAccessExpression(
+                                                SyntaxKind.SimpleMemberAccessExpression,
+                                                SyntaxFactory.IdentifierName("output"),
+                                                SyntaxFactory.IdentifierName("Contains")
+                                            )
+                                        ).WithArgumentList(SyntaxFactory.ArgumentList(
+                                            SyntaxFactory.SingletonSeparatedList(
+                                                SyntaxFactory.Argument(
+                                                    SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression,
+                                                        SyntaxFactory.Literal("1 packets transmitted, 1 received"))
+                                                )
+                                            )
+                                        ))
+                                    ),
+                                    SyntaxFactory.Block(
+                                        SyntaxFactory.ParseStatement("return true;")
+                                    )
+                                ),
+                                SyntaxFactory.ParseStatement("System.Threading.Thread.Sleep(2000);")
+                            )
+                        ),
+                        SyntaxFactory.ParseStatement("return false;")
+                    )
+                );
+        }
         // push file to phone 
+        public static MethodDeclarationSyntax CreateMethodPushFile()
+        {
+            var paramUrlFromPc = SyntaxFactory.Parameter(SyntaxFactory.Identifier("FromPC"))
+                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
+            var paramUrlFromPhone = SyntaxFactory.Parameter(SyntaxFactory.Identifier("FromPhone"))
+               .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
 
+            return SyntaxFactory.MethodDeclaration(
+                SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)), "PushFile")
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                .AddParameterListParameters(paramUrlFromPc, paramUrlFromPhone)
+                .WithBody(SyntaxFactory.Block(
+                     SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} push {FromPC} {FromPhone}\");")
+                    ));
+        }
         // pull file to pc
+        public static MethodDeclarationSyntax CreateMethodPullFile()
+        {
+            var paramUrlFromPc = SyntaxFactory.Parameter(SyntaxFactory.Identifier("FromPC"))
+                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
+            var paramUrlFromPhone = SyntaxFactory.Parameter(SyntaxFactory.Identifier("FromPhone"))
+               .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
 
+            return SyntaxFactory.MethodDeclaration(
+                SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)), "PullFile")
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                .AddParameterListParameters(paramUrlFromPhone, paramUrlFromPc)
+                .WithBody(SyntaxFactory.Block(
+                     SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} pull {FromPhone} {FromPC}\");")
+                    ));
+        }
         /// <summary>
         /// general
         /// </summary>
@@ -584,19 +749,110 @@ namespace WindowsFormsApp.Script.RoslynScript
         // command (shell)
 
         // open app
+        public static MethodDeclarationSyntax CreateMethodOpenApp()
+        {
+            var paramPackage = SyntaxFactory.Parameter(SyntaxFactory.Identifier("package"))
+                                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
 
+            return SyntaxFactory.MethodDeclaration(
+                  SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                  "OpenApp")
+              .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+              .AddParameterListParameters(paramPackage)
+              .WithBody(SyntaxFactory.Block(
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell monkey -p {package} -c android.intent.category.LAUNCHER 1\");")
+                  ));
+        }
         // close app
+        public static MethodDeclarationSyntax CreateMethodCloseApp()
+        {
+            var paramPackage = SyntaxFactory.Parameter(SyntaxFactory.Identifier("package"))
+                                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
 
+            return SyntaxFactory.MethodDeclaration(
+                  SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                  "CloseApp")
+              .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+              .AddParameterListParameters(paramPackage)
+              .WithBody(SyntaxFactory.Block(
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell am force-stop {package}\");")
+                  ));
+        }
         //enable app
+        public static MethodDeclarationSyntax CreateMethodEnableApp()
+        {
+            var paramPackage = SyntaxFactory.Parameter(SyntaxFactory.Identifier("package"))
+                                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
 
+            return SyntaxFactory.MethodDeclaration(
+                  SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                  "EnableApp")
+              .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+              .AddParameterListParameters(paramPackage)
+              .WithBody(SyntaxFactory.Block(
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell pm enable {package}\");")
+                  ));
+        }
         // disable app 
+        public static MethodDeclarationSyntax CreateMethodDisbledApp()
+        {
+            var paramPackage = SyntaxFactory.Parameter(SyntaxFactory.Identifier("package"))
+                                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
 
+            return SyntaxFactory.MethodDeclaration(
+                  SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                  "DisbledApp")
+              .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+              .AddParameterListParameters(paramPackage)
+              .WithBody(SyntaxFactory.Block(
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell pm disable {package}\");")
+                  ));
+        }
         // install app 
+        public static MethodDeclarationSyntax CreateMethodInstallApp()
+        {
+            var paramPath = SyntaxFactory.Parameter(SyntaxFactory.Identifier("path"))
+                                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
 
+            return SyntaxFactory.MethodDeclaration(
+                  SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                  "InstallApp")
+              .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+              .AddParameterListParameters(paramPath)
+              .WithBody(SyntaxFactory.Block(
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} install {path}\");")
+                  ));
+        }
         // uninstall app 
+        public static MethodDeclarationSyntax CreateMethodUninstallApp()
+        {
+            var paramPath = SyntaxFactory.Parameter(SyntaxFactory.Identifier("path"))
+                                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
 
+            return SyntaxFactory.MethodDeclaration(
+                  SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                  "UninstallApp")
+              .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+              .AddParameterListParameters(paramPath)
+              .WithBody(SyntaxFactory.Block(
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} uninstall {path}\");")
+                  ));
+        }
         // clear data app
+        public static MethodDeclarationSyntax CreateMethodClearDataApp()
+        {
+            var paramPackage = SyntaxFactory.Parameter(SyntaxFactory.Identifier("package"))
+                                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
 
+            return SyntaxFactory.MethodDeclaration(
+                  SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                  "ClearDataApp")
+              .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+              .AddParameterListParameters(paramPackage)
+              .WithBody(SyntaxFactory.Block(
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell pm clear {package}\");")
+                  ));
+        }
         // swipe close app
 
         // load app

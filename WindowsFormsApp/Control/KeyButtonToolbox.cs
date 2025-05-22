@@ -45,7 +45,7 @@ namespace WindowsFormsApp
                 Location = new Point(btnSendKey.Width + 10, 10),
                 LinkColor = Color.Brown
             };
-            linkListKey.Click += (s, e) => MessageBox.Show("List of keys displayed here.");
+            linkListKey.Click += (s, e) => System.Diagnostics.Process.Start("https://gist.github.com/arjunv/2bbcca9a1a1c127749f8dcb6d36fb0bc");
 
             panelTop.Controls.Add(btnSendKey);
             panelTop.Controls.Add(linkListKey);

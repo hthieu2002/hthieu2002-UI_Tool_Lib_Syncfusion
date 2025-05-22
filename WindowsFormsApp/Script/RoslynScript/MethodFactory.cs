@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace WindowsFormsApp.Script.RoslynScript
 {
@@ -871,6 +872,5 @@ namespace WindowsFormsApp.Script.RoslynScript
                   SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input keyevent 3\");")
                   ));
         }
-        //
     }
 }

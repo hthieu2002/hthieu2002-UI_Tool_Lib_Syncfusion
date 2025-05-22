@@ -107,11 +107,11 @@
             // x
             // 
             this.x.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.x.Location = new System.Drawing.Point(24, 525);
+            this.x.Location = new System.Drawing.Point(15, 525);
             this.x.Name = "x";
-            this.x.Size = new System.Drawing.Size(35, 16);
+            this.x.Size = new System.Drawing.Size(42, 16);
             this.x.TabIndex = 9;
-            this.x.Text = "[ 999";
+            this.x.Text = "[ 9999";
             // 
             // lbLog
             // 

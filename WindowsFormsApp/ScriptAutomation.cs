@@ -546,7 +546,7 @@ namespace WindowsFormsApp
             {
                 var position = ConvertToImageCoordinates(e.X, e.Y, pictureBoxScreen, bitmap);
 
-                x.Text = $"[ {position.X} ]";
+                x.Text = $"[ {position.X} ";
                 y.Text = $": {position.Y} ]";
             }
         }

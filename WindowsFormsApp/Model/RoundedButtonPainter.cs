@@ -23,14 +23,10 @@ public static class RoundedButtonPainter
         btn.Region = new Region(GetRoundedRect(rect, radius));
         rect = new Rectangle(rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2);
 
-        // VẼ NỀN (không đổi màu khi hover)
         e.Graphics.FillRectangle(new SolidBrush(btn.BackColor), rect);
-
-        // Viền giữ nguyên không đổi (chỉ khác khi Disabled hoặc Focused)
         Pen borderPen = GetButtonBorderPen(btn);
         e.Graphics.DrawPath(borderPen, GetRoundedRect(rect, radius));
 
-        // Màu chữ giữ nguyên không đổi
         Color textColor = btn.Enabled ? btn.ForeColor : Color.Gray;
 
         Rectangle textRect = new Rectangle(rect.X + 2, rect.Y + 2, rect.Width - 4, rect.Height - 4);
@@ -45,11 +41,11 @@ public static class RoundedButtonPainter
         }
         else if (btn.Focused)
         {
-            return new Pen(Color.Green); // Chỉ viền xanh nếu Focused (Enter, Tab vào)
+            return new Pen(Color.Green); 
         }
         else
         {
-            return new Pen(Color.Gray);  // Không đổi màu khi hover
+            return new Pen(Color.Gray);  
         }
     }
 

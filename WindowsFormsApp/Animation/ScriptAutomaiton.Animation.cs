@@ -201,19 +201,15 @@ namespace WindowsFormsApp
                     dataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.WhiteSmoke;
                 }
             };
-            // Đặt tên cột
             dataGridView.Columns[0].Name = "Key";
             dataGridView.Columns[1].Name = "Value";
 
-            // Cho cột tự dãn ra đều nhau:
             dataGridView.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            // (Tuỳ chỉnh nếu muốn Key nhỏ hơn)
             dataGridView.Columns[0].FillWeight = 40;
             dataGridView.Columns[1].FillWeight = 60;
 
-            // Nội dung các dòng theo như bạn gửi:
             string[] keys = {
         "index", "text", "resource-id", "class", "package", "content-desc", "checkable",
         "checked", "clickable", "enabled", "focusable", "focused",
@@ -344,7 +340,7 @@ namespace WindowsFormsApp
                     }
                 }
 
-                // Tô màu các hàm và tham số (giữ nguyên như bạn có)
+                // Tô màu các hàm và tham số 
                 var funcRegex = new Regex(@"\w+\(.*?\)");
                 var funcMatches = funcRegex.Matches(richTextBox1.Text);
 

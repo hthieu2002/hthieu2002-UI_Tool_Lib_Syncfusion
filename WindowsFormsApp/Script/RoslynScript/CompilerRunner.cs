@@ -75,7 +75,7 @@ namespace WindowsFormsApp.Script.RoslynScript
       //      }
       //  }
 
-        public static Assembly CompileAndLoadAssembly(CompilationUnitSyntax compilationUnit)
+        public static Assembly CompileAndLoadAssembly(CompilationUnitSyntax compilationUnit, string Id)
         {
             var syntaxTree = CSharpSyntaxTree.ParseText(compilationUnit.ToFullString());
 
@@ -106,7 +106,9 @@ namespace WindowsFormsApp.Script.RoslynScript
                     Console.Error.WriteLine(diagnostic.ToString());
                 }
 
-                throw new Exception("Biên dịch thất bại.");
+                //throw new Exception("Biên dịch thất bại.");
+                return null;
+              //  MessageBox.Show("");
             }
 
             ms.Seek(0, SeekOrigin.Begin);

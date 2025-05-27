@@ -294,15 +294,15 @@ namespace WindowsFormsApp
                     case "Tìm đúng && click":
                         return "SearchAndClick(\"\")";
                     case "Tìm gần đúng && click":
-                        return "SearchOfAndClick(\"\")";
+                        return "";
                     case "Tìm đúng && wait":
                         return "SearchWaitClick(\"\", 1000)";
                     case "Tìm gần đúng && wait":
-                        return "SearchOfWaitClick(\"\", 1000)";
+                        return "";
                     case "Tìm đúng && tiếp tục":
                         return "SearchAndContinue(\"\")";
                     case "Tìm gần đúng && tiếp tục":
-                        return "SearchOfAndContinue(\"\")";
+                        return "";
                 }
 
 

@@ -75,6 +75,7 @@ namespace WindowsFormsApp
                 {
                     sfDataGrid.Refresh();
                 }
+               
             }
         }
      
@@ -94,9 +95,12 @@ namespace WindowsFormsApp
                 {
                     sfDataGrid.Invoke(new Action(() =>
                     {
+                        row.BeginEdit();
                         row["Progress"] = p;
                         row["ProgressText"] = text;
-                        sfDataGrid.Refresh();
+                        row.EndEdit();
+                        dt.AcceptChanges();
+                        sfDataGrid.View.Refresh();
                     }));
                 }
                 else
@@ -360,7 +364,7 @@ namespace WindowsFormsApp
                             await UpdateProgressGridView(deviceId, $"Start script {cbLoadFile.Text} vô hạn lần {i}", 1);
                             RoslynScriptAutomation.Run($"./Resources/script/{cbLoadFile.Text}", deviceId, this);
 
-                            await UpdateProgressGridView(deviceId, $"Success", 100);
+                           // await UpdateProgressGridView(deviceId, $"Success", 100);
                         });
                         tasks.Add(task);
 
@@ -382,7 +386,7 @@ namespace WindowsFormsApp
                             await UpdateProgressGridView(deviceId, $"Start script {cbLoadFile.Text} lần {i+1}", 1);
                             RoslynScriptAutomation.Run($"./Resources/script/{cbLoadFile.Text}", deviceId, this);
 
-                            await UpdateProgressGridView(deviceId, $"Success", 100);
+                         //   await UpdateProgressGridView(deviceId, $"Success", 100);
 
                         });
                         tasks.Add(task);

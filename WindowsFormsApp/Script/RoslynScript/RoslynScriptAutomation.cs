@@ -31,12 +31,18 @@ namespace WindowsFormsApp.Script.RoslynScript
                     SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("Services")),
                     SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("WindowsFormsApp")),
                     SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.Threading.Tasks")),
-                    SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.Linq"))
+                    SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.Linq")),
+                    SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.IO"))
                 )
                 .NormalizeWhitespace();
 
             Console.WriteLine(compilationUnit.ToFullString());
-            var assembly = CompilerRunner.CompileAndLoadAssembly(compilationUnit);
+            var assembly = CompilerRunner.CompileAndLoadAssembly(compilationUnit, deviceID);
+            if (assembly == null)
+            {
+                _ = ViewAutomation.Instance.UpdateProgressGridView(deviceID, "Lỗi script kiểm tra lại script");
+                return;
+            }
             var commandExecutorType = assembly.GetType("CommandExecutor");
             var executorInstance = Activator.CreateInstance(commandExecutorType, deviceID, view);
             var runMethodInfo = commandExecutorType.GetMethod("Run");

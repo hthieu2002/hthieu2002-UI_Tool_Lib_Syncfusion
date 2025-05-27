@@ -93,12 +93,13 @@ namespace WindowsFormsApp.Script.RoslynScript
             var uninstallApp = CreateMethodUninstallApp();
             var clearDataApp = CreateMethodClearDataApp();
             var swipeCloseApp = CreateMethodSwipeCloseApp();
+            var commandShell = CreateMethodCommandShell();
             // data change info
             var waitReboot = CreateMethodWaitForReboot();
             var waitInternet = CreateMethodWaitForInternet();
             var pushFile = CreateMethodPushFile();
             var pullFile = CreateMethodPullFile();
-
+            var sendTextRandomFromFile = CreateMethodSendTextRandomFromFile();
             return SyntaxFactory.ClassDeclaration("CommandExecutor")
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
                 .AddMembers(
@@ -116,6 +117,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                     logMessageMethod,
                     sendText,
                     randomTextAndSend,
+                    sendTextRandomFromFile,
                     sendTextFromFileDel,
                     delTextChar,
                     delAllText,
@@ -137,6 +139,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                     uninstallApp,
                     clearDataApp,
                     swipeCloseApp,
+                    commandShell,
                     runMethod
                 );
         }
@@ -251,7 +254,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                     SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input tap {x} {y}\");")
                 ));
         }
-
+       
         public static MethodDeclarationSyntax CreateMethodSearchWaitClick()
         {
             var paramText = SyntaxFactory.Parameter(SyntaxFactory.Identifier("text"))
@@ -449,6 +452,28 @@ namespace WindowsFormsApp.Script.RoslynScript
                   SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input keycombination 113 29\");"),
                   SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input keyevent 67\");")
                   ));
+        }
+        // send text random to form
+        public static MethodDeclarationSyntax CreateMethodSendTextRandomFromFile()
+        {
+            var paramUrlFile = SyntaxFactory.Parameter(SyntaxFactory.Identifier("url"))
+                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
+
+            return SyntaxFactory.MethodDeclaration(
+                SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                "SendTextRandomFromFile")
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                .AddParameterListParameters(paramUrlFile)
+                .WithBody(SyntaxFactory.Block(
+                       SyntaxFactory.ParseStatement("string[] lines = File.ReadAllLines(url);"),
+                       SyntaxFactory.ParseStatement("var nonEmptyLines = lines.Where(line => !string.IsNullOrWhiteSpace(line)).ToArray();"),
+                       SyntaxFactory.ParseStatement("if (nonEmptyLines.Length == 0) { Console.WriteLine(\"File không có dòng hợp lệ.\"); return; }"),
+                       SyntaxFactory.ParseStatement("Random rnd = new Random();"),
+                       SyntaxFactory.ParseStatement("string randomLine = nonEmptyLines[rnd.Next(nonEmptyLines.Length)];"),
+                       SyntaxFactory.ParseStatement("Console.WriteLine(\"Dòng được chọn ngẫu nhiên: \" + randomLine);"),
+                       SyntaxFactory.ParseStatement("var input = ADBService.EscapeAdbInputText(randomLine);"),
+                       SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input text {input}\");")
+                    ));
         }
         /// <summary>
         /// Key button
@@ -752,9 +777,23 @@ namespace WindowsFormsApp.Script.RoslynScript
         // auto proxy
 
         // check sim
-
+        
         // command (shell)
+        public static MethodDeclarationSyntax CreateMethodCommandShell()
+        {
+            var paramShell = SyntaxFactory.Parameter(SyntaxFactory.Identifier("shell"))
+                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
 
+
+            return SyntaxFactory.MethodDeclaration(
+                  SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                  "RunCommandShell")
+              .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+              .AddParameterListParameters(paramShell)
+              .WithBody(SyntaxFactory.Block(
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell {shell}\");")
+                  ));
+        }
         // open app
         public static MethodDeclarationSyntax CreateMethodOpenApp()
         {

@@ -25,7 +25,7 @@ namespace WindowsFormsApp.Script.Roslyn
 
             var globals = new Globals { eventRoslyn = eventRoslyn };
 
-            switch (command)
+            switch (command)    
             {
                 case "ClickXY":
                     string code = $"await eventRoslyn.HandleClickXY(\"{textRoslyn}\", \"{deviceId}\");";

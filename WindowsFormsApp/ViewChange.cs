@@ -491,6 +491,8 @@ namespace WindowsFormsApp
         private async void StartAllRandomChange(int button, int autoChange = 0)
         {
             var result = DialogResult.No;
+            var messageBoxPushFile = DialogResult.No;
+            string selectedFilePath = null;
             var dt = sfDataGrid.DataSource as System.Data.DataTable;
             if (dt == null) return;
 
@@ -515,14 +517,56 @@ namespace WindowsFormsApp
             {
                 result = MessageBox.Show(message, title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             }
+            
+            if (button == 1 && result == DialogResult.Yes)
+            {
+                messageBoxPushFile = MessageBox.Show("Are you push file keybox.xml to phone ?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            }
 
+            if (messageBoxPushFile == DialogResult.Yes)
+            {
+                using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                {
+                    openFileDialog.Filter = "XML files (*.xml)|*.xml";
+                    openFileDialog.Title = "Select keybox.xml file";
+                    bool validFileSelected = false;
+                    while (!validFileSelected)
+                    {
+                        if (openFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            var fileName = Path.GetFileName(openFileDialog.FileName);
+                            if (string.Equals(fileName, "keybox.xml", StringComparison.OrdinalIgnoreCase))
+                            {
+                                selectedFilePath = openFileDialog.FileName;
+                                validFileSelected = true;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Vui lòng chọn file có tên đúng là keybox.xml", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }
+                        else
+                        {
+                            validFileSelected = true;
+                        }
+                    }
+                }
+            }
             if (result == DialogResult.Yes || button > 2)
             {
                 var tasks = toAnimate.Select(async id =>
                 {
+                    if (messageBoxPushFile == DialogResult.Yes && selectedFilePath != null)
+                    {
+                        ADBService.ExecuteAdbCommand(
+                            $"push {selectedFilePath} /data/local/tmp/",
+                            id
+                        );
+                    }
+
                     int rowIndex = dt.AsEnumerable().ToList().FindIndex(r => r.Field<string>("DeviceID") == id);
 
-                    Console.WriteLine($"DeviceID: {id}, rowIndex: {rowIndex}, Total rows: {dt.Rows.Count}");
+                    Console.WriteLine($"DeviceID: {id}, rowIndex: {rowIndex}, Total rows: {dt.Rows.Count}, Keybox: {selectedFilePath}");
 
                     if (rowIndex >= 0 && rowIndex < dt.Rows.Count)
                     {

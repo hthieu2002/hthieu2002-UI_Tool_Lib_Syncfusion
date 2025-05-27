@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -193,7 +194,12 @@ namespace WindowsFormsApp
             {
                 string command = $"shell screencap -p /sdcard/screenshot{device.Serial}.png";
                 ADBService.ExecuteAdbCommand(command, device.Serial);
-                ADBService.ExecuteAdbCommand($"pull /sdcard/screenshot{device.Serial}.png", device.Serial); 
+                string directoryPath = $".\\{device.Serial}";
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+                ADBService.ExecuteAdbCommand($"pull /sdcard/screenshot{device.Serial}.png ./{device.Serial}/screenshot.png", device.Serial); 
             }
             MessageBox.Show("Chụp màn hình đã được thực hiện cho tất cả các thiết bị.");
         }
@@ -219,7 +225,7 @@ namespace WindowsFormsApp
                 device.DevicePanel.Dispose();
             }
             screenView.deviceDisplays.Clear();  // Xóa tất cả các thiết bị khỏi danh sách
-            MessageBox.Show("Đã reload views.");
+         //   MessageBox.Show("Đã reload views.");
         }
     }
 }

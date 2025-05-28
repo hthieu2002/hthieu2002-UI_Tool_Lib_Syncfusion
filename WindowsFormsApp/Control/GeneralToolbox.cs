@@ -43,7 +43,7 @@ namespace WindowsFormsApp
             };
 
             string[] leftButtons = {
-        "WiFi ON", "WiFi OFF", "Open URL", "ON Bproxy", "Auto proxy", "Check SIM", "Command(shell)"
+        "WiFi ON", "WiFi OFF", "Open URL" /*, "ON Bproxy", "Auto proxy", "Check SIM"*/, "Command(shell)"
     };
 
             foreach (var text in leftButtons)

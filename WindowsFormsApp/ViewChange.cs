@@ -492,7 +492,9 @@ namespace WindowsFormsApp
         {
             var result = DialogResult.No;
             var messageBoxPushFile = DialogResult.No;
+            var messageBoxPushFileJson = DialogResult.No;
             string selectedFilePath = null;
+            string selectedFilePathJson = null;
             var dt = sfDataGrid.DataSource as System.Data.DataTable;
             if (dt == null) return;
 
@@ -552,6 +554,42 @@ namespace WindowsFormsApp
                     }
                 }
             }
+
+            if (button == 1 && result == DialogResult.Yes)
+            {
+                messageBoxPushFileJson = MessageBox.Show("Are you push file pif.json to phone ?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            }
+
+            if (messageBoxPushFileJson == DialogResult.Yes)
+            {
+                using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                {
+                    openFileDialog.Filter = "JSON files (*.json)|*.json";
+                    openFileDialog.Title = "Select pif.json file";
+                    bool validFileSelectedJson = false;
+                    while (!validFileSelectedJson)
+                    {
+                        if (openFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            var fileName = Path.GetFileName(openFileDialog.FileName);
+                            if (string.Equals(fileName, "pif.json", StringComparison.OrdinalIgnoreCase))
+                            {
+                                selectedFilePathJson = openFileDialog.FileName;
+                                validFileSelectedJson = true;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Vui lòng chọn file có tên đúng là pif.json", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }
+                        else
+                        {
+                            validFileSelectedJson = true;
+                        }
+                    }
+                }
+            }
+
             if (result == DialogResult.Yes || button > 2)
             {
                 var tasks = toAnimate.Select(async id =>
@@ -560,6 +598,13 @@ namespace WindowsFormsApp
                     {
                         ADBService.ExecuteAdbCommand(
                             $"push {selectedFilePath} /data/local/tmp/",
+                            id
+                        );
+                    }
+                    if (messageBoxPushFileJson == DialogResult.Yes && selectedFilePathJson != null)
+                    {
+                        ADBService.ExecuteAdbCommand(
+                            $"push {selectedFilePathJson} /data/local/tmp/",
                             id
                         );
                     }
@@ -590,6 +635,8 @@ namespace WindowsFormsApp
                                     await StartScreenShot(id, row);
                                     break;
                                 case 5:
+                                    // open url
+
                                     break;
                             }
                         }

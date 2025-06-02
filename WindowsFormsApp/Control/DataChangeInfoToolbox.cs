@@ -129,19 +129,19 @@ namespace WindowsFormsApp
             switch (action)
             {
                 case "Backup":
-                    return "Backupdata()";
+                    return "";
                 case "Restore":
-                    return "Restoredata()";
+                    return "";
                 case "Login Gmail":
-                    return "LoginGmail()";
+                    return "";
                 case "Load play store":
-                    return "LoadPlayStore()";
+                    return "";
                 case "Change Info":
-                    return "ChangeInfo()";
+                    return "";
                 case "Change SIM":
-                    return "ChangeSim()";
+                    return "";
                 case "Wipe Account":
-                    return "WipeAccount()";
+                    return "";
                 case "Wait reboot":
                     return "WaitReboot()";
                 case "Wait internet":

@@ -496,14 +496,48 @@ namespace WindowsFormsApp
         }
         private System.Drawing.Point ConvertToImageCoordinates(int mouseX, int mouseY, PictureBox pictureBox, Bitmap image)
         {
-            float scaleX = (float)image.Width / pictureBox.Width;
-            float scaleY = (float)image.Height / pictureBox.Height;
+            try
+            {
+                if (image == null)
+                {
+                    throw new ArgumentNullException(nameof(image), "The image cannot be null.");
+                }
 
-            int imageX = (int)(mouseX * scaleX);
-            int imageY = (int)(mouseY * scaleY);
+                if (pictureBox.Width == 0 || pictureBox.Height == 0)
+                {
+                    throw new ArgumentException("The PictureBox dimensions are invalid.");
+                }
 
-            return new System.Drawing.Point(imageX, imageY);
+                if (mouseX < 0 || mouseX >= pictureBox.Width || mouseY < 0 || mouseY >= pictureBox.Height)
+                {
+                    throw new ArgumentException("Mouse coordinates are outside the bounds of the PictureBox.");
+                }
+
+                float scaleX = (float)image.Width / pictureBox.Width;
+                float scaleY = (float)image.Height / pictureBox.Height;
+
+                int imageX = (int)(mouseX * scaleX);
+                int imageY = (int)(mouseY * scaleY);
+
+                return new System.Drawing.Point(imageX, imageY);
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return new System.Drawing.Point(0, 0);
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return new System.Drawing.Point(0, 0); 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unexpected error: {ex.Message}");
+                return new System.Drawing.Point(0, 0); 
+            }
         }
+
 
 
         private void pictureBoxScreen_MouseClick(object sender, MouseEventArgs e)

@@ -312,11 +312,11 @@ namespace WindowsFormsApp
                 switch (buttonText)
                 {
                     case "Tìm đúng && click":
-                        return "FindAndClick(\"\")";
+                        return "";
                     case "Tìm đúng && wait":
-                        return "FindWaitClick(\"\", 1000)";
+                        return "";
                     case "Tìm đúng && tiếp tục":
-                        return "FindAndContinue(\"\")";
+                        return "";
                 }
             }
             else if (groupName == "Click tọa độ")

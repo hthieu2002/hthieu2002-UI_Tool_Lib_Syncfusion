@@ -142,19 +142,16 @@ namespace WindowsFormsApp
         }
         private void SetActiveMenu(ToolStripMenuItem selectedItem)
         {
-            // Duyệt toàn bộ các item cấp 1 trong MenuStrip
             foreach (ToolStripMenuItem item in menuStrip1.Items)
             {
-                // Reset về trạng thái bình thường
                 item.BackColor = Color.WhiteSmoke;
                 item.ForeColor = Color.Black;
                 item.Font = new Font("Segoe UI", 9f, FontStyle.Regular);
             }
 
-            // Set trạng thái cho item đang được chọn
-            selectedItem.BackColor = Color.WhiteSmoke;// Nền tím
-            selectedItem.ForeColor = Color.Black;              // Chữ trắng
-            selectedItem.Font = new Font("Segoe UI", 9f, FontStyle.Bold); // In đậm
+            selectedItem.BackColor = Color.WhiteSmoke;
+            selectedItem.ForeColor = Color.Black;             
+            selectedItem.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
         }
         private void BuildDataTableUI()
         {
@@ -258,7 +255,7 @@ namespace WindowsFormsApp
         {
             if (string.IsNullOrEmpty(richTextBox1.Text))
             {
-                richTextBox1.Text = ""; // Cũng có thể bỏ qua nếu không cần thiết
+                richTextBox1.Text = ""; 
             }
 
             if (isEditing)
@@ -292,7 +289,6 @@ namespace WindowsFormsApp
                 richTextBox1.SelectAll();
                 richTextBox1.SelectionColor = Color.White;
 
-                // Tô màu comment
                 var commentRegex = new Regex(@"//.*$", RegexOptions.Multiline);
                 var commentMatches = commentRegex.Matches(richTextBox1.Text);
                 foreach (Match commentMatch in commentMatches)
@@ -301,7 +297,6 @@ namespace WindowsFormsApp
                     richTextBox1.SelectionColor = Color.Green;
                 }
 
-                // Tô màu từ khóa (cam sáng đậm)
                 string keywords = @"\b(if|for|while|return|break|continue|goto|end)\b";
                 var keywordRegex = new Regex(keywords);
                 var keywordMatches = keywordRegex.Matches(richTextBox1.Text);
@@ -314,7 +309,6 @@ namespace WindowsFormsApp
                     }
                 }
 
-                // Tô màu toán tử (đỏ đậm)
                 string operators = @"[+\-*/%=<>!&|^~]+";
                 var operatorRegex = new Regex(operators);
                 var operatorMatches = operatorRegex.Matches(richTextBox1.Text);
@@ -327,7 +321,6 @@ namespace WindowsFormsApp
                     }
                 }
 
-                // Tô màu dấu ngoặc { } [ ] (hồng)
                 string brackets = @"[\{\}\[\]]";
                 var bracketRegex = new Regex(brackets);
                 var bracketMatches = bracketRegex.Matches(richTextBox1.Text);
@@ -340,7 +333,6 @@ namespace WindowsFormsApp
                     }
                 }
 
-                // Tô màu các hàm và tham số 
                 var funcRegex = new Regex(@"\w+\(.*?\)");
                 var funcMatches = funcRegex.Matches(richTextBox1.Text);
 

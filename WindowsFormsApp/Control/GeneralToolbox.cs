@@ -187,11 +187,11 @@ namespace WindowsFormsApp
                 case "Open URL":
                     return "OpenURL(\"YOU_URL\")";
                 case "ON Bproxy":
-                    return "ConnectBproxy()";
+                    return "";
                 case "Auto proxy":
-                    return "AutoProxy()";
+                    return "";
                 case "Check SIM":
-                    return "CheckSimOnline()";
+                    return "";
                 case "Command(shell)":
                     return "RunCommandShell(\"command\")";
                 case "Open App":

@@ -242,8 +242,8 @@ namespace WindowsFormsApp
                 string selectedText = combo.SelectedItem?.ToString();
                 if (!string.IsNullOrEmpty(selectedText))
                 {
-                    string command = ConvertCombo1TextToCommand(selectedText);
-                    textAppender?.AppendText(command);
+                   // string command = ConvertCombo1TextToCommand(selectedText);
+                   // textAppender?.AppendText(command);
                 }
                 else
                 {
@@ -258,8 +258,8 @@ namespace WindowsFormsApp
                 string selectedText = combo.SelectedItem?.ToString();
                 if (!string.IsNullOrEmpty(selectedText))
                 {
-                    string command = ConvertCombo2TextToCommand(selectedText);
-                    textAppender?.AppendText(command);
+                  //  string command = ConvertCombo2TextToCommand(selectedText);
+                  //  textAppender?.AppendText(command);
                 }
                 else
                 {
@@ -269,17 +269,17 @@ namespace WindowsFormsApp
         }
         private void BtnGetDataEmailFromDb_Click(object sender, EventArgs e)
         {
-            textAppender?.AppendText("GetDataEmailFromDb()");
+          //  textAppender?.AppendText("GetDataEmailFromDb()");
         }
 
         private void BtnUpdateMailStatus_Click(object sender, EventArgs e)
         {
-            textAppender?.AppendText("UpdateMailStatus()");
+          //  textAppender?.AppendText("UpdateMailStatus()");
         }
 
         private void BtnUpdateMailStatus2_Click(object sender, EventArgs e)
         {
-            textAppender?.AppendText("UpdateMailStatus2()");
+           // textAppender?.AppendText("UpdateMailStatus2()");
         }
 
         private string ConvertCombo1TextToCommand(string comboText)
@@ -454,8 +454,8 @@ namespace WindowsFormsApp
         {
             if (sender is Button btn && btn.Tag is string text)
             {
-                string command = ConvertTextDataButtonText(text);
-                textAppender?.AppendText(command);
+               // string command = ConvertTextDataButtonText(text);
+             //   textAppender?.AppendText(command);
             }
         }
         private string ConvertTextDataButtonText(string buttonText)

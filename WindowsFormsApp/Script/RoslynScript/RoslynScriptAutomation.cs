@@ -32,7 +32,8 @@ namespace WindowsFormsApp.Script.RoslynScript
                     SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("WindowsFormsApp")),
                     SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.Threading.Tasks")),
                     SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.Linq")),
-                    SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.IO"))
+                    SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.IO")),
+                    SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("Tesseract"))
                 )
                 .NormalizeWhitespace();
 

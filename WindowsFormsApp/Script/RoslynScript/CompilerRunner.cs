@@ -85,6 +85,16 @@ namespace WindowsFormsApp.Script.RoslynScript
                 .Cast<MetadataReference>()
                 .ToList();
 
+            string tesseractPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tesseract.dll");
+            if (File.Exists(tesseractPath))
+            {
+                references.Add(MetadataReference.CreateFromFile(tesseractPath));
+            }
+            else
+            {
+                Console.WriteLine("⚠ Không tìm thấy Tesseract.dll tại: " + tesseractPath);
+            }
+
             var compilation = CSharpCompilation.Create(
                 assemblyName: "DynamicAssembly",
                 syntaxTrees: new[] { syntaxTree },

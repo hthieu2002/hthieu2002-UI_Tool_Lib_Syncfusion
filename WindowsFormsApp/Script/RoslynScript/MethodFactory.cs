@@ -71,6 +71,9 @@ namespace WindowsFormsApp.Script.RoslynScript
             var searchAndContinueMethod = CreateMethodSearchAndContinue();
             var stopScriptMethod = CretateMethodStopScrit();
             var logMessageMethod = CretateMethodLogMessage();
+            var findAndClick = CreateMethodFindAndClickTesseract();
+            var findWaitClick = CreateMethodFindWaitClickTesseract();
+            var findAndContinue = CreateMethodFindAndContinueTesseract();
             // text tool box
             var sendText = CreateMethodSendText();
             var randomTextAndSend = CreateMethodRandomTextAndSend();
@@ -109,6 +112,9 @@ namespace WindowsFormsApp.Script.RoslynScript
                     clickMethod,
                     waitMethod,
                     swipeMethod,
+                    findAndClick,
+                    findWaitClick,
+                    findAndContinue,
                     randomClickMethod,
                     searchAndClickMethod,
                     searchWaitClickMethod,
@@ -335,6 +341,137 @@ namespace WindowsFormsApp.Script.RoslynScript
                    SyntaxFactory.ParseStatement(@"await _view.UpdateProgressGridView($""{_deviceID}"", text, 5);")
                ));
         }
+        // FindAndClick
+        public static MethodDeclarationSyntax CreateMethodFindAndClickTesseract()
+        {
+            var paramText = SyntaxFactory.Parameter(SyntaxFactory.Identifier("text"))
+                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
+
+            return SyntaxFactory.MethodDeclaration(
+                    SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                    "FindAndClick")
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                .AddParameterListParameters(paramText)
+                .WithBody(SyntaxFactory.Block(
+                    SyntaxFactory.ParseStatement(@"ADBService.CaptureAndPullScreenshot($""{_deviceID}"");"),
+                    SyntaxFactory.ParseStatement("System.Threading.Thread.Sleep(1000);"),
+
+                    SyntaxFactory.ParseStatement(@"var imagePath = $""./{_deviceID}/{_deviceID}_Tesseract.png"";"),
+
+                    // Xử lý Tesseract để tìm tọa độ
+                    SyntaxFactory.ParseStatement(@"using (var engine = new Tesseract.TesseractEngine(@""./Resources"", ""eng"", Tesseract.EngineMode.Default))"),
+                    SyntaxFactory.ParseStatement(@"using (var img = Tesseract.Pix.LoadFromFile(imagePath))"),
+                    SyntaxFactory.ParseStatement(@"using (var page = engine.Process(img))"),
+                    SyntaxFactory.ParseStatement(@"using (var iter = page.GetIterator())"),
+                    SyntaxFactory.ParseStatement(@"{"),
+                    SyntaxFactory.ParseStatement(@"    iter.Begin();"),
+                    SyntaxFactory.ParseStatement(@"    do"),
+                    SyntaxFactory.ParseStatement(@"    {"),
+                    SyntaxFactory.ParseStatement(@"        string word = iter.GetText(Tesseract.PageIteratorLevel.Word);"),
+                    SyntaxFactory.ParseStatement(@"        if (!string.IsNullOrEmpty(word) && word.Trim().ToLower().Contains(text.ToLower()))"),
+                    SyntaxFactory.ParseStatement(@"        {"),
+                    SyntaxFactory.ParseStatement(@"            if (iter.TryGetBoundingBox(Tesseract.PageIteratorLevel.Word, out var rect))"),
+                    SyntaxFactory.ParseStatement(@"            {"),
+                    SyntaxFactory.ParseStatement(@"                int centerX = rect.X1 + (rect.Width / 2);"),
+                    SyntaxFactory.ParseStatement(@"                int centerY = rect.Y1 + (rect.Height / 2);"),
+                    SyntaxFactory.ParseStatement(@"                ADBService.ExecuteAdbCommand($""adb -s {_deviceID} shell input tap {centerX} {centerY}"");"),
+                    SyntaxFactory.ParseStatement(@"                return;"),
+                    SyntaxFactory.ParseStatement(@"            }"),
+                    SyntaxFactory.ParseStatement(@"        }"),
+                    SyntaxFactory.ParseStatement(@"    } while (iter.Next(Tesseract.PageIteratorLevel.Word));"),
+                    SyntaxFactory.ParseStatement(@"}")
+                ));
+        }
+
+
+        // FindWaitClick
+        public static MethodDeclarationSyntax CreateMethodFindWaitClickTesseract()
+        {
+            var paramText = SyntaxFactory.Parameter(SyntaxFactory.Identifier("text"))
+                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
+            var paramWait = SyntaxFactory.Parameter(SyntaxFactory.Identifier("wait"))
+                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.IntKeyword)))
+                .WithDefault(SyntaxFactory.EqualsValueClause(
+                    SyntaxFactory.LiteralExpression(SyntaxKind.NumericLiteralExpression, SyntaxFactory.Literal(100))));
+
+            return SyntaxFactory.MethodDeclaration(
+                    SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                    "FindWaitClick")
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                .AddParameterListParameters(paramText, paramWait)
+                .WithBody(SyntaxFactory.Block(
+                    SyntaxFactory.ParseStatement(@"ADBService.CaptureAndPullScreenshot($""{_deviceID}"");"),
+                    SyntaxFactory.ParseStatement("System.Threading.Thread.Sleep(1000);"),
+
+                    SyntaxFactory.ParseStatement(@"var imagePath = $""./{_deviceID}/{_deviceID}_Tesseract.png"";"),
+
+                    // Xử lý Tesseract để tìm tọa độ
+                    SyntaxFactory.ParseStatement(@"using (var engine = new Tesseract.TesseractEngine(@""./Resources"", ""eng"", Tesseract.EngineMode.Default))"),
+                    SyntaxFactory.ParseStatement(@"using (var img = Tesseract.Pix.LoadFromFile(imagePath))"),
+                    SyntaxFactory.ParseStatement(@"using (var page = engine.Process(img))"),
+                    SyntaxFactory.ParseStatement(@"using (var iter = page.GetIterator())"),
+                    SyntaxFactory.ParseStatement(@"{"),
+                    SyntaxFactory.ParseStatement(@"    iter.Begin();"),
+                    SyntaxFactory.ParseStatement(@"    do"),
+                    SyntaxFactory.ParseStatement(@"    {"),
+                    SyntaxFactory.ParseStatement(@"        string word = iter.GetText(Tesseract.PageIteratorLevel.Word);"),
+                    SyntaxFactory.ParseStatement(@"        if (!string.IsNullOrEmpty(word) && word.Trim().ToLower().Contains(text.ToLower()))"),
+                    SyntaxFactory.ParseStatement(@"        {"),
+                    SyntaxFactory.ParseStatement(@"            if (iter.TryGetBoundingBox(Tesseract.PageIteratorLevel.Word, out var rect))"),
+                    SyntaxFactory.ParseStatement(@"            {"),
+                    SyntaxFactory.ParseStatement(@"                int centerX = rect.X1 + (rect.Width / 2);"),
+                    SyntaxFactory.ParseStatement(@"                int centerY = rect.Y1 + (rect.Height / 2);"),
+                    SyntaxFactory.ParseStatement(@"                System.Threading.Thread.Sleep(wait);"),
+                    SyntaxFactory.ParseStatement(@"                ADBService.ExecuteAdbCommand($""adb -s {_deviceID} shell input tap {centerX} {centerY}"");"),
+                    SyntaxFactory.ParseStatement(@"                return;"),
+                    SyntaxFactory.ParseStatement(@"            }"),
+                    SyntaxFactory.ParseStatement(@"        }"),
+                    SyntaxFactory.ParseStatement(@"    } while (iter.Next(Tesseract.PageIteratorLevel.Word));"),
+                    SyntaxFactory.ParseStatement(@"}")
+                ));
+        }
+        // FindAndContinue
+        public static MethodDeclarationSyntax CreateMethodFindAndContinueTesseract()
+        {
+            var paramText = SyntaxFactory.Parameter(SyntaxFactory.Identifier("text"))
+                .WithType(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)));
+
+            return SyntaxFactory.MethodDeclaration(
+                    SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.BoolKeyword)),
+                    "FindAndContinue")
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                .AddParameterListParameters(paramText)
+                .WithBody(SyntaxFactory.Block(
+                    SyntaxFactory.ParseStatement(@"ADBService.CaptureAndPullScreenshot($""{_deviceID}"");"),
+                    SyntaxFactory.ParseStatement("System.Threading.Thread.Sleep(1000);"),
+
+                    SyntaxFactory.ParseStatement(@"var imagePath = $""./{_deviceID}/{_deviceID}_Tesseract.png"";"),
+
+                    SyntaxFactory.ParseStatement(@"using (var engine = new Tesseract.TesseractEngine(@""./Resources"", ""eng"", Tesseract.EngineMode.Default))"),
+                    SyntaxFactory.ParseStatement(@"using (var img = Tesseract.Pix.LoadFromFile(imagePath))"),
+                    SyntaxFactory.ParseStatement(@"using (var page = engine.Process(img))"),
+                    SyntaxFactory.ParseStatement(@"using (var iter = page.GetIterator())"),
+                    SyntaxFactory.ParseStatement(@"{"),
+                    SyntaxFactory.ParseStatement(@"    iter.Begin();"),
+                    SyntaxFactory.ParseStatement(@"    do"),
+                    SyntaxFactory.ParseStatement(@"    {"),
+                    SyntaxFactory.ParseStatement(@"        string word = iter.GetText(Tesseract.PageIteratorLevel.Word);"),
+                    SyntaxFactory.ParseStatement(@"        if (!string.IsNullOrEmpty(word) && word.Trim().ToLower().Contains(text.ToLower()))"),
+                    SyntaxFactory.ParseStatement(@"        {"),
+                    SyntaxFactory.ParseStatement(@"            if (iter.TryGetBoundingBox(Tesseract.PageIteratorLevel.Word, out var rect))"),
+                    SyntaxFactory.ParseStatement(@"            {"),
+                    SyntaxFactory.ParseStatement(@"                int centerX = rect.X1 + (rect.Width / 2);"),
+                    SyntaxFactory.ParseStatement(@"                int centerY = rect.Y1 + (rect.Height / 2);"),
+                    SyntaxFactory.ParseStatement(@"                return true;"),
+                    SyntaxFactory.ParseStatement(@"            }"),
+                    SyntaxFactory.ParseStatement(@"        }"),
+                    SyntaxFactory.ParseStatement(@"    } while (iter.Next(Tesseract.PageIteratorLevel.Word));"),
+                    SyntaxFactory.ParseStatement(@"}"),
+
+                    SyntaxFactory.ParseStatement("return false;")
+                ));
+        }
+
         /// <summary>
         /// text tool box
         /// </summary>

@@ -117,9 +117,9 @@ namespace WindowsFormsApp
             // LEFT
             leftPanel.Controls.Add(CreateGroup("Click tọa độ", new string[] { "ClickXY", "Swipe", "Random Click", "Wait" }, 370));
             leftPanel.Controls.Add(CreateGroup("Search text click", new string[] {
-            "Tìm đúng && click", "Tìm gần đúng && click",
-            "Tìm đúng && wait", "Tìm gần đúng && wait",
-            "Tìm đúng && tiếp tục", "Tìm gần đúng && tiếp tục"
+            "Tìm đúng && click",
+            "Tìm đúng && wait",
+            "Tìm đúng && tiếp tục"
         }, 370));
             leftPanel.Controls.Add(CreateGroup("Search text image", new string[] {
             "Tìm đúng && click", "Tìm đúng && wait", "Tìm đúng && tiếp tục"
@@ -127,10 +127,10 @@ namespace WindowsFormsApp
 
             // RIGHT
             rightPanel.Controls.Add(CreateGroupRight("Xử lý logic", new string[] {
-            "FOR LOOP", "IF", "GOTO", "BREAK", "Continue",
+            "FOR LOOP", "IF", "BREAK", "Continue",
             "Stop Script", "Return", "Comment", "Show status"
         }, 140));
-
+      
             rootPanel.Controls.Add(leftPanel, 0, 0);
             rootPanel.Controls.Add(rightPanel, 1, 0);
 
@@ -312,11 +312,11 @@ namespace WindowsFormsApp
                 switch (buttonText)
                 {
                     case "Tìm đúng && click":
-                        return "";
+                        return "FindAndClick(\"\")";
                     case "Tìm đúng && wait":
-                        return "";
+                        return "findWaitClick(\"\", 1000)";
                     case "Tìm đúng && tiếp tục":
-                        return "";
+                        return "FindAndContinue(\"\")";
                 }
             }
             else if (groupName == "Click tọa độ")

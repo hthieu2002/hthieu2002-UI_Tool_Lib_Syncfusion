@@ -745,12 +745,35 @@ namespace Services
             return devices;
         }
 
-        
+
         /// <summary>
         /// source ui tool 
         /// </summary>
         /// <param name="deviceId"></param>
         /// <returns></returns>
+        /// 
+        public static bool CaptureAndPullScreenshot(string deviceSerial)
+        {
+            try
+            {
+                string devicePath = "/sdcard/screenshot.png";
+                string localFolder = $"./{deviceSerial}";
+                string localFilePath = Path.Combine(localFolder, $"{deviceSerial}_Tesseract.png");
+
+                Directory.CreateDirectory(localFolder);
+                runCMD($"adb -s {deviceSerial} shell screencap -p {devicePath}");
+                runCMD($"adb -s {deviceSerial} pull {devicePath} \"{localFilePath}\"");
+                runCMD($"adb -s {deviceSerial} shell rm {devicePath}");
+                return File.Exists(localFilePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"ADB screenshot failed: {ex.Message}");
+                return false;
+            }
+        }
+
+
         public static bool IsDeviceActive(string deviceId)
         {
             try

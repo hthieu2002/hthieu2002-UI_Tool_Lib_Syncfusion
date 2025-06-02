@@ -282,44 +282,44 @@ namespace WindowsFormsApp
            // textAppender?.AppendText("UpdateMailStatus2()");
         }
 
-        private string ConvertCombo1TextToCommand(string comboText)
-        {
-            switch (comboText)
-            {
-                case "Email":
-                    return "SendUserName()";
-                case "Password":
-                    return "SendPassword()";
-                case "Email recovery":
-                    return "SendEmailRecovery()";
-                case "Code backup":
-                    return "SendCodeBackup()";
-                case "Code authen":
-                    return "SendCodeAuthen()";
-                case "Status3(0)":
-                    return "SendStatus3(0)";
-                case "DeleteStatus3(0)":
-                    return "DeleteStatus3(0)";
-                default:
-                    return comboText;
-            }
-        }
-        private string ConvertCombo2TextToCommand(string comboText)
-        {
-            switch (comboText)
-            {
-                case "Backup code ok":
-                    return "SendBackupCodeOK()";
-                case "Backup code failed":
-                    return "SendBackupCodeFailed()";
-                case "Code authen ok":
-                    return "SendAuthenCodeOK()";
-                case "Code authen failed":
-                    return "SendAuthenCodeFailed()";
-                default:
-                    return comboText;
-            }
-        }
+        //private string ConvertCombo1TextToCommand(string comboText)
+        //{
+        //    switch (comboText)
+        //    {
+        //        case "Email":
+        //            return "SendUserName()";
+        //        case "Password":
+        //            return "SendPassword()";
+        //        case "Email recovery":
+        //            return "SendEmailRecovery()";
+        //        case "Code backup":
+        //            return "SendCodeBackup()";
+        //        case "Code authen":
+        //            return "SendCodeAuthen()";
+        //        case "Status3(0)":
+        //            return "SendStatus3(0)";
+        //        case "DeleteStatus3(0)":
+        //            return "DeleteStatus3(0)";
+        //        default:
+        //            return comboText;
+        //    }
+        //}
+        //private string ConvertCombo2TextToCommand(string comboText)
+        //{
+        //    switch (comboText)
+        //    {
+        //        case "Backup code ok":
+        //            return "SendBackupCodeOK()";
+        //        case "Backup code failed":
+        //            return "SendBackupCodeFailed()";
+        //        case "Code authen ok":
+        //            return "SendAuthenCodeOK()";
+        //        case "Code authen failed":
+        //            return "SendAuthenCodeFailed()";
+        //        default:
+        //            return comboText;
+        //    }
+        //}
 
         private Button CreateButton(string text, int width = 200)
         {
@@ -458,22 +458,22 @@ namespace WindowsFormsApp
              //   textAppender?.AppendText(command);
             }
         }
-        private string ConvertTextDataButtonText(string buttonText)
-        {
-            switch (buttonText)
-            {
-                case "Get data from file":
-                    return "GetDataFromFile(\"*.txt\")";
-                case "Del data from file":
-                    return "DelDataFromFile(\"*.txt\")";
-                case "Send data (Value)":
-                    return "SendDataValue(\"value\")";
-                case "Save data to file":
-                    return "SaveDataToFile(\"*.txt\")";
-                default:
-                    return buttonText;
-            }
-        }
+        //private string ConvertTextDataButtonText(string buttonText)
+        //{
+        //    switch (buttonText)
+        //    {
+        //        case "Get data from file":
+        //            return "GetDataFromFile(\"*.txt\")";
+        //        case "Del data from file":
+        //            return "DelDataFromFile(\"*.txt\")";
+        //        case "Send data (Value)":
+        //            return "SendDataValue(\"value\")";
+        //        case "Save data to file":
+        //            return "SaveDataToFile(\"*.txt\")";
+        //        default:
+        //            return buttonText;
+        //    }
+        //}
 
         private string GetMappedText(string groupName, string buttonText)
         {

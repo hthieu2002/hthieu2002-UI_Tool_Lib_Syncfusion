@@ -56,6 +56,7 @@ namespace WindowsFormsApp
             InitializeComponent();
 
             _uiElements = new List<UiElement>();
+            lbNew.Visible = false;
             init();
             BuildDataTableUI();
             editText();
@@ -134,7 +135,7 @@ namespace WindowsFormsApp
                 sfbtnEditScript.Text = "Save script";
                 // btnEditSave.Image = Properties.Resources.icon_save;
                 isEditing = true;
-                richTextBox1.ReadOnly = false;  
+                richTextBox1.ReadOnly = false;
             }
             else
             {
@@ -162,7 +163,8 @@ namespace WindowsFormsApp
                 }
 
                 System.IO.File.WriteAllText(filePath, scriptContent);
-                MessageBox.Show("Dữ liệu đã được lưu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //MessageBox.Show("Dữ liệu đã được lưu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                lbNew.Visible = false;
             }
             catch (Exception ex)
             {
@@ -200,6 +202,7 @@ namespace WindowsFormsApp
             sfCbFile.DataSource = dataFileScript;
 
             sfCbFile.SelectedIndex = 0;
+            lbNew.Visible = true;
         }
 
         private void btnCreate_Click(object sender, EventArgs e)
@@ -313,6 +316,8 @@ namespace WindowsFormsApp
                     {
                         string fileContent = System.IO.File.ReadAllText(filePath);  // Đọc nội dung file
                         richTextBox1.Text = fileContent;  // Hiển thị nội dung vào richTextBox1
+                        lbNew.Visible = true;
+
                     }
                     catch (Exception ex)
                     {
@@ -389,7 +394,7 @@ namespace WindowsFormsApp
             {
                 process.WaitForExit();
             }
-           
+
 
             processStartInfo = new ProcessStartInfo("adb", $"-s {deviceId} pull /sdcard/screen.png {imagePath}")
             {
@@ -529,12 +534,12 @@ namespace WindowsFormsApp
             catch (ArgumentException ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
-                return new System.Drawing.Point(0, 0); 
+                return new System.Drawing.Point(0, 0);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Unexpected error: {ex.Message}");
-                return new System.Drawing.Point(0, 0); 
+                return new System.Drawing.Point(0, 0);
             }
         }
 
@@ -805,11 +810,11 @@ namespace WindowsFormsApp
                 MessageBox.Show("Load file cần xử lý.", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            if (!string.IsNullOrEmpty(message))  
+            if (!string.IsNullOrEmpty(message))
             {
-                richTextBox1.AppendText("\n" + message); 
+                richTextBox1.AppendText("\n" + message);
 
-               // txtTest.Clear();
+                // txtTest.Clear();
             }
             else
             {
@@ -822,6 +827,87 @@ namespace WindowsFormsApp
             {
                 sfView.Text = "View device: " + sfCbLoadDevices.SelectedItem.ToString();
             }
+        }
+
+        private void richTextBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.Shift && e.KeyCode == Keys.F)
+            {
+                FormatBraces();
+                e.SuppressKeyPress = true;
+            }
+
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                SaveScriptToFile();
+            }
+
+            if (e.Control && e.KeyCode == Keys.A)
+            {
+                SelectAllText();
+                e.SuppressKeyPress = true;
+            }
+            if (e.Control && e.KeyCode == Keys.C)
+            {
+                richTextBox1.Copy();
+                e.SuppressKeyPress = true;
+            }
+            if (e.Control && e.KeyCode == Keys.V)
+            {
+                richTextBox1.Paste();
+                e.SuppressKeyPress = true;
+            }
+            if (e.Control && e.KeyCode == Keys.X)
+            {
+                richTextBox1.Cut();
+                e.SuppressKeyPress = true;
+            }
+
+            if (e.Control && e.KeyCode == Keys.Z)
+            {
+                if (richTextBox1.CanUndo)
+                {
+                    richTextBox1.Undo();
+                }
+                e.SuppressKeyPress = true;
+            }
+            if (e.KeyCode == Keys.Tab)
+            {
+                IndentCurrentLine();
+                e.SuppressKeyPress = true;
+            }
+
+            if (e.Control && e.KeyCode == Keys.Y)
+            {
+                if (richTextBox1.CanRedo)
+                    richTextBox1.Redo();
+                e.SuppressKeyPress = true;
+            }
+        }
+        private void IndentCurrentLine()
+        {
+            int selectionStart = richTextBox1.SelectionStart;
+            int currentLine = richTextBox1.GetLineFromCharIndex(selectionStart);
+            int lineStart = richTextBox1.GetFirstCharIndexFromLine(currentLine);
+
+            richTextBox1.SelectionStart = lineStart;
+            richTextBox1.SelectionLength = 0;
+            richTextBox1.SelectedText = "\t"; // Thêm tab đầu dòng
+        }
+
+        private void SelectAllText()
+        {
+            richTextBox1.SelectAll();
+            richTextBox1.Focus();
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (sfCbFile.Text == "")
+            {
+                return;
+            }
+            lbNew.Visible = true;
         }
 
         private void Form_FormClosing(object sender, FormClosingEventArgs e)

@@ -296,25 +296,53 @@ namespace WindowsFormsApp
                 return;
             }
 
+            // Lưu trạng thái Checkbox và Activity của các thiết bị online
+            var onlineDeviceStates = new Dictionary<string, (bool IsChecked, string Activity)>();
+            foreach (System.Data.DataRow row in _deviceTable.Rows)
+            {
+                bool isChecked = row["Checkbox"] is bool val && val;
+                string status = row["Status"]?.ToString()?.ToLower();
+                string serial = row["DeviceID"]?.ToString();
+                string activity = row["Activity"]?.ToString() ?? "";
+
+                if (!string.IsNullOrEmpty(serial) && status == "online")
+                {
+                    onlineDeviceStates[serial.ToLower()] = (isChecked, activity);
+                }
+            }
+
             _deviceTable.Rows.Clear();
 
-            string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "devices.json");
+            string path = Path.Combine(Application.StartupPath, "devices.json");
             if (!File.Exists(path))
             {
                 SaveDevicesToFile();
             }
 
             string json = File.ReadAllText(path);
-            deviceDisplays = JsonConvert.DeserializeObject<List<WindowsFormsApp.Model.DeviceDisplay>>(json) ?? new List<WindowsFormsApp.Model.DeviceDisplay>();
+            deviceDisplays = JsonConvert.DeserializeObject<List<WindowsFormsApp.Model.DeviceDisplay>>(json)
+                              ?? new List<WindowsFormsApp.Model.DeviceDisplay>();
 
             foreach (var device in deviceDisplays)
             {
                 int stt = _deviceTable.Rows.Count + 1;
-                _deviceTable.Rows.Add(stt, device.Checkbox, device.Name, device.Serial, 0, "", device.Status);
+
+                string serialLower = device.Serial.ToLower();
+                bool isChecked = false;
+                string activity = "";
+
+                if (onlineDeviceStates.TryGetValue(serialLower, out var state))
+                {
+                    isChecked = state.IsChecked;
+                    activity = state.Activity;
+                }
+
+                _deviceTable.Rows.Add(stt, isChecked, device.Name, device.Serial, 0, "", device.Status, activity);
             }
 
             sfDataGrid.Refresh();
         }
+
 
         private async void RunScript_Click(object sender, EventArgs e)
         {

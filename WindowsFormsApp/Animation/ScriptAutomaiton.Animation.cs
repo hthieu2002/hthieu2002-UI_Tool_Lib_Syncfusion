@@ -249,7 +249,29 @@ namespace WindowsFormsApp
             };
 
         }
-       
+        private void FormatBraces()
+        {
+            string[] lines = richTextBox1.Lines;
+            int indent = 0;
+            var result = new List<string>();
+
+            foreach (var rawLine in lines)
+            {
+                string line = rawLine.Trim();
+
+                if (line.StartsWith("}"))
+                    indent = Math.Max(0, indent - 1);
+
+                result.Add(new string(' ', indent * 4) + line);
+
+                if (line.EndsWith("{"))
+                    indent++;
+            }
+
+            richTextBox1.Lines = result.ToArray();
+        }
+
+
 
         public void AppendText(string textToAdd)
         {

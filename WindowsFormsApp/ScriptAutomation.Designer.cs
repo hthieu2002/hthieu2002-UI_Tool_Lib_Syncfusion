@@ -61,6 +61,7 @@
             this.btnLoadFile = new Syncfusion.WinForms.Controls.SfButton();
             this.sfCbFile = new Syncfusion.WinForms.ListView.SfComboBox();
             this.sfView = new Syncfusion.WinForms.Controls.SfButton();
+            this.lbNew = new Syncfusion.Windows.Forms.Tools.AutoLabel();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sfCbModelDump)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sfCbLoadDevices)).BeginInit();
@@ -70,6 +71,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxScreen)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sfCbFile)).BeginInit();
             this.SuspendLayout();
@@ -199,42 +201,42 @@
             this.generalToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(576, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(576, 30);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // clickToolStripMenuItem
             // 
             this.clickToolStripMenuItem.Name = "clickToolStripMenuItem";
-            this.clickToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
+            this.clickToolStripMenuItem.Size = new System.Drawing.Size(54, 26);
             this.clickToolStripMenuItem.Text = "Click";
             this.clickToolStripMenuItem.Click += new System.EventHandler(this.clickToolStripMenuItem_Click);
             // 
             // textToolStripMenuItem
             // 
             this.textToolStripMenuItem.Name = "textToolStripMenuItem";
-            this.textToolStripMenuItem.Size = new System.Drawing.Size(50, 24);
+            this.textToolStripMenuItem.Size = new System.Drawing.Size(50, 26);
             this.textToolStripMenuItem.Text = "Text";
             this.textToolStripMenuItem.Click += new System.EventHandler(this.textToolStripMenuItem_Click);
             // 
             // keyButtonToolStripMenuItem
             // 
             this.keyButtonToolStripMenuItem.Name = "keyButtonToolStripMenuItem";
-            this.keyButtonToolStripMenuItem.Size = new System.Drawing.Size(95, 24);
+            this.keyButtonToolStripMenuItem.Size = new System.Drawing.Size(95, 26);
             this.keyButtonToolStripMenuItem.Text = "Key button";
             this.keyButtonToolStripMenuItem.Click += new System.EventHandler(this.keyButtonToolStripMenuItem_Click);
             // 
             // dataChangeInfoToolStripMenuItem
             // 
             this.dataChangeInfoToolStripMenuItem.Name = "dataChangeInfoToolStripMenuItem";
-            this.dataChangeInfoToolStripMenuItem.Size = new System.Drawing.Size(141, 24);
+            this.dataChangeInfoToolStripMenuItem.Size = new System.Drawing.Size(141, 26);
             this.dataChangeInfoToolStripMenuItem.Text = "Data/Change info";
             this.dataChangeInfoToolStripMenuItem.Click += new System.EventHandler(this.dataChangeInfoToolStripMenuItem_Click);
             // 
             // generalToolStripMenuItem
             // 
             this.generalToolStripMenuItem.Name = "generalToolStripMenuItem";
-            this.generalToolStripMenuItem.Size = new System.Drawing.Size(74, 24);
+            this.generalToolStripMenuItem.Size = new System.Drawing.Size(74, 26);
             this.generalToolStripMenuItem.Text = "General";
             this.generalToolStripMenuItem.Click += new System.EventHandler(this.generalToolStripMenuItem_Click);
             // 
@@ -279,7 +281,7 @@
             // 
             this.txtTest.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtTest.BeforeTouchSize = new System.Drawing.Size(298, 27);
+            this.txtTest.BeforeTouchSize = new System.Drawing.Size(200, 30);
             this.txtTest.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTest.Location = new System.Drawing.Point(596, 63);
             this.txtTest.Name = "txtTest";
@@ -335,6 +337,7 @@
             // 
             // panel5
             // 
+            this.panel5.Controls.Add(this.lbNew);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Name = "panel5";
@@ -349,6 +352,8 @@
             this.richTextBox1.Size = new System.Drawing.Size(579, 872);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
+            this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
+            this.richTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.richTextBox1_KeyDown);
             // 
             // panel3
             // 
@@ -415,6 +420,15 @@
             this.sfView.Text = "View device";
             this.sfView.Click += new System.EventHandler(this.sfView_Click);
             // 
+            // lbNew
+            // 
+            this.lbNew.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbNew.Location = new System.Drawing.Point(24, 0);
+            this.lbNew.Name = "lbNew";
+            this.lbNew.Size = new System.Drawing.Size(16, 20);
+            this.lbNew.TabIndex = 0;
+            this.lbNew.Text = "*";
+            // 
             // ScriptAutomation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -442,6 +456,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxScreen)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.sfCbFile)).EndInit();
             this.ResumeLayout(false);
@@ -484,5 +500,6 @@
         private Syncfusion.Windows.Forms.Tools.AutoLabel y;
         private Syncfusion.Windows.Forms.Tools.AutoLabel x;
         private Syncfusion.WinForms.Controls.SfButton sfView;
+        private Syncfusion.Windows.Forms.Tools.AutoLabel lbNew;
     }
 }

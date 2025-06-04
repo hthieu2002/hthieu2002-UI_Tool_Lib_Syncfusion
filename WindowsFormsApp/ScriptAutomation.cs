@@ -391,7 +391,7 @@ namespace WindowsFormsApp
                 }
             }
 
-            var processStartInfo = new ProcessStartInfo("adb", $"-s {deviceId} shell screencap -p /sdcard/screen.png")
+            var processStartInfo = new ProcessStartInfo("./Resources/adb", $"-s {deviceId} shell screencap -p /sdcard/screen.png")
             {
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
@@ -405,7 +405,7 @@ namespace WindowsFormsApp
             }
 
 
-            processStartInfo = new ProcessStartInfo("adb", $"-s {deviceId} pull /sdcard/screen.png {imagePath}")
+            processStartInfo = new ProcessStartInfo("./Resources/adb", $"-s {deviceId} pull /sdcard/screen.png {imagePath}")
             {
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
@@ -421,7 +421,7 @@ namespace WindowsFormsApp
 
         private void DumpUIDetails(string deviceId)
         {
-            var processStartInfo = new ProcessStartInfo("adb", $"-s {deviceId} shell uiautomator dump /sdcard/ui_dump.xml")
+            var processStartInfo = new ProcessStartInfo("./Resources/adb", $"-s {deviceId} shell uiautomator dump /sdcard/ui_dump.xml")
             {
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
@@ -431,7 +431,7 @@ namespace WindowsFormsApp
             var process = Process.Start(processStartInfo);
             process.WaitForExit();
 
-            processStartInfo = new ProcessStartInfo("adb", $"-s {deviceId} pull /sdcard/ui_dump.xml {Path.Combine(Application.StartupPath, "ui_dump.xml")}")
+            processStartInfo = new ProcessStartInfo("./Resources/adb", $"-s {deviceId} pull /sdcard/ui_dump.xml {Path.Combine(Application.StartupPath, "ui_dump.xml")}")
             {
                 RedirectStandardOutput = true,
                 UseShellExecute = false,

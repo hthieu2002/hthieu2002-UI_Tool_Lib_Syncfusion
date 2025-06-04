@@ -718,7 +718,7 @@ namespace Services
         }
         public static System.Collections.Generic.List<string> GetDevices()
         {
-            var processStartInfo = new ProcessStartInfo("adb", "devices")
+            var processStartInfo = new ProcessStartInfo("./Resources/adb", "devices")
             {
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
@@ -828,14 +828,14 @@ namespace Services
             Process adbProcess = Process.Start(startInfo);
             adbProcess.WaitForExit();
         }
-        public static void ExecuteAdbCommand(string command)
+        public static void ExecuteAdbCommand(string arguments)
         {
             try
             {
                 var startInfo = new ProcessStartInfo
                 {
-                    FileName = "cmd.exe",
-                    Arguments = "/c " + command,
+                    FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "adb.exe"),
+                    Arguments = arguments, // chỉ truyền arguments, không cần "/c"
                     CreateNoWindow = true,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
@@ -849,13 +849,18 @@ namespace Services
                     // Đợi tiến trình kết thúc (đồng bộ)
                     process.WaitForExit();
 
-                    // Đọc output, error đồng bộ
+                    // Đọc output và error đồng bộ
                     string output = process.StandardOutput.ReadToEnd();
                     string error = process.StandardError.ReadToEnd();
 
+                    if (!string.IsNullOrEmpty(output))
+                    {
+                        Console.WriteLine("ADB Output: " + output);
+                    }
+
                     if (!string.IsNullOrEmpty(error))
                     {
-                        Console.WriteLine($"ADB Error: {error}");
+                        Console.WriteLine("ADB Error: " + error);
                     }
                 }
             }

@@ -24,7 +24,7 @@ public class EventRoslyn
 
             if (File.Exists(scrcpyPath))
             {
-                string command = $"adb -s {deviceId} shell input tap {coordinates.Item1} {coordinates.Item2}";
+                string command = $" -s {deviceId} shell input tap {coordinates.Item1} {coordinates.Item2}";
                 ADBService.ExecuteAdbCommand(command);
             }
         }
@@ -44,7 +44,7 @@ public class EventRoslyn
         {
             if (File.Exists(scrcpyPath))
             {
-                string command = $"adb -s {deviceId} shell input swipe {coordinates.Item1} {coordinates.Item2} {coordinates.Item3} {coordinates.Item4} {coordinates.Item5}";
+                string command = $" -s {deviceId} shell input swipe {coordinates.Item1} {coordinates.Item2} {coordinates.Item3} {coordinates.Item4} {coordinates.Item5}";
                 ADBService.ExecuteAdbCommand(command);
             }
         }
@@ -66,7 +66,7 @@ public class EventRoslyn
             Console.WriteLine($"{x},{y}");
             if (File.Exists(adbPath))
             {
-                string command = $"adb -s {deviceId} shell input tap {x} {y}";
+                string command = $" -s {deviceId} shell input tap {x} {y}";
                 ADBService.ExecuteAdbCommand(command);
             }
         }

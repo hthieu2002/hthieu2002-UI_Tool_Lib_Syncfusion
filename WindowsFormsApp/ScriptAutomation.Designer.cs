@@ -94,12 +94,11 @@
             this.panel1.Controls.Add(this.menuStrip1);
             this.panel1.Location = new System.Drawing.Point(1018, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(578, 976);
+            this.panel1.Size = new System.Drawing.Size(578, 929);
             this.panel1.TabIndex = 0;
             // 
             // y
             // 
-            this.y.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.y.Location = new System.Drawing.Point(58, 525);
             this.y.Name = "y";
             this.y.Size = new System.Drawing.Size(35, 16);
@@ -108,7 +107,7 @@
             // 
             // x
             // 
-            this.x.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.x.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.x.Location = new System.Drawing.Point(15, 525);
             this.x.Name = "x";
             this.x.Size = new System.Drawing.Size(42, 16);
@@ -208,35 +207,35 @@
             // clickToolStripMenuItem
             // 
             this.clickToolStripMenuItem.Name = "clickToolStripMenuItem";
-            this.clickToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
+            this.clickToolStripMenuItem.Size = new System.Drawing.Size(54, 26);
             this.clickToolStripMenuItem.Text = "Click";
             this.clickToolStripMenuItem.Click += new System.EventHandler(this.clickToolStripMenuItem_Click);
             // 
             // textToolStripMenuItem
             // 
             this.textToolStripMenuItem.Name = "textToolStripMenuItem";
-            this.textToolStripMenuItem.Size = new System.Drawing.Size(50, 24);
+            this.textToolStripMenuItem.Size = new System.Drawing.Size(50, 26);
             this.textToolStripMenuItem.Text = "Text";
             this.textToolStripMenuItem.Click += new System.EventHandler(this.textToolStripMenuItem_Click);
             // 
             // keyButtonToolStripMenuItem
             // 
             this.keyButtonToolStripMenuItem.Name = "keyButtonToolStripMenuItem";
-            this.keyButtonToolStripMenuItem.Size = new System.Drawing.Size(95, 24);
+            this.keyButtonToolStripMenuItem.Size = new System.Drawing.Size(95, 26);
             this.keyButtonToolStripMenuItem.Text = "Key button";
             this.keyButtonToolStripMenuItem.Click += new System.EventHandler(this.keyButtonToolStripMenuItem_Click);
             // 
             // dataChangeInfoToolStripMenuItem
             // 
             this.dataChangeInfoToolStripMenuItem.Name = "dataChangeInfoToolStripMenuItem";
-            this.dataChangeInfoToolStripMenuItem.Size = new System.Drawing.Size(141, 24);
+            this.dataChangeInfoToolStripMenuItem.Size = new System.Drawing.Size(141, 26);
             this.dataChangeInfoToolStripMenuItem.Text = "Data/Change info";
             this.dataChangeInfoToolStripMenuItem.Click += new System.EventHandler(this.dataChangeInfoToolStripMenuItem_Click);
             // 
             // generalToolStripMenuItem
             // 
             this.generalToolStripMenuItem.Name = "generalToolStripMenuItem";
-            this.generalToolStripMenuItem.Size = new System.Drawing.Size(74, 24);
+            this.generalToolStripMenuItem.Size = new System.Drawing.Size(74, 26);
             this.generalToolStripMenuItem.Text = "General";
             this.generalToolStripMenuItem.Click += new System.EventHandler(this.generalToolStripMenuItem_Click);
             // 
@@ -265,8 +264,7 @@
             // 
             // sfbtnTest
             // 
-            this.sfbtnTest.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.sfbtnTest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.sfbtnTest.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.sfbtnTest.Location = new System.Drawing.Point(900, 62);
             this.sfbtnTest.Name = "sfbtnTest";
@@ -294,7 +292,7 @@
             this.panelTest.Controls.Add(this.pictureBoxScreen);
             this.panelTest.Location = new System.Drawing.Point(596, 111);
             this.panelTest.Name = "panelTest";
-            this.panelTest.Size = new System.Drawing.Size(416, 869);
+            this.panelTest.Size = new System.Drawing.Size(416, 822);
             this.panelTest.TabIndex = 6;
             // 
             // pictureBoxScreen
@@ -304,7 +302,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBoxScreen.Location = new System.Drawing.Point(3, 3);
             this.pictureBoxScreen.Name = "pictureBoxScreen";
-            this.pictureBoxScreen.Size = new System.Drawing.Size(410, 862);
+            this.pictureBoxScreen.Size = new System.Drawing.Size(410, 815);
             this.pictureBoxScreen.TabIndex = 0;
             this.pictureBoxScreen.TabStop = false;
             // 
@@ -318,7 +316,7 @@
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Location = new System.Drawing.Point(3, 5);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(587, 975);
+            this.panel2.Size = new System.Drawing.Size(587, 928);
             this.panel2.TabIndex = 7;
             // 
             // panel4
@@ -330,7 +328,7 @@
             this.panel4.Controls.Add(this.richTextBox1);
             this.panel4.Location = new System.Drawing.Point(3, 6);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(579, 872);
+            this.panel4.Size = new System.Drawing.Size(579, 825);
             this.panel4.TabIndex = 1;
             // 
             // panel5
@@ -339,7 +337,7 @@
             this.panel5.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(40, 872);
+            this.panel5.Size = new System.Drawing.Size(40, 825);
             this.panel5.TabIndex = 1;
             // 
             // lbNew
@@ -356,7 +354,7 @@
             this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBox1.Location = new System.Drawing.Point(0, 0);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(579, 872);
+            this.richTextBox1.Size = new System.Drawing.Size(579, 825);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
@@ -370,7 +368,7 @@
             this.panel3.Controls.Add(this.btnCreate);
             this.panel3.Controls.Add(this.btnLoadFile);
             this.panel3.Controls.Add(this.sfCbFile);
-            this.panel3.Location = new System.Drawing.Point(17, 907);
+            this.panel3.Location = new System.Drawing.Point(17, 860);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(565, 39);
             this.panel3.TabIndex = 0;
@@ -430,7 +428,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1599, 983);
+            this.ClientSize = new System.Drawing.Size(1599, 936);
             this.Controls.Add(this.sfView);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panelTest);

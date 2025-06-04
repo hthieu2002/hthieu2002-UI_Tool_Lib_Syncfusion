@@ -36,17 +36,17 @@ namespace WindowsFormsApp
         private readonly Dictionary<string, string> _progressTextMap = new Dictionary<string, string>();
         private readonly HashSet<string> _animatingDevices = new HashSet<string>();
 
-        private ComboBox txtBrand;
-        private ComboBox txtOS;
-        private ComboBox txtOS_version;
+        private TextBoxExt txtBrand;
+        private TextBoxExt txtOS;
+        private TextBoxExt txtOS_version;
         private TextBoxExt txtSerial;
         private TextBoxExt txtImei;
         private TextBoxExt txtMac;
-        private ComboBox txtName;
+        private TextBoxExt txtName;
         private ComboBox txtCountry;
         private TextBoxExt txtCode;
         private TextBoxExt txtImsi;
-        private ComboBox txtModel;
+        private TextBoxExt txtModel;
         private ComboBox txtSim;
         private TextBoxExt txtPhone;
         private TextBoxExt txtIccId;
@@ -692,16 +692,16 @@ namespace WindowsFormsApp
                     throw new Exception("Devices not existed, please try again");
                 }
 
-                txtName.DataSource = new List<string> { tempDeviceAll.Board };
-                txtName.SelectedItem = tempDeviceAll.Board;
-                txtOS.DataSource = new List<string> { tempDeviceAll.Release };
-                txtOS.SelectedItem = tempDeviceAll.Release;
-                txtOS_version.DataSource = new List<string> { tempDeviceAll.SDK };
-                txtOS_version.SelectedItem = tempDeviceAll.SDK;
-                txtBrand.DataSource = new List<string> { tempDeviceAll.Manufacturer };
-                txtBrand.SelectedItem = tempDeviceAll.Manufacturer;
-                txtModel.DataSource = new List<string> { tempDeviceAll.Model };
-                txtModel.SelectedItem = tempDeviceAll.Model;
+                txtName.Text = tempDeviceAll.Board ;
+                //txtName.SelectedItem = tempDeviceAll.Board;
+                txtOS.Text =  tempDeviceAll.Release ;
+               // txtOS.SelectedItem = tempDeviceAll.Release;
+                txtOS_version.Text =  tempDeviceAll.SDK ;
+             //   txtOS_version.SelectedItem = tempDeviceAll.SDK;
+                txtBrand.Text =  tempDeviceAll.Manufacturer ;
+               // txtBrand.SelectedItem = tempDeviceAll.Manufacturer;
+                txtModel.Text =  tempDeviceAll.Model ;
+               // txtModel.SelectedItem = tempDeviceAll.Model;
 
                 txtImsi.Text = tempDeviceAll.IMSI = RandomService.generateIMSI(mcc, mnc);
                 txtIccId.Text = tempDeviceAll.ICCID = RandomService.generateICCID(currentSelectedCountry.CountryCode, mnc);

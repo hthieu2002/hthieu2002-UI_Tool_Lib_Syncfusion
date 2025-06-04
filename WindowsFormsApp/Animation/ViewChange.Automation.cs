@@ -51,17 +51,17 @@ namespace WindowsFormsApp
         private void SetInputAddLayoutInput()
         {
             // Tạo các điều khiển input
-            txtBrand = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 130, Height = 35 };
-            txtOS = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 130, Height = 35 };
-            txtOS_version = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 60, Height = 35 };
+            txtBrand = new TextBoxExt {  Width = 130, Height = 35 };
+            txtOS = new TextBoxExt {  Width = 130, Height = 35 };
+            txtOS_version = new TextBoxExt {  Width = 60, Height = 35 };
             txtSerial = new TextBoxExt { Width = 130, Height = 35 };
             txtImei = new TextBoxExt { Width = 130, Height = 35 };
             txtMac = new TextBoxExt { Width = 130, Height = 35 };
-            txtName = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 130, Height = 35 };
+            txtName = new TextBoxExt {  Width = 130, Height = 35 };
             txtCountry = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 130, Height = 35 };
             txtCode = new TextBoxExt { Width = 130, Height = 35 };
             txtImsi = new TextBoxExt { Width = 130, Height = 35 };
-            txtModel = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 130, Height = 35 };
+            txtModel = new TextBoxExt { Width = 130, Height = 35 };
             txtSim = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 130, Height = 35 };
             txtPhone = new TextBoxExt { Width = 130, Height = 35 };
             txtIccId = new TextBoxExt { Width = 130, Height = 35 };
@@ -107,7 +107,9 @@ namespace WindowsFormsApp
 
             checkSiml = new CheckBox();
             checkSiml.Text = "Change sim";
-            checkSiml.Checked = true;
+            checkSiml.Checked = false;
+            checkSiml.Font = new Font(checkSiml.Font, FontStyle.Bold);
+            checkSiml.Width = 200;
             checkSiml.Margin = new Padding(20,10,5,0);
 
             PanelInput.Controls.Add(checkSiml);

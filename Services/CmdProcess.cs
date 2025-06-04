@@ -72,18 +72,12 @@ namespace Services
                 if (timeout == 0)
                 {
                     process.Start();
-                    // StringBuilder result = new StringBuilder();
                     try
                     {
-
-                        //   byte[] buftemp = new byte[400000];
-                        // MemoryStream memo = new MemoryStream(buffer);
-
                         while (!process.HasExited)
                         {
 
                             int lengthread = process.StandardOutput.BaseStream.Read(buffer, length, 1000000);
-                            // memo.Write(buftemp, 0, lengthread);
                             length = length + lengthread;
                         }
 

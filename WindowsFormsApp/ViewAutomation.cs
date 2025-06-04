@@ -84,7 +84,6 @@ namespace WindowsFormsApp
             var dt = sfDataGrid.DataSource as System.Data.DataTable;
             if (dt == null) return;
 
-            // Tìm kiếm chỉ mục dòng dựa trên DeviceID
             int rowIndex = dt.AsEnumerable().ToList().FindIndex(r => r.Field<string>("DeviceID") == id);
 
             Console.WriteLine(text);

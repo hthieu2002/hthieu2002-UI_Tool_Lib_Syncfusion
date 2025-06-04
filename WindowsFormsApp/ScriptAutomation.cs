@@ -149,7 +149,12 @@ namespace WindowsFormsApp
         }
         private void SaveScriptToFile()
         {
-            string fileName = sfCbFile.SelectedItem.ToString();
+            string fileName = sfCbFile.SelectedItem?.ToString();
+            if (fileName == null)
+            {
+                MessageBox.Show("Vui lòng tạo file hoặc chọn file");
+                return;
+            }
             string scriptFolderPath = Path.Combine(Application.StartupPath, "Resources", "script");
             string filePath = Path.Combine(scriptFolderPath, fileName);
 
@@ -307,7 +312,11 @@ namespace WindowsFormsApp
             else
             {
                 sfbtnEditScript.Enabled = true;
-                string selectedFileName = sfCbFile.SelectedItem.ToString();
+                string selectedFileName = sfCbFile.SelectedItem?.ToString();
+                if(selectedFileName == null)
+                {
+                    return;
+                }
                 string scriptFolderPath = Path.Combine(Application.StartupPath, "Resources", "script");
                 string filePath = Path.Combine(scriptFolderPath, selectedFileName);
                 if (System.IO.File.Exists(filePath))

@@ -90,12 +90,11 @@ namespace WindowsFormsApp
 
             var flow = new FlowLayoutPanel
             {
-                AutoSize = true,                  // Để Flow tự động tính kích thước theo button
+                AutoSize = true,                
                 WrapContents = true,
                 FlowDirection = horizontal ? FlowDirection.LeftToRight : FlowDirection.TopDown
             };
 
-            // Thêm các button vào FlowLayoutPanel
             foreach (var text in buttons)
             {
                 var btn = new Button

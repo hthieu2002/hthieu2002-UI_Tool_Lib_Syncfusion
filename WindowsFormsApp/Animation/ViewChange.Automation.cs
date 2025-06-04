@@ -20,6 +20,7 @@ namespace WindowsFormsApp
     public partial class ViewChange : Form
     {
         private Model.WindowMode _previousWindowMode = Model.WindowMode.Normal;
+        private bool checkSim = false;
         private void ApplyPanelInputMargin()
         {
             var current = Model.AppState.CurrentWindowMode;
@@ -103,6 +104,12 @@ namespace WindowsFormsApp
             PanelInput.Controls.Add(CreateInputPanel("IMSI", txtImsi));
             PanelInput.Controls.Add(CreateInputPanel("ICCID", txtIccId));
             PanelInput.Controls.Add(CreateInputPanel("MAC", txtMac));
+
+            checkSiml = new CheckBox();
+            checkSiml.Text = "Change sim";
+            checkSiml.Checked = true;
+
+            PanelInput.Controls.Add(checkSiml);
         }
         private FlowLayoutPanel CreateInputPanel(string labelText, Control inputControl)
         {
@@ -167,11 +174,11 @@ namespace WindowsFormsApp
         {
             SfButton[] buttons = {
             btnRandomdevice = new SfButton { Text = "Random Device" },
-            btnAutoBackup = new SfButton { Text = "Auto Backup" },
+          //  btnAutoBackup = new SfButton { Text = "Auto Backup" },
             btnAutochangeFull = new SfButton { Text = "Auto Change Full" },
             btnAutoChangeSim = new SfButton { Text = "Auto Change Sim" },
-            btnBackup = new SfButton { Text = "Backup" },
-            btnBackup2 = new SfButton { Text = "Backup " },
+          //  btnBackup = new SfButton { Text = "Backup" },
+          //  btnBackup2 = new SfButton { Text = "Backup " },
             btnChangeDevice = new SfButton { Text = "Change Device" },
             btnChangeSim = new SfButton { Text = "Change Sim" },
             btnOpenUrl = new SfButton { Text = "Open URL" },
@@ -227,13 +234,15 @@ namespace WindowsFormsApp
         btnRandomSim,
         btnChangeSim,
         btnAutoChangeSim,
-        btnBackup,
-        btnBackup2,
+      //  btnBackup,
+      //  btnBackup2,
         btnOpenUrl,
-        btnAutoBackup,
+       // btnAutoBackup,
         btnScreenshot
 
         );
+           
+
             PanelButton.Controls.Add(btnFakeLocation);
             PanelButton.Controls.Add(txtRestore);
             PanelButton.Controls.Add(btnRestore);
@@ -288,18 +297,18 @@ namespace WindowsFormsApp
             PanelButton.BorderStyle = BorderStyle.FixedSingle;
 
             btnRandomdevice.TextAlign = ContentAlignment.MiddleLeft;
-            btnAutoBackup.TextAlign = ContentAlignment.MiddleLeft;
+          //  btnAutoBackup.TextAlign = ContentAlignment.MiddleLeft;
             btnAutochangeFull.TextAlign = ContentAlignment.MiddleLeft;
             btnAutoChangeSim.TextAlign = ContentAlignment.MiddleLeft;
-            btnBackup.TextAlign = ContentAlignment.MiddleLeft;
-            btnBackup2.TextAlign = ContentAlignment.MiddleLeft;
+         //   btnBackup.TextAlign = ContentAlignment.MiddleLeft;
+         //   btnBackup2.TextAlign = ContentAlignment.MiddleLeft;
             btnChangeDevice.TextAlign = ContentAlignment.MiddleLeft;
             btnChangeSim.TextAlign = ContentAlignment.MiddleLeft;
             btnOpenUrl.TextAlign = ContentAlignment.MiddleLeft;
             btnRandomSim.TextAlign = ContentAlignment.MiddleLeft;
             btnScreenshot.TextAlign = ContentAlignment.MiddleLeft;
 
-            btnAutoBackup.Paint += BtnCommon_Paint;
+          //  btnAutoBackup.Paint += BtnCommon_Paint;
             //
             // btn auto change full
             //
@@ -313,11 +322,11 @@ namespace WindowsFormsApp
             //
             // btn backup  
             //
-            btnBackup.Paint += BtnCommon_Paint;
+         //   btnBackup.Paint += BtnCommon_Paint;
             //
             // btn backup 2
             //
-            btnBackup2.Paint += BtnCommon_Paint;
+        //    btnBackup2.Paint += BtnCommon_Paint;
             //
             // btn change device 
             //

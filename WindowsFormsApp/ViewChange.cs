@@ -64,6 +64,7 @@ namespace WindowsFormsApp
         private SfButton btnRandomSim;
         private SfButton btnScreenshot;
         //
+        private CheckBox checkSiml;
         private SfButton btnRestore;
         private SfButton btnFakeLocation;
         private TextBoxExt txtRestore;

@@ -54,6 +54,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.lbNew = new Syncfusion.Windows.Forms.Tools.AutoLabel();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.btnDelete = new Syncfusion.WinForms.Controls.SfButton();
@@ -61,7 +62,6 @@
             this.btnLoadFile = new Syncfusion.WinForms.Controls.SfButton();
             this.sfCbFile = new Syncfusion.WinForms.ListView.SfComboBox();
             this.sfView = new Syncfusion.WinForms.Controls.SfButton();
-            this.lbNew = new Syncfusion.Windows.Forms.Tools.AutoLabel();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sfCbModelDump)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sfCbLoadDevices)).BeginInit();
@@ -201,49 +201,48 @@
             this.generalToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(576, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(576, 28);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // clickToolStripMenuItem
             // 
             this.clickToolStripMenuItem.Name = "clickToolStripMenuItem";
-            this.clickToolStripMenuItem.Size = new System.Drawing.Size(54, 26);
+            this.clickToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
             this.clickToolStripMenuItem.Text = "Click";
             this.clickToolStripMenuItem.Click += new System.EventHandler(this.clickToolStripMenuItem_Click);
             // 
             // textToolStripMenuItem
             // 
             this.textToolStripMenuItem.Name = "textToolStripMenuItem";
-            this.textToolStripMenuItem.Size = new System.Drawing.Size(50, 26);
+            this.textToolStripMenuItem.Size = new System.Drawing.Size(50, 24);
             this.textToolStripMenuItem.Text = "Text";
             this.textToolStripMenuItem.Click += new System.EventHandler(this.textToolStripMenuItem_Click);
             // 
             // keyButtonToolStripMenuItem
             // 
             this.keyButtonToolStripMenuItem.Name = "keyButtonToolStripMenuItem";
-            this.keyButtonToolStripMenuItem.Size = new System.Drawing.Size(95, 26);
+            this.keyButtonToolStripMenuItem.Size = new System.Drawing.Size(95, 24);
             this.keyButtonToolStripMenuItem.Text = "Key button";
             this.keyButtonToolStripMenuItem.Click += new System.EventHandler(this.keyButtonToolStripMenuItem_Click);
             // 
             // dataChangeInfoToolStripMenuItem
             // 
             this.dataChangeInfoToolStripMenuItem.Name = "dataChangeInfoToolStripMenuItem";
-            this.dataChangeInfoToolStripMenuItem.Size = new System.Drawing.Size(141, 26);
+            this.dataChangeInfoToolStripMenuItem.Size = new System.Drawing.Size(141, 24);
             this.dataChangeInfoToolStripMenuItem.Text = "Data/Change info";
             this.dataChangeInfoToolStripMenuItem.Click += new System.EventHandler(this.dataChangeInfoToolStripMenuItem_Click);
             // 
             // generalToolStripMenuItem
             // 
             this.generalToolStripMenuItem.Name = "generalToolStripMenuItem";
-            this.generalToolStripMenuItem.Size = new System.Drawing.Size(74, 26);
+            this.generalToolStripMenuItem.Size = new System.Drawing.Size(74, 24);
             this.generalToolStripMenuItem.Text = "General";
             this.generalToolStripMenuItem.Click += new System.EventHandler(this.generalToolStripMenuItem_Click);
             // 
             // sfbtnEditScript
             // 
-            this.sfbtnEditScript.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.sfbtnEditScript.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.sfbtnEditScript.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.sfbtnEditScript.Location = new System.Drawing.Point(596, 12);
             this.sfbtnEditScript.Name = "sfbtnEditScript";
@@ -255,8 +254,7 @@
             // 
             // sfbtnSend
             // 
-            this.sfbtnSend.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.sfbtnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.sfbtnSend.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.sfbtnSend.Location = new System.Drawing.Point(900, 12);
             this.sfbtnSend.Name = "sfbtnSend";
@@ -281,7 +279,7 @@
             // 
             this.txtTest.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtTest.BeforeTouchSize = new System.Drawing.Size(200, 30);
+            this.txtTest.BeforeTouchSize = new System.Drawing.Size(298, 27);
             this.txtTest.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTest.Location = new System.Drawing.Point(596, 63);
             this.txtTest.Name = "txtTest";
@@ -343,6 +341,15 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(40, 872);
             this.panel5.TabIndex = 1;
+            // 
+            // lbNew
+            // 
+            this.lbNew.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbNew.Location = new System.Drawing.Point(24, 0);
+            this.lbNew.Name = "lbNew";
+            this.lbNew.Size = new System.Drawing.Size(16, 20);
+            this.lbNew.TabIndex = 0;
+            this.lbNew.Text = "*";
             // 
             // richTextBox1
             // 
@@ -410,8 +417,7 @@
             // 
             // sfView
             // 
-            this.sfView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.sfView.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.sfView.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.sfView.Location = new System.Drawing.Point(706, 12);
             this.sfView.Name = "sfView";
@@ -419,15 +425,6 @@
             this.sfView.TabIndex = 11;
             this.sfView.Text = "View device";
             this.sfView.Click += new System.EventHandler(this.sfView_Click);
-            // 
-            // lbNew
-            // 
-            this.lbNew.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbNew.Location = new System.Drawing.Point(24, 0);
-            this.lbNew.Name = "lbNew";
-            this.lbNew.Size = new System.Drawing.Size(16, 20);
-            this.lbNew.TabIndex = 0;
-            this.lbNew.Text = "*";
             // 
             // ScriptAutomation
             // 

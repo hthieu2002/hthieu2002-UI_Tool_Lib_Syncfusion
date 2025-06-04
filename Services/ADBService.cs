@@ -761,9 +761,11 @@ namespace Services
                 string localFilePath = Path.Combine(localFolder, $"{deviceSerial}_Tesseract.png");
 
                 Directory.CreateDirectory(localFolder);
-                runCMD($"adb -s {deviceSerial} shell screencap -p {devicePath}");
-                runCMD($"adb -s {deviceSerial} pull {devicePath} \"{localFilePath}\"");
-                runCMD($"adb -s {deviceSerial} shell rm {devicePath}");
+
+                runCMDRootTool($" -s {deviceSerial} shell screencap -p {devicePath}");
+                runCMDRootTool($" -s {deviceSerial} pull {devicePath} \"{localFilePath}\"");
+                runCMDRootTool($" -s {deviceSerial} shell rm {devicePath}");
+
                 return File.Exists(localFilePath);
             }
             catch (Exception ex)
@@ -779,7 +781,7 @@ namespace Services
             try
             {
                 var process = new Process();
-                process.StartInfo.FileName = "adb";
+                process.StartInfo.FileName = "./Resources/adb.exe";
                 process.StartInfo.Arguments = $"-s {deviceId} shell getprop sys.boot_completed";
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.UseShellExecute = false;
@@ -801,7 +803,7 @@ namespace Services
         {
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
-                FileName = "adb",
+                FileName = "./Resources/adb.exe",
                 Arguments = $"-s {deviceID} {command}",
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
@@ -997,31 +999,41 @@ namespace Services
                 }
             }
         }
+        /* public static string EscapeAdbInputText(string input)
+         {
+             if (string.IsNullOrEmpty(input))
+                 return string.Empty;
+
+             var sb = new StringBuilder();
+
+             foreach (char c in input)
+             {
+                 if (c == ' ')
+                 {
+                     sb.Append("%s");
+                 }
+                 else if (char.IsLetterOrDigit(c))
+                 {
+                     sb.Append(c);
+                 }
+                 else
+                 {
+                     sb.AppendFormat("%{0:X2}", (int)c);
+                 }
+             }
+
+             return sb.ToString();
+         }*/
         public static string EscapeAdbInputText(string input)
         {
             if (string.IsNullOrEmpty(input))
                 return string.Empty;
 
-            var sb = new StringBuilder();
+            input = input.Replace("'", "'\\''");
 
-            foreach (char c in input)
-            {
-                if (c == ' ')
-                {
-                    sb.Append("%s");
-                }
-                else if (char.IsLetterOrDigit(c))
-                {
-                    sb.Append(c);
-                }
-                else
-                {
-                    sb.AppendFormat("%{0:X2}", (int)c);
-                }
-            }
-
-            return sb.ToString();
+            return $"'{input}'";
         }
+
         public static string RandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -1162,7 +1174,11 @@ namespace Services
             //return CmdProcessSingleton.Instance.ExecuteCommand(String.Format("/C {0}", commandline));
             return CmdProcess.ExecuteCommand(string.Format("/C {0}", commandline), timeout);
         }
-
+        private static string runCMDRootTool(string commandline, int timeout = 0)
+        {
+            //return CmdProcessSingleton.Instance.ExecuteCommand(String.Format("/C {0}", commandline));
+            return CmdProcess.ExecuteCommandRoot(commandline);
+        }
         private static string runCMD(string commandline, string deviceId, int timeout = 0)
         {
             Console.WriteLine(string.Format("/C adb -s {0} {1}", deviceId, commandline));

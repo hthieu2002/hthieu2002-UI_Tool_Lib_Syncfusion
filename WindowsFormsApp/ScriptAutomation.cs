@@ -54,7 +54,7 @@ namespace WindowsFormsApp
         public ScriptAutomation()
         {
             InitializeComponent();
-
+            this.StartPosition = FormStartPosition.CenterScreen;
             _uiElements = new List<UiElement>();
             lbNew.Visible = false;
             init();

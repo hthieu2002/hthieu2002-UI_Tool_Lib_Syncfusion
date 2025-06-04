@@ -168,7 +168,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                 .AddParameterListParameters(paramX, paramY)
                 .WithBody(SyntaxFactory.Block(
                     SyntaxFactory.ParseStatement("Console.WriteLine($\"Click tại ({x},{y}) trên thiết bị {_deviceID}\");"),
-                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input tap {x} {y}\");")
+                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell input tap {x} {y}\");")
                 ));
         }
         // wait 
@@ -211,7 +211,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword), SyntaxFactory.Token(SyntaxKind.AsyncKeyword))
                 .AddParameterListParameters(paramX, paramY, paramX1, paramY1, paramDuration)
                 .WithBody(SyntaxFactory.Block(
-                        SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input swipe {x1} {y1} {x2} {y2} {duration}\");")
+                        SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell input swipe {x1} {y1} {x2} {y2} {duration}\");")
                     ));
         }
         // random click 
@@ -235,7 +235,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                         SyntaxFactory.ParseStatement("Random rand = new Random();"),
                         SyntaxFactory.ParseStatement("int randX = rand.Next(x, x1);"),
                         SyntaxFactory.ParseStatement("int randY = rand.Next(y, y1);"),
-                        SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input tap {randX} {randY}\");")
+                        SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell input tap {randX} {randY}\");")
                     ));
         }
         // find text and click
@@ -252,12 +252,12 @@ namespace WindowsFormsApp.Script.RoslynScript
                 .WithBody(SyntaxFactory.Block(
                     SyntaxFactory.ParseStatement("System.IO.Directory.CreateDirectory($\"./{_deviceID}\");"),
                     SyntaxFactory.ParseStatement("ADBService.EnsureFileDeleted($\"./{_deviceID}/window_dump.xml\");"),
-                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell uiautomator dump /sdcard/window_dump.xml\");"),
-                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} pull /sdcard/window_dump.xml ./{_deviceID}/window_dump.xml\");"),
+                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell uiautomator dump /sdcard/window_dump.xml\");"),
+                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} pull /sdcard/window_dump.xml ./{_deviceID}/window_dump.xml\");"),
                     SyntaxFactory.ParseStatement("ADBService.WaitFileExists($\"./{_deviceID}/window_dump.xml\");"),
                     SyntaxFactory.ParseStatement("var bounds = ADBService.FindBoundsByText($\"./{_deviceID}/window_dump.xml\", text);"),
                     SyntaxFactory.ParseStatement("var (x, y) = ADBService.ParseCenter(bounds);"),
-                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input tap {x} {y}\");")
+                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell input tap {x} {y}\");")
                 ));
         }
        
@@ -276,12 +276,12 @@ namespace WindowsFormsApp.Script.RoslynScript
                 .WithBody(SyntaxFactory.Block(
                     SyntaxFactory.ParseStatement("System.IO.Directory.CreateDirectory($\"./{_deviceID}\");"),
                     SyntaxFactory.ParseStatement("ADBService.EnsureFileDeleted($\"./{_deviceID}/window_dump.xml\");"),
-                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell uiautomator dump /sdcard/window_dump.xml\");"),
-                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} pull /sdcard/window_dump.xml ./{_deviceID}/window_dump.xml\");"),
+                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell uiautomator dump /sdcard/window_dump.xml\");"),
+                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} pull /sdcard/window_dump.xml ./{_deviceID}/window_dump.xml\");"),
                     SyntaxFactory.ParseStatement($"ADBService.WaitFileExists($\"./{{_deviceID}}/window_dump.xml\");"),
                     SyntaxFactory.ParseStatement("var bounds = ADBService.FindBoundsByText($\"./{_deviceID}/window_dump.xml\", text);"),
                     SyntaxFactory.ParseStatement("var (x, y) = ADBService.ParseCenter(bounds);"),
-                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input tap {x} {y}\");"),
+                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell input tap {x} {y}\");"),
                     SyntaxFactory.ParseStatement("Thread.Sleep(ms);")
                     ));
         }
@@ -299,8 +299,8 @@ namespace WindowsFormsApp.Script.RoslynScript
                 .WithBody(SyntaxFactory.Block(
                     SyntaxFactory.ParseStatement("System.IO.Directory.CreateDirectory($\"./{_deviceID}\");"),
                     SyntaxFactory.ParseStatement("ADBService.EnsureFileDeleted($\"./{_deviceID}/window_dump.xml\");"),
-                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell uiautomator dump /sdcard/window_dump.xml\");"),
-                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} pull /sdcard/window_dump.xml ./{_deviceID}/window_dump.xml\");"),
+                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell uiautomator dump /sdcard/window_dump.xml\");"),
+                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} pull /sdcard/window_dump.xml ./{_deviceID}/window_dump.xml\");"),
                     SyntaxFactory.ParseStatement($"ADBService.WaitFileExists($\"./{{_deviceID}}/window_dump.xml\");"),
                     SyntaxFactory.ParseStatement("var bounds = ADBService.FindBoundsByText($\"./{_deviceID}/window_dump.xml\", text);"),
                     SyntaxFactory.ParseStatement(
@@ -374,7 +374,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                     SyntaxFactory.ParseStatement(@"            {"),
                     SyntaxFactory.ParseStatement(@"                int centerX = rect.X1 + (rect.Width / 2);"),
                     SyntaxFactory.ParseStatement(@"                int centerY = rect.Y1 + (rect.Height / 2);"),
-                    SyntaxFactory.ParseStatement(@"                ADBService.ExecuteAdbCommand($""adb -s {_deviceID} shell input tap {centerX} {centerY}"");"),
+                    SyntaxFactory.ParseStatement(@"                ADBService.ExecuteAdbCommand($"" -s {_deviceID} shell input tap {centerX} {centerY}"");"),
                     SyntaxFactory.ParseStatement(@"                return;"),
                     SyntaxFactory.ParseStatement(@"            }"),
                     SyntaxFactory.ParseStatement(@"        }"),
@@ -422,7 +422,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                     SyntaxFactory.ParseStatement(@"                int centerX = rect.X1 + (rect.Width / 2);"),
                     SyntaxFactory.ParseStatement(@"                int centerY = rect.Y1 + (rect.Height / 2);"),
                     SyntaxFactory.ParseStatement(@"                System.Threading.Thread.Sleep(wait);"),
-                    SyntaxFactory.ParseStatement(@"                ADBService.ExecuteAdbCommand($""adb -s {_deviceID} shell input tap {centerX} {centerY}"");"),
+                    SyntaxFactory.ParseStatement(@"                ADBService.ExecuteAdbCommand($"" -s {_deviceID} shell input tap {centerX} {centerY}"");"),
                     SyntaxFactory.ParseStatement(@"                return;"),
                     SyntaxFactory.ParseStatement(@"            }"),
                     SyntaxFactory.ParseStatement(@"        }"),
@@ -489,7 +489,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                 .AddParameterListParameters(paramText)
                 .WithBody(SyntaxFactory.Block(
                     SyntaxFactory.ParseStatement("var input = ADBService.EscapeAdbInputText(text);"),
-                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input text {input}\");")
+                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell input text {input}\");")
                     ));
         }
         // random text and send text 15 
@@ -507,7 +507,7 @@ namespace WindowsFormsApp.Script.RoslynScript
               .AddParameterListParameters(paramRandomCount)
               .WithBody(SyntaxFactory.Block(
                   SyntaxFactory.ParseStatement("var input = ADBService.RandomString(count);"),
-                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input text {input}\");")
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell input text {input}\");")
                   ));
         }
         // send text file and delete
@@ -553,7 +553,7 @@ namespace WindowsFormsApp.Script.RoslynScript
 
             var forStatement = SyntaxFactory.ForStatement(
                     SyntaxFactory.Block(
-                        SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input keyevent 67\");")
+                        SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell input keyevent 67\");")
                     ))
                 .WithDeclaration(
                     SyntaxFactory.VariableDeclaration(
@@ -586,8 +586,8 @@ namespace WindowsFormsApp.Script.RoslynScript
               .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
               .AddParameterListParameters()
               .WithBody(SyntaxFactory.Block(
-                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input keycombination 113 29\");"),
-                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input keyevent 67\");")
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell input keycombination 113 29\");"),
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell input keyevent 67\");")
                   ));
         }
         // send text random to form
@@ -609,7 +609,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                        SyntaxFactory.ParseStatement("string randomLine = nonEmptyLines[rnd.Next(nonEmptyLines.Length)];"),
                        SyntaxFactory.ParseStatement("Console.WriteLine(\"Dòng được chọn ngẫu nhiên: \" + randomLine);"),
                        SyntaxFactory.ParseStatement("var input = ADBService.EscapeAdbInputText(randomLine);"),
-                       SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input text {input}\");")
+                       SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell input text {input}\");")
                     ));
         }
         /// <summary>
@@ -627,7 +627,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
                 .AddParameterListParameters(paramKey)
                 .WithBody(SyntaxFactory.Block(
-                     SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input keyevent {key}\");")
+                     SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell input keyevent {key}\");")
                     ));
         }
         // ctrl A
@@ -639,7 +639,7 @@ namespace WindowsFormsApp.Script.RoslynScript
               .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
               .AddParameterListParameters()
               .WithBody(SyntaxFactory.Block(
-                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input keycombination 113 29\");")
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell input keycombination 113 29\");")
                   ));
         }
         // check key board
@@ -657,7 +657,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                         .AddVariables(
                             SyntaxFactory.VariableDeclarator("output")
                                 .WithInitializer(SyntaxFactory.EqualsValueClause(
-                                    SyntaxFactory.ParseExpression("ADBService.ExecuteAdbCommandString($\"adb -s {_deviceID} shell dumpsys input_method\")")
+                                    SyntaxFactory.ParseExpression("ADBService.ExecuteAdbCommandString($\" -s {_deviceID} shell dumpsys input_method\")")
                                 ))
                         )
                     ),
@@ -723,7 +723,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                 .AddParameterListParameters()
                 .WithBody(
                     SyntaxFactory.Block(
-                        SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommandString($\"adb wait-for-device\");"),
+                        SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommandString($\" wait-for-device\");"),
                         SyntaxFactory.WhileStatement(
                             SyntaxFactory.PrefixUnaryExpression(
                                 SyntaxKind.LogicalNotExpression,
@@ -740,7 +740,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                                             SyntaxFactory.ArgumentList(
                                                 SyntaxFactory.SingletonSeparatedList(
                                                     SyntaxFactory.Argument(
-                                                        SyntaxFactory.ParseExpression($"\"adb -s {{_deviceID}} shell getprop sys.boot_completed\"")
+                                                        SyntaxFactory.ParseExpression($"\" -s {{_deviceID}} shell getprop sys.boot_completed\"")
                                                     )
                                                 )
                                             )
@@ -788,7 +788,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                                     .AddVariables(
                                         SyntaxFactory.VariableDeclarator("output")
                                             .WithInitializer(SyntaxFactory.EqualsValueClause(
-                                                SyntaxFactory.ParseExpression("ADBService.ExecuteAdbCommandString($\"adb -s {_deviceID} shell ping -c 1 8.8.8.8\")")
+                                                SyntaxFactory.ParseExpression("ADBService.ExecuteAdbCommandString($\" -s {_deviceID} shell ping -c 1 8.8.8.8\")")
                                             ))
                                     )
                                 ),
@@ -848,7 +848,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
                 .AddParameterListParameters(paramUrlFromPc, paramUrlFromPhone)
                 .WithBody(SyntaxFactory.Block(
-                     SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} push {FromPC} {FromPhone}\");")
+                     SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} push {FromPC} {FromPhone}\");")
                     ));
         }
         // pull file to pc
@@ -864,7 +864,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
                 .AddParameterListParameters(paramUrlFromPhone, paramUrlFromPc)
                 .WithBody(SyntaxFactory.Block(
-                     SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} pull {FromPhone} {FromPC}\");")
+                     SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} pull {FromPhone} {FromPC}\");")
                     ));
         }
         /// <summary>
@@ -879,7 +879,7 @@ namespace WindowsFormsApp.Script.RoslynScript
               .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
               .AddParameterListParameters()
               .WithBody(SyntaxFactory.Block(
-                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell svc wifi enable\");")
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell svc wifi enable\");")
                   ));
         }
         // wifi off
@@ -891,7 +891,7 @@ namespace WindowsFormsApp.Script.RoslynScript
               .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
               .AddParameterListParameters()
               .WithBody(SyntaxFactory.Block(
-                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell svc wifi disable\");")
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell svc wifi disable\");")
                   ));
         }
         // open url
@@ -906,7 +906,7 @@ namespace WindowsFormsApp.Script.RoslynScript
               .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
               .AddParameterListParameters(paramUrl)
               .WithBody(SyntaxFactory.Block(
-                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell am start -a android.intent.action.VIEW -d {url}\");")
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell am start -a android.intent.action.VIEW -d {url}\");")
                   ));
         }
         // on Bproxy
@@ -928,7 +928,7 @@ namespace WindowsFormsApp.Script.RoslynScript
               .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
               .AddParameterListParameters(paramShell)
               .WithBody(SyntaxFactory.Block(
-                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell {shell}\");")
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell {shell}\");")
                   ));
         }
         // open app
@@ -943,7 +943,7 @@ namespace WindowsFormsApp.Script.RoslynScript
               .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
               .AddParameterListParameters(paramPackage)
               .WithBody(SyntaxFactory.Block(
-                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell monkey -p {package} -c android.intent.category.LAUNCHER 1\");")
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell monkey -p {package} -c android.intent.category.LAUNCHER 1\");")
                   ));
         }
         // close app
@@ -958,7 +958,7 @@ namespace WindowsFormsApp.Script.RoslynScript
               .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
               .AddParameterListParameters(paramPackage)
               .WithBody(SyntaxFactory.Block(
-                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell am force-stop {package}\");")
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell am force-stop {package}\");")
                   ));
         }
         //enable app
@@ -973,7 +973,7 @@ namespace WindowsFormsApp.Script.RoslynScript
               .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
               .AddParameterListParameters(paramPackage)
               .WithBody(SyntaxFactory.Block(
-                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell pm enable {package}\");")
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell pm enable {package}\");")
                   ));
         }
         // disable app 
@@ -988,7 +988,7 @@ namespace WindowsFormsApp.Script.RoslynScript
               .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
               .AddParameterListParameters(paramPackage)
               .WithBody(SyntaxFactory.Block(
-                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell pm disable {package}\");")
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell pm disable {package}\");")
                   ));
         }
         // install app 
@@ -1003,7 +1003,7 @@ namespace WindowsFormsApp.Script.RoslynScript
               .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
               .AddParameterListParameters(paramPath)
               .WithBody(SyntaxFactory.Block(
-                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} install {path}\");")
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} install {path}\");")
                   ));
         }
         // uninstall app 
@@ -1018,7 +1018,7 @@ namespace WindowsFormsApp.Script.RoslynScript
               .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
               .AddParameterListParameters(paramPath)
               .WithBody(SyntaxFactory.Block(
-                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} uninstall {path}\");")
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} uninstall {path}\");")
                   ));
         }
         // clear data app
@@ -1033,7 +1033,7 @@ namespace WindowsFormsApp.Script.RoslynScript
               .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
               .AddParameterListParameters(paramPackage)
               .WithBody(SyntaxFactory.Block(
-                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell pm clear {package}\");")
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell pm clear {package}\");")
                   ));
         }
         // SwipeCloseApp
@@ -1045,7 +1045,7 @@ namespace WindowsFormsApp.Script.RoslynScript
               .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
               .AddParameterListParameters()
               .WithBody(SyntaxFactory.Block(
-                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\"adb -s {_deviceID} shell input keyevent 3\");")
+                  SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell input keyevent 3\");")
                   ));
         }
     }

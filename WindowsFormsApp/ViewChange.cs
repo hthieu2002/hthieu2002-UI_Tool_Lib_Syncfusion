@@ -84,6 +84,8 @@ namespace WindowsFormsApp
         private static string latitude = null;
         private static string longitude = null;
         private static Form inputForm = null;
+
+        //public static bool checkSim = false;
         public ViewChange()
         {
             this.SuspendLayout();
@@ -116,6 +118,7 @@ namespace WindowsFormsApp
             StartDeviceCheck();
             LoadGUI();
             setupEnableButtonRandom();
+            Util.checkSim = checkSiml.Checked;
         }
         private void LoadGUI()
         {

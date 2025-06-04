@@ -12,6 +12,8 @@ namespace WindowsFormsApp.Script
 {
     public class Util
     {
+        public static bool checkSim;
+
         public static bool SaveDeviceInfo(DeviceModel tempDevice, string deviceId, string applicationPath, bool isFakeSim = false, DataRow row = null)
         {
             try
@@ -192,10 +194,10 @@ namespace WindowsFormsApp.Script
                     // fake wifi mac address
                     ADBService.fakeWifiMacAddress(tempDevice.WifiMacAddress, deviceId);
                     _ = ViewChange.Instance.updateProgress(row, "Save info ...", 70);
-                    if (true)
+                    if (checkSim)
                     {
                         // setting sim card
-                        _ = ViewChange.Instance.updateProgress(row, "Save info ...", 80);
+                        _ = ViewChange.Instance.updateProgress(row, "Change sim .. ", 80);
                         ADBService.putSetting(GlobalAndroidSettings.SIM_OPERATOR_NUMERIC, tempDevice.SimOperatorNumeric, deviceId); // set sim numeric e.g. 42503
                         ADBService.putSetting(GlobalAndroidSettings.SIM_OPERATOR_COUNTRY, tempDevice.SimOperatorCountry, deviceId); // set country of operator code
                         ADBService.putSetting(GlobalAndroidSettings.SIM_OPERATOR_NAME, tempDevice.SimOperatorName, deviceId); // set carrier name of current sim operator
@@ -203,7 +205,7 @@ namespace WindowsFormsApp.Script
                         ADBService.putSetting(GlobalAndroidSettings.NETWORK_OPERATOR_NUMERIC, tempDevice.SimOperatorNumeric, deviceId);
                         ADBService.putSetting(GlobalAndroidSettings.NETWORK_OPERATOR_COUNTRY, tempDevice.SimOperatorCountry, deviceId);
                         ADBService.putSetting(GlobalAndroidSettings.NETWORK_OPERATOR_NAME, tempDevice.SimOperatorName, deviceId);
-                        _ = ViewChange.Instance.updateProgress(row, "Save info ...", 85);
+                        _ = ViewChange.Instance.updateProgress(row, "Change sim ..", 85);
                         // setting phone number, ICCID, IMSI
                         ADBService.putSetting(GlobalAndroidSettings.SIM_PHONE_NUMBER, tempDevice.SimPhoneNumber, deviceId);
                         ADBService.putSetting(GlobalAndroidSettings.ICCID, tempDevice.ICCID, deviceId);
@@ -219,7 +221,7 @@ namespace WindowsFormsApp.Script
                         ADBService.putSetting(GlobalAndroidSettings.DATA_NETWORK_TYPE, "13", deviceId);
                         ADBService.putSetting(GlobalAndroidSettings.DATA_STATE, "2", deviceId);
                         ADBService.putSetting(GlobalAndroidSettings.DATA_ACTIVITY, "4", deviceId);
-                        _ = ViewChange.Instance.updateProgress(row, "Save info ...", 88);
+                        _ = ViewChange.Instance.updateProgress(row, "Change sim ..", 88);
                     }
                     else
                     {

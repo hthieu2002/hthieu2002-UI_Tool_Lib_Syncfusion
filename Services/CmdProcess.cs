@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Threading;
 
@@ -55,6 +56,56 @@ namespace Services
                 }
             }
         }
+        public static string ExecuteCommandRoot(string argument, int timeout = 0)
+        {
+            string adbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "adb.exe");
+
+            using (var process = new Process())
+            {
+                process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                process.StartInfo.FileName = adbPath;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.RedirectStandardError = true;
+                process.StartInfo.StandardOutputEncoding = Encoding.UTF8;
+                process.StartInfo.Arguments = argument;
+
+                if (timeout == 0)
+                {
+                    process.Start();
+                    StringBuilder result = new StringBuilder();
+                    try
+                    {
+                        while (!process.HasExited)
+                        {
+                            result.Append(process.StandardOutput.ReadToEnd());
+                        }
+                        process.WaitForExit();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
+#if DEBUG
+                    Console.WriteLine("{0}. Result: {1}", argument, result.ToString());
+#endif
+                    return result.ToString();
+                }
+                else
+                {
+                    using (var outputWaitHandle = new AutoResetEvent(false))
+                    {
+                        using (var errorWaitHandle = new AutoResetEvent(false))
+                        {
+                            return HandleOutput(process, outputWaitHandle, errorWaitHandle, timeout, false);
+                        }
+                    }
+                }
+            }
+        }
+
         public static byte[] ExecuteCommandByteReturn(string argument, int timeout = 0)
         {
             using (var process = new Process())

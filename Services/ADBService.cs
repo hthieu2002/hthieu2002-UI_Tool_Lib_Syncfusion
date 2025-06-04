@@ -538,7 +538,7 @@ namespace Services
         }
         public static void restartDevice(string deviceId)
         {
-            runCMD("reboot", deviceId);
+            runCMDRoot("reboot", deviceId);
         }
 
         public static void shellSetProp(Dictionary<string, string> settings, string deviceId)
@@ -1059,7 +1059,7 @@ namespace Services
         {
             var adbRootRunning = getProp("init.svc.adb_root", deviceId).Contains("running");
             var adbRootRunning1 = getProp("lineage.service.adb.root", deviceId).Trim().Equals("1");
-            var adbRootRunning2 = runCMD("root", deviceId).Contains("running");
+            var adbRootRunning2 = runCMDRoot("root", deviceId).Contains("running");
             if (adbRootRunning || adbRootRunning1 || adbRootRunning2)
             {
                 return DeviceStatus.ReadyToChange;
@@ -1164,6 +1164,14 @@ namespace Services
             //return CmdProcessSingleton.Instance.ExecuteCommand(string.Format("/C adb -s {0} {1}", deviceId, commandline));
             return CmdProcess.ExecuteCommand(string.Format("/C adb -s {0} {1}", deviceId, commandline), timeout);
         }
+
+        private static string runCMDRoot(string commandline, string deviceId, int timeout = 0)
+        {
+            string adbArgs = $"-s {deviceId} {commandline}";
+            Console.WriteLine(adbArgs);
+            return CmdProcess.ExecuteCommandRoot(adbArgs, timeout);
+        }
+
         public static void FakeLocation(string latitude, string longitude, string deviceId)
         {
             rootAndRemount(deviceId);

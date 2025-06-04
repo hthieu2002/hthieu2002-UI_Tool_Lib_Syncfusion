@@ -14,13 +14,13 @@ using System.Drawing.Drawing2D;
 using Syncfusion.WinForms.DataGrid.Events;
 using Syncfusion.WinForms.DataGrid.Styles;
 using Services;
+using WindowsFormsApp.Script;
 
 namespace WindowsFormsApp
 {
     public partial class ViewChange : Form
     {
         private Model.WindowMode _previousWindowMode = Model.WindowMode.Normal;
-        private bool checkSim = false;
         private void ApplyPanelInputMargin()
         {
             var current = Model.AppState.CurrentWindowMode;
@@ -52,7 +52,7 @@ namespace WindowsFormsApp
         {
             // Tạo các điều khiển input
             txtBrand = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 130, Height = 35 };
-            txtOS = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 60, Height = 3 };
+            txtOS = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 130, Height = 35 };
             txtOS_version = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 60, Height = 35 };
             txtSerial = new TextBoxExt { Width = 130, Height = 35 };
             txtImei = new TextBoxExt { Width = 130, Height = 35 };
@@ -86,7 +86,7 @@ namespace WindowsFormsApp
             };
             osPanel.Controls.Add(osLabel);
             osPanel.Controls.Add(txtOS);
-            osPanel.Controls.Add(txtOS_version);
+            //osPanel.Controls.Add(txtOS_version);
 
 
             // Thêm các FlowLayoutPanel vào PanelInput
@@ -108,8 +108,15 @@ namespace WindowsFormsApp
             checkSiml = new CheckBox();
             checkSiml.Text = "Change sim";
             checkSiml.Checked = true;
+            checkSiml.Margin = new Padding(20,10,5,0);
 
             PanelInput.Controls.Add(checkSiml);
+
+            this.checkSiml.CheckedChanged += checkSiml_CheckedChanged;
+        }
+        private void checkSiml_CheckedChanged(object sender, EventArgs e)
+        {
+            Util.checkSim = checkSiml.Checked;
         }
         private FlowLayoutPanel CreateInputPanel(string labelText, Control inputControl)
         {

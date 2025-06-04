@@ -891,7 +891,7 @@ namespace Services
         public static bool IsDeviceOnline(string deviceId)
         {
             var process = new Process();
-            process.StartInfo.FileName = "adb";
+            process.StartInfo.FileName = "./Resources/adb";
             process.StartInfo.Arguments = $"-s {deviceId} shell getprop sys.boot_completed";
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.UseShellExecute = false;

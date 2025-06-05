@@ -211,6 +211,7 @@
     <Compile Include="Control\GeneralToolbox.Designer.cs">
       <DependentUpon>GeneralToolbox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\CentralBridgeLanguage.cs" />
     <Compile Include="Model\FormVisibilityManager.cs" />
     <Compile Include="Model\GlobalContextMenu.cs" />
     <Compile Include="Control\HeaderViewCommon.cs">
@@ -248,6 +249,10 @@
     <Compile Include="Model\DeviceDisplay.cs" />
     <Compile Include="Model\DeviceModels.cs" />
     <Compile Include="Model\FormHelper.cs" />
+    <Compile Include="Model\LanguageManager.cs" />
+    <Compile Include="Model\Static\ScreenViewStatic.cs" />
+    <Compile Include="Model\Static\ViewChangeStatic.cs" />
+    <Compile Include="Model\Static\ViewThanhToanStatic.cs" />
     <Compile Include="Model\ThemeManager.cs" />
     <Compile Include="Model\UiElement.cs" />
     <Compile Include="Program.cs" />
@@ -408,6 +413,9 @@
     <None Include="Resources\cuahang_0.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Languages.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="x64\liblept172.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

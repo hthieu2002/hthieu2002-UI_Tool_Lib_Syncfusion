@@ -1,0 +1,114 @@
+<Languages>
+	<Language code="en">
+		<Text key="device">Devices</Text>
+		<Text key="auto">Automation</Text>
+		<Text key="view">View Screen</Text>
+		<Text key="payment">Payment</Text>
+		<Text key="upgrade">Upgrade</Text>
+		<Text key="unlimited">Unlimited</Text>
+		<Text key="expired">Expired at</Text>
+		<Text key="defaultPlan">Default Plan</Text>
+		<!--log view change-->
+		<Text key="Info">Info</Text>
+		<Text key="Error">Error</Text>
+		<Text key="Warning">Warning</Text>
+		<Text key="logMessageEditItem">Please select a device to edit.</Text>
+		<Text key="logMessageDeleteItem">Please select a device to delete.</Text>
+		<Text key="logMessageStartDevice">There are no new devices to run.</Text>
+		<Text key="logMessageStartChane">Are you sure to proceed with these changes and reboot ?</Text>
+		<Text key="TitleMessageStartChane">Changes Confirmation?</Text>
+		<Text key="logMessageKeyBox">Are you push file keybox.xml to phone ?</Text>
+		<Text key="logErrorMessageKeyBox">Please select the file that is correctly named keybox.xml.</Text>
+		<Text key="logMessagePif">Are you push file pif.json to phone ?</Text>
+		<Text key="logErrorMessagePif">Please select the file that is correctly named pif.json.</Text>
+		<Text key="ErrorRandomChange">Devices not existed, please try again</Text>
+		<Text key="logChangeError">This selected device cannot be changed, please check your rom and developer setting and try loading again</Text>
+		<Text key="ChangeError">Device Error</Text>
+		<Text key="titleLocationForm">Enter coordinates</Text>
+		<Text key="logLatitude">The Latitude value must be in the range from -180.0 to 180.0.</Text>
+		<Text key="logErrorLatitude">Invalid value.</Text>
+		<Text key="logLongitude">The value of Longitude must be in the range of -90.0 to 90.0</Text>
+		<Text key="logErrorLongitude">Invalid value.</Text>
+		<Text key="titlepProxyForm">Input Proxy Socks5</Text>
+		<Text key="logProxyForm">The device is currently not operational or has not been authenticated.</Text>
+		<Text key="logProxyForm1">Please select a device.</Text>
+		<Text key="logErrorFakeTimeZone">Failed to connect to</Text>
+		<Text key="logErrorFakeTimeZone1">port</Text>
+		<Text key="TitleErrorFakeTimeZone">Exception</Text>
+		<Text key="logFakeTimeZone">Invalid Proxy</Text>
+		<Text key="infoDevice">Information device</Text>
+		<!--log view screen-->
+		<Text key="screenView">Device Management</Text>
+		<Text key="resolution">Resolution (Sharpness)</Text>
+		<Text key="ratio">Aspect ratio (%):         </Text>
+		<Text key="numberOfSelected">Number of selected devices:</Text>
+		<Text key="turnOffScreen">Turn off the screen while watching</Text>
+		<Text key="logRestartAllDevices">All devices have been restarted.</Text>
+		<Text key="logInstallAPK">APK has been installed on all devices.</Text>
+		<Text key="logPushFileAllDevice">The file has been pushed to the SDCARD on all devices.</Text>
+		<Text key="logErrorPushFileAllDevice">An error occurred while selecting the file:</Text>
+		<Text key="logInstallAPKAllDevice">APK has been installed on all devices.</Text>
+		<Text key="logErrorInstallAPKAllDevice">An error occurred while selecting the file:</Text>
+		<Text key="logCaptureScreenshot">Screenshot has been taken on all devices.</Text>
+		<Text key="logExecuteAdbCommand">ADB command has been executed on all devices.</Text>
+		<!--log thanh toán-->
+		<Text key="titleViewThanhToan">Payment</Text>
+		<Text key="titleBangGia">Price list</Text>
+	</Language>
+	<Language code="vi">
+		<Text key="device">Thiết bị</Text>
+		<Text key="auto">Tự động hóa</Text>
+		<Text key="view">Xem màn hình</Text>
+		<Text key="payment">Thanh toán</Text>
+		<Text key="upgrade">Nâng cấp</Text>
+		<Text key="unlimited">Không giới hạn</Text>
+		<Text key="expired">Hết hạn vào</Text>
+		<Text key="defaultPlan">Mặc định</Text>
+		<!---->
+		<Text key="Info">Thông tin</Text>
+		<Text key="Error">Lỗi</Text>
+		<Text key="Warning">Cảnh báo</Text>
+		<Text key="logMessageEditItem">Vui lòng chọn một thiết bị để chỉnh sửa.</Text>
+		<Text key="logMessageDeleteItem">Vui lòng chọn một thiết bị để xóa.</Text>
+		<Text key="logMessageStartDevice">Không có thiết bị mới nào để chạy.</Text>
+		<Text key="logMessageStartChane">Bạn có chắc chắn muốn tiến hành các thay đổi này và khởi động lại không?</Text>
+		<Text key="TitleMessageStartChane">Xác nhận thay đổi?</Text>
+		<Text key="logMessageKeyBox">Bạn có muốn đẩy keybox.xml vào điện thoại không?</Text>
+		<Text key="logErrorMessageKeyBox">Vui lòng chọn tệp có tên đúng là keybox.xml.</Text>
+		<Text key="logMessagePif">Bạn có muốn đẩy pif.json vào điện thoại không?</Text>
+		<Text key="logErrorMessagePif">Vui lòng chọn tệp có tên đúng là pif.json.</Text>
+		<Text key="ErrorRandomChange">Thiết bị không tồn tại, vui lòng thử lại.</Text>
+		<Text key="logChangeError">Thiết bị được chọn không thể thay đổi, vui lòng kiểm tra ROM và cài đặt nhà phát triển rồi thử lại.</Text>
+		<Text key="ChangeError">Lỗi thiết bị</Text>
+		<Text key="titleLocationForm">Nhập tọa độ</Text>
+		<Text key="logLatitude">Giá trị Vĩ độ phải trong khoảng từ -180.0 đến 180.0.</Text>
+		<Text key="logErrorLatitude">Giá trị không hợp lệ.</Text>
+		<Text key="logLongitude">Giá trị Kinh độ phải trong khoảng từ -90.0 đến 90.0.</Text>
+		<Text key="logErrorLongitude">Giá trị không hợp lệ.</Text>
+		<Text key="titlepProxyForm">Nhập Proxy Socks5</Text>
+		<Text key="logProxyForm">Thiết bị hiện không hoạt động hoặc chưa được xác thực.</Text>
+		<Text key="logProxyForm1">Vui lòng chọn một thiết bị.</Text>
+		<Text key="logErrorFakeTimeZone">Kết nối không thành công tới</Text>
+		<Text key="logErrorFakeTimeZone1">cổng</Text>
+		<Text key="TitleErrorFakeTimeZone">Ngoại lệ</Text>
+		<Text key="logFakeTimeZone">Proxy không hợp lệ</Text>
+		<Text key="infoDevice">Thông tin thiết bị</Text>
+		<!---->
+		<Text key="screenView">Quản lý thiết bị</Text>
+		<Text key="resolution">Độ phân giải (Sắc nét)</Text>
+		<Text key="ratio">Tỉ lệ khung hình(%):</Text>
+		<Text key="numberOfSelected">Số thiết bị được chọn:</Text>
+		<Text key="turnOffScreen">Tắt màn hình khi xem         </Text>
+		<Text key="logRestartAllDevices">Tất cả các thiết bị đã được khởi động lại.</Text>
+		<Text key="logInstallAPK">APK đã được cài đặt cho tất cả các thiết bị.</Text>
+		<Text key="logPushFileAllDevice">File đã được push và SDCARD cho tất cả các thiết bị.</Text>
+		<Text key="logErrorPushFileAllDevice">Đã xảy ra lỗi khi chọn file:</Text>
+		<Text key="logInstallAPKAllDevice">APK đã được cài đặt cho tất cả các thiết bị.</Text>
+		<Text key="logErrorInstallAPKAllDevice">Đã xảy ra lỗi khi chọn file:</Text>
+		<Text key="logCaptureScreenshot">Chụp màn hình đã được thực hiện cho tất cả các thiết bị.</Text>
+		<Text key="logExecuteAdbCommand">Lệnh ADB đã được thực hiện cho tất cả các thiết bị.</Text>
+		<!---->
+		<Text key="titleViewThanhToan">Thanh toán</Text>
+		<Text key="titleBangGia">Bảng giá</Text>
+	</Language>
+</Languages>

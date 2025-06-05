@@ -4,16 +4,21 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using WindowsFormsApp.Model;
+using WindowsFormsApp.Model.Static;
 
 namespace AccountCreatorForm.Views
 {
     public partial class ViewThanhToan : Form
     {
         private HeaderViewCommon headerView;
-
+        private Syncfusion.Windows.Forms.Tools.AutoLabel lblBangGia;
+        public static ViewThanhToan Instance { get; private set; }
+        private LanguageManager lang;
         public ViewThanhToan()
         {
             InitializeComponent();
+            Instance = this;
             init();
             LoadPricingCards();
             this.BackColor = Color.White;
@@ -29,13 +34,14 @@ namespace AccountCreatorForm.Views
 
             headerView = new HeaderViewCommon();
             headerView.Dock = DockStyle.Fill;
-            headerView.SetTitle("Thanh toán");
+            headerView.SetTitle(ViewThanhToanStatic.titleViewThanhToan);
             panelHeader.Controls.Add(headerView);
 
+            lblBangGia = new Syncfusion.Windows.Forms.Tools.AutoLabel();
             lblBangGia.Dock = DockStyle.Top;
             lblBangGia.BackColor = Color.White;
             lblBangGia.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            lblBangGia.Text = "Bảng Giá";
+            lblBangGia.Text = ViewThanhToanStatic.titleBangGia;
             lblBangGia.Height = 90;
             lblBangGia.TextAlign = ContentAlignment.MiddleCenter;
             lblBangGia.Padding = new Padding(20, 10, 0, 0);
@@ -87,8 +93,10 @@ namespace AccountCreatorForm.Views
             mainLayout.Controls.Add(lblBangGia, 0, 1);
             mainLayout.Controls.Add(centerWrapper, 0, 2);
 
-            this.Controls.Clear();
+          //  this.Controls.Clear();
+          
             this.Controls.Add(mainLayout);
+          
         }
 
         private void LoadPricingCards()
@@ -185,5 +193,15 @@ namespace AccountCreatorForm.Views
             }
         }
 
+        private void ViewThanhToan_Load(object sender, EventArgs e)
+        {
+            LoadLanguageViewThanhToan();
+        }
+        public void LoadLanguageViewThanhToan()
+        {
+            lang = new LanguageManager(FormVisibilityManager.IsLanguage);
+
+            lblBangGia.Text = lang.Get("titleBangGia");
+        }
     }
 }

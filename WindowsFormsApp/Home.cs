@@ -30,13 +30,14 @@ namespace AccountCreatorForm.Views
         public Form currentChildForm = null;
         private Dictionary<SfButton, Func<Form>> sidebarFormMap;
         private Dictionary<SfButton, Image> buttonIconMap;
-        private bool isOkClicked = false;    // Biến cờ để theo dõi người dùng chọn OK
-        private bool isCancelClicked = false; // Biến cờ để theo dõi người dùng chọn Cancel
-
+        private bool isOkClicked = false;    
+        private bool isCancelClicked = false; 
+        private LanguageManager lang ;
+        public static Home Instance { get; private set; }
         public Home()
         {
             InitializeComponent();
-
+            Instance = this;
             ToggleDarkLightMode();
             this.WindowState = FormWindowState.Maximized;
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -89,6 +90,7 @@ namespace AccountCreatorForm.Views
                 pair.Key.Click += SidebarButton_Click;
             }
         }
+        
         private void MyForm_OnSizeChange(object sender, EventArgs e)
         {
             UpdateWindowMode();
@@ -116,8 +118,26 @@ namespace AccountCreatorForm.Views
         }
         private void Home_Load(object sender, EventArgs e)
         {
+            LoadLanguageHome();
+
             this.FormClosing += new FormClosingEventHandler(Form1_FormClosing);
         }
+
+        public void LoadLanguageHome()
+        {
+            lang = new LanguageManager(FormVisibilityManager.IsLanguage);
+
+            btnDieuKhien.Text = lang.Get("device");
+            btnAuto.Text = lang.Get("auto");
+            btnLichTrinh.Text = lang.Get("view");
+            btnThanhToan.Text = lang.Get("payment");
+            //
+            btnUpgrade.Text = "↑ " + lang.Get("upgrade");
+           // lblUnlimited.Text = lang.Get("unlimited");
+            lblExpire.Text = lang.Get("expired");
+            lblPlanTitle.Text = lang.Get("defaultPlan");
+        }
+
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();

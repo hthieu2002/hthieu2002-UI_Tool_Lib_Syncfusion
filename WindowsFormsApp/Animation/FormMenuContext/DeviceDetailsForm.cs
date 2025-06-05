@@ -19,7 +19,7 @@ namespace WindowsFormsApp.Animation
             InitializeComponent();
         }
 
-        public DeviceDetailsForm(string device)
+        public DeviceDetailsForm(string device, string text)
         {
             InitializeComponent();
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -27,7 +27,7 @@ namespace WindowsFormsApp.Animation
             this.MinimizeBox = false;
             this.SizeGripStyle = SizeGripStyle.Hide;
             this.StartPosition = FormStartPosition.CenterScreen;
-
+            InfoNameDevice.Text = text;
             string brand = GetDeviceInfoFromADB(device, "getprop ro.product.brand");
             string name = GetDeviceInfoFromADB(device, "getprop ro.android.board");
             string model = GetDeviceInfoFromADB(device, "getprop ro.product.model");
@@ -43,7 +43,7 @@ namespace WindowsFormsApp.Animation
             string iccid = GetDeviceInfoFromADB(device, "settings get global mi_iccid");
             string mac = GetDeviceMACAddress(device);
 
-            this.Text = $"Thông tin thiết bị {device}";
+            this.Text = $"{text} {device}";
             txtBrand.Text = brand;
             txtName.Text = name;
             txtModel.Text = model;
@@ -70,7 +70,6 @@ namespace WindowsFormsApp.Animation
             string result = ADBService.ExecuteADBCommandDetail(deviceID, "shell cat /sys/class/net/wlan0/address");
             return result.Trim();
         }
-
 
     }
 }

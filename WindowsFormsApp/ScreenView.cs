@@ -9,11 +9,14 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp.Model;
+using WindowsFormsApp.Model.Static;
 
 namespace WindowsFormsApp
 {
     public partial class ScreenView : Form
     {
+        public static ScreenView Instance { get; private set; }
         private const int panelWidth = 200;
         private const float aspectRatio = 0.4615f;
         private const int panelHeight = (int)(panelWidth / aspectRatio);
@@ -58,9 +61,11 @@ namespace WindowsFormsApp
         public const uint LWA_ALPHA = 0x00000002;
         public const int WS_EX_TRANSPARENT = 0x20;
 
+        private LanguageManager lang;
         public ScreenView()
         {
             InitializeComponent();
+            Instance = this;
             this.Text = "Device Management";
             load();
             this.FormClosing += (s, e) =>
@@ -107,7 +112,7 @@ namespace WindowsFormsApp
         }
         private void UpdateSelectedDevicesLabel()
         {
-            selectedDevicesLabel.Text = $"Số thiết bị được chọn: {activeDevices.Count}";
+            selectedDevicesLabel.Text = $"{lang.Get("numberOfSelected")} {activeDevices.Count}";
         }
         public void RestartAllDevices_Click(ScreenView screenView)
         {
@@ -115,7 +120,7 @@ namespace WindowsFormsApp
             {
                ADBService.ExecuteAdbCommand("reboot", device.Serial); // Thực thi lệnh reboot cho thiết bị
             }
-            MessageBox.Show("Tất cả các thiết bị đã được khởi động lại.");
+            MessageBox.Show(ScreenViewStatic.logRestartAllDevices);
         }
         public void InstallAPK_Click(ScreenView screenView)
         {
@@ -133,7 +138,7 @@ namespace WindowsFormsApp
                     string command = $"install {apkFilePath}";
                     ADBService.ExecuteAdbCommand(command, device.Serial);
                 }
-                MessageBox.Show("APK đã được cài đặt cho tất cả các thiết bị.");
+                MessageBox.Show(ScreenViewStatic.logInstallAPK);
             }
         }
         private void btnPushFileAllDevice_Click(object render, EventArgs args)
@@ -153,12 +158,12 @@ namespace WindowsFormsApp
                         string command = $"push {filePath} /sdcard/";
                         ADBService.ExecuteAdbCommand(command, deviceId);
                     }
-                    MessageBox.Show("File đã được push và SDCARD cho tất cả các thiết bị.");
+                    MessageBox.Show(ScreenViewStatic.logPushFileAllDevice);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Đã xảy ra lỗi khi chọn file: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ScreenViewStatic.logErrorPushFileAllDevice + ex.Message, ViewChangeStatic.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
        
@@ -179,12 +184,12 @@ namespace WindowsFormsApp
                         string command = $"install {apkFilePath}";
                         ADBService.ExecuteAdbCommand(command, deviceId);
                     }
-                    MessageBox.Show(".APK đã được cài đặt cho tất cả các thiết bị.");
+                    MessageBox.Show(ScreenViewStatic.logInstallAPKAllDevice);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Đã xảy ra lỗi khi chọn file: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ScreenViewStatic.logErrorInstallAPKAllDevice + ex.Message, ViewChangeStatic.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
       
@@ -201,7 +206,7 @@ namespace WindowsFormsApp
                 }
                 ADBService.ExecuteAdbCommand($"pull /sdcard/screenshot{device.Serial}.png ./{device.Serial}/screenshot.png", device.Serial); 
             }
-            MessageBox.Show("Chụp màn hình đã được thực hiện cho tất cả các thiết bị.");
+            MessageBox.Show(ScreenViewStatic.logCaptureScreenshot);
         }
         public void ExecuteAdbCommand_Click(ScreenView screenView)
         {
@@ -213,7 +218,7 @@ namespace WindowsFormsApp
                 {
                     ADBService.ExecuteAdbCommand(adbCommand, device.Serial);
                 }
-                MessageBox.Show("Lệnh ADB đã được thực hiện cho tất cả các thiết bị.");
+                MessageBox.Show(ScreenViewStatic.logExecuteAdbCommand);
             }
         }
         public void DeleteAllDevices_Click(ScreenView screenView)
@@ -226,6 +231,30 @@ namespace WindowsFormsApp
             }
             screenView.deviceDisplays.Clear();  // Xóa tất cả các thiết bị khỏi danh sách
          //   MessageBox.Show("Đã reload views.");
+        }
+
+        private void ScreenView_Load(object sender, EventArgs e)
+        {
+            LoadLanguageScreenView();
+        }
+        public void LoadLanguageScreenView()
+        {
+            lang = new LanguageManager(FormVisibilityManager.IsLanguage);
+
+            this.Text = lang.Get("screenView");
+            label.Text = lang.Get("resolution");
+            label2.Text = lang.Get("ratio");
+            selectedDevicesLabel.Text = $"{lang.Get("numberOfSelected")} {activeDevices.Count}";
+            cbTurnOffScreen.Text = lang.Get("turnOffScreen");
+
+            ScreenViewStatic.logRestartAllDevices = lang.Get("logRestartAllDevices");
+            ScreenViewStatic.logInstallAPK = lang.Get("logInstallAPK");
+            ScreenViewStatic.logPushFileAllDevice = lang.Get("logPushFileAllDevice");
+            ScreenViewStatic.logErrorPushFileAllDevice = lang.Get("logErrorPushFileAllDevice");
+            ScreenViewStatic.logInstallAPKAllDevice = lang.Get("logInstallAPKAllDevice");
+            ScreenViewStatic.logErrorInstallAPKAllDevice = lang.Get("logErrorInstallAPKAllDevice");
+            ScreenViewStatic.logCaptureScreenshot = lang.Get("logCaptureScreenshot");
+            ScreenViewStatic.logExecuteAdbCommand = lang.Get("logExecuteAdbCommand");
         }
     }
 }

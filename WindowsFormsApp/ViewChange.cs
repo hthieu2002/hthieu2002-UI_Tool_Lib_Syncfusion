@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp.Animation;
 using WindowsFormsApp.Model;
+using WindowsFormsApp.Model.Static;
 using WindowsFormsApp.Script;
 
 
@@ -86,6 +87,7 @@ namespace WindowsFormsApp
         private static Form inputForm = null;
 
         //public static bool checkSim = false;
+        private LanguageManager lang;
         public ViewChange()
         {
             this.SuspendLayout();
@@ -401,7 +403,7 @@ namespace WindowsFormsApp
             {
                 string deviceId = selectedRow["DeviceID"].ToString();
 
-                DeviceDetailsForm detailsForm = new DeviceDetailsForm(deviceId);
+                DeviceDetailsForm detailsForm = new DeviceDetailsForm(deviceId, ViewChangeStatic.infoDevice);
 
                 detailsForm.ShowDialog();
             }
@@ -442,7 +444,7 @@ namespace WindowsFormsApp
             }
             else
             {
-                MessageBox.Show("Vui lòng chọn một thiết bị để chỉnh sửa.");
+                MessageBox.Show(ViewChangeStatic.logMessageEditItem);
             }
         }
 
@@ -463,7 +465,7 @@ namespace WindowsFormsApp
             }
             else
             {
-                MessageBox.Show("Please select a device to delete.");
+                MessageBox.Show(ViewChangeStatic.logMessageDeleteItem);
             }
         }
         //data
@@ -514,11 +516,11 @@ namespace WindowsFormsApp
 
             if (!toAnimate.Any())
             {
-                MessageBox.Show("Không có thiết bị mới nào để chạy.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(ViewChangeStatic.logMessageStartDevice , ViewChangeStatic.Info, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            string message = "Are you sure to proceed with these changes and reboot ?";
-            string title = "Changes Confirmation";
+            string message = ViewChangeStatic.logMessageStartChane;
+            string title = ViewChangeStatic.TitleMessageStartChane;
             if (button == 1 || button == 2)
             {
                 result = MessageBox.Show(message, title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -526,7 +528,7 @@ namespace WindowsFormsApp
             
             if (button == 1 && result == DialogResult.Yes)
             {
-                messageBoxPushFile = MessageBox.Show("Are you push file keybox.xml to phone ?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                messageBoxPushFile = MessageBox.Show(ViewChangeStatic.logMessageKeyBox, ViewChangeStatic.Info, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             }
 
             if (messageBoxPushFile == DialogResult.Yes)
@@ -548,7 +550,7 @@ namespace WindowsFormsApp
                             }
                             else
                             {
-                                MessageBox.Show("Vui lòng chọn file có tên đúng là keybox.xml", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show(ViewChangeStatic.logErrorMessageKeyBox, ViewChangeStatic.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
                         else
@@ -561,7 +563,7 @@ namespace WindowsFormsApp
 
             if (button == 1 && result == DialogResult.Yes)
             {
-                messageBoxPushFileJson = MessageBox.Show("Are you push file pif.json to phone ?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                messageBoxPushFileJson = MessageBox.Show(ViewChangeStatic.logMessagePif, ViewChangeStatic.Info, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             }
 
             if (messageBoxPushFileJson == DialogResult.Yes)
@@ -583,7 +585,7 @@ namespace WindowsFormsApp
                             }
                             else
                             {
-                                MessageBox.Show("Vui lòng chọn file có tên đúng là pif.json", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show(ViewChangeStatic.logErrorMessagePif, ViewChangeStatic.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
                         else
@@ -688,7 +690,7 @@ namespace WindowsFormsApp
                 tempDeviceAll = await miChangerGraphQLClient.GetRandomDeviceV3(sdkMin: 30);
                 if (tempDeviceAll.Model == null)
                 {
-                    MessageBox.Show("Devices not existed, please try again");
+                    MessageBox.Show(ViewChangeStatic.ErrorRandomChange);
                     throw new Exception("Devices not existed, please try again");
                 }
 
@@ -744,7 +746,7 @@ namespace WindowsFormsApp
             tempDeviceAll = await miChangerGraphQLClient.GetRandomDeviceV3(sdkMin: 30);
             if (tempDeviceAll.Model == null)
             {
-                MessageBox.Show("Devices not existed, please try again");
+                MessageBox.Show(ViewChangeStatic.ErrorRandomChange);
                 throw new Exception("Devices not existed, please try again");
             }
             tempDeviceAll.IMSI = RandomService.generateIMSI(mcc, mnc);
@@ -809,7 +811,7 @@ namespace WindowsFormsApp
                 tempDevice = await miChangerGraphQLClient.GetRandomDeviceV3(sdkMin: 30);
                 if (tempDevice.Model == null)
                 {
-                    MessageBox.Show("Devices not existed, please try again");
+                    MessageBox.Show(ViewChangeStatic.ErrorRandomChange);
                     throw new Exception("Devices not existed, please try again");
                 }
 
@@ -859,7 +861,7 @@ namespace WindowsFormsApp
                 tempDevice = await miChangerGraphQLClient.GetRandomDeviceV3(sdkMin: 30);
                 if (tempDevice.Model == null)
                 {
-                    MessageBox.Show("Devices not existed, please try again");
+                    MessageBox.Show(ViewChangeStatic.ErrorRandomChange);
                     throw new Exception("Devices not existed, please try again");
                 }
 
@@ -979,8 +981,8 @@ namespace WindowsFormsApp
                 {
 
                     _animatingDevices.Remove(device);
-                    MessageBox.Show("This selected device cannot be changed, please check your rom and developer setting and try loading again."
-                                            , "Device Error"
+                    MessageBox.Show(ViewChangeStatic.logChangeError
+                                            , ViewChangeStatic.ChangeError
                                             , MessageBoxButtons.OK
                                             , MessageBoxIcon.Error);
                 }
@@ -1082,8 +1084,8 @@ namespace WindowsFormsApp
                 {
 
                     _animatingDevices.Remove(device);
-                    MessageBox.Show("This selected device cannot be changed, please check your rom and developer setting and try loading again."
-                                            , "Device Error"
+                    MessageBox.Show(ViewChangeStatic.logChangeError
+                                            , ViewChangeStatic.ChangeError
                                             , MessageBoxButtons.OK
                                             , MessageBoxIcon.Error);
                 }
@@ -1104,7 +1106,7 @@ namespace WindowsFormsApp
                         Width = 300,
                         Height = 200,
                         FormBorderStyle = FormBorderStyle.FixedDialog,
-                        Text = "Nhập tọa độ",
+                        Text = ViewChangeStatic.titleLocationForm,
                         StartPosition = FormStartPosition.CenterScreen,
                         MaximizeBox = false,
                         MinimizeBox = false
@@ -1136,13 +1138,13 @@ namespace WindowsFormsApp
                         {
                             if (value < -180.0 || value > 180.0)
                             {
-                                MessageBox.Show("Giá trị Latitude phải nằm trong khoảng từ -180.0 đến 180.0", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                MessageBox.Show(ViewChangeStatic.logLatitude, ViewChangeStatic.Warning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 txtX.Focus();
                             }
                         }
                         else if (!string.IsNullOrWhiteSpace(txtX.Text))
                         {
-                            MessageBox.Show("Giá trị không hợp lệ.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show(ViewChangeStatic.logErrorLatitude, ViewChangeStatic.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                             txtX.Focus();
                         }
                     };
@@ -1173,13 +1175,13 @@ namespace WindowsFormsApp
                         {
                             if (value < -90.0 || value > 90.0)
                             {
-                                MessageBox.Show("Giá trị Longitude phải nằm trong khoảng từ -90.0 đến 90.0", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                MessageBox.Show(ViewChangeStatic.logLongitude, ViewChangeStatic.Warning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 txtY.Focus();
                             }
                         }
                         else if (!string.IsNullOrWhiteSpace(txtY.Text))
                         {
-                            MessageBox.Show("Giá trị không hợp lệ.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show(ViewChangeStatic.logErrorLongitude, ViewChangeStatic.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                             txtY.Focus();
                         }
                     };
@@ -1340,7 +1342,7 @@ namespace WindowsFormsApp
                         );
                     if (deviceToFake != null)
                     {
-                        NameInputForm proxyForm = new NameInputForm("", "Input Proxy Socks5");
+                        NameInputForm proxyForm = new NameInputForm("", ViewChangeStatic.titlepProxyForm);
                         if (proxyForm.ShowDialog() == DialogResult.OK)
                         {
                             string proxy = proxyForm.NewName;
@@ -1412,13 +1414,13 @@ namespace WindowsFormsApp
                     }
                     else
                     {
-                        MessageBox.Show("Thiết bị hiện không hoạt động hoặc chưa xác thực.");
+                        MessageBox.Show(ViewChangeStatic.logProxyForm);
                         return;
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Vui lòng chọn một thiết bị.");
+                    MessageBox.Show(ViewChangeStatic.logProxyForm1);
                 }
             }
             catch (Exception ex)
@@ -1446,7 +1448,7 @@ namespace WindowsFormsApp
                     }
                     else
                     {
-                        MessageBox.Show($"Failed to connect to {proxyParts[0]} port {proxyParts[0]}", "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"{ViewChangeStatic.logErrorFakeTimeZone} {proxyParts[0]} {ViewChangeStatic.logErrorFakeTimeZone1} {proxyParts[0]}", ViewChangeStatic.TitleErrorFakeTimeZone, MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return false;
                     }
                 }
@@ -1462,21 +1464,60 @@ namespace WindowsFormsApp
                     }
                     else
                     {
-                        MessageBox.Show($"Failed to connect to {proxyParts[0]} port {proxyParts[0]}", "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"{ViewChangeStatic.logErrorFakeTimeZone} {proxyParts[0]} {ViewChangeStatic.logErrorFakeTimeZone1} {proxyParts[0]}", ViewChangeStatic.TitleErrorFakeTimeZone, MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return false;
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Invalid Proxy", "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(ViewChangeStatic.logFakeTimeZone, ViewChangeStatic.TitleErrorFakeTimeZone, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, ViewChangeStatic.TitleErrorFakeTimeZone, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
+        }
+
+        private void ViewChange_Load(object sender, EventArgs e)
+        {
+            LoadLanguageViewChange();
+        }
+        public void LoadLanguageViewChange()
+        {
+            lang = new LanguageManager(FormVisibilityManager.IsLanguage);
+
+            ViewChangeStatic.Info = lang.Get("Info"); 
+            ViewChangeStatic.Error = lang.Get("Error"); 
+            ViewChangeStatic.Warning = lang.Get("Warning"); 
+            ViewChangeStatic.logMessageEditItem = lang.Get("logMessageEditItem");
+            ViewChangeStatic.logMessageDeleteItem = lang.Get("logMessageDeleteItem");
+            ViewChangeStatic.logMessageStartDevice = lang.Get("logMessageStartDevice"); 
+            ViewChangeStatic.logMessageStartChane = lang.Get("logMessageStartChane");
+            ViewChangeStatic.TitleMessageStartChane = lang.Get("TitleMessageStartChane"); 
+            ViewChangeStatic.logMessageKeyBox = lang.Get("logMessageKeyBox"); 
+            ViewChangeStatic.logErrorMessageKeyBox = lang.Get("logErrorMessageKeyBox"); 
+            ViewChangeStatic.logMessagePif = lang.Get("logMessagePif"); 
+            ViewChangeStatic.logErrorMessagePif = lang.Get("logErrorMessagePif"); 
+            ViewChangeStatic.ErrorRandomChange = lang.Get("ErrorRandomChange"); 
+            ViewChangeStatic.logChangeError = lang.Get("logChangeError"); 
+            ViewChangeStatic.ChangeError = lang.Get("ChangeError"); 
+            ViewChangeStatic.titleLocationForm = lang.Get("titleLocationForm"); 
+            ViewChangeStatic.logLatitude = lang.Get("logLatitude"); 
+            ViewChangeStatic.logErrorLatitude = lang.Get("logErrorLatitude"); 
+            ViewChangeStatic.logLongitude = lang.Get("logLongitude"); 
+            ViewChangeStatic.logErrorLongitude = lang.Get("logErrorLongitude"); 
+            ViewChangeStatic.titlepProxyForm = lang.Get("titlepProxyForm"); 
+            ViewChangeStatic.logProxyForm = lang.Get("logProxyForm");
+            ViewChangeStatic.logProxyForm1 = lang.Get("logProxyForm1");
+            ViewChangeStatic.logErrorFakeTimeZone = lang.Get("logErrorFakeTimeZone"); 
+            ViewChangeStatic.logErrorFakeTimeZone1 = lang.Get("logErrorFakeTimeZone1"); 
+            ViewChangeStatic.TitleErrorFakeTimeZone = lang.Get("TitleErrorFakeTimeZone");
+            ViewChangeStatic.logFakeTimeZone = lang.Get("logFakeTimeZone");
+            ViewChangeStatic.infoDevice = lang.Get("infoDevice");
+
         }
     }
 }

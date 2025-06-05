@@ -260,7 +260,7 @@ namespace WindowsFormsApp.Script.RoslynScript
                     SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell input tap {x} {y}\");")
                 ));
         }
-       
+
         public static MethodDeclarationSyntax CreateMethodSearchWaitClick()
         {
             var paramText = SyntaxFactory.Parameter(SyntaxFactory.Identifier("text"))
@@ -488,8 +488,11 @@ namespace WindowsFormsApp.Script.RoslynScript
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
                 .AddParameterListParameters(paramText)
                 .WithBody(SyntaxFactory.Block(
-                    SyntaxFactory.ParseStatement("var input = ADBService.EscapeAdbInputText(text);"),
-                    SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell input text {input}\");")
+                        SyntaxFactory.ParseStatement("var input = ADBService.EscapeAdbInputText(text);"),
+                        SyntaxFactory.ParseStatement("ADBService.ExecuteAdbCommand($\" -s {_deviceID} shell input text {input}\");")
+
+
+
                     ));
         }
         // random text and send text 15 
@@ -914,7 +917,7 @@ namespace WindowsFormsApp.Script.RoslynScript
         // auto proxy
 
         // check sim
-        
+
         // command (shell)
         public static MethodDeclarationSyntax CreateMethodCommandShell()
         {

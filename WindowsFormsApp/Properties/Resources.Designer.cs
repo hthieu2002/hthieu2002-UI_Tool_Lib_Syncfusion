@@ -373,6 +373,26 @@ namespace WindowsFormsApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;Languages&gt;
+        ///	&lt;Language code=&quot;en&quot;&gt;
+        ///		&lt;Text key=&quot;device&quot;&gt;Devices&lt;/Text&gt;
+        ///		&lt;Text key=&quot;auto&quot;&gt;Automation&lt;/Text&gt;
+        ///		&lt;Text key=&quot;view&quot;&gt;View Screen&lt;/Text&gt;
+        ///	&lt;/Language&gt;
+        ///	&lt;Language code=&quot;vi&quot;&gt;
+        ///		&lt;Text key=&quot;device&quot;&gt;Thiết bị&lt;/Text&gt;
+        ///		&lt;Text key=&quot;auto&quot;&gt;Tự động hóa&lt;/Text&gt;
+        ///		&lt;Text key=&quot;view&quot;&gt;Xem màn hình&lt;/Text&gt;
+        ///	&lt;/Language&gt;
+        ///&lt;/Languages&gt;.
+        /// </summary>
+        internal static string Languages {
+            get {
+                return ResourceManager.GetString("Languages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] libusb_1_0 {

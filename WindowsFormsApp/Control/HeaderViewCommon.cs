@@ -28,6 +28,7 @@ namespace AccountCreatorForm.Controls
         private bool isDarkMode = false;
         private Panel accountPanel;
         private PictureBox picArrow;
+        private ComboBox cbLanguage;
         public HeaderViewCommon()
         {
             init();
@@ -62,7 +63,7 @@ namespace AccountCreatorForm.Controls
             layoutMain.Controls.Add(lblTitle, 0, 0);
            // layoutMain.Controls.Add(lblVersion, 1, 0);
             layoutMain.Controls.Add(btnRuns, 2, 0);
-            layoutMain.Controls.Add(btnInspector, 3, 0);
+            layoutMain.Controls.Add(cbLanguage, 3, 0);
           //  layoutMain.Controls.Add(button, 4, 0);
             layoutMain.Controls.Add(accountPanel, 5, 0);
 
@@ -130,19 +131,53 @@ namespace AccountCreatorForm.Controls
         }
         private void setInspector()
         {
-            btnInspector = new Button
+             cbLanguage = new ComboBox
             {
-                Text = "✨ Inspector",
-                FlatStyle = FlatStyle.Flat,
                 Font = new Font("Segoe UI", 9F),
                 BackColor = Color.White,
                 ForeColor = Color.FromArgb(86, 119, 254),
-                Width = 90,
-                Height = 28
+                Width = 120,
+                Height = 28,
+                DropDownStyle = ComboBoxStyle.DropDownList // Chỉ cho phép chọn, không nhập
             };
-            btnInspector.FlatAppearance.BorderColor = Color.FromArgb(86, 119, 254);
-            btnInspector.FlatAppearance.BorderSize = 1;
-            btnInspector.Margin = new Padding(5, 0, 5, 0);  
+
+            cbLanguage.Items.Add("English");
+            cbLanguage.Items.Add("Tiếng Việt");
+            if (WindowsFormsApp.Properties.Settings.Default.Language == "en")
+            {
+                cbLanguage.SelectedIndex = 0;
+            }
+            else
+            {
+                cbLanguage.SelectedIndex = 1;
+
+            }
+
+
+                //btnInspector.FlatAppearance.BorderColor = Color.FromArgb(86, 119, 254);
+                // btnInspector.FlatAppearance.BorderSize = 1;
+                cbLanguage.Margin = new Padding(5, 0, 5, 0);
+
+            cbLanguage.SelectedIndexChanged += CbLanguage_SelectedIndexChanged;
+
+        }
+        private void CbLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox cb = sender as ComboBox;
+            if (cb.SelectedItem.ToString() == "English")
+            {
+                FormVisibilityManager.IsLanguage = "en";
+                WindowsFormsApp.Properties.Settings.Default.Language = "en";  
+            }
+            else
+            {
+                FormVisibilityManager.IsLanguage = "vi";
+                WindowsFormsApp.Properties.Settings.Default.Language = "vi"; 
+            }
+
+            WindowsFormsApp.Properties.Settings.Default.Save(); 
+            CentralBridgeLanguage.Language();   
+
         }
         private void setDrakMode()
         {
@@ -239,13 +274,13 @@ namespace AccountCreatorForm.Controls
         {
            // lblVersion.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             btnRuns.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-            btnInspector.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            cbLanguage.Anchor = AnchorStyles.Left | AnchorStyles.Top;
           //  button.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             accountPanel.Anchor = AnchorStyles.Left | AnchorStyles.Top;
 
            // lblVersion.Margin = new Padding(0, 10, 10, 0);  // Khoảng cách giữa avatar và các nút
             btnRuns.Margin = new Padding(0, 10, 10, 0); 
-            btnInspector.Margin = new Padding(0, 10, 10, 0); 
+            cbLanguage.Margin = new Padding(0, 10, 10, 0); 
          //   button.Margin = new Padding(0, 10, 10, 0);  
             accountPanel.Margin = new Padding(0, 10, 10, 0); 
         }

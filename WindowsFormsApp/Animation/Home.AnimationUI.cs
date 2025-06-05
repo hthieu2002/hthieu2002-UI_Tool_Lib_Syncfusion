@@ -94,7 +94,7 @@ namespace AccountCreatorForm.Views
             panelPlanInfo.Controls.Add(picPlan);
             panelPlanInfo.Controls.Add(lblPlanTitle);
             panelPlanInfo.Controls.Add(lblExpire);
-            panelPlanInfo.Controls.Add(lblUnlimited);
+           // panelPlanInfo.Controls.Add(lblUnlimited);
             panelPlanInfo.Controls.Add(btnUpgrade);
             panelPlanInfo.Resize += (s, e) =>
             {

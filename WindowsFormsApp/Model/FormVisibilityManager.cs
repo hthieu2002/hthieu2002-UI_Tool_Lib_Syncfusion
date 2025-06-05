@@ -13,5 +13,8 @@ namespace WindowsFormsApp.Model
         public static bool IsFormViewChangeVisible { get; set; } = false;
 
         public static Dictionary<string, string> _updatedNames = new Dictionary<string, string>();
+
+        public static string IsLanguage = Properties.Settings.Default.Language ?? "en";
+
     }
 }

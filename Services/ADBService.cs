@@ -1029,10 +1029,26 @@ namespace Services
             if (string.IsNullOrEmpty(input))
                 return string.Empty;
 
-            input = input.Replace("'", "'\\''");
-
-            return $"'{input}'";
+            if (input.Contains(" "))
+            {
+                var sb = new StringBuilder();
+                foreach (char c in input)
+                {
+                    if (c == ' ')
+                        sb.Append("%s");
+                    else
+                        sb.Append(c); // giữ nguyên tất cả ký tự, kể cả đặc biệt
+                }
+                return sb.ToString();
+            }
+            else
+            {
+                input = input.Replace("'", "'\\''");
+                return $"'{input}'";
+            }
         }
+
+
 
         public static string RandomString(int length)
         {

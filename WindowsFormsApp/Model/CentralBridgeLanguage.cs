@@ -24,6 +24,14 @@ namespace WindowsFormsApp.Model
             {
                 ViewThanhToan.Instance.LoadLanguageViewThanhToan();
             }
+            if (ViewAutomation.Instance != null)
+            {
+                ViewAutomation.Instance.LoadLanguageViewAutomation();
+            }
+            if (ScriptAutomation.Instance != null)
+            {
+                ScriptAutomation.Instance.LoadLanguageScriptAutomation();
+            }
         }
     }
 }

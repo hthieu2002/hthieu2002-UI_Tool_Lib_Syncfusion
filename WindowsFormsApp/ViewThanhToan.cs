@@ -12,7 +12,7 @@ namespace AccountCreatorForm.Views
     public partial class ViewThanhToan : Form
     {
         private HeaderViewCommon headerView;
-        private Syncfusion.Windows.Forms.Tools.AutoLabel lblBangGia;
+        
         public static ViewThanhToan Instance { get; private set; }
         private LanguageManager lang;
         public ViewThanhToan()
@@ -36,16 +36,6 @@ namespace AccountCreatorForm.Views
             headerView.Dock = DockStyle.Fill;
             headerView.SetTitle(ViewThanhToanStatic.titleViewThanhToan);
             panelHeader.Controls.Add(headerView);
-
-            lblBangGia = new Syncfusion.Windows.Forms.Tools.AutoLabel();
-            lblBangGia.Dock = DockStyle.Top;
-            lblBangGia.BackColor = Color.White;
-            lblBangGia.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            lblBangGia.Text = ViewThanhToanStatic.titleBangGia;
-            lblBangGia.Height = 90;
-            lblBangGia.TextAlign = ContentAlignment.MiddleCenter;
-            lblBangGia.Padding = new Padding(20, 10, 0, 0);
-            lblBangGia.AutoSize = true;
 
             flowLayoutPanelCards = new FlowLayoutPanel
             {
@@ -201,7 +191,8 @@ namespace AccountCreatorForm.Views
         {
             lang = new LanguageManager(FormVisibilityManager.IsLanguage);
 
-            lblBangGia.Text = lang.Get("titleBangGia");
+            if (lblBangGia != null)
+                lblBangGia.Text = lang.Get("titleBangGia");
         }
     }
 }

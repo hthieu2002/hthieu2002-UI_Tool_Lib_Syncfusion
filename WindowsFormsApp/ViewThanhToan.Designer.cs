@@ -1,4 +1,8 @@
-﻿namespace AccountCreatorForm.Views
+﻿using System.Drawing;
+using System.Windows.Forms;
+using WindowsFormsApp.Model.Static;
+
+namespace AccountCreatorForm.Views
 {
     partial class ViewThanhToan
     {
@@ -29,7 +33,7 @@
         private void InitializeComponent()
         {
             this.panelHeader = new System.Windows.Forms.Panel();
-          //  this.lblBangGia = new Syncfusion.Windows.Forms.Tools.AutoLabel();
+            this.lblBangGia = new Syncfusion.Windows.Forms.Tools.AutoLabel();
             this.flowLayoutPanelCards = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
             // 
@@ -43,12 +47,14 @@
             // 
             // lblBangGia
             // 
-            //this.lblBangGia.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            //this.lblBangGia.Location = new System.Drawing.Point(487, 103);
-            //this.lblBangGia.Name = "lblBangGia";
-            //this.lblBangGia.Size = new System.Drawing.Size(108, 31);
-            //this.lblBangGia.TabIndex = 1;
-          //  this.lblBangGia.Text = "Bảng giá";
+            lblBangGia.Dock = DockStyle.Top;
+            lblBangGia.BackColor = Color.White;
+            lblBangGia.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            lblBangGia.Text = ViewThanhToanStatic.titleBangGia;
+            lblBangGia.Height = 90;
+            lblBangGia.TextAlign = ContentAlignment.MiddleCenter;
+            lblBangGia.Padding = new Padding(20, 10, 0, 0);
+            lblBangGia.AutoSize = true;
             // 
             // flowLayoutPanelCards
             // 
@@ -77,7 +83,7 @@
         #endregion
 
         private System.Windows.Forms.Panel panelHeader;
-       // private Syncfusion.Windows.Forms.Tools.AutoLabel lblBangGia;
+        private Syncfusion.Windows.Forms.Tools.AutoLabel lblBangGia;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelCards;
     }
 }

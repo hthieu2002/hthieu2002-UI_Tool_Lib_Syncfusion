@@ -131,6 +131,8 @@ namespace AccountCreatorForm.Views
             btnAuto.Text = lang.Get("auto");
             btnLichTrinh.Text = lang.Get("view");
             btnThanhToan.Text = lang.Get("payment");
+            btnThanhToan.Visible = false;
+            panelPlanInfo.Visible = false;
             //
             btnUpgrade.Text = "↑ " + lang.Get("upgrade");
            // lblUnlimited.Text = lang.Get("unlimited");

@@ -1,80 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp.Model;
+using WindowsFormsApp.Model.Static;
 using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WindowsFormsApp
 {
     public partial class ClickToolbox : UserControl
     {
-        private ToolTip buttonToolTip = new ToolTip();
+        private System.Windows.Forms.ToolTip buttonToolTip = new System.Windows.Forms.ToolTip();
         private readonly Dictionary<(string groupName, string buttonText), string> buttonTooltips = new Dictionary<(string, string), string>
 {
-    { ("Click tọa độ", "ClickXY"), "Click theo tọa độ x,y \n Ví dụ \n - Click cố định \n ClickXY(300 400) \n Sự dụng capture để chụp ảnh lấy tọa độ" },
-    { ("Click tọa độ", "Swipe"), "Thao tác cuộn \n Cuộn sẽ có 4 giá trị x1 x2 y1 y2 \n x1 x2 là x,y điểm ban đầu \n y1 y2 là điểm kết thúc \n cuộn sẽ bắt đầu từ điểm x đến y theo bất cứ chiều lên xuống nào \n Ví dụ \n Swipe(200 100 600 800) \n 200 100 tương ứng x1 x2 \n 600 800 tương ứng y1 y2 \n Thông số thứ 5 là độ trễ ms(mặc định là 500ms) \n Sự dụng capture để lấy tọa độ" },
-    { ("Click tọa độ", "Random Click"), "Click random \n - Được ngăn cách 2 giá trị bởi dấu , \n Ví dụ ClickRandom(100 200 , 300 800) \n X được random trong khoảng 100-200\n Y được random trong khoảng 300-800" },
-    { ("Click tọa độ", "Wait"), "Wait \n Là lệnh chờ đợi \n Wait(1000) chờ 1 giây " },
-    { ("Search text click", "Tìm đúng && click"), "Tìm đúng text và click " +
-                "\n Lệnh tìm chữ Next nếu nó tồn tại thì click " +
-                "\n SearchAndClick(\"Next\")" },
-    { ("Search text click", "Tìm đúng && wait"), "Tìm đúng và đợi" +
-                "\n Lệnh này giống lệnh tìm đúng và click nhưng nó sẽ đợi thêm số giây sau khi đã click" +
-                "\n SearchWaitClick(\"Next\", 1000)" },
-    { ("Search text click", "Tìm đúng && tiếp tục"), "Tìm đúng và tiếp tục" +
-                "\n Lệnh này giống lệnh tìm đúng" +
-                "\n Nhưng lệnh sẽ bỏ qua khi tìm thấy" +
-                "\n Phù hợp trong các lệnh điều kiện if" +
-                "SearchAndContinue(\"Next\")" },
-    { ("Xử lý logic", "IF"), "If dùng để đặt lệnh trong nó khi thỏa mãn điều kiện " +
-                "\n Ví dụ if = điều kiện { run }" +
-                "\n điều kiện là lệnh thỏa mãn if để run được chạy" },
-    { ("Xử lý logic", "FOR LOOP"), "For " +
-                "\n Vòng lặp for dùng để đặt vòng lặp xử lý cho các lệnh ở trong đó" +
-                "\n Mẫu " +
-                "\n for=main,end=100" +
-                "\n {" +
-                "\n Wait(1000)" +
-                "\n }" +
-                "\n main là tên bắt buộc phải có giữa các for" +
-                "\n không được đặt trùng sẽ gây ra rối và chạy loạn" },
-    { ("Xử lý logic", "Continue"), "Lệnh continue" +
-                "\n Được sự dụng trong for" +
-                "\n dùng để bỏ qua for hiện tại và chuyển sang for khác" +
-                "\n hoặc bỏ qua các lệnh trong vòng lặp" +
-                "\n Ví dụ" +
-                "\n for =main, end=100" +
-                "\n {" +
-                "\n Wait(1000)" +
-                "\n continue" +
-                "\n Wait(4000)" +
-                "\n }" +
-                "\n lệnh continue bỏ qua lệnh 4000" },
-    { ("Xử lý logic","BREAK"),"Lệnh break" +
-                "\n Dùng để dừng vòng lặp" +
-                "\n Hoặc thoát script nếu không để trong vòng lặp" },
-    { ("Xử lý logic", "Stop Script"), "Lệnh stop script " +
-                "\n Dùng để dừng script ngay lập tức"},
-    { ("Xử lý logic","Return"), "Trong quá trình chạy " +
-                "\n Gặp lệnh này sẽ dừng hoặc chuyển script nếu chạy nhiều lần " },
-    { ("Xử lý logic", "Comment"), "Sự dụng lệnh này để ghi chú lại script " +
-                "\n những gì được ghi sau Comment sẽ không được thực thi "},
-    { ("Xử lý logic", "Show status"), "Lệnh Show status" +
-                "\n Sẽ hiện thị log lên hiện thị quá trình chạy đến lệnh nào "},
-    { ("Search text image","Tìm đúng && click"), "Lệnh này tương tự lệnh tìm đúng click " +
-                "\n Nhưng nó sẽ tìm trên hình ảnh xử lý những nơi k thể lấy được text"},
-    { ("Search text image","Tìm đúng && wait"), "Lệnh này tương tự lệnh tìm đúng và đợi " +
-                "\n Nhưng nó sẽ tìm trên hình ảnh xử lý những nơi k thể lấy được text"},
-    { ("Search text image","Tìm đúng && tiếp tục"), "Lệnh này tương tự lệnh tìm đúng tiếp tục " +
-                "\n Nhưng nó sẽ tìm trên hình ảnh xử lý những nơi k thể lấy được text"}
+    { (ScriptAutomationStatic.TitleGroupClickToolbox1, ScriptAutomationStatic.ControlGroup1Click), ScriptAutomationStatic.ClickXY },
+    { (ScriptAutomationStatic.TitleGroupClickToolbox1, ScriptAutomationStatic.ControlGroup1Swipe), ScriptAutomationStatic.Swipe },
+    { (ScriptAutomationStatic.TitleGroupClickToolbox1, ScriptAutomationStatic.ControlGroup1RandomClick), ScriptAutomationStatic.RandomClick },
+    { (ScriptAutomationStatic.TitleGroupClickToolbox1, ScriptAutomationStatic.ControlGroup1Wait), ScriptAutomationStatic.Wait },
+    { (ScriptAutomationStatic.TitleGroupClickToolbox2, ScriptAutomationStatic.ControlGroup2SearchAndClick), ScriptAutomationStatic.SearchAndClick },
+    { (ScriptAutomationStatic.TitleGroupClickToolbox2, ScriptAutomationStatic.ControlGroup2SearchWaitClick), ScriptAutomationStatic.SearchWaitClick },
+    { (ScriptAutomationStatic.TitleGroupClickToolbox2, ScriptAutomationStatic.ControlGroup2SearchAndContinue), ScriptAutomationStatic.SearchAndContinue },
+    { (ScriptAutomationStatic.TitleGroupClickToolbox4, "IF"), ScriptAutomationStatic.If },
+    { (ScriptAutomationStatic.TitleGroupClickToolbox4, "FOR LOOP"), ScriptAutomationStatic.ForLoop },
+    { (ScriptAutomationStatic.TitleGroupClickToolbox4, "Continue"), ScriptAutomationStatic.Continue },
+    { (ScriptAutomationStatic.TitleGroupClickToolbox4, "BREAK"), ScriptAutomationStatic.Break },
+    { (ScriptAutomationStatic.TitleGroupClickToolbox4, "Stop Script"), ScriptAutomationStatic.StopScript },
+    { (ScriptAutomationStatic.TitleGroupClickToolbox4, "Return"), ScriptAutomationStatic.Return },
+    { (ScriptAutomationStatic.TitleGroupClickToolbox4, "Comment"), ScriptAutomationStatic.Comment },
+    { (ScriptAutomationStatic.TitleGroupClickToolbox4, "Show status"), ScriptAutomationStatic.ShowStatus },
+    { (ScriptAutomationStatic.TitleGroupClickToolbox3, ScriptAutomationStatic.ControlGroup3FindAndClick), ScriptAutomationStatic.SearchImageAndClick },
+    { (ScriptAutomationStatic.TitleGroupClickToolbox3, ScriptAutomationStatic.ControlGroup3findWaitClick), ScriptAutomationStatic.SearchImageWaitClick },
+    { (ScriptAutomationStatic.TitleGroupClickToolbox3, ScriptAutomationStatic.ControlGroup3FindAndContinue), ScriptAutomationStatic.SearchImageAndContinue }
 };
-
 
         private ITextAppender textAppender;
         public ClickToolbox(ITextAppender appender)
@@ -115,18 +78,21 @@ namespace WindowsFormsApp
             };
 
             // LEFT
-            leftPanel.Controls.Add(CreateGroup("Click tọa độ", new string[] { "ClickXY", "Swipe", "Random Click", "Wait" }, 370));
-            leftPanel.Controls.Add(CreateGroup("Search text click", new string[] {
-            "Tìm đúng && click",
-            "Tìm đúng && wait",
-            "Tìm đúng && tiếp tục"
+            leftPanel.Controls.Add(CreateGroup(ScriptAutomationStatic.TitleGroupClickToolbox1, new string[] { ScriptAutomationStatic.ControlGroup1Click
+                , ScriptAutomationStatic.ControlGroup1Swipe, ScriptAutomationStatic.ControlGroup1RandomClick, ScriptAutomationStatic.ControlGroup1Wait }, 370));
+            leftPanel.Controls.Add(CreateGroup(ScriptAutomationStatic.TitleGroupClickToolbox2, new string[] {
+            ScriptAutomationStatic.ControlGroup2SearchAndClick,
+            ScriptAutomationStatic.ControlGroup2SearchWaitClick,
+            ScriptAutomationStatic.ControlGroup2SearchAndContinue
         }, 370));
-            leftPanel.Controls.Add(CreateGroup("Search text image", new string[] {
-            "Tìm đúng && click", "Tìm đúng && wait", "Tìm đúng && tiếp tục"
+            leftPanel.Controls.Add(CreateGroup(ScriptAutomationStatic.TitleGroupClickToolbox3, new string[] {
+            ScriptAutomationStatic.ControlGroup3FindAndClick,
+            ScriptAutomationStatic.ControlGroup3findWaitClick,
+            ScriptAutomationStatic.ControlGroup3FindAndContinue
         }, 370));
 
             // RIGHT
-            rightPanel.Controls.Add(CreateGroupRight("Xử lý logic", new string[] {
+            rightPanel.Controls.Add(CreateGroupRight(ScriptAutomationStatic.TitleGroupClickToolbox4, new string[] {
             "FOR LOOP", "IF", "BREAK", "Continue",
             "Stop Script", "Return", "Comment", "Show status"
         }, 140));
@@ -162,7 +128,7 @@ namespace WindowsFormsApp
 
             foreach (var text in buttons)
             {
-                var btn = new Button
+                var btn = new System.Windows.Forms.Button
                 {
                     Text = text,
                     AutoSize = true,
@@ -197,7 +163,7 @@ namespace WindowsFormsApp
 
                 btn.Click += (s, e) =>
                 {
-                    var clickedButton = s as Button;
+                    var clickedButton = s as System.Windows.Forms.Button;
                     if (clickedButton?.Tag is ButtonContext ctx)
                     {
                         string sendText = GetMappedText(ctx.GroupName, ctx.ButtonText);
@@ -234,7 +200,7 @@ namespace WindowsFormsApp
 
             foreach (var text in buttons)
             {
-                var btn = new Button
+                var btn = new System.Windows.Forms.Button
                 {
                     Text = text,
                     Width = 120,
@@ -269,7 +235,7 @@ namespace WindowsFormsApp
 
                 btn.Click += (s, e) =>
                 {
-                    var clickedButton = s as Button;
+                    var clickedButton = s as System.Windows.Forms.Button;
                     if (clickedButton?.Tag is ButtonContext ctx)
                     {
                         string sendText = GetMappedText(ctx.GroupName, ctx.ButtonText);
@@ -287,53 +253,82 @@ namespace WindowsFormsApp
 
         private string GetMappedText(string groupName, string buttonText)
         {
-            if (groupName == "Search text click")
+            if (groupName == ScriptAutomationStatic.TitleGroupClickToolbox2)
             {
-                switch (buttonText)
+                if (buttonText == ScriptAutomationStatic.ControlGroup2SearchAndClick)
                 {
-                    case "Tìm đúng && click":
-                        return "SearchAndClick(\"\")";
-                    case "Tìm gần đúng && click":
-                        return "";
-                    case "Tìm đúng && wait":
-                        return "SearchWaitClick(\"\", 1000)";
-                    case "Tìm gần đúng && wait":
-                        return "";
-                    case "Tìm đúng && tiếp tục":
-                        return "SearchAndContinue(\"\")";
-                    case "Tìm gần đúng && tiếp tục":
-                        return "";
+                    return "SearchAndClick(\"\")";
+                }
+                else if (buttonText == "Tìm gần đúng && click")
+                {
+                    return "";
+                }
+                else if (buttonText == ScriptAutomationStatic.ControlGroup2SearchWaitClick)
+                {
+                    return "SearchWaitClick(\"\", 1000)";
+                }
+                else if (buttonText == "Tìm gần đúng && wait")
+                {
+                    return "";
+                }
+                else if (buttonText == ScriptAutomationStatic.ControlGroup2SearchAndContinue)
+                {
+                    return "SearchAndContinue(\"\")";
+                }
+                else if (buttonText == "Tìm gần đúng && tiếp tục")
+                {
+                    return "";
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            else if (groupName == ScriptAutomationStatic.TitleGroupClickToolbox3)
+            {
+                if (buttonText == ScriptAutomationStatic.ControlGroup3FindAndClick)
+                {
+                    return "FindAndClick(\"\")";
+                }
+                else if (buttonText == ScriptAutomationStatic.ControlGroup3findWaitClick)
+                {
+                    return "findWaitClick(\"\", 1000)";
+                }
+                else if (buttonText == ScriptAutomationStatic.ControlGroup3FindAndContinue)
+                {
+                    return "FindAndContinue(\"\")";
+                }
+                else
+                {
+                    return "";
                 }
 
+            }
+            else if (groupName == ScriptAutomationStatic.TitleGroupClickToolbox1)
+            {
+                if (buttonText == ScriptAutomationStatic.ControlGroup1Click)
+                {
+                    return "ClickXY(100 100)";
+                }
+                else if (buttonText == ScriptAutomationStatic.ControlGroup1Swipe)
+                {
+                    return "Swipe(500 500 5 10 500)";
+                }
+                else if (buttonText == ScriptAutomationStatic.ControlGroup1RandomClick)
+                {
+                    return "RandomClick(100 100, 900 1900)";
+                }
+                else if (buttonText == ScriptAutomationStatic.ControlGroup1Wait)
+                {
+                    return "Wait(1000)";
+                }
+                else
+                {
+                    return "";
+                }
 
             }
-            else if (groupName == "Search text image")
-            {
-                switch (buttonText)
-                {
-                    case "Tìm đúng && click":
-                        return "FindAndClick(\"\")";
-                    case "Tìm đúng && wait":
-                        return "findWaitClick(\"\", 1000)";
-                    case "Tìm đúng && tiếp tục":
-                        return "FindAndContinue(\"\")";
-                }
-            }
-            else if (groupName == "Click tọa độ")
-            {
-                switch (buttonText)
-                {
-                    case "ClickXY":
-                        return "ClickXY(100 100)";
-                    case "Swipe":
-                        return "Swipe(500 500 5 10 500)";
-                    case "Random Click":
-                        return "RandomClick(100 100, 900 1900)";
-                    case "Wait":
-                        return "Wait(1000)";
-                }
-            }
-            else if (groupName == "Xử lý logic")
+            else if (groupName == ScriptAutomationStatic.TitleGroupClickToolbox4)
             {
                 switch (buttonText)
                 {

@@ -37,8 +37,8 @@ namespace WindowsFormsApp
         private readonly Dictionary<string, string> _progressTextMap = new Dictionary<string, string>();
         private readonly HashSet<string> _animatingDevices = new HashSet<string>();
 
-        private TextBoxExt txtBrand;
-        private TextBoxExt txtOS;
+        private ComboBox txtBrand;
+        private ComboBox txtOS;
         private TextBoxExt txtOS_version;
         private TextBoxExt txtSerial;
         private TextBoxExt txtImei;
@@ -670,6 +670,7 @@ namespace WindowsFormsApp
         private async void btnRandom_Click(object sender, EventArgs e)
         {
             setupDisableButtonRandom();
+           
             if (miChangerGraphQLClient == null)
             {
                 CreateService();
@@ -687,7 +688,25 @@ namespace WindowsFormsApp
 
             try
             {
-                tempDeviceAll = await miChangerGraphQLClient.GetRandomDeviceV3(sdkMin: 30);
+                string brand = txtBrand.Text == "Random" ? "" : txtBrand.Text;
+                int sdkMin;
+
+                if (txtOS.Text == "Random")
+                {
+                    var sdkList = osVersionToSdkMap.Values.ToList();
+
+                    if (sdkList.Count == 0)
+                        throw new Exception("Không có SDK hợp lệ để random.");
+
+                    sdkMin = sdkList[new Random().Next(sdkList.Count)];
+                }
+                else
+                {
+                    if (!osVersionToSdkMap.TryGetValue(txtOS.Text, out sdkMin))
+                        throw new Exception("Không thể xác định SDK từ OS version đã chọn.");
+                }
+                Thread.Sleep(2000);
+                tempDeviceAll = await miChangerGraphQLClient.GetRandomDeviceV3(brand : brand, sdkMin: sdkMin);
                 if (tempDeviceAll.Model == null)
                 {
                     MessageBox.Show(ViewChangeStatic.ErrorRandomChange);
@@ -696,9 +715,9 @@ namespace WindowsFormsApp
 
                 txtName.Text = tempDeviceAll.Board ;
                 //txtName.SelectedItem = tempDeviceAll.Board;
-                txtOS.Text =  tempDeviceAll.Release ;
+                txtOS.Text =  "Android "+tempDeviceAll.Release;
                // txtOS.SelectedItem = tempDeviceAll.Release;
-                txtOS_version.Text =  tempDeviceAll.SDK ;
+                txtOS_version.Text =  tempDeviceAll.SDK;
              //   txtOS_version.SelectedItem = tempDeviceAll.SDK;
                 txtBrand.Text =  tempDeviceAll.Manufacturer ;
                // txtBrand.SelectedItem = tempDeviceAll.Manufacturer;
@@ -1488,6 +1507,17 @@ namespace WindowsFormsApp
         public void LoadLanguageViewChange()
         {
             lang = new LanguageManager(FormVisibilityManager.IsLanguage);
+
+            //headerView = new HeaderViewCommon
+            //{
+            //    Dock = DockStyle.Fill,
+            //    Margin = new Padding(0, 0, 0, 20)
+            //};
+            //headerView.SetTitle(lang.Get("Info"));
+            //mainMenu.Controls.Add(headerView);
+            //headerView.Invalidate();
+            //headerView.Update(); // ép vẽ lại ngay lập tức
+            //mainMenu.Refresh();
 
             ViewChangeStatic.Info = lang.Get("Info"); 
             ViewChangeStatic.Error = lang.Get("Error"); 

@@ -17,6 +17,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Xml;
 using WindowsFormsApp.Model;
+using WindowsFormsApp.Model.Static;
 
 namespace WindowsFormsApp
 {
@@ -51,9 +52,12 @@ namespace WindowsFormsApp
 
         [DllImport("user32.dll")]
         private static extern int SetScrollPos(IntPtr hWnd, int nBar, int nPos, bool bRedraw);
+        public static ScriptAutomation Instance { get; private set; }
+        private LanguageManager lang;
         public ScriptAutomation()
         {
             InitializeComponent();
+            Instance = this;
             this.StartPosition = FormStartPosition.CenterScreen;
             _uiElements = new List<UiElement>();
             lbNew.Visible = false;
@@ -152,7 +156,7 @@ namespace WindowsFormsApp
             string fileName = sfCbFile.SelectedItem?.ToString();
             if (fileName == null)
             {
-                MessageBox.Show("Vui lòng tạo file hoặc chọn file");
+                MessageBox.Show(ScriptAutomationStatic.logSaveScript);
                 return;
             }
             string scriptFolderPath = Path.Combine(Application.StartupPath, "Resources", "script");
@@ -173,7 +177,7 @@ namespace WindowsFormsApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi lưu file: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"{ScriptAutomationStatic.logErrorSaveScript} {ex.Message}", ViewChangeStatic.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -192,7 +196,7 @@ namespace WindowsFormsApp
 
             if (txtFiles.Length == 0)
             {
-                MessageBox.Show("Không có file .txt nào trong thư mục 'script'.", "Thông báo");
+                MessageBox.Show(ScriptAutomationStatic.logLoadFile, ViewChangeStatic.Info);
                 sfCbFile.DataSource = null;
                 sfCbFile.Text = "";
                 return;
@@ -228,7 +232,7 @@ namespace WindowsFormsApp
 
                 if (System.IO.File.Exists(filePathFromComboBox))
                 {
-                    MessageBox.Show("File đã tồn tại trong thư mục Resources/script.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(ScriptAutomationStatic.logCreateFile, ViewChangeStatic.Info, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -238,11 +242,11 @@ namespace WindowsFormsApp
                     {
                         // sw.WriteLine(sfCbFile.Text);
                     }
-                    MessageBox.Show($"Tạo file mới với nội dung từ ComboBox: {fileNameFromComboBox}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"{ScriptAutomationStatic.logCreateSuccessFile} {fileNameFromComboBox}", ViewChangeStatic.Info, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Lỗi khi tạo file với nội dung: {ex.Message}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"{ScriptAutomationStatic.logErrorCreateFile} {ex.Message}", ViewChangeStatic.Info, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -252,7 +256,7 @@ namespace WindowsFormsApp
 
                 if (System.IO.File.Exists(filePathWithTime))
                 {
-                    MessageBox.Show("File đã tồn tại trong thư mục Resources/script.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(ScriptAutomationStatic.logCreateFileOn, ViewChangeStatic.Info, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -262,11 +266,11 @@ namespace WindowsFormsApp
                     {
                         sw.WriteLine("");
                     }
-                    MessageBox.Show($"Tạo file mới: {fileNameWithTime}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"{ScriptAutomationStatic.logSuccessCreateFileOn} {fileNameWithTime}", ViewChangeStatic.Info, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Lỗi khi tạo file: {ex.Message}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"{ScriptAutomationStatic.logErrorCreateFileOn} {ex.Message}", ViewChangeStatic.Info, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -274,7 +278,7 @@ namespace WindowsFormsApp
         {
             if (string.IsNullOrEmpty(sfCbFile.Text))
             {
-                MessageBox.Show("Vui lòng load file để xóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(ScriptAutomationStatic.logDeleteFile, ViewChangeStatic.Info, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
@@ -286,16 +290,16 @@ namespace WindowsFormsApp
                     try
                     {
                         System.IO.File.Delete(filePathToDelete);
-                        MessageBox.Show($"Đã xóa file: {fileNameToDelete}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"{ScriptAutomationStatic.logSuccessDeleteFile} {fileNameToDelete}", ViewChangeStatic.Info, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Lỗi khi xóa file: {ex.Message}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"{ScriptAutomationStatic.logErrorDeleteFile} {ex.Message}",ViewChangeStatic.Info, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("File không tồn tại trong thư mục Resources/script.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(ScriptAutomationStatic.logErrorDeleteFileOn, ViewChangeStatic.Info, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }
@@ -330,7 +334,7 @@ namespace WindowsFormsApp
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Không thể đọc file: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"{ScriptAutomationStatic.logErrorOnLoadDataFile} {ex.Message}", ViewChangeStatic.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -348,7 +352,7 @@ namespace WindowsFormsApp
             }
             else
             {
-                MessageBox.Show("Không có thiết bị nào kết nối.");
+                MessageBox.Show(ScriptAutomationStatic.logErrorLoadDevice);
             }
         }
 
@@ -358,7 +362,7 @@ namespace WindowsFormsApp
 
             if (sfCbLoadDevices.Text == "")
             {
-                MessageBox.Show("Hãy load devices và chọn thiết bị ");
+                MessageBox.Show(ScriptAutomationStatic.logCaptureDevice);
                 return;
             }
             lbLog.Text = "Chụp màn hình";
@@ -385,7 +389,7 @@ namespace WindowsFormsApp
                 }
                 catch (IOException)
                 {
-                    MessageBox.Show("Ảnh đang bị khóa. Đang đợi để giải phóng...");
+                    MessageBox.Show(ScriptAutomationStatic.logCaptureScreenshot);
                     Thread.Sleep(500);
                     return;
                 }
@@ -505,7 +509,7 @@ namespace WindowsFormsApp
             }
             else
             {
-                MessageBox.Show("Hãy load devices và chọn thiết bị ");
+                MessageBox.Show(ScriptAutomationStatic.logShowScreenshot);
             }
         }
         private System.Drawing.Point ConvertToImageCoordinates(int mouseX, int mouseY, PictureBox pictureBox, Bitmap image)
@@ -778,7 +782,7 @@ namespace WindowsFormsApp
         {
             if (sfCbLoadDevices.Text == "")
             {
-                MessageBox.Show("Hãy load và chọn thiết bị view");
+                MessageBox.Show(ScriptAutomationStatic.logView);
                 return;
             }
             try
@@ -801,12 +805,12 @@ namespace WindowsFormsApp
                 }
                 else
                 {
-                    MessageBox.Show("scrcpy.exe không được tìm thấy trong thư mục Resources.");
+                    Console.WriteLine("scrcpy.exe không được tìm thấy trong thư mục Resources.");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi gọi scrcpy: " + ex.Message);
+                Console.WriteLine("Lỗi khi gọi scrcpy: " + ex.Message);
             }
         }
 
@@ -816,7 +820,7 @@ namespace WindowsFormsApp
             if (sfCbFile.Text == "")
             {
                 // 
-                MessageBox.Show("Load file cần xử lý.", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(ScriptAutomationStatic.logSend, ViewChangeStatic.Warning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             if (!string.IsNullOrEmpty(message))
@@ -827,7 +831,7 @@ namespace WindowsFormsApp
             }
             else
             {
-                MessageBox.Show("Click các chức năng trước khi gửi.", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(ScriptAutomationStatic.logErrorSend, ViewChangeStatic.Warning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
         private void sfCbLoadDevices_SelectedIndexChanged(object sender, EventArgs e)
@@ -919,6 +923,96 @@ namespace WindowsFormsApp
             lbNew.Visible = true;
         }
 
+        private void ScriptAutomation_Load(object sender, EventArgs e)
+        {
+            LoadLanguageScriptAutomation();
+        }
+        public void LoadLanguageScriptAutomation()
+        {
+            lang = new LanguageManager(FormVisibilityManager.IsLanguage);
+
+            ScriptAutomationStatic.logSaveScript = lang.Get("logSaveScript");
+            ScriptAutomationStatic.logErrorSaveScript = lang.Get("logErrorSaveScript");
+            ScriptAutomationStatic.logLoadFile = lang.Get("logLoadFile");
+            ScriptAutomationStatic.logCreateFile = lang.Get("logCreateFile");
+            ScriptAutomationStatic.logErrorCreateFile = lang.Get("logErrorCreateFile");
+            ScriptAutomationStatic.logCreateSuccessFile = lang.Get("logCreateSuccessFile");
+            ScriptAutomationStatic.logCreateFileOn = lang.Get("logCreateFileOn");
+            ScriptAutomationStatic.logSuccessCreateFileOn = lang.Get("logSuccessCreateFileOn");
+            ScriptAutomationStatic.logErrorCreateFileOn = lang.Get("logErrorCreateFileOn");
+            ScriptAutomationStatic.logDeleteFile = lang.Get("logDeleteFile");
+            ScriptAutomationStatic.logSuccessDeleteFile = lang.Get("logSuccessDeleteFile");
+            ScriptAutomationStatic.logErrorDeleteFile = lang.Get("logErrorDeleteFile");
+            ScriptAutomationStatic.logErrorDeleteFileOn = lang.Get("logErrorDeleteFileOn");
+            ScriptAutomationStatic.logErrorOnLoadDataFile = lang.Get("logErrorOnLoadDataFile");
+            ScriptAutomationStatic.logErrorLoadDevice = lang.Get("logErrorLoadDevice");
+            ScriptAutomationStatic.logCaptureDevice = lang.Get("logCaptureDevice");
+            ScriptAutomationStatic.logCaptureScreenshot = lang.Get("logCaptureScreenshot");
+            ScriptAutomationStatic.logShowScreenshot = lang.Get("logShowScreenshot");
+            ScriptAutomationStatic.logView = lang.Get("logView");
+            ScriptAutomationStatic.logSend = lang.Get("logSend");
+            ScriptAutomationStatic.logErrorSend = lang.Get("logErrorSend");
+            ScriptAutomationStatic.logTestControl = lang.Get("logTestControl");
+            ScriptAutomationStatic.logErrorTestControl = lang.Get("logErrorTestControl");
+
+            ScriptAutomationStatic.ClickXY = lang.Get("ClickXY");
+            ScriptAutomationStatic.Swipe = lang.Get("Swipe");
+            ScriptAutomationStatic.RandomClick = lang.Get("RandomClick");
+            ScriptAutomationStatic.Wait = lang.Get("Wait");
+
+            ScriptAutomationStatic.SearchAndClick = lang.Get("SearchAndClick");
+            ScriptAutomationStatic.SearchWaitClick = lang.Get("SearchWaitClick");
+            ScriptAutomationStatic.SearchAndContinue = lang.Get("SearchAndContinue");
+
+            ScriptAutomationStatic.If = lang.Get("If");
+            ScriptAutomationStatic.ForLoop = lang.Get("ForLoop");
+            ScriptAutomationStatic.Continue = lang.Get("Continue");
+            ScriptAutomationStatic.Break = lang.Get("Break");
+            ScriptAutomationStatic.StopScript = lang.Get("StopScript");
+            ScriptAutomationStatic.Return = lang.Get("Return");
+            ScriptAutomationStatic.Comment = lang.Get("Comment");
+            ScriptAutomationStatic.ShowStatus = lang.Get("ShowStatus");
+
+            ScriptAutomationStatic.SearchImageAndClick = lang.Get("SearchImageAndClick");
+            ScriptAutomationStatic.SearchImageWaitClick = lang.Get("SearchImageWaitClick");
+            ScriptAutomationStatic.SearchImageAndContinue = lang.Get("SearchImageAndContinue");
+            
+            ScriptAutomationStatic.TitleGroupClickToolbox1 = lang.Get("TitleGroupClickToolbox1");
+            ScriptAutomationStatic.TitleGroupClickToolbox2 = lang.Get("TitleGroupClickToolbox2");
+            ScriptAutomationStatic.TitleGroupClickToolbox3 = lang.Get("TitleGroupClickToolbox3");
+            ScriptAutomationStatic.TitleGroupClickToolbox4 = lang.Get("TitleGroupClickToolbox4");
+
+            ScriptAutomationStatic.ControlGroup1Click = lang.Get("ControlGroup1Click");
+            ScriptAutomationStatic.ControlGroup1Swipe = lang.Get("ControlGroup1Swipe");
+            ScriptAutomationStatic.ControlGroup1RandomClick = lang.Get("ControlGroup1RandomClick");
+            ScriptAutomationStatic.ControlGroup1Wait = lang.Get("ControlGroup1Wait");
+
+            ScriptAutomationStatic.ControlGroup2SearchAndClick = lang.Get("ControlGroup2SearchAndClick");
+            ScriptAutomationStatic.ControlGroup2SearchWaitClick = lang.Get("ControlGroup2SearchWaitClick");
+            ScriptAutomationStatic.ControlGroup2SearchAndContinue = lang.Get("ControlGroup2SearchAndContinue");
+
+            ScriptAutomationStatic.ControlGroup3FindAndClick = lang.Get("ControlGroup3FindAndClick");
+            ScriptAutomationStatic.ControlGroup3findWaitClick = lang.Get("ControlGroup3findWaitClick");
+            ScriptAutomationStatic.ControlGroup3FindAndContinue = lang.Get("ControlGroup3FindAndContinue");
+
+            ScriptAutomationStatic.SearchImageAndContinue = lang.Get("SearchImageAndContinue");
+
+            ScriptAutomationStatic.TitleTextToolBox = lang.Get("TitleTextToolBox");
+            ScriptAutomationStatic.ControlSendText = lang.Get("ControlSendText");
+            ScriptAutomationStatic.ControlSendTextFromFileDelete = lang.Get("ControlSendTextFromFileDelete");
+            ScriptAutomationStatic.ControlSendTextFrom = lang.Get("ControlSendTextFrom");
+            ScriptAutomationStatic.ControlRandomTextAndSend = lang.Get("ControlRandomTextAndSend");
+            ScriptAutomationStatic.ControlDeleteTextOneChar = lang.Get("ControlDeleteTextOneChar");
+            ScriptAutomationStatic.ControlDeleteTextAll = lang.Get("ControlDeleteTextAll");
+
+            ScriptAutomationStatic.SendText = lang.Get("SendText");
+            ScriptAutomationStatic.SendTextFromFileDelete = lang.Get("SendTextFromFileDelete");
+            ScriptAutomationStatic.SendTextFrom = lang.Get("SendTextFrom");
+            ScriptAutomationStatic.RandomTextAndSend = lang.Get("RandomTextAndSend");
+            ScriptAutomationStatic.DeleteTextOneChar = lang.Get("DeleteTextOneChar");
+            ScriptAutomationStatic.DeleteTextAll = lang.Get("DeleteTextAll");
+
+        }
         private void Form_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (scrcpyProcess != null && !scrcpyProcess.HasExited)
@@ -932,12 +1026,12 @@ namespace WindowsFormsApp
             // test
             if (txtTest.Text == "")
             {
-                MessageBox.Show("Vui lòng điền chức năng test");
+                MessageBox.Show(ScriptAutomationStatic.logTestControl);
                 return;
             }
             if (sfCbLoadDevices.Text == "")
             {
-                MessageBox.Show("Chọn load và click thiết bị");
+                MessageBox.Show(ScriptAutomationStatic.logErrorTestControl);
                 return;
             }
             try

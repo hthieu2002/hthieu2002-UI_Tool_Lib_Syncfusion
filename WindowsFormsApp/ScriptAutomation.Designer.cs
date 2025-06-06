@@ -207,35 +207,35 @@
             // clickToolStripMenuItem
             // 
             this.clickToolStripMenuItem.Name = "clickToolStripMenuItem";
-            this.clickToolStripMenuItem.Size = new System.Drawing.Size(54, 26);
+            this.clickToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
             this.clickToolStripMenuItem.Text = "Click";
             this.clickToolStripMenuItem.Click += new System.EventHandler(this.clickToolStripMenuItem_Click);
             // 
             // textToolStripMenuItem
             // 
             this.textToolStripMenuItem.Name = "textToolStripMenuItem";
-            this.textToolStripMenuItem.Size = new System.Drawing.Size(50, 26);
+            this.textToolStripMenuItem.Size = new System.Drawing.Size(50, 24);
             this.textToolStripMenuItem.Text = "Text";
             this.textToolStripMenuItem.Click += new System.EventHandler(this.textToolStripMenuItem_Click);
             // 
             // keyButtonToolStripMenuItem
             // 
             this.keyButtonToolStripMenuItem.Name = "keyButtonToolStripMenuItem";
-            this.keyButtonToolStripMenuItem.Size = new System.Drawing.Size(95, 26);
+            this.keyButtonToolStripMenuItem.Size = new System.Drawing.Size(95, 24);
             this.keyButtonToolStripMenuItem.Text = "Key button";
             this.keyButtonToolStripMenuItem.Click += new System.EventHandler(this.keyButtonToolStripMenuItem_Click);
             // 
             // dataChangeInfoToolStripMenuItem
             // 
             this.dataChangeInfoToolStripMenuItem.Name = "dataChangeInfoToolStripMenuItem";
-            this.dataChangeInfoToolStripMenuItem.Size = new System.Drawing.Size(141, 26);
+            this.dataChangeInfoToolStripMenuItem.Size = new System.Drawing.Size(141, 24);
             this.dataChangeInfoToolStripMenuItem.Text = "Data/Change info";
             this.dataChangeInfoToolStripMenuItem.Click += new System.EventHandler(this.dataChangeInfoToolStripMenuItem_Click);
             // 
             // generalToolStripMenuItem
             // 
             this.generalToolStripMenuItem.Name = "generalToolStripMenuItem";
-            this.generalToolStripMenuItem.Size = new System.Drawing.Size(74, 26);
+            this.generalToolStripMenuItem.Size = new System.Drawing.Size(74, 24);
             this.generalToolStripMenuItem.Text = "General";
             this.generalToolStripMenuItem.Click += new System.EventHandler(this.generalToolStripMenuItem_Click);
             // 
@@ -440,6 +440,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "ScriptAutomation";
             this.Text = "ScriptAutomation";
+            this.Load += new System.EventHandler(this.ScriptAutomation_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sfCbModelDump)).EndInit();

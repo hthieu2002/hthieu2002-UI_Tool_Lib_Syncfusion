@@ -54,6 +54,84 @@
 		<!--log thanh toán-->
 		<Text key="titleViewThanhToan">Payment</Text>
 		<Text key="titleBangGia">Price list</Text>
+		<!--log view automation-->
+		<Text key="logLoadFileScript">No .txt file found in the 'script' folder.</Text>
+		<Text key="logRunScript">Please load a script file.</Text>
+		<Text key="logDeviceRunScript">No new device available to run.</Text>
+		<!--log script automation-->
+		<Text key="logSaveScript">Please create or select a file.</Text>
+		<Text key="logErrorSaveScript">Error while saving the file:</Text>
+		<Text key="logLoadFile">No .txt file found in the 'script' folder.</Text>
+		<Text key="logCreateFile">File already exists in the Resources/script folder.</Text>
+		<Text key="logErrorCreateFile">Error while creating file with content:</Text>
+		<Text key="logCreateSuccessFile">Created new file with content from ComboBox:</Text>
+		<Text key="logCreateFileOn">File already exists in the Resources/script folder.</Text>
+		<Text key="logSuccessCreateFileOn">Created new file:</Text>
+		<Text key="logErrorCreateFileOn">Error while creating file:</Text>
+		<Text key="logDeleteFile">Please load a file to delete.</Text>
+		<Text key="logSuccessDeleteFile">Deleted file:</Text>
+		<Text key="logErrorDeleteFile">Error while deleting file:</Text>
+		<Text key="logErrorDeleteFileOn">File does not exist in the Resources/script folder.</Text>
+		<Text key="logErrorOnLoadDataFile">Cannot read file:</Text>
+		<Text key="logErrorLoadDevice">No device is connected.</Text>
+		<Text key="logCaptureDevice">Please load devices and select one.</Text>
+		<Text key="logCaptureScreenshot">Screenshot is locked. Waiting to be released...</Text>
+		<Text key="logShowScreenshot">Please load devices and select one.</Text>
+		<Text key="logView">Please load and select a device to view.</Text>
+		<Text key="logSend">Load the file to process.</Text>
+		<Text key="logErrorSend">Use the features before sending.</Text>
+		<Text key="logTestControl">Please enter the test function.</Text>
+		<Text key="logErrorTestControl">Load and click a device first.</Text>
+		<!--log click tool box-->
+		<Text key="ClickXY">Click by coordinate x,y.&#10;Example:&#10;- Fixed click&#10;ClickXY(300 400)&#10;Use capture to take a screenshot and get coordinates.</Text>
+		<Text key="Swipe">Swipe action.&#10;Swipe has 4 values x1 x2 y1 y2.&#10;x1 x2 are the starting point coordinates.&#10;y1 y2 are the ending point coordinates.&#10;Swipe will start from point x to y in any vertical or horizontal direction.&#10;Example:&#10;Swipe(200 100 600 800)&#10;200 100 corresponds to x1 x2.&#10;600 800 corresponds to y1 y2.&#10;The 5th parameter is delay in ms (default is 500ms).&#10;Use capture to get coordinates.</Text>
+		<Text key="RandomClick">Random click.&#10;- Two values separated by a comma.&#10;Example: ClickRandom(100 200 , 300 800)&#10;X will be randomized between 100-200.&#10;Y will be randomized between 300-800.</Text>
+		<Text key="Wait">Wait command.&#10;It pauses the execution.&#10;Wait(1000) waits for 1 second.</Text>
+		<Text key="SearchAndClick">Find exact text and click.&#10;The command searches for the text "Next" and clicks if it exists.&#10;SearchAndClick("Next").</Text>
+		<Text key="SearchWaitClick">Find exact text and wait.&#10;This command is like SearchAndClick but waits additional milliseconds after clicking.&#10;SearchWaitClick("Next", 1000).</Text>
+		<Text key="SearchAndContinue">Find exact text and continue.&#10;This command is like SearchAndClick but skips further action when found.&#10;Suitable for conditional if statements.&#10;SearchAndContinue("Next").</Text>
+		<Text key="If">If command is used to set commands that run when conditions are met.&#10;Example: if = condition { run }&#10;The condition is the command that must be satisfied for the run to execute.</Text>
+		<Text key="ForLoop">For loop.&#10;Used to loop commands inside the block.&#10;Example:&#10;for=main,end=100&#10;{&#10;Wait(1000)&#10;}&#10;main is a required unique name in for loops.&#10;Duplicated names cause conflicts and unexpected behavior.</Text>
+		<Text key="Continue">Continue command.&#10;Used inside for loops.&#10;Skips the current iteration and moves to the next.&#10;Or skips commands inside the loop.&#10;Example:&#10;for=main,end=100&#10;{&#10;Wait(1000)&#10;continue&#10;Wait(4000)&#10;}&#10;The continue skips the Wait(4000) command.</Text>
+		<Text key="Break">Break command.&#10;Used to stop the loop.&#10;Or exit the script if not inside a loop.</Text>
+		<Text key="StopScript">Stop script command.&#10;Used to immediately stop the script.</Text>
+		<Text key="Return">During execution,&#10;if this command is met, it stops or switches the script when running multiple times.</Text>
+		<Text key="Comment">Use this command to comment in the script.&#10;Anything after Comment will not be executed.</Text>
+		<Text key="ShowStatus">Show status command.&#10;Displays log showing which command is currently running.</Text>
+		<Text key="SearchImageAndClick">Similar to SearchAndClick.&#10;But searches in images where text cannot be detected.</Text>
+		<Text key="SearchImageWaitClick">Similar to SearchWaitClick.&#10;But searches in images where text cannot be detected.</Text>
+		<Text key="SearchImageAndContinue">Similar to SearchAndContinue.&#10;But searches in images where text cannot be detected.</Text>
+
+		<Text key="TitleGroupClickToolbox1">Click coordinates</Text>
+		<Text key="TitleGroupClickToolbox2">Find text and click</Text>
+		<Text key="TitleGroupClickToolbox3">Find text in image</Text>
+		<Text key="TitleGroupClickToolbox4">Logic processing</Text>
+		<Text key="ControlGroup1Click">Click X Y</Text>
+		<Text key="ControlGroup1Swipe">Swipe</Text>
+		<Text key="ControlGroup1RandomClick">Random click</Text>
+		<Text key="ControlGroup1Wait">Wait</Text>
+		<Text key="ControlGroup2SearchAndClick">Exact find &amp; click</Text>
+		<Text key="ControlGroup2SearchWaitClick">Exact find &amp; wait</Text>
+		<Text key="ControlGroup2SearchAndContinue">Exact find &amp; continue</Text>
+		<Text key="ControlGroup3FindAndClick">Exact find &amp; click</Text>
+		<Text key="ControlGroup3findWaitClick">Exact find &amp; wait</Text>
+		<Text key="ControlGroup3FindAndContinue">Exact find &amp; continue</Text>
+
+		<Text key="TitleTextToolBox">Process Text</Text>
+		<Text key="ControlSendText">Send text</Text>
+		<Text key="ControlSendTextFromFileDelete">Send text from file(delete)</Text>
+		<Text key="ControlSendTextFrom">Send text from</Text>
+		<Text key="ControlRandomTextAndSend">Random text &amp; send</Text>
+		<Text key="ControlDeleteTextOneChar">Delete text(1 char)</Text>
+		<Text key="ControlDeleteTextAll">Delete text(Delete all)</Text>
+
+		<Text key="SendText">Send fixed text - SendText("Abcd")</Text>
+		<Text key="SendTextFromFileDelete">Send text from file and delete after sending.</Text>
+		<Text key="SendTextFrom">Send text from a specific source.</Text>
+		<Text key="RandomTextAndSend">Generate random text and send.</Text>
+		<Text key="DeleteTextOneChar">Delete one character from the text.</Text>
+		<Text key="DeleteTextAll">Delete all text.</Text>
+
 	</Language>
 	<Language code="vi">
 		<Text key="device">Thiết bị</Text>
@@ -110,5 +188,83 @@
 		<!---->
 		<Text key="titleViewThanhToan">Thanh toán</Text>
 		<Text key="titleBangGia">Bảng giá</Text>
+		<!---->
+		<Text key="logLoadFileScript">Không có file .txt nào trong thư mục 'script'.</Text>
+		<Text key="logRunScript">Vui lòng load file script.</Text>
+		<Text key="logDeviceRunScript">Không có thiết bị mới nào để chạy.</Text>
+		<!---->
+		<Text key="logSaveScript">Vui lòng tạo file hoặc chọn file.</Text>
+		<Text key="logErrorSaveScript">Lỗi khi lưu file:</Text>
+		<Text key="logLoadFile">Không có file .txt nào trong thư mục 'script'.</Text>
+		<Text key="logCreateFile">File đã tồn tại trong thư mục Resources/script.</Text>
+		<Text key="logErrorCreateFile">Lỗi khi tạo file với nội dung:</Text>
+		<Text key="logCreateSuccessFile">Tạo file mới với nội dung từ ComboBox:</Text>
+		<Text key="logCreateFileOn">File đã tồn tại trong thư mục Resources/script.</Text>
+		<Text key="logSuccessCreateFileOn">Tạo file mới:</Text>
+		<Text key="logErrorCreateFileOn">Lỗi khi tạo file:</Text>
+		<Text key="logDeleteFile">Vui lòng load file để xóa.</Text>
+		<Text key="logSuccessDeleteFile">Đã xóa file:</Text>
+		<Text key="logErrorDeleteFile">Lỗi khi xóa file:</Text>
+		<Text key="logErrorDeleteFileOn">File không tồn tại trong thư mục Resources/script.</Text>
+		<Text key="logErrorOnLoadDataFile">Không thể đọc file:</Text>
+		<Text key="logErrorLoadDevice">Không có thiết bị nào kết nối.</Text>
+		<Text key="logCaptureDevice">Hãy load devices và chọn thiết bị.</Text>
+		<Text key="logCaptureScreenshot">Ảnh đang bị khóa. Đang đợi để giải phóng...</Text>
+		<Text key="logShowScreenshot">Hãy load devices và chọn thiết bị.</Text>
+		<Text key="logView">Hãy load và chọn thiết bị view.</Text>
+		<Text key="logSend">Load file cần xử lý.</Text>
+		<Text key="logErrorSend">Click các chức năng trước khi gửi.</Text>
+		<Text key="logTestControl">Vui lòng điền chức năng test.</Text>
+		<Text key="logErrorTestControl">Chọn load và click thiết bị.</Text>
+		<!---->
+		<Text key="ClickXY">Click theo tọa độ x,y.&#10;Ví dụ&#10;- Click cố định&#10;ClickXY(300 400)&#10;Sự dụng capture để chụp ảnh lấy tọa độ.</Text>
+		<Text key="Swipe">Thao tác cuộn.&#10;Cuộn sẽ có 4 giá trị x1 x2 y1 y2.&#10;x1 x2 là x,y điểm ban đầu.&#10;y1 y2 là điểm kết thúc.&#10;Cuộn sẽ bắt đầu từ điểm x đến y theo bất cứ chiều lên xuống nào.&#10;Ví dụ&#10;Swipe(200 100 600 800)&#10;200 100 tương ứng x1 x2.&#10;600 800 tương ứng y1 y2.&#10;Thông số thứ 5 là độ trễ ms (mặc định là 500ms).&#10;Sự dụng capture để lấy tọa độ.</Text>
+		<Text key="RandomClick">Click random.&#10;- Được ngăn cách 2 giá trị bởi dấu ,.&#10;Ví dụ ClickRandom(100 200 , 300 800).&#10;X được random trong khoảng 100-200.&#10;Y được random trong khoảng 300-800.</Text>
+		<Text key="Wait">Wait.&#10;Là lệnh chờ đợi.&#10;Wait(1000) chờ 1 giây.</Text>
+		<Text key="SearchAndClick">Tìm đúng text và click.&#10;Lệnh tìm chữ Next nếu nó tồn tại thì click.&#10;SearchAndClick("Next").</Text>
+		<Text key="SearchWaitClick">Tìm đúng và đợi.&#10;Lệnh này giống lệnh tìm đúng và click nhưng nó sẽ đợi thêm số giây sau khi đã click.&#10;SearchWaitClick("Next", 1000).</Text>
+		<Text key="SearchAndContinue">Tìm đúng và tiếp tục.&#10;Lệnh này giống lệnh tìm đúng.&#10;Nhưng lệnh sẽ bỏ qua khi tìm thấy.&#10;Phù hợp trong các lệnh điều kiện if.&#10;SearchAndContinue("Next").</Text>
+		<Text key="If">If dùng để đặt lệnh trong nó khi thỏa mãn điều kiện.&#10;Ví dụ if = điều kiện { run }.&#10;Điều kiện là lệnh thỏa mãn if để run được chạy.</Text>
+		<Text key="ForLoop">For.&#10;Vòng lặp for dùng để đặt vòng lặp xử lý cho các lệnh ở trong đó.&#10;Mẫu&#10;for=main,end=100&#10;{&#10;Wait(1000)&#10;}&#10;main là tên bắt buộc phải có giữa các for.&#10;Không được đặt trùng sẽ gây ra rối và chạy loạn.</Text>
+		<Text key="Continue">Lệnh continue.&#10;Được sự dụng trong for.&#10;Dùng để bỏ qua for hiện tại và chuyển sang for khác.&#10;Hoặc bỏ qua các lệnh trong vòng lặp.&#10;Ví dụ&#10;for =main, end=100&#10;{&#10;Wait(1000)&#10;continue&#10;Wait(4000)&#10;}&#10;Lệnh continue bỏ qua lệnh 4000.</Text>
+		<Text key="Break">Lệnh break.&#10;Dùng để dừng vòng lặp.&#10;Hoặc thoát script nếu không để trong vòng lặp.</Text>
+		<Text key="StopScript">Lệnh stop script.&#10;Dùng để dừng script ngay lập tức.</Text>
+		<Text key="Return">Trong quá trình chạy.&#10;Gặp lệnh này sẽ dừng hoặc chuyển script nếu chạy nhiều lần.</Text>
+		<Text key="Comment">Sự dụng lệnh này để ghi chú lại script.&#10;Những gì được ghi sau Comment sẽ không được thực thi.</Text>
+		<Text key="ShowStatus">Lệnh Show status.&#10;Sẽ hiện thị log lên hiện thị quá trình chạy đến lệnh nào.</Text>
+		<Text key="SearchImageAndClick">Lệnh này tương tự lệnh tìm đúng click.&#10;Nhưng nó sẽ tìm trên hình ảnh xử lý những nơi không thể lấy được text.</Text>
+		<Text key="SearchImageWaitClick">Lệnh này tương tự lệnh tìm đúng và đợi.&#10;Nhưng nó sẽ tìm trên hình ảnh xử lý những nơi không thể lấy được text.</Text>
+		<Text key="SearchImageAndContinue">Lệnh này tương tự lệnh tìm đúng tiếp tục.&#10;Nhưng nó sẽ tìm trên hình ảnh xử lý những nơi không thể lấy được text.</Text>
+
+		<Text key="TitleGroupClickToolbox1">Click tọa độ</Text>
+		<Text key="TitleGroupClickToolbox2">Tim text click</Text>
+		<Text key="TitleGroupClickToolbox3">Tim text trong ảnh</Text>
+		<Text key="TitleGroupClickToolbox4">Xử lý logic</Text>
+		<Text key="ControlGroup1Click">Nhấn X Y</Text>
+		<Text key="ControlGroup1Swipe">Vuốt</Text>
+		<Text key="ControlGroup1RandomClick">Click ngẫu nhiên</Text>
+		<Text key="ControlGroup1Wait">Đợi</Text>
+		<Text key="ControlGroup2SearchAndClick">Tìm đúng &amp; click</Text>
+		<Text key="ControlGroup2SearchWaitClick">Tìm đúng &amp; đợi</Text>
+		<Text key="ControlGroup2SearchAndContinue">Tìm đúng &amp; tiếp tục</Text>
+		<Text key="ControlGroup3FindAndClick">Tìm đúng &amp; click</Text>
+		<Text key="ControlGroup3findWaitClick">Tìm đúng &amp; đợi</Text>
+		<Text key="ControlGroup3FindAndContinue">Tìm đúng &amp; tiếp tục</Text>
+
+		<Text key="TitleTextToolBox">Xử lý văn bản</Text>
+		<Text key="ControlSendText">Gửi văn bản</Text>
+		<Text key="ControlSendTextFromFileDelete">Gửi văn bản từ file và xóa</Text>
+		<Text key="ControlSendTextFrom">Gửi văn bản từ nguồn</Text>
+		<Text key="ControlRandomTextAndSend">Tạo văn bản ngẫu nhiên</Text>
+		<Text key="ControlDeleteTextOneChar">Xóa một ký tự</Text>
+		<Text key="ControlDeleteTextAll">Xóa toàn bộ</Text>
+
+		<Text key="SendText">Send text \n - Gửi text cố định \n SendText("Abcd")</Text>
+		<Text key="SendTextFromFileDelete">Gửi văn bản từ file và xóa sau khi gửi.</Text>
+		<Text key="SendTextFrom">Gửi văn bản lấy từ nguồn xác định.</Text>
+		<Text key="RandomTextAndSend">Tạo văn bản ngẫu nhiên và gửi.</Text>
+		<Text key="DeleteTextOneChar">Xóa một ký tự khỏi văn bản.</Text>
+		<Text key="DeleteTextAll">Xóa toàn bộ văn bản.</Text>
+
 	</Language>
 </Languages>

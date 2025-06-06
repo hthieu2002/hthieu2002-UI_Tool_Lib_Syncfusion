@@ -21,6 +21,7 @@ namespace WindowsFormsApp
     public partial class ViewChange : Form
     {
         private Model.WindowMode _previousWindowMode = Model.WindowMode.Normal;
+        Dictionary<string, int> osVersionToSdkMap;
         private void ApplyPanelInputMargin()
         {
             var current = Model.AppState.CurrentWindowMode;
@@ -51,13 +52,13 @@ namespace WindowsFormsApp
         private void SetInputAddLayoutInput()
         {
             // Tạo các điều khiển input
-            txtBrand = new TextBoxExt {  Width = 130, Height = 35 };
-            txtOS = new TextBoxExt {  Width = 130, Height = 35 };
-            txtOS_version = new TextBoxExt {  Width = 60, Height = 35 };
+            txtBrand = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 130, Height = 35 };
+            txtOS = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 130, Height = 35 };
+            txtOS_version = new TextBoxExt { Width = 60, Height = 35 };
             txtSerial = new TextBoxExt { Width = 130, Height = 35 };
             txtImei = new TextBoxExt { Width = 130, Height = 35 };
             txtMac = new TextBoxExt { Width = 130, Height = 35 };
-            txtName = new TextBoxExt {  Width = 130, Height = 35 };
+            txtName = new TextBoxExt { Width = 130, Height = 35 };
             txtCountry = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 130, Height = 35 };
             txtCode = new TextBoxExt { Width = 130, Height = 35 };
             txtImsi = new TextBoxExt { Width = 130, Height = 35 };
@@ -87,7 +88,40 @@ namespace WindowsFormsApp
             osPanel.Controls.Add(osLabel);
             osPanel.Controls.Add(txtOS);
             //osPanel.Controls.Add(txtOS_version);
+            txtBrand.Items.AddRange(new string[]
+{
+    "Random",
+    "samsung",
+    "Xiaomi",
+    "OPPO",
+    "vivo",
+    "realme",
+    "Google"
+});
+            // 1. Tạo map OS version -> SDK
+            osVersionToSdkMap = new Dictionary<string, int>
+{
+    { "Android 7.0", 24 },
+    { "Android 7.1", 25 },
+    { "Android 8.0", 26 },
+    { "Android 8.1", 27 },
+    { "Android 9.0", 28 },
+    { "Android 10", 29 },
+    { "Android 11", 30 }
+};
 
+            // 2. Load dữ liệu vào ComboBox txtOS
+            txtOS.Items.Clear();
+            txtOS.Items.Add("Random");
+            foreach (var os in osVersionToSdkMap.Keys)
+            {
+                txtOS.Items.Add(os);
+            }
+            txtOS.SelectedIndex = 0;
+
+
+            if (txtBrand.Items.Count > 0)
+                txtBrand.SelectedIndex = 0;
 
             // Thêm các FlowLayoutPanel vào PanelInput
             PanelInput.Controls.Add(CreateInputPanel("BRAND", txtBrand));
@@ -110,7 +144,7 @@ namespace WindowsFormsApp
             checkSiml.Checked = false;
             checkSiml.Font = new Font(checkSiml.Font, FontStyle.Bold);
             checkSiml.Width = 200;
-            checkSiml.Margin = new Padding(20,10,5,0);
+            checkSiml.Margin = new Padding(20, 10, 5, 0);
 
             PanelInput.Controls.Add(checkSiml);
 
@@ -243,14 +277,14 @@ namespace WindowsFormsApp
         btnRandomSim,
         btnChangeSim,
         btnAutoChangeSim,
-      //  btnBackup,
-      //  btnBackup2,
+        //  btnBackup,
+        //  btnBackup2,
         btnOpenUrl,
-       // btnAutoBackup,
+        // btnAutoBackup,
         btnScreenshot
 
         );
-           
+
 
             PanelButton.Controls.Add(btnFakeLocation);
             PanelButton.Controls.Add(txtRestore);
@@ -306,18 +340,18 @@ namespace WindowsFormsApp
             PanelButton.BorderStyle = BorderStyle.FixedSingle;
 
             btnRandomdevice.TextAlign = ContentAlignment.MiddleLeft;
-          //  btnAutoBackup.TextAlign = ContentAlignment.MiddleLeft;
+            //  btnAutoBackup.TextAlign = ContentAlignment.MiddleLeft;
             btnAutochangeFull.TextAlign = ContentAlignment.MiddleLeft;
             btnAutoChangeSim.TextAlign = ContentAlignment.MiddleLeft;
-         //   btnBackup.TextAlign = ContentAlignment.MiddleLeft;
-         //   btnBackup2.TextAlign = ContentAlignment.MiddleLeft;
+            //   btnBackup.TextAlign = ContentAlignment.MiddleLeft;
+            //   btnBackup2.TextAlign = ContentAlignment.MiddleLeft;
             btnChangeDevice.TextAlign = ContentAlignment.MiddleLeft;
             btnChangeSim.TextAlign = ContentAlignment.MiddleLeft;
             btnOpenUrl.TextAlign = ContentAlignment.MiddleLeft;
             btnRandomSim.TextAlign = ContentAlignment.MiddleLeft;
             btnScreenshot.TextAlign = ContentAlignment.MiddleLeft;
 
-          //  btnAutoBackup.Paint += BtnCommon_Paint;
+            //  btnAutoBackup.Paint += BtnCommon_Paint;
             //
             // btn auto change full
             //
@@ -331,11 +365,11 @@ namespace WindowsFormsApp
             //
             // btn backup  
             //
-         //   btnBackup.Paint += BtnCommon_Paint;
+            //   btnBackup.Paint += BtnCommon_Paint;
             //
             // btn backup 2
             //
-        //    btnBackup2.Paint += BtnCommon_Paint;
+            //    btnBackup2.Paint += BtnCommon_Paint;
             //
             // btn change device 
             //
@@ -508,19 +542,19 @@ namespace WindowsFormsApp
                     e.Style.TextColor = Color.Red;
                     //   this.e.Style.ButtonStyle.TextColor = Color.DarkBlue;
 
-              //      this.sfDataGrid.Style.ButtonStyle.BackColor = Color.LightPink;
-                   // e.Style.ButtonStyle.TextColor = Color.Red;
+                    //      this.sfDataGrid.Style.ButtonStyle.BackColor = Color.LightPink;
+                    // e.Style.ButtonStyle.TextColor = Color.Red;
                 }
                 else if (e.DisplayText == "YES")
                 {
                     //  e.Style.BackColor = Color.LightSkyBlue;
-                     e.Style.TextColor = Color.DarkSlateBlue;
-                   // this.sfDataGrid.Style.ButtonStyle.TextColor = Color.Blue;
+                    e.Style.TextColor = Color.DarkSlateBlue;
+                    // this.sfDataGrid.Style.ButtonStyle.TextColor = Color.Blue;
                 }
             }
             if (e.Column.MappingName == "Status")
             {
-                if(e.DisplayText == "Online")
+                if (e.DisplayText == "Online")
                 {
                     e.Style.TextColor = Color.Blue;
                 }

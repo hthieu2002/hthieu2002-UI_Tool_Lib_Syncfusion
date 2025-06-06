@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using WindowsFormsApp.Model;
 using System.Runtime.InteropServices;
+using WindowsFormsApp.Model.Static;
 
 namespace WindowsFormsApp
 {
@@ -20,12 +21,12 @@ namespace WindowsFormsApp
 
         private readonly Dictionary<string, string> buttonTooltips = new Dictionary<string, string>
 {
-    { "Send text", "Send text \n - Gửi text cố định \n SendText(\"Abcd\")" },
-    { "Send text from file(delete)", "Gửi văn bản từ file và xóa sau khi gửi." },
-    { "Send text from", "Gửi văn bản lấy từ nguồn xác định." },
-    { "Random text & send", "Tạo văn bản ngẫu nhiên và gửi." },
-    { "Xoá text(1 ký tự)", "Xóa một ký tự khỏi văn bản." },
-    { "Xoá text(xoá all)", "Xóa toàn bộ văn bản." }
+    { ScriptAutomationStatic.ControlSendText, ScriptAutomationStatic.SendText },
+    { ScriptAutomationStatic.ControlSendTextFromFileDelete, ScriptAutomationStatic.SendTextFromFileDelete },
+    { ScriptAutomationStatic.ControlSendTextFrom, ScriptAutomationStatic.SendTextFrom},
+    { ScriptAutomationStatic.ControlRandomTextAndSend, ScriptAutomationStatic.RandomTextAndSend },
+    { ScriptAutomationStatic.ControlDeleteTextOneChar, ScriptAutomationStatic.DeleteTextOneChar },
+    { ScriptAutomationStatic.ControlDeleteTextAll, ScriptAutomationStatic.DeleteTextAll }
 };
 
         public TextToolbox(ITextAppender textAppender)
@@ -48,13 +49,13 @@ namespace WindowsFormsApp
             };
 
             // Group 1: Process Text
-            roolPanel.Controls.Add(CreateGroup("Process Text", new string[] {
-                "Send text",
-                "Send text from file(delete)",
-                "Send text from",
-                "Random text & send",
-                "Xoá text(1 ký tự)",
-                "Xoá text(xoá all)"
+            roolPanel.Controls.Add(CreateGroup(ScriptAutomationStatic.TitleTextToolBox, new string[] {
+                ScriptAutomationStatic.ControlSendText,
+                ScriptAutomationStatic.ControlSendTextFromFileDelete,
+                ScriptAutomationStatic.ControlSendTextFrom,
+                ScriptAutomationStatic.ControlRandomTextAndSend,
+                ScriptAutomationStatic.ControlDeleteTextOneChar,
+                ScriptAutomationStatic.ControlDeleteTextAll
             }, 250));
 
             // Group 2: Process Email
@@ -144,9 +145,9 @@ namespace WindowsFormsApp
                 flow.Controls.Add(btn);
             }
 
-            flow.PerformLayout(); // Bắt buộc gọi để cập nhật kích thước
+            flow.PerformLayout(); 
             int centerX = (fixedWidth - flow.PreferredSize.Width) / 2;
-            flow.Location = new Point(centerX, 30); // 30 là khoảng cách từ trên xuống, có thể chỉnh lại
+            flow.Location = new Point(centerX, 30);
 
             group.Controls.Add(flow);
             return group;
@@ -476,23 +477,23 @@ namespace WindowsFormsApp
 
         private string GetMappedText(string groupName, string buttonText)
         {
-            if (groupName == "Process Text")
+            if (groupName == ScriptAutomationStatic.TitleTextToolBox)
             {
-                switch (buttonText)
-                {
-                    case "Send text":
-                        return "SendText(\"abc\")";
-                    case "Send text from file(delete)":
-                        return "SendTextFromFileDel(\"*.txt\")";
-                    case "Send text from":
-                        return "SendTextRandomFromFile(\"*.txt\")";
-                    case "Random text & send":
-                        return "RandomTextAndSend(15)";
-                    case "Xoá text(1 ký tự)":
-                        return "DelTextChar(1)";
-                    case "Xoá text(xoá all)":
-                        return "DelAllText()";
-                }
+                if (buttonText == ScriptAutomationStatic.ControlSendText)
+                    return "SendText(\"abc\")";
+                else if (buttonText == ScriptAutomationStatic.ControlSendTextFromFileDelete)
+                    return "SendTextFromFileDel(\"*.txt\")";
+                else if (buttonText == ScriptAutomationStatic.ControlSendTextFrom)
+                    return "SendTextRandomFromFile(\"*.txt\")";
+                else if (buttonText == ScriptAutomationStatic.ControlRandomTextAndSend)
+                    return "RandomTextAndSend(15)";
+                else if (buttonText == ScriptAutomationStatic.ControlDeleteTextOneChar)
+                    return "DelTextChar(1)";
+                else if (buttonText == ScriptAutomationStatic.ControlDeleteTextAll)
+                    return "DelAllText()";
+                else
+                    return ""; 
+
             }
             return buttonText;
         }

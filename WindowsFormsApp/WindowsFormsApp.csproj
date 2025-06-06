@@ -251,6 +251,8 @@
     <Compile Include="Model\FormHelper.cs" />
     <Compile Include="Model\LanguageManager.cs" />
     <Compile Include="Model\Static\ScreenViewStatic.cs" />
+    <Compile Include="Model\Static\ScriptAutomationStatic.cs" />
+    <Compile Include="Model\Static\ViewAutomationStatic.cs" />
     <Compile Include="Model\Static\ViewChangeStatic.cs" />
     <Compile Include="Model\Static\ViewThanhToanStatic.cs" />
     <Compile Include="Model\ThemeManager.cs" />
@@ -322,6 +324,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Animation\FormMenuContext\NameInputForm.resx">
       <DependentUpon>NameInputForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\ClickToolbox.resx">
+      <DependentUpon>ClickToolbox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Home.resx">
       <DependentUpon>Home.cs</DependentUpon>

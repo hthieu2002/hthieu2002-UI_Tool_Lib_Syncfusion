@@ -170,7 +170,7 @@ namespace MiHttpClient
             }
         }
         private DeviceModel NormalizeDeviceResponse(DeviceModel model)
-        {
+        { 
             string[] fingerPrintString = model.Fingerprint.Split('/');
             model.Product = fingerPrintString[1];
             var indexComma = fingerPrintString[2].IndexOf(':');

@@ -23,8 +23,7 @@ using System.Threading;
 using WindowsFormsApp.Model;
 using System.Xml.Linq;
 using WindowsFormsApp.Script.RoslynScript;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
-using Newtonsoft.Json.Linq;
+using WindowsFormsApp.Model.Static;
 
 namespace WindowsFormsApp
 {
@@ -37,6 +36,7 @@ namespace WindowsFormsApp
         private static CancellationTokenSource _deviceCheckCancellationTokenSource;
         private readonly HashSet<string> _animatingDevices = new HashSet<string>();
         public static ViewAutomation Instance { get; private set; }
+        private LanguageManager lang;
         public ViewAutomation()
         {
             InitializeComponent();
@@ -270,7 +270,7 @@ namespace WindowsFormsApp
 
             if (txtFiles.Length == 0)
             {
-                MessageBox.Show("Không có file .txt nào trong thư mục 'script'.", "Thông báo");
+                MessageBox.Show(ViewAutomationStatic.logLoadFileScript, ViewChangeStatic.Info);
                 return;
             }
 
@@ -295,7 +295,6 @@ namespace WindowsFormsApp
                 return;
             }
 
-            // Lưu trạng thái Checkbox và Activity của các thiết bị online
             var onlineDeviceStates = new Dictionary<string, (bool IsChecked, string Activity)>();
             foreach (System.Data.DataRow row in _deviceTable.Rows)
             {
@@ -347,7 +346,7 @@ namespace WindowsFormsApp
         {
             if (cbLoadFile.SelectedItem == null)
             {
-                MessageBox.Show("Vui lòng load file script.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(ViewAutomationStatic.logRunScript, ViewChangeStatic.Info, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             var dt = sfDataGrid.DataSource as System.Data.DataTable;
@@ -365,7 +364,7 @@ namespace WindowsFormsApp
 
             if (!toAnimate.Any())
             {
-                MessageBox.Show("Không có thiết bị mới nào để chạy.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(ViewAutomationStatic.logDeviceRunScript, ViewChangeStatic.Info, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             var deviceIds = selectedRows
@@ -477,6 +476,19 @@ namespace WindowsFormsApp
                     sfDataGrid.Refresh();
                 }
             }
+        }
+
+        private void ViewAutomation_Load(object sender, EventArgs e)
+        {
+            LoadLanguageViewAutomation();
+        }
+        public void LoadLanguageViewAutomation()
+        {
+            lang = new LanguageManager(FormVisibilityManager.IsLanguage);
+
+            ViewAutomationStatic.logLoadFileScript = lang.Get("logLoadFileScript");
+            ViewAutomationStatic.logRunScript = lang.Get("logRunScript");
+            ViewAutomationStatic.logDeviceRunScript = lang.Get("logDeviceRunScript");
         }
     }
 }

@@ -233,7 +233,7 @@ namespace WindowsFormsApp
             // 
             // btnStopRun
             // 
-            this.btnStopRun.BackColor = System.Drawing.Color.Teal;
+            this.btnStopRun.BackColor = System.Drawing.Color.OrangeRed;
             this.btnStopRun.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.btnStopRun.ForeColor = System.Drawing.Color.White;
             this.btnStopRun.Location = new System.Drawing.Point(0, 0);
@@ -245,7 +245,6 @@ namespace WindowsFormsApp
             this.btnStopRun.Text = "Stop script";
             this.btnStopRun.UseVisualStyleBackColor = false;
             this.btnStopRun.Visible = false;
-
             // 
             // btnScript
             // 
@@ -358,6 +357,7 @@ namespace WindowsFormsApp
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "ViewAutomation";
             this.Text = "ViewAutomation";
+            this.Load += new System.EventHandler(this.ViewAutomation_Load);
             this.VisibleChanged += new System.EventHandler(this.ViewAutoamtion_VisibleChanged);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);

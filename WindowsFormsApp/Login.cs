@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp.Model;
 
 namespace WindowsFormsApp
 {
@@ -19,6 +20,14 @@ namespace WindowsFormsApp
     {
         private bool isHovered = false;
         private bool isPressed = false;
+        private LanguageManager lang;
+
+        private string _titleLogin = "Login";
+        private string _controlLogin = "Login";
+        private string _logLogin = "Tài khoản hoặc mật khẩu sai !";
+        private string _userName = "";
+        private string _password = "";
+
         public Login()
         {
             this.Height = 300;
@@ -72,7 +81,7 @@ namespace WindowsFormsApp
             }
             else
             {
-                logLogin.Text = "Tài khoản hoặc mật khẩu sai !";
+                logLogin.Text = _logLogin;
             }
         }
         private void BtnLogin_Paint(object sender, PaintEventArgs e)
@@ -177,5 +186,23 @@ namespace WindowsFormsApp
             isPressed = true;
             btnLogin.Invalidate();
         }
+
+        private void Login_Load(object sender, EventArgs e)
+        {
+            lang = new LanguageManager(FormVisibilityManager.IsLanguage);
+
+            _titleLogin = lang.Get("titleLogin");
+            _controlLogin = lang.Get("controlLogin");
+            _logLogin = lang.Get("logLogin");
+            _userName = lang.Get("userName");
+            _password = lang.Get("password");
+
+            lbLogin.Text = _titleLogin;
+            btnLogin.Text = _controlLogin;
+            lbUserName.Text = _userName;
+            lbPassword.Text = _password;
+          //  logLogin.Text = _logLogin;
+        }
+
     }
 }

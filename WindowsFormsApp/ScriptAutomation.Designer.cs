@@ -62,6 +62,7 @@
             this.btnLoadFile = new Syncfusion.WinForms.Controls.SfButton();
             this.sfCbFile = new Syncfusion.WinForms.ListView.SfComboBox();
             this.sfView = new Syncfusion.WinForms.Controls.SfButton();
+            this.autoLabel2 = new Syncfusion.Windows.Forms.Tools.AutoLabel();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sfCbModelDump)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sfCbLoadDevices)).BeginInit();
@@ -312,6 +313,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.autoLabel2);
             this.panel2.Controls.Add(this.panel4);
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Location = new System.Drawing.Point(3, 5);
@@ -424,6 +426,15 @@
             this.sfView.Text = "View device";
             this.sfView.Click += new System.EventHandler(this.sfView_Click);
             // 
+            // autoLabel2
+            // 
+            this.autoLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.autoLabel2.Location = new System.Drawing.Point(17, 841);
+            this.autoLabel2.Name = "autoLabel2";
+            this.autoLabel2.Size = new System.Drawing.Size(218, 16);
+            this.autoLabel2.TabIndex = 2;
+            this.autoLabel2.Text = "Script được lưu tại Resources/Script";
+            // 
             // ScriptAutomation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -451,6 +462,7 @@
             this.panelTest.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxScreen)).EndInit();
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
@@ -497,5 +509,6 @@
         private Syncfusion.Windows.Forms.Tools.AutoLabel x;
         private Syncfusion.WinForms.Controls.SfButton sfView;
         private Syncfusion.Windows.Forms.Tools.AutoLabel lbNew;
+        private Syncfusion.Windows.Forms.Tools.AutoLabel autoLabel2;
     }
 }

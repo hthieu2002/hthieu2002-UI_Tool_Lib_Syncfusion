@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp.Model.Static;
 
 namespace WindowsFormsApp
 {
@@ -34,12 +35,12 @@ namespace WindowsFormsApp
 
             // Thêm vào panel chính
             roolPanel.Controls.Add(CreateMultiColumnButtonGroup(
-                "Process Phone Actions",
+                ScriptAutomationStatic.TitleProcessPhoneActions,
                 new List<string[]>
                 {
-                    new string[] { "Backup", "Restore", "Login Gmail", "Load play store" },
-                    new string[] { "Change Info", "Change SIM", "Wipe Account", "Wait reboot", "Wait internet" },
-                    new string[] { "Push File To Phone", "Pull FIle To PC" }
+                    new string[] { ScriptAutomationStatic.ControlBackup, ScriptAutomationStatic.ControlRestore, ScriptAutomationStatic.ControlLoginGmail,ScriptAutomationStatic.ControlLoadPlayStore},
+                    new string[] { ScriptAutomationStatic.ControlChangeInfo, ScriptAutomationStatic.ControlChangeSIM, ScriptAutomationStatic.ControlWipeAccount, ScriptAutomationStatic.ControlWaitReboot, ScriptAutomationStatic.ControlWaitInternet },
+                    new string[] { ScriptAutomationStatic.ControlPushFileToPhone, ScriptAutomationStatic.ControlPullFIleToPC }
                 }
             ));
 
@@ -126,33 +127,55 @@ namespace WindowsFormsApp
 
         private string HandleButtonClick(string action)
         {
-            switch (action)
+            if (action == ScriptAutomationStatic.ControlBackup)
             {
-                case "Backup":
-                    return "";
-                case "Restore":
-                    return "";
-                case "Login Gmail":
-                    return "";
-                case "Load play store":
-                    return "";
-                case "Change Info":
-                    return "";
-                case "Change SIM":
-                    return "";
-                case "Wipe Account":
-                    return "";
-                case "Wait reboot":
-                    return "WaitReboot()";
-                case "Wait internet":
-                    return "WaitInternet()";
-                case "Push File To Phone":
-                    return "PushFile(\"FromPC\", \"SendToPhone\")";
-                case "Pull FIle To PC":
-                    return "PullFile(\"FromPhone\", \"SendToPC\")";
-                default:
-                    return action;
+                return "";
             }
+            else if (action == ScriptAutomationStatic.ControlRestore)
+            {
+                return "";
+            }
+            else if (action == ScriptAutomationStatic.ControlLoginGmail)
+            {
+                return "";
+            }
+            else if (action == ScriptAutomationStatic.ControlLoadPlayStore)
+            {
+                return "";
+            }
+            else if (action == ScriptAutomationStatic.ControlChangeInfo)
+            {
+                return "";
+            }
+            else if (action == ScriptAutomationStatic.ControlChangeSIM)
+            {
+                return "";
+            }
+            else if (action == ScriptAutomationStatic.ControlWipeAccount)
+            {
+                return "";
+            }
+            else if (action == ScriptAutomationStatic.ControlWaitReboot)
+            {
+                return "WaitReboot()";
+            }
+            else if (action == ScriptAutomationStatic.ControlWaitInternet)
+            {
+                return "WaitInternet()";
+            }
+            else if (action == ScriptAutomationStatic.ControlPushFileToPhone)
+            {
+                return "PushFile(\"FromPC\", \"SendToPhone\")";
+            }
+            else if (action == ScriptAutomationStatic.ControlPullFIleToPC)
+            {
+                return "PullFile(\"FromPhone\", \"SendToPC\")";
+            }
+            else
+            {
+                return action;
+            }
+
         }
     }
 }

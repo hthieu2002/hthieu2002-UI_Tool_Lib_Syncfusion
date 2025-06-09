@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp.Model.Static;
 
 namespace WindowsFormsApp
 {
@@ -37,10 +38,10 @@ namespace WindowsFormsApp
                 AutoSize = true
             };
 
-            var btnSendKey = CreateStyledButton("Send key");
+            var btnSendKey = CreateStyledButton(ScriptAutomationStatic.ControlSendKey);
             var linkListKey = new LinkLabel
             {
-                Text = "List key",
+                Text = ScriptAutomationStatic.ControlListKey,
                 AutoSize = true,
                 Location = new Point(btnSendKey.Width + 10, 10),
                 LinkColor = Color.Brown
@@ -50,9 +51,9 @@ namespace WindowsFormsApp
             panelTop.Controls.Add(btnSendKey);
             panelTop.Controls.Add(linkListKey);
 
-            var btnCtrlA = CreateStyledButton("CTRL + A");
+            var btnCtrlA = CreateStyledButton(ScriptAutomationStatic.ControlCtrlA);
 
-            var btnCheckKeyboard = CreateStyledButton("Check keyboard");
+            var btnCheckKeyboard = CreateStyledButton(ScriptAutomationStatic.ControlCheckKeyboard);
 
             // Thêm vào layout chính
             mainFlow.Controls.Add(panelTop);
@@ -87,15 +88,15 @@ namespace WindowsFormsApp
 
         private void OnButtonClick(System.Windows.Forms.Button button)
         {
-            if (button.Text == "Send key")
+            if (button.Text == ScriptAutomationStatic.ControlSendKey)
             {
                 textAppender?.AppendText("SendKey(66)");
             }
-            else if (button.Text == "Check keyboard")
+            else if (button.Text == ScriptAutomationStatic.ControlCheckKeyboard)
             {
                 textAppender?.AppendText("CheckKeyBoard()");
             }
-            else if (button.Text == "CTRL + A")
+            else if (button.Text == ScriptAutomationStatic.ControlCtrlA)
             {
                 textAppender?.AppendText("CtrlA()");
             }

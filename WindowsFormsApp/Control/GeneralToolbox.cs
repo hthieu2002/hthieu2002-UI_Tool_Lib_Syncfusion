@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp.Animation;
+using WindowsFormsApp.Model.Static;
 
 namespace WindowsFormsApp
 {
@@ -43,7 +44,7 @@ namespace WindowsFormsApp
             };
 
             string[] leftButtons = {
-        "WiFi ON", "WiFi OFF", "Open URL" /*, "ON Bproxy", "Auto proxy", "Check SIM"*/, "Command(shell)"
+        ScriptAutomationStatic.ControlWiFiON, ScriptAutomationStatic.ControlWiFiOFF, ScriptAutomationStatic.ControlOpenURL /*, "ON Bproxy", "Auto proxy", "Check SIM"*/, ScriptAutomationStatic.ControlCommand
     };
 
             foreach (var text in leftButtons)
@@ -54,11 +55,11 @@ namespace WindowsFormsApp
 
             // GroupBox: Package
             var packageGroup = CreateMultiColumnButtonGroup(
-                "Package",
+                ScriptAutomationStatic.TitlePackage,
                 new List<string[]>
                 {
-            new string[] { "Open App", "Close App", "Enable App", "Disable App" },
-            new string[] { "Install app", "Uninstall", "Clear data", "Swipe close app", "Load app" }
+            new string[] { ScriptAutomationStatic.ControlOpenApp, ScriptAutomationStatic.ControlCloseApp, ScriptAutomationStatic.ControlEnableApp, ScriptAutomationStatic.ControlDisableApp },
+            new string[] { ScriptAutomationStatic.ControlInstallApp, ScriptAutomationStatic.ControlUninstall, ScriptAutomationStatic.ControlClearData, ScriptAutomationStatic.ControlSwipeCloseApp, ScriptAutomationStatic.ControlLoadApp }
                 },
                 fixedWidth: 370,
                 fixedHeight: 300
@@ -178,41 +179,33 @@ namespace WindowsFormsApp
         }
         private string GetTextHandleByButton(string action)
         {
-            switch (action)
-            {
-                case "WiFi ON":
-                    return "WiFiON()";
-                case "WiFi OFF":
-                    return "WiFiOFF()";
-                case "Open URL":
-                    return "OpenURL(\"YOU_URL\")";
-                case "ON Bproxy":
-                    return "";
-                case "Auto proxy":
-                    return "";
-                case "Check SIM":
-                    return "";
-                case "Command(shell)":
-                    return "RunCommandShell(\"command\")";
-                case "Open App":
-                    return "OpenApp(\"package_app\")";
-                case "Close App":
-                    return "CloseApp(\"package_app\")";
-                case "Enable App":
-                    return "EnableApp(\"package_app\")";
-                case "Disable App":
-                    return "DisbledApp(\"package_app\")";
-                case "Install app":
-                    return "InstallApp(\"path_to_apk\")";
-                case "Uninstall":
-                    return "UninstallApp(\"package_app\")";
-                case "Clear data":
-                    return "ClearDataApp(\"package_app\")";
-                case "Swipe close app":
-                    return "SwipeCloseApp()";
-                default:
-                    return action;
-            }
+            if (action == ScriptAutomationStatic.ControlWiFiON)
+                return "WiFiON()";
+            else if (action == ScriptAutomationStatic.ControlWiFiOFF)
+                return "WiFiOFF()";
+            else if (action == ScriptAutomationStatic.ControlOpenURL)
+                return "OpenURL(\"YOU_URL\")";
+            else if (action == ScriptAutomationStatic.ControlCommand)
+                return "RunCommandShell(\"command\")";
+            else if (action == ScriptAutomationStatic.ControlOpenApp)
+                return "OpenApp(\"package_app\")";
+            else if (action == ScriptAutomationStatic.ControlCloseApp)
+                return "CloseApp(\"package_app\")";
+            else if (action == ScriptAutomationStatic.ControlEnableApp)
+                return "EnableApp(\"package_app\")";
+            else if (action == ScriptAutomationStatic.ControlDisableApp)
+                return "DisbledApp(\"package_app\")";
+            else if (action == ScriptAutomationStatic.ControlInstallApp)
+                return "InstallApp(\"path_to_apk\")";
+            else if (action == ScriptAutomationStatic.ControlUninstall)
+                return "UninstallApp(\"package_app\")";
+            else if (action == ScriptAutomationStatic.ControlClearData)
+                return "ClearDataApp(\"package_app\")";
+            else if (action == ScriptAutomationStatic.ControlSwipeCloseApp)
+                return "SwipeCloseApp()";
+            else
+                return action;
+
         }
     }
 }

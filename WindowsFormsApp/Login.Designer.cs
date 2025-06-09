@@ -128,6 +128,7 @@
             this.Controls.Add(this.gradientPanelMainLogin);
             this.Name = "Login";
             this.Text = "Login";
+            this.Load += new System.EventHandler(this.Login_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanelMainLogin)).EndInit();
             this.gradientPanelMainLogin.ResumeLayout(false);
             this.gradientPanelMainLogin.PerformLayout();

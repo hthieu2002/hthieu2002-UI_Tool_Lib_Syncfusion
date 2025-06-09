@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 
 namespace WindowsFormsApp.Model.Static
 {
@@ -10,17 +12,17 @@ namespace WindowsFormsApp.Model.Static
     {
         public static string logSaveScript { get; set; } = "Vui lòng tạo file hoặc chọn file";
         public static string logErrorSaveScript { get; set; } = "Lỗi khi lưu file:";
-        public static string logLoadFile{ get; set; } = "Không có file .txt nào trong thư mục 'script'.";
-        public static string logCreateFile{ get; set; } = "File đã tồn tại trong thư mục Resources/script.";
-        public static string logErrorCreateFile{ get; set; } = "Lỗi khi tạo file với nội dung:";
-        public static string logCreateSuccessFile{ get; set; } = "Tạo file mới với nội dung từ ComboBox:";
-        public static string logCreateFileOn{ get; set; } = "File đã tồn tại trong thư mục Resources/script.";
-        public static string logSuccessCreateFileOn{ get; set; } = "Tạo file mới:";
-        public static string logErrorCreateFileOn{ get; set; } = "Lỗi khi tạo file: ";
-        public static string logDeleteFile{ get; set; } = "Vui lòng load file để xóa.";
-        public static string logSuccessDeleteFile{ get; set; } = "Đã xóa file: ";
-        public static string logErrorDeleteFile{ get; set; } = "Lỗi khi xóa file: ";
-        public static string logErrorDeleteFileOn{ get; set; } = "File không tồn tại trong thư mục Resources/script.";
+        public static string logLoadFile { get; set; } = "Không có file .txt nào trong thư mục 'script'.";
+        public static string logCreateFile { get; set; } = "File đã tồn tại trong thư mục Resources/script.";
+        public static string logErrorCreateFile { get; set; } = "Lỗi khi tạo file với nội dung:";
+        public static string logCreateSuccessFile { get; set; } = "Tạo file mới với nội dung từ ComboBox:";
+        public static string logCreateFileOn { get; set; } = "File đã tồn tại trong thư mục Resources/script.";
+        public static string logSuccessCreateFileOn { get; set; } = "Tạo file mới:";
+        public static string logErrorCreateFileOn { get; set; } = "Lỗi khi tạo file: ";
+        public static string logDeleteFile { get; set; } = "Vui lòng load file để xóa.";
+        public static string logSuccessDeleteFile { get; set; } = "Đã xóa file: ";
+        public static string logErrorDeleteFile { get; set; } = "Lỗi khi xóa file: ";
+        public static string logErrorDeleteFileOn { get; set; } = "File không tồn tại trong thư mục Resources/script.";
         public static string logErrorOnLoadDataFile { get; set; } = "Không thể đọc file:";
         public static string logErrorLoadDevice { get; set; } = "Không có thiết bị nào kết nối.";
         public static string logCaptureDevice { get; set; } = "Hãy load devices và chọn thiết bị";
@@ -31,6 +33,7 @@ namespace WindowsFormsApp.Model.Static
         public static string logErrorSend { get; set; } = "Click các chức năng trước khi gửi.";
         public static string logTestControl { get; set; } = "Vui lòng điền chức năng test";
         public static string logErrorTestControl { get; set; } = "Chọn load và click thiết bị";
+        public static string logUrlScript { get; set; } = "Script được lưu tại Resources/Script";
         // click tool box
         public static string ClickXY { get; set; } = "Click theo tọa độ x,y \n Ví dụ \n - Click cố định \n ClickXY(300 400) \n Sự dụng capture để chụp ảnh lấy tọa độ";
         public static string Swipe { get; set; } = "Thao tác cuộn \n Cuộn sẽ có 4 giá trị x1 x2 y1 y2 \n x1 x2 là x,y điểm ban đầu \n y1 y2 là điểm kết thúc \n cuộn sẽ bắt đầu từ điểm x đến y theo bất cứ chiều lên xuống nào \n Ví dụ \n Swipe(200 100 600 800) \n 200 100 tương ứng x1 x2 \n 600 800 tương ứng y1 y2 \n Thông số thứ 5 là độ trễ ms(mặc định là 500ms) \n Sự dụng capture để lấy tọa độ";
@@ -82,5 +85,42 @@ namespace WindowsFormsApp.Model.Static
         public static string ControlRandomTextAndSend { get; set; } = "Random text & send";
         public static string ControlDeleteTextOneChar { get; set; } = "Delete text(1 char))";
         public static string ControlDeleteTextAll { get; set; } = "Delete text(Delete all)";
+
+        // 
+        // log key button
+        public static string ControlSendKey { get; set; } = "Send key";
+        public static string ControlCtrlA { get; set; } = "Ctrl + A";
+        public static string ControlCheckKeyboard { get; set; } = "Check keyboard";
+        public static string ControlListKey { get; set; } = "List key";
+        // log key data change info
+        public static string TitleProcessPhoneActions { get; set; } = "Process Phone Actions";
+        public static string ControlBackup { get; set; } = "Backup";
+        public static string ControlRestore { get; set; } = "Restore";
+        public static string ControlLoginGmail { get; set; } = "Login Gmail";
+        public static string ControlLoadPlayStore { get; set; } = "Load play store";
+        public static string ControlChangeInfo { get; set; } = "Change Info";
+        public static string ControlChangeSIM { get; set; } = "Change SIM";
+        public static string ControlWipeAccount { get; set; } = "Wipe Account";
+        public static string ControlWaitReboot { get; set; } = "Wait reboot";
+        public static string ControlWaitInternet { get; set; } = "Wait internet";
+        public static string ControlPushFileToPhone { get; set; } = "Push File To Phone";
+        public static string ControlPullFIleToPC { get; set; } = "Pull FIle To PC";
+
+        // general
+        public static string ControlWiFiON { get; set; } = "WiFi ON";
+        public static string ControlWiFiOFF { get; set; } = "WiFi OFF";
+        public static string ControlOpenURL { get; set; } = "Open URL";
+        public static string ControlCommand { get; set; } = "Command(shell)";
+        public static string TitlePackage { get; set; } = "Package";
+        public static string ControlOpenApp { get; set; } = "Open App";
+        public static string ControlCloseApp { get; set; } = "Close App";
+        public static string ControlEnableApp { get; set; } = "Enable App";
+        public static string ControlDisableApp { get; set; } = "Disable App";
+        public static string ControlInstallApp { get; set; } = "Install App";
+        public static string ControlUninstall { get; set; } = "Uninstall";
+        public static string ControlClearData { get; set; } = "Clear data";
+        public static string ControlSwipeCloseApp { get; set; } = "Swipe Close App";
+        public static string ControlLoadApp { get; set; } = "Load App";
+        
     }
 }

@@ -22,7 +22,7 @@ namespace WindowsFormsApp
             {
                 SetProcessDPIAware();
             }
-            SyncfusionLicenseProvider.RegisterLicense("Mzg2MTI1OUAzMjM5MmUzMDJlMzAzYjMyMzkzYkMvelVybFp0WHVXT25wd0tFNHhXR3RlM2VvalpjLzhxOFBERDN2S1RFanc9");
+            SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NNaF1cWWhOYVtpR2Nbek55flBGal9ZVBYiSV9jS3tTcEVrW35bcHBXRGJVWU90Vg==");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Login());

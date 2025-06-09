@@ -291,6 +291,35 @@ namespace WindowsFormsApp
                     {
                         System.IO.File.Delete(filePathToDelete);
                         MessageBox.Show($"{ScriptAutomationStatic.logSuccessDeleteFile} {fileNameToDelete}", ViewChangeStatic.Info, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // load file
+                        dataFileScript = new List<string>();
+                        dataFileScript.Clear();
+
+                        string scriptFolderPath = Path.Combine(Application.StartupPath, "Resources", "script");
+                        if (!Directory.Exists(scriptFolderPath))
+                        {
+                            Directory.CreateDirectory(scriptFolderPath);
+                        }
+                        string[] txtFiles = Directory.GetFiles(scriptFolderPath, "*.txt");
+
+                        if (txtFiles.Length == 0)
+                        {
+                            MessageBox.Show(ScriptAutomationStatic.logLoadFile, ViewChangeStatic.Info);
+                            sfCbFile.DataSource = null;
+                            sfCbFile.Text = "";
+                            return;
+                        }
+
+                        foreach (string filePath in txtFiles)
+                        {
+                            string fileName = Path.GetFileName(filePath);
+                            dataFileScript.Add(fileName);
+                            // cbLoadFile.CheckedItems.Add(fileName);
+                        }
+                        sfCbFile.DataSource = dataFileScript;
+
+                        sfCbFile.SelectedIndex = 0;
+                        lbNew.Visible = true;
                     }
                     catch (Exception ex)
                     {
@@ -930,7 +959,7 @@ namespace WindowsFormsApp
         public void LoadLanguageScriptAutomation()
         {
             lang = new LanguageManager(FormVisibilityManager.IsLanguage);
-
+            autoLabel2.Text = ScriptAutomationStatic.logUrlScript;
             ScriptAutomationStatic.logSaveScript = lang.Get("logSaveScript");
             ScriptAutomationStatic.logErrorSaveScript = lang.Get("logErrorSaveScript");
             ScriptAutomationStatic.logLoadFile = lang.Get("logLoadFile");
@@ -1011,6 +1040,40 @@ namespace WindowsFormsApp
             ScriptAutomationStatic.RandomTextAndSend = lang.Get("RandomTextAndSend");
             ScriptAutomationStatic.DeleteTextOneChar = lang.Get("DeleteTextOneChar");
             ScriptAutomationStatic.DeleteTextAll = lang.Get("DeleteTextAll");
+
+            ScriptAutomationStatic.ControlSendKey = lang.Get("ControlSendKey");
+            ScriptAutomationStatic.ControlCtrlA = lang.Get("ControlCtrlA");
+            ScriptAutomationStatic.ControlCheckKeyboard = lang.Get("ControlCheckKeyboard");
+            ScriptAutomationStatic.ControlListKey = lang.Get("ControlListKey");
+
+            ScriptAutomationStatic.TitleProcessPhoneActions = lang.Get("TitleProcessPhoneActions");
+            ScriptAutomationStatic.ControlBackup = lang.Get("ControlBackup");
+            ScriptAutomationStatic.ControlRestore = lang.Get("ControlRestore");
+            ScriptAutomationStatic.ControlLoginGmail = lang.Get("ControlLoginGmail");
+            ScriptAutomationStatic.ControlLoadPlayStore = lang.Get("ControlLoadPlayStore");
+            ScriptAutomationStatic.ControlChangeInfo = lang.Get("ControlChangeInfo");
+            ScriptAutomationStatic.ControlChangeSIM = lang.Get("ControlChangeSIM");
+            ScriptAutomationStatic.ControlWipeAccount = lang.Get("ControlWipeAccount");
+            ScriptAutomationStatic.ControlWaitReboot = lang.Get("ControlWaitReboot");
+            ScriptAutomationStatic.ControlWaitInternet = lang.Get("ControlWaitInternet");
+            ScriptAutomationStatic.ControlPushFileToPhone = lang.Get("ControlPushFileToPhone");
+            ScriptAutomationStatic.ControlPullFIleToPC = lang.Get("ControlPullFIleToPC");
+
+            ScriptAutomationStatic.ControlWiFiON = lang.Get("ControlWiFiON");
+            ScriptAutomationStatic.ControlWiFiOFF = lang.Get("ControlWiFiOFF");
+            ScriptAutomationStatic.ControlOpenURL = lang.Get("ControlOpenURL");
+            ScriptAutomationStatic.ControlCommand = lang.Get("ControlCommand");
+            ScriptAutomationStatic.TitlePackage = lang.Get("TitlePackage");
+            ScriptAutomationStatic.ControlOpenApp = lang.Get("ControlOpenApp");
+            ScriptAutomationStatic.ControlCloseApp = lang.Get("ControlCloseApp");
+            ScriptAutomationStatic.ControlEnableApp = lang.Get("ControlEnableApp");
+            ScriptAutomationStatic.ControlDisableApp = lang.Get("ControlDisableApp");
+            ScriptAutomationStatic.ControlInstallApp = lang.Get("ControlInstallApp");
+            ScriptAutomationStatic.ControlUninstall = lang.Get("ControlUninstall");
+            ScriptAutomationStatic.ControlClearData = lang.Get("ControlClearData");
+            ScriptAutomationStatic.ControlSwipeCloseApp = lang.Get("ControlSwipeCloseApp");
+            ScriptAutomationStatic.ControlLoadApp = lang.Get("ControlLoadApp");
+            ScriptAutomationStatic.logUrlScript = lang.Get("logUrlScript");
 
         }
         private void Form_FormClosing(object sender, FormClosingEventArgs e)

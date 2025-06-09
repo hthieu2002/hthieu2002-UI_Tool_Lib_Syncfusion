@@ -131,7 +131,49 @@
 		<Text key="RandomTextAndSend">Generate random text and send.</Text>
 		<Text key="DeleteTextOneChar">Delete one character from the text.</Text>
 		<Text key="DeleteTextAll">Delete all text.</Text>
-
+		<!--log key board-->
+		<Text key="ControlSendKey">Send key</Text>
+		<Text key="ControlCtrlA">Ctrl + A</Text>
+		<Text key="ControlCheckKeyboard">Check keyboard</Text>
+		<Text key="ControlListKey">List key</Text>
+		<!--log data change info-->
+		<Text key="TitleProcessPhoneActions">Process Phone Actions</Text>
+		<Text key="ControlBackup">Backup</Text>
+		<Text key="ControlRestore">Restore</Text>
+		<Text key="ControlLoginGmail">Login Gmail</Text>
+		<Text key="ControlLoadPlayStore">Load play store</Text>
+		<Text key="ControlChangeInfo">Change Info</Text>
+		<Text key="ControlChangeSIM">Change SIM</Text>
+		<Text key="ControlWipeAccount">Wipe Account</Text>
+		<Text key="ControlWaitReboot">Wait reboot</Text>
+		<Text key="ControlWaitInternet">Wait internet</Text>
+		<Text key="ControlPushFileToPhone">Push File To Phone</Text>
+		<Text key="ControlPullFIleToPC">Pull FIle To PC</Text>
+		<!--log general-->
+		<Text key="ControlWiFiON">WiFi ON</Text>
+		<Text key="ControlWiFiOFF">WiFi OFF</Text>
+		<Text key="ControlOpenURL">Open URL</Text>
+		<Text key="ControlCommand">Command(shell)</Text>
+		<Text key="TitlePackage">Package</Text>
+		<Text key="ControlOpenApp">Open App</Text>
+		<Text key="ControlCloseApp">Close App</Text>
+		<Text key="ControlEnableApp">Enable App</Text>
+		<Text key="ControlDisableApp">Disable App</Text>
+		<Text key="ControlInstallApp">Install App</Text>
+		<Text key="ControlUninstall">Uninstall</Text>
+		<Text key="ControlClearData">Clear data</Text>
+		<Text key="ControlSwipeCloseApp">Swipe Close App</Text>
+		<Text key="ControlLoadApp">Load App</Text>
+		<Text key="logUrlScript">Script saved at Resources/Script</Text>
+		<!--log login-->
+		<Text key="titleLogin">Login</Text>
+		<Text key="controlLogin">Login</Text>
+		<Text key="logLogin">The username or password is incorrect.</Text>
+		<Text key="userName">Username</Text>
+		<Text key="password">Password</Text>
+		<!---->
+		<Text key="info">Notice</Text>
+		<Text key="closeHome">Are you want close program?</Text>
 	</Language>
 	<Language code="vi">
 		<Text key="device">Thiết bị</Text>
@@ -265,6 +307,49 @@
 		<Text key="RandomTextAndSend">Tạo văn bản ngẫu nhiên và gửi.</Text>
 		<Text key="DeleteTextOneChar">Xóa một ký tự khỏi văn bản.</Text>
 		<Text key="DeleteTextAll">Xóa toàn bộ văn bản.</Text>
+		<!---->
+		<Text key="ControlSendKey">Nhấn phím</Text>
+		<Text key="ControlCtrlA">Ctrl + A</Text>
+		<Text key="ControlCheckKeyboard">Kiểm tra bàn phím</Text>
+		<Text key="ControlListKey">Danh sách key phím</Text>
+		<!---->
+		<Text key="TitleProcessPhoneActions">Xử lý hành động trên điện thoại</Text>
+		<Text key="ControlBackup">Sao lưu</Text>
+		<Text key="ControlRestore">Khôi phục</Text>
+		<Text key="ControlLoginGmail">Đăng nhập Gmail</Text>
+		<Text key="ControlLoadPlayStore">Mở CH Play</Text>
+		<Text key="ControlChangeInfo">Thay đổi thông tin</Text>
+		<Text key="ControlChangeSIM">Thay SIM</Text>
+		<Text key="ControlWipeAccount">Xóa tài khoản</Text>
+		<Text key="ControlWaitReboot">Chờ khởi động lại</Text>
+		<Text key="ControlWaitInternet">Chờ kết nối mạng</Text>
+		<Text key="ControlPushFileToPhone">Gửi tệp vào điện thoại</Text>
+		<Text key="ControlPullFIleToPC">Chuyển tệp về máy tính</Text>
+		<!---->
+		<Text key="ControlWiFiON">Bật WiFi</Text>
+		<Text key="ControlWiFiOFF">Tắt WiFi</Text>
+		<Text key="ControlOpenURL">Mở URL</Text>
+		<Text key="ControlCommand">Lệnh (shell)</Text>
+		<Text key="TitlePackage">Gói ứng dụng</Text>
+		<Text key="ControlOpenApp">Mở ứng dụng</Text>
+		<Text key="ControlCloseApp">Đóng ứng dụng</Text>
+		<Text key="ControlEnableApp">Bật ứng dụng</Text>
+		<Text key="ControlDisableApp">Tắt ứng dụng</Text>
+		<Text key="ControlInstallApp">Cài đặt ứng dụng</Text>
+		<Text key="ControlUninstall">Gỡ cài đặt</Text>
+		<Text key="ControlClearData">Xóa dữ liệu</Text>
+		<Text key="ControlSwipeCloseApp">Vuốt đóng app</Text>
+		<Text key="ControlLoadApp">Tải ứng dụng</Text>
+		<Text key="logUrlScript">Script được lưu tại Resources/Script</Text>
+		<!---->
+		<Text key="titleLogin">Đăng nhập</Text>
+		<Text key="controlLogin">Đăng nhập</Text>
+		<Text key="logLogin">Tài khoản hoặc mật khẩu sai !</Text>
+		<Text key="userName">Tài khoản</Text>
+		<Text key="password">Mật khẩu</Text>
+		<!---->
+		<Text key="info">Thông báo</Text>
+		<Text key="closeHome">Bạn có muốn đóng chương trình không?</Text>
 
 	</Language>
 </Languages>

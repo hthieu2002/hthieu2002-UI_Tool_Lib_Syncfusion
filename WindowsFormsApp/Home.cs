@@ -33,6 +33,8 @@ namespace AccountCreatorForm.Views
         private bool isOkClicked = false;    
         private bool isCancelClicked = false; 
         private LanguageManager lang ;
+        private string _info = "Notice";
+        private string _closeHome = "Are you want close program?";
         public static Home Instance { get; private set; }
         public Home()
         {
@@ -131,6 +133,8 @@ namespace AccountCreatorForm.Views
             btnAuto.Text = lang.Get("auto");
             btnLichTrinh.Text = lang.Get("view");
             btnThanhToan.Text = lang.Get("payment");
+            _info = lang.Get("info");
+            _closeHome = lang.Get("closeHome");
             btnThanhToan.Visible = false;
             panelPlanInfo.Visible = false;
             //
@@ -167,7 +171,7 @@ namespace AccountCreatorForm.Views
         {
             if (!isOkClicked && !isCancelClicked)
             {
-                var confirm = MessageBox.Show("Are you want close program?", "Notice", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                var confirm = MessageBox.Show(_closeHome, _info, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
 
                 if (confirm == DialogResult.OK)
                 {

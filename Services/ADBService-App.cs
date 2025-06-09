@@ -91,13 +91,13 @@ namespace Services
                 {
                     LocalFileService.replaceAllTextInFile(clonedInitRcPath, "#FLAGS_REPLACE_SIGNATURE", $"{leftPadding}setprop ro.android.sign \"{rawSignatureData}\"");
                 }
-                runCMD($"push \"{clonedInitRcPath}\" {systemPathInitRc}", deviceId);
+                runCMDRoot($"push \"{clonedInitRcPath}\" {systemPathInitRc}", deviceId);
                 File.Delete(clonedInitRcPath);
             }
             catch
             {
                 Console.WriteLine("Init RC Error");
-                runCMD($"push \"{originalInitRcPath}\" {systemPathInitRc}", deviceId);
+                runCMDRoot($"push \"{originalInitRcPath}\" {systemPathInitRc}", deviceId);
                 throw new Exception("CREATE FILE INIT.RC ERROR");
             }
         }
@@ -120,8 +120,8 @@ namespace Services
         public static void fakeWifiMacAddress(string macAddress, string deviceId)
         {
             var strWifiMacAddress = generateMacAddressToPersistentString(macAddress);
-            runCMD(string.Format("shell \"printf '%b' '{0}' > /persist/wlan_mac.bin\"", strWifiMacAddress), deviceId);
-            runCMD("shell chmod 644 /persist/wlan_mac.bin", deviceId);
+            runCMDRoot(string.Format("shell \"printf '%b' '{0}' > /persist/wlan_mac.bin\"", strWifiMacAddress), deviceId);
+            runCMDRoot("shell chmod 644 /persist/wlan_mac.bin", deviceId);
         }
 
         public static bool isKeyboardShown(string deviceId)
@@ -132,13 +132,13 @@ namespace Services
 
         public static bool isWifiEnable(string deviceId)
         {
-            return runCMD("shell \"dumpsys wifi | sed -n '1p'\"", deviceId).Contains("Wi-Fi is enabled");
+            return runCMDRoot("shell \"dumpsys wifi | sed -n '1p'\"", deviceId).Contains("Wi-Fi is enabled");
         }
 
         public static void enableWifi(bool isEnabled, string deviceId)
         {
             var enableStr = isEnabled ? "enable" : "disable";
-            runCMD(string.Format("shell svc wifi {0}", enableStr), deviceId);
+            runCMDRoot(string.Format("shell svc wifi {0}", enableStr), deviceId);
         }
         public static void enableChPlay(bool isEnabled, string deviceId)
         {

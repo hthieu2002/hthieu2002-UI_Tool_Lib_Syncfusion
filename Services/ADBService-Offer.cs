@@ -15,8 +15,8 @@ namespace Services
     {
         public static void rootAndRemount(string deviceIP)
         {
-            runCMD("root", deviceIP);
-            runCMD("remount", deviceIP);
+            runCMDRoot("root", deviceIP);
+            runCMDRoot("remount", deviceIP);
         }
         public static void rootAndRemountSystemBin(string deviceId)
         {
@@ -54,7 +54,7 @@ namespace Services
         }
         public static void shellRemoveIfContainSpecificText(string filePath, string text, string deviceIP)
         {
-            runCMD(string.Format("shell \"sed -i '/{0}/d' {1}\"", text, filePath), deviceIP);
+            runCMDRoot(string.Format("shell \"sed -i '/{0}/d' {1}\"", text, filePath), deviceIP);
         }
         public static void FakeLocalIP(string deviceIP, string NewIp)
         {
@@ -547,7 +547,7 @@ namespace Services
         }
         public static void makeAndWriteToFiles(string content, string filePath, string deviceIP)
         {
-            runCMD(String.Format("shell \"echo '{0}' > {1}\"", content, filePath), deviceIP);
+            runCMDRoot(String.Format("shell \"echo '{0}' > {1}\"", content, filePath), deviceIP);
         }
         public static string readFromFile(string path, string deviceIP)
         {

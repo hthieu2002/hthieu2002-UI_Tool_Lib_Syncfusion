@@ -616,11 +616,11 @@ namespace Services
         }
         public static void replaceBuildProp(string androidFilePath, Dictionary<string, string> newSettingValues, string deviceId)
         {
-            runCMD("root", deviceId);
-            runCMD("remount", deviceId);
-            runCMD("shell \"mount -o rw,remount rootfs\"", deviceId);
+            runCMDRoot("root", deviceId);
+            runCMDRoot("remount", deviceId);
+            runCMDRoot("shell \"mount -o rw,remount rootfs\"", deviceId);
 
-            string buildPropContent = runCMD(string.Format("shell cat {0}", androidFilePath), deviceId);
+            string buildPropContent = runCMDRoot(string.Format("shell cat {0}", androidFilePath), deviceId);
             foreach (var item in newSettingValues)
             {
                 int startIndex = buildPropContent.IndexOf(item.Key);
@@ -634,7 +634,7 @@ namespace Services
                     string source = buildPropContent.Substring(startIndex, endIndex - startIndex - 1);
                     //const string NewValue = "\/";
                     string destination = string.Format("{0}={1}", item.Key, item.Value).Replace("/", @"\/");
-                    runCMD(string.Format("shell \"sed -i 's|{0}|{1}|g' {2}\" ", source, destination, androidFilePath), deviceId);
+                    runCMDRoot(string.Format("shell \"sed -i 's|{0}|{1}|g' {2}\" ", source, destination, androidFilePath), deviceId);
                 }
             }
         }
@@ -704,12 +704,12 @@ namespace Services
         {
             if (!string.IsNullOrEmpty(value))
             {
-                runCMD(String.Format("shell settings put {0} {1} '{2}'", settingType, key, value), deviceId);
+                runCMDRoot(String.Format("shell settings put {0} {1} '{2}'", settingType, key, value), deviceId);
             }
         }
         public static void deleteSetting(string key, string deviceId)
         {
-            runCMD(String.Format("shell settings delete global {0}", key), deviceId);
+            runCMDRoot(String.Format("shell settings delete global {0}", key), deviceId);
         }
         private static string convertFromResultParcel(string resultParcel)
         {
@@ -1997,10 +1997,10 @@ namespace Services
         public static void FakeTimezone(string timezone, string deviceId)
         {
             rootAndRemount(deviceId);
-            runCMD($"shell setprop persist.sys.timezone \"{timezone}\"", deviceId);
-            runCMD($"shell am broadcast -a android.intent.action.TIMEZONE_CHANGED", deviceId);
-            runCMD($"shell settings put system time_12_24 24", deviceId);
-            runCMD($"shell am broadcast -a android.intent.action.TIME_SET", deviceId);
+            runCMDRoot($"shell setprop persist.sys.timezone \"{timezone}\"", deviceId);
+            runCMDRoot($"shell am broadcast -a android.intent.action.TIMEZONE_CHANGED", deviceId);
+            runCMDRoot($"shell settings put system time_12_24 24", deviceId);
+            runCMDRoot($"shell am broadcast -a android.intent.action.TIME_SET", deviceId);
             //runCMD($"shell \"cmd time_zone_detector suggest_telephony_time_zone --suggestion --slot_index 0 --zone_id {timezone} --quality multiple_same --match_type country\"", deviceId);
         }
 
